@@ -12,8 +12,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var NombreUsuario:EditText
 
    companion object{
-       const val NombreUsuarioCompanion="NombreUsuario"
+       var NombreUsuarioCompanion="NombreUsuario"
    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,12 +29,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        btnAcceder.setOnClickListener { abrirCalculo_Compactacion(NombreUsuario.text.toString()) }
+
+        btnAcceder.setOnClickListener { abrirCalculo_Compactacion() }
     }
 
-    private fun abrirCalculo_Compactacion(NombreUsuario:String) {
+//    private fun abrirCalculo_Compactacion(NombreUsuario:String) {
+//        val intent=Intent(this,Calculo_Compactacion::class.java )
+//        intent.putExtra(NombreUsuarioCompanion,NombreUsuario)
+//        startActivity(intent)
+//    }
+
+    private fun abrirCalculo_Compactacion() {
         val intent=Intent(this,Calculo_Compactacion::class.java )
-        intent.putExtra(NombreUsuarioCompanion,NombreUsuario)
+        NombreUsuarioCompanion=NombreUsuario.text.toString()
+//        intent.putExtra(NombreUsuarioCompanion,NombreUsuario)
         startActivity(intent)
     }
 

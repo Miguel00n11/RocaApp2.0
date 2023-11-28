@@ -1,14 +1,39 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.RocaApp20" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:background">@color/white</item>
+
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
     </style>
 
     <style name="Theme.RocaApp20" parent="Base.Theme.RocaApp20">
-        <item name="android:statusBarColor">@color/white</item>
+        <!--        <item name="android:statusBarColor">@color/white</item>-->
 
 
     </style>
+
+    <style name="Theme.TextosCompactaciones" parent="Base.Theme.RocaApp20">
+        <item name="android:textColor">@color/Texto_Resultados</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/Background_Resultados</item>
+        <item name="android:backgroundTint">@color/Background_Resultados</item>
+
+
+    </style>
+
+    <style name="Theme.BotonRegresar" parent="Base.Theme.RocaApp20">
+        <item name="android:textColor">@color/btn_Text_Cancelar</item>
+        <item name="android:backgroundTint">@color/btn_Background_Cancelar</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">"Regresar"</item>
+
+
+    </style>
+
+
 </resources>

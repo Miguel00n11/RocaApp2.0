@@ -3,25 +3,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginHorizontal="64dp"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_marginHorizontal="32dp"
     android:gravity="center"
+    android:orientation="vertical"
+
     tools:context=".Calculo_Compactacion">
 
     <TextView
         android:id="@+id/tvUsuarioCalculoCompactacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="32sp"
-        android:layout_marginVertical="24dp"/>
+        android:layout_marginVertical="24dp"
+        android:textSize="24dp" />
 
     <EditText
-        android:id="@+id/tvMVSM"
+        android:id="@+id/etMVSM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="M.V.S.M. (kg/m³)"
         android:gravity="center"
-        android:inputType="numberDecimal"/>
+        android:hint="M.V.S.M. (kg/m³)"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/etPesoMaterial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="W. material (kg)"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/etPesoArena"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="W. arena (kg)"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/etHumedad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="Humedad (%)"
+        android:inputType="numberDecimal" />
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="32dp"
+        android:theme="@style/Theme.TextosCompactaciones"
+        app:cardCornerRadius="16dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:gravity="center|top"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:text="Resultados"
+                android:textColor="@color/Texto_Resultados"
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/tvMVSM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="MVSM" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="% Compactacion"
+                android:textColor="@color/Texto_Resultados" />
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+    <Button
+        android:id="@+id/btnRegresarCompactacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.BotonRegresar" />
 
 </LinearLayout>
