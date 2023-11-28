@@ -16,7 +16,7 @@
         app:tint="#FF5722" />
 
     <EditText
-        android:id="@+id/tvEmail"
+        android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/tvPassword"
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -50,10 +50,10 @@
         android:ems="10"/>
 
     <Button
-        android:id="@+id/btnCancelarAcceso"
+        android:id="@+id/btnAccederInvitado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cancelar"
+        android:text="Modo Invitado"
         android:backgroundTint="@color/cancelar"
         android:ems="10"/>
 
