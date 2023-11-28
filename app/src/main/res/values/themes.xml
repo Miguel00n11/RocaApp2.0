@@ -21,6 +21,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:background">@color/Background_Resultados</item>
         <item name="android:backgroundTint">@color/Background_Resultados</item>
+        <item name="android:enabled">false</item>
 
 
     </style>
