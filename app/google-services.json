@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "519042066380",
+    "firebase_url": "https://registrocompactacioneroca-default-rtdb.firebaseio.com",
+    "project_id": "registrocompactacioneroca",
+    "storage_bucket": "registrocompactacioneroca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519042066380:android:53dab88c426382603f5f69",
+        "android_client_info": {
+          "package_name": "com.miguelrodriguez.rocaapp20"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF-5iVhF87DamQ5w8Cwtn2CH-AIAq14vg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

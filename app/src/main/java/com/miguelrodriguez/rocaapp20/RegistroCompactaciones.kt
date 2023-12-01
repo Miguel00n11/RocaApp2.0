@@ -1,6 +1,8 @@
 package com.miguelrodriguez.rocaapp20
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -12,7 +14,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import java.util.Calendar
 
-
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -21,6 +24,7 @@ import com.google.firebase.database.ValueEventListener
 class RegistroCompactaciones : AppCompatActivity() {
 
 private lateinit var dataReference:DatabaseReference
+    private lateinit var sharedPreferences: SharedPreferences
 
     private  lateinit var etObra:EditText
     private  lateinit var etFecha:EditText
@@ -51,14 +55,71 @@ private lateinit var dataReference:DatabaseReference
         ConsultarUltimoRegistro()
 
 
+        // Agregar un nuevo registro localmente
+        saveLocally("Usuario Ejemplo", 30)
+
+        // Sincronizar los datos cuando hay conexión a Internet
+        syncDataWithFirebase()
+
 
 
     }
+
+    private fun saveLocally(nombre: String, edad: Int) {
+        // Obtener una lista existente de registros locales o crear una nueva
+        val registrosLocales = getLocalRecords()
+
+        // Agregar el nuevo registro a la lista
+        val nuevoRegistro = Registro(nombre, edad)
+        registrosLocales.add(nuevoRegistro)
+
+        // Guardar la lista actualizada localmente
+        saveLocalRecords(registrosLocales)
+    }
+
+    private fun getLocalRecords(): MutableList<Registro> {
+        val registrosJson = sharedPreferences.getString("registros", "[]")
+        return Gson().fromJson(registrosJson, object : TypeToken<MutableList<Registro>>() {}.type)
+            ?: mutableListOf()
+    }
+
+    private fun saveLocalRecords(registros: List<Registro>) {
+        val registrosJson = Gson().toJson(registros)
+        sharedPreferences.edit().putString("registros", registrosJson).apply()
+    }
+
+    private fun syncDataWithFirebase() {
+        // Verificar si hay conexión a Internet
+        // Puedes usar una biblioteca como Connectivity Manager para esto
+
+        // Obtener registros locales
+        val registrosLocales = getLocalRecords()
+
+        // Sincronizar cada registro con Firebase Realtime Database
+        for (registro in registrosLocales) {
+            // Generar una nueva clave única para cada registro
+            val nuevaClave = dataReference.push().key
+
+            // Guardar el registro en Firebase Realtime Database
+            dataReference.child(nuevaClave!!).setValue(registro)
+
+            // Eliminar el registro local después de la sincronización
+            registrosLocales.remove(registro)
+        }
+
+        // Limpiar registros locales después de la sincronización
+        saveLocalRecords(registrosLocales)
+    }
+
+
+    data class Registro(val nombre: String, val edad: Int)
+
 
     private fun ConsultarUltimoRegistro() {
 
 // Obtén la referencia de la base de datos
         dataReference = FirebaseDatabase.getInstance().reference
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
         // Agrega un listener para contar el total de registros
         dataReference.addListenerForSingleValueEvent(object : ValueEventListener {
