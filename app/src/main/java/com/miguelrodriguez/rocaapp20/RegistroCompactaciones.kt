@@ -21,26 +21,28 @@ import com.google.gson.reflect.TypeToken
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
+import java.util.Objects
 
 class RegistroCompactaciones : AppCompatActivity() {
 
-private lateinit var dataReference:DatabaseReference
+    private lateinit var dataReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
 
-    private  lateinit var etObra:EditText
-    private  lateinit var etFecha:EditText
-    private  lateinit var etCapa:EditText
-    private  lateinit var etTramo:EditText
+    private lateinit var etObra: EditText
+    private lateinit var etFecha: EditText
+    private lateinit var etCapa: EditText
+    private lateinit var etTramo: EditText
 
-    private lateinit var tvNumeroReporteCompactacion:TextView
+    private lateinit var cala2: ClaseCala
 
-    private lateinit var btnCancelar:Button
-    private lateinit var btnGuardar:Button
-    private lateinit var btnVerCalendarioCompactaciones:Button
+    private lateinit var tvNumeroReporteCompactacion: TextView
 
-    private lateinit var personal:String
+    private lateinit var btnCancelar: Button
+    private lateinit var btnGuardar: Button
+    private lateinit var btnVerCalendarioCompactaciones: Button
 
-
+    private lateinit var personal: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,22 +54,18 @@ private lateinit var dataReference:DatabaseReference
 
         initUI()
 
-        personal= MainActivity.NombreUsuarioCompanion
+        personal = MainActivity.NombreUsuarioCompanion
         ConsultarUltimoRegistro()
-
-
-
-
 
 
     }
 
-    private fun saveLocally(obra: String, fecha: String,personal: String,numeroReporte:Int) {
+    private fun saveLocally(obra: String, fecha: String, personal: String, numeroReporte: Int) {
         // Obtener una lista existente de registros locales o crear una nueva
         val registrosLocales = getLocalRecords()
 
         // Agregar el nuevo registro a la lista
-        val nuevoRegistro = Registro(obra, fecha,personal,numeroReporte)
+        val nuevoRegistro = Registro(obra, fecha, personal, numeroReporte)
         registrosLocales.add(nuevoRegistro)
 
         // Guardar la lista actualizada localmente
@@ -111,7 +109,9 @@ private lateinit var dataReference:DatabaseReference
     }
 
 
-    data class Registro(val obra: String, val fecha: String,val personal: String,val numeroReporte:Int)
+    data class Registro(
+        val obra: String, val fecha: String, val personal: String, val numeroReporte: Int
+    )
 
 
     private fun ConsultarUltimoRegistro() {
@@ -124,7 +124,8 @@ private lateinit var dataReference:DatabaseReference
         dataReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Obtiene el número total de registros
-                tvNumeroReporteCompactacion.text = (dataSnapshot.child(personal).childrenCount+1).toString()
+                tvNumeroReporteCompactacion.text =
+                    (dataSnapshot.child(personal).childrenCount + 1).toString()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -139,9 +140,7 @@ private lateinit var dataReference:DatabaseReference
     private fun initUI() {
 
 
-
-
-        btnCancelar.setOnClickListener {onBackPressed()}
+        btnCancelar.setOnClickListener { onBackPressed() }
         btnGuardar.setOnClickListener {
 
             mostrarDialogo()
@@ -158,23 +157,21 @@ private lateinit var dataReference:DatabaseReference
         val dia = calendario.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(
-            this,
-            { _, year, month, dayOfMonth ->
+            this, { _, year, month, dayOfMonth ->
                 // Manejar la fecha seleccionada, por ejemplo, puedes mostrarla en el EditText
                 val fechaSeleccionada = "$dayOfMonth/${month + 1}/$year"
                 etFecha.setText(fechaSeleccionada)
-            },
-            año,
-            mes,
-            dia
+            }, año, mes, dia
         )
 
         datePickerDialog.show()
     }
 
-    private fun GuardarCompactacion(obra:String,fecha:String,capa:String,tramo:String,personal:String) {
+    private fun GuardarCompactacion(
+        obra: String, fecha: String, capa: String, tramo: String, personal: String
+    ) {
         // Obtén la referencia de la base de datos
-        dataReference=FirebaseDatabase.getInstance().reference
+        dataReference = FirebaseDatabase.getInstance().reference
 
         // Crear un objeto con los datos que deseas almacenar
         val data = HashMap<String, Any>()
@@ -183,23 +180,25 @@ private lateinit var dataReference:DatabaseReference
         data["Capa"] = capa
 
         // Generar un nuevo nodo único en la base de datos
-        val newChildRef = dataReference.child(personal).child(tvNumeroReporteCompactacion.text.toString())
+        val newChildRef =
+            dataReference.child(personal).child(tvNumeroReporteCompactacion.text.toString())
         newChildRef.setValue(data)
 
     }
 
     private fun initComponet() {
-        etObra=findViewById(R.id.etObraCompactacion)
-        etFecha=findViewById(R.id.etFechaCompactacion)
-        etCapa=findViewById(R.id.etCapaCompactacion)
-        etTramo=findViewById(R.id.etTramoCompactacion)
+        etObra = findViewById(R.id.etObraCompactacion)
+        etFecha = findViewById(R.id.etFechaCompactacion)
+        etCapa = findViewById(R.id.etCapaCompactacion)
+        etTramo = findViewById(R.id.etTramoCompactacion)
 
-        tvNumeroReporteCompactacion=findViewById(R.id.tvNumeroReporteCompactacion)
 
-        btnCancelar=findViewById(R.id.btnCancelarRegistroCompactacion)
-        btnGuardar=findViewById(R.id.btnGuardarRegistroCompactacion)
-        btnVerCalendarioCompactaciones=findViewById(R.id.btnVerCalendarioCompactaciones)
 
+        tvNumeroReporteCompactacion = findViewById(R.id.tvNumeroReporteCompactacion)
+
+        btnCancelar = findViewById(R.id.btnCancelarRegistroCompactacion)
+        btnGuardar = findViewById(R.id.btnGuardarRegistroCompactacion)
+        btnVerCalendarioCompactaciones = findViewById(R.id.btnVerCalendarioCompactaciones)
 
 
     }
@@ -215,12 +214,15 @@ private lateinit var dataReference:DatabaseReference
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
 
-            var obra:String=etObra.text.toString()
-            var fecha:String=etFecha.text.toString()
-            var numeroReporte:Int=tvNumeroReporteCompactacion.text.toString().toInt()
+            var obra: String = etObra.text.toString()
+            var fecha: String = etFecha.text.toString()
+            var numeroReporte: Int = tvNumeroReporteCompactacion.text.toString().toInt()
+//            var cala1: ClaseCala=cala2
+
+
 
             // Agregar un nuevo registro localmente
-            saveLocally(obra, fecha,personal, numeroReporte)
+            saveLocally(obra, fecha, personal, numeroReporte )
 
             // Sincronizar los datos cuando hay conexión a Internet
             syncDataWithFirebase(numeroReporte)

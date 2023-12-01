@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.RocaApp20" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/white</item>
-        <item name="android:background">@color/white</item>
+
 
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
