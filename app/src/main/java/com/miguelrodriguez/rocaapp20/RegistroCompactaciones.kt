@@ -26,6 +26,10 @@ import java.util.Objects
 
 class RegistroCompactaciones : AppCompatActivity() {
 
+
+    private val listaCalasmutableListOf = mutableListOf(ClaseCala(1,5))
+
+
     private lateinit var dataReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -34,7 +38,6 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var etCapa: EditText
     private lateinit var etTramo: EditText
 
-    private lateinit var cala2: ClaseCala
 
     private lateinit var tvNumeroReporteCompactacion: TextView
 
@@ -51,21 +54,30 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         initComponet()
 
-
         initUI()
+
+
+        val cala2=ClaseCala(3,4)
+
+        listaCalasmutableListOf.add(cala2)
 
         personal = MainActivity.NombreUsuarioCompanion
         ConsultarUltimoRegistro()
 
 
     }
+    fun nuevaCala(){
+        val nuevaCala=ClaseCala(1,1)
+        listaCalasmutableListOf.add(nuevaCala)
 
-    private fun saveLocally(obra: String, fecha: String, personal: String, numeroReporte: Int) {
+    }
+
+    private fun saveLocally(obra: String, fecha: String, personal: String, numeroReporte: Int,listaCalas: List<ClaseCala>) {
         // Obtener una lista existente de registros locales o crear una nueva
         val registrosLocales = getLocalRecords()
 
         // Agregar el nuevo registro a la lista
-        val nuevoRegistro = Registro(obra, fecha, personal, numeroReporte)
+        val nuevoRegistro = Registro(obra, fecha, personal, numeroReporte,listaCalas)
         registrosLocales.add(nuevoRegistro)
 
         // Guardar la lista actualizada localmente
@@ -83,7 +95,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         sharedPreferences.edit().putString("registros", registrosJson).apply()
     }
 
-    private fun syncDataWithFirebase(numeroReporte: Int) {
+    private fun syncDataWithFirebase(numeroReporte: Int,listaCalas: List<ClaseCala>) {
         // Verificar si hay conexión a Internet
         // Puedes usar una biblioteca como Connectivity Manager para esto
 
@@ -110,7 +122,11 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
     data class Registro(
-        val obra: String, val fecha: String, val personal: String, val numeroReporte: Int
+        val obra: String,
+        val fecha: String,
+        val personal: String,
+        val numeroReporte: Int,
+        val listaCalas: List<ClaseCala>
     )
 
 
@@ -192,8 +208,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         etCapa = findViewById(R.id.etCapaCompactacion)
         etTramo = findViewById(R.id.etTramoCompactacion)
 
-
-
         tvNumeroReporteCompactacion = findViewById(R.id.tvNumeroReporteCompactacion)
 
         btnCancelar = findViewById(R.id.btnCancelarRegistroCompactacion)
@@ -220,14 +234,13 @@ class RegistroCompactaciones : AppCompatActivity() {
 //            var cala1: ClaseCala=cala2
 
 
-
             // Agregar un nuevo registro localmente
-            saveLocally(obra, fecha, personal, numeroReporte )
+            saveLocally(obra, fecha, personal, numeroReporte,listaCalasmutableListOf)
 
             // Sincronizar los datos cuando hay conexión a Internet
-            syncDataWithFirebase(numeroReporte)
+            syncDataWithFirebase(numeroReporte,listaCalasmutableListOf)
 
-            ConsultarUltimoRegistro()
+                        ConsultarUltimoRegistro ()
 
         }
 
