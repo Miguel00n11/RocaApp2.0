@@ -77,7 +77,7 @@ class Calculo_Compactacion : AppCompatActivity() {
             val VolVarena=etPesoArena/etMVA
             val MVSM=etMVSM
 
-            tvMSVM.text=
+//            tvMSVM.text=
 
         } finally {
             return

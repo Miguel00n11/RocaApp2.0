@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnAcceder:Button
     private lateinit var NombreUsuario:EditText
 
+
    companion object{
        var NombreUsuarioCompanion="NombreUsuario"
    }
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     private fun abrirCalculo_Compactacion() {
-        val intent=Intent(this,Calculo_Compactacion::class.java )
+        val intent=Intent(this,SeleccionarActividad::class.java )
         NombreUsuarioCompanion=NombreUsuario.text.toString()
 //        intent.putExtra(NombreUsuarioCompanion,NombreUsuario)
         startActivity(intent)
