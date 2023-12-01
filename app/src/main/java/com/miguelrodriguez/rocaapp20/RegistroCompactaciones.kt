@@ -1,5 +1,6 @@
 package com.miguelrodriguez.rocaapp20
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -55,22 +56,18 @@ private lateinit var dataReference:DatabaseReference
         ConsultarUltimoRegistro()
 
 
-        // Agregar un nuevo registro localmente
-        saveLocally("Usuario Ejemplo", 30)
 
-        // Sincronizar los datos cuando hay conexión a Internet
-        syncDataWithFirebase()
 
 
 
     }
 
-    private fun saveLocally(nombre: String, edad: Int) {
+    private fun saveLocally(obra: String, fecha: String,personal: String,numeroReporte:Int) {
         // Obtener una lista existente de registros locales o crear una nueva
         val registrosLocales = getLocalRecords()
 
         // Agregar el nuevo registro a la lista
-        val nuevoRegistro = Registro(nombre, edad)
+        val nuevoRegistro = Registro(obra, fecha,personal,numeroReporte)
         registrosLocales.add(nuevoRegistro)
 
         // Guardar la lista actualizada localmente
@@ -88,7 +85,7 @@ private lateinit var dataReference:DatabaseReference
         sharedPreferences.edit().putString("registros", registrosJson).apply()
     }
 
-    private fun syncDataWithFirebase() {
+    private fun syncDataWithFirebase(numeroReporte: Int) {
         // Verificar si hay conexión a Internet
         // Puedes usar una biblioteca como Connectivity Manager para esto
 
@@ -97,11 +94,13 @@ private lateinit var dataReference:DatabaseReference
 
         // Sincronizar cada registro con Firebase Realtime Database
         for (registro in registrosLocales) {
+
             // Generar una nueva clave única para cada registro
             val nuevaClave = dataReference.push().key
 
+
             // Guardar el registro en Firebase Realtime Database
-            dataReference.child(nuevaClave!!).setValue(registro)
+            dataReference.child(personal).child(nuevaClave!!).setValue(registro)
 
             // Eliminar el registro local después de la sincronización
             registrosLocales.remove(registro)
@@ -112,7 +111,7 @@ private lateinit var dataReference:DatabaseReference
     }
 
 
-    data class Registro(val nombre: String, val edad: Int)
+    data class Registro(val obra: String, val fecha: String,val personal: String,val numeroReporte:Int)
 
 
     private fun ConsultarUltimoRegistro() {
@@ -139,10 +138,15 @@ private lateinit var dataReference:DatabaseReference
 
     private fun initUI() {
 
-        btnCancelar.setOnClickListener {onBackPressed()}
-        btnGuardar.setOnClickListener {GuardarCompactacion(etObra.text.toString(),etFecha.text.toString(),etCapa.text.toString(),etTramo.text.toString(),personal)
 
-            ConsultarUltimoRegistro()
+
+
+        btnCancelar.setOnClickListener {onBackPressed()}
+        btnGuardar.setOnClickListener {
+
+            mostrarDialogo()
+
+
         }
 
     }
@@ -200,5 +204,39 @@ private lateinit var dataReference:DatabaseReference
 
     }
 
+    private fun mostrarDialogo() {
+        // Crea un objeto AlertDialog
+        val builder = AlertDialog.Builder(this)
+
+        // Configura el título y el mensaje del cuadro de diálogo
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Quieres proceder?")
+
+        // Configura el botón positivo (sí)
+        builder.setPositiveButton("Sí") { dialog, which ->
+
+            var obra:String=etObra.text.toString()
+            var fecha:String=etFecha.text.toString()
+            var numeroReporte:Int=tvNumeroReporteCompactacion.text.toString().toInt()
+
+            // Agregar un nuevo registro localmente
+            saveLocally(obra, fecha,personal, numeroReporte)
+
+            // Sincronizar los datos cuando hay conexión a Internet
+            syncDataWithFirebase(numeroReporte)
+
+            ConsultarUltimoRegistro()
+
+        }
+
+        // Configura el botón negativo (no)
+        builder.setNegativeButton("No") { dialog, which ->
+            return@setNegativeButton
+            // Código a ejecutar si el usuario hace clic en No
+        }
+
+        // Muestra el cuadro de diálogo
+        builder.show()
+    }
 
 }
