@@ -271,11 +271,11 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fbNuevaCalaCompactacion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/plus_large_svgrepo_com"
                     app:maxImageSize="40dp"
-                    android:onClick="nuevaCala"
                     android:backgroundTint="@color/Background_Resultados"/>
 
             </LinearLayout>

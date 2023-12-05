@@ -1,3 +1,3 @@
 package com.miguelrodriguez.rocaapp20.Recycler
 
-data class ClaseCala(var id:Int,var numero:Int)
+data class ClaseCala(val id:Int,val Estacion:String)

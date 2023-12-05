@@ -2,6 +2,7 @@ package com.miguelrodriguez.rocaapp20
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +10,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import java.util.Calendar
@@ -21,13 +27,15 @@ import com.google.gson.reflect.TypeToken
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import java.util.Objects
 
 class RegistroCompactaciones : AppCompatActivity() {
 
 
-    private val listaCalasmutableListOf = mutableListOf(ClaseCala(1,5))
+    private val listaCalasmutableListOf = mutableListOf(ClaseCala(1, "5"))
+
 
 
     private lateinit var dataReference: DatabaseReference
@@ -38,46 +46,102 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var etCapa: EditText
     private lateinit var etTramo: EditText
 
+    private lateinit var CalasAdapter:CalasAdapter
+    private lateinit var rvCalas:RecyclerView
+
 
     private lateinit var tvNumeroReporteCompactacion: TextView
 
     private lateinit var btnCancelar: Button
     private lateinit var btnGuardar: Button
     private lateinit var btnVerCalendarioCompactaciones: Button
+    private lateinit var fbNuevaCalaCompactacion:FloatingActionButton
 
     private lateinit var personal: String
+
+    private lateinit var calaNueva:ClaseCala
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_compactaciones)
 
+        listaCalasmutableListOf.clear()
+
+
         initComponet()
 
         initUI()
 
-
-        val cala2=ClaseCala(3,4)
-
-        listaCalasmutableListOf.add(cala2)
-
         personal = MainActivity.NombreUsuarioCompanion
         ConsultarUltimoRegistro()
 
-
     }
-    fun nuevaCala(){
-        val nuevaCala=ClaseCala(1,1)
-        listaCalasmutableListOf.add(nuevaCala)
-
+    private fun updateTask() {
+        CalasAdapter.notifyDataSetChanged()
     }
 
-    private fun saveLocally(obra: String, fecha: String, personal: String, numeroReporte: Int,listaCalas: List<ClaseCala>) {
+    private fun showDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.activity_nueva_cala_compactacion)
+
+        val btnGuardarCalaCompactacion: Button =
+            dialog.findViewById(R.id.btnGuardarCalaCompactacion)
+
+        val etEstacionCalaCompactacion: EditText =dialog.findViewById(R.id.etEstacionCalaCompactacion)
+        val etProfCalaCompactacion: EditText = dialog.findViewById(R.id.etProfCalaCompactacion)
+        val etMVSMCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSMCalaCompactacion)
+        val etHumedadLugarCalaCopactacion: EditText =
+            dialog.findViewById(R.id.etHumedadLugarCalaCopactacion)
+
+
+        btnGuardarCalaCompactacion.setOnClickListener {
+            val estacion = etEstacionCalaCompactacion.text.toString()
+            if (estacion.isEmpty()) {
+                dialog.hide()
+
+                return@setOnClickListener
+
+            }
+
+
+            calaNueva=ClaseCala(1,etEstacionCalaCompactacion.text.toString())
+            listaCalasmutableListOf.add(calaNueva)
+
+
+            updateTask()
+
+            dialog.hide()
+
+//            Toast.makeText(this, listaCalasmutableListOf.count().toString(), Toast.LENGTH_SHORT).show()
+
+        }
+
+
+
+        dialog.show()
+
+
+    }
+
+//    fun nuevaCala() {
+//        val nuevaCala = ClaseCala(1, "1")
+//        listaCalasmutableListOf.add(nuevaCala)
+//
+//    }
+
+    private fun saveLocally(
+        obra: String,
+        fecha: String,
+        personal: String,
+        numeroReporte: Int,
+        listaCalas: List<ClaseCala>
+    ) {
         // Obtener una lista existente de registros locales o crear una nueva
         val registrosLocales = getLocalRecords()
 
         // Agregar el nuevo registro a la lista
-        val nuevoRegistro = Registro(obra, fecha, personal, numeroReporte,listaCalas)
+        val nuevoRegistro = Registro(obra, fecha, personal, numeroReporte, listaCalas)
         registrosLocales.add(nuevoRegistro)
 
         // Guardar la lista actualizada localmente
@@ -95,7 +159,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         sharedPreferences.edit().putString("registros", registrosJson).apply()
     }
 
-    private fun syncDataWithFirebase(numeroReporte: Int,listaCalas: List<ClaseCala>) {
+    private fun syncDataWithFirebase(numeroReporte: Int, listaCalas: List<ClaseCala>) {
         // Verificar si hay conexión a Internet
         // Puedes usar una biblioteca como Connectivity Manager para esto
 
@@ -163,6 +227,12 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
         }
+        fbNuevaCalaCompactacion.setOnClickListener{showDialog()}
+
+        CalasAdapter = CalasAdapter(listaCalasmutableListOf)
+        rvCalas.layoutManager = LinearLayoutManager(this)
+        rvCalas.adapter = CalasAdapter
+
 
     }
 
@@ -214,6 +284,10 @@ class RegistroCompactaciones : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btnGuardarRegistroCompactacion)
         btnVerCalendarioCompactaciones = findViewById(R.id.btnVerCalendarioCompactaciones)
 
+        fbNuevaCalaCompactacion=findViewById(R.id.fbNuevaCalaCompactacion)
+
+
+        rvCalas=findViewById(R.id.rvCalasCompactaciones)
 
     }
 
@@ -235,12 +309,12 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
             // Agregar un nuevo registro localmente
-            saveLocally(obra, fecha, personal, numeroReporte,listaCalasmutableListOf)
+            saveLocally(obra, fecha, personal, numeroReporte, listaCalasmutableListOf)
 
             // Sincronizar los datos cuando hay conexión a Internet
-            syncDataWithFirebase(numeroReporte,listaCalasmutableListOf)
+            syncDataWithFirebase(numeroReporte, listaCalasmutableListOf)
 
-                        ConsultarUltimoRegistro ()
+            ConsultarUltimoRegistro()
 
         }
 
