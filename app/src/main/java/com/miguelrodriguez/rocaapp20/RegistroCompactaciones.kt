@@ -37,7 +37,6 @@ class RegistroCompactaciones : AppCompatActivity() {
     private val listaCalasmutableListOf = mutableListOf(ClaseCala(1, "5"))
 
 
-
     private lateinit var dataReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -46,8 +45,8 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var etCapa: EditText
     private lateinit var etTramo: EditText
 
-    private lateinit var CalasAdapter:CalasAdapter
-    private lateinit var rvCalas:RecyclerView
+    private lateinit var CalasAdapter: CalasAdapter
+    private lateinit var rvCalas: RecyclerView
 
 
     private lateinit var tvNumeroReporteCompactacion: TextView
@@ -55,11 +54,11 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var btnCancelar: Button
     private lateinit var btnGuardar: Button
     private lateinit var btnVerCalendarioCompactaciones: Button
-    private lateinit var fbNuevaCalaCompactacion:FloatingActionButton
+    private lateinit var fbNuevaCalaCompactacion: FloatingActionButton
 
     private lateinit var personal: String
 
-    private lateinit var calaNueva:ClaseCala
+    private lateinit var calaNueva: ClaseCala
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +76,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         ConsultarUltimoRegistro()
 
     }
+
     private fun updateTask() {
         CalasAdapter.notifyDataSetChanged()
     }
@@ -88,7 +88,8 @@ class RegistroCompactaciones : AppCompatActivity() {
         val btnGuardarCalaCompactacion: Button =
             dialog.findViewById(R.id.btnGuardarCalaCompactacion)
 
-        val etEstacionCalaCompactacion: EditText =dialog.findViewById(R.id.etEstacionCalaCompactacion)
+        val etEstacionCalaCompactacion: EditText =
+            dialog.findViewById(R.id.etEstacionCalaCompactacion)
         val etProfCalaCompactacion: EditText = dialog.findViewById(R.id.etProfCalaCompactacion)
         val etMVSMCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSMCalaCompactacion)
         val etHumedadLugarCalaCopactacion: EditText =
@@ -105,7 +106,7 @@ class RegistroCompactaciones : AppCompatActivity() {
             }
 
 
-            calaNueva=ClaseCala(1,etEstacionCalaCompactacion.text.toString())
+            calaNueva = ClaseCala(1, etEstacionCalaCompactacion.text.toString())
             listaCalasmutableListOf.add(calaNueva)
 
 
@@ -227,7 +228,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
         }
-        fbNuevaCalaCompactacion.setOnClickListener{showDialog()}
+        fbNuevaCalaCompactacion.setOnClickListener { showDialog() }
 
         CalasAdapter = CalasAdapter(listaCalasmutableListOf)
         rvCalas.layoutManager = LinearLayoutManager(this)
@@ -284,10 +285,10 @@ class RegistroCompactaciones : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btnGuardarRegistroCompactacion)
         btnVerCalendarioCompactaciones = findViewById(R.id.btnVerCalendarioCompactaciones)
 
-        fbNuevaCalaCompactacion=findViewById(R.id.fbNuevaCalaCompactacion)
+        fbNuevaCalaCompactacion = findViewById(R.id.fbNuevaCalaCompactacion)
 
 
-        rvCalas=findViewById(R.id.rvCalasCompactaciones)
+        rvCalas = findViewById(R.id.rvCalasCompactaciones)
 
     }
 
@@ -297,7 +298,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         // Configura el título y el mensaje del cuadro de diálogo
         builder.setTitle("Confirmación")
-        builder.setMessage("¿Quieres proceder?")
+        builder.setMessage("¿Deseas guardar este reporte?")
 
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
@@ -305,8 +306,6 @@ class RegistroCompactaciones : AppCompatActivity() {
             var obra: String = etObra.text.toString()
             var fecha: String = etFecha.text.toString()
             var numeroReporte: Int = tvNumeroReporteCompactacion.text.toString().toInt()
-//            var cala1: ClaseCala=cala2
-
 
             // Agregar un nuevo registro localmente
             saveLocally(obra, fecha, personal, numeroReporte, listaCalasmutableListOf)
@@ -315,6 +314,9 @@ class RegistroCompactaciones : AppCompatActivity() {
             syncDataWithFirebase(numeroReporte, listaCalasmutableListOf)
 
             ConsultarUltimoRegistro()
+            listaCalasmutableListOf.clear()
+            updateTask()
+            Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
 
         }
 
@@ -327,5 +329,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         // Muestra el cuadro de diálogo
         builder.show()
     }
+
 
 }
