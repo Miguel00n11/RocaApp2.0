@@ -30,11 +30,15 @@ import com.google.firebase.database.ValueEventListener
 import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import java.util.Objects
+import kotlin.math.round
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 class RegistroCompactaciones : AppCompatActivity() {
 
 
-    private val listaCalasmutableListOf = mutableListOf(ClaseCala(1, "5"))
+    private val listaCalasmutableListOf =
+        mutableListOf(ClaseCala(1, "estacion", 1.0, 1.0, 1.0, 1.0))
 
 
     private lateinit var dataReference: DatabaseReference
@@ -42,8 +46,13 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     private lateinit var etObra: EditText
     private lateinit var etFecha: EditText
+
     private lateinit var etCapa: EditText
     private lateinit var etTramo: EditText
+    private lateinit var etSubTramo: EditText
+    private lateinit var etcompactacionProyecto: EditText
+    private lateinit var etMVSM: EditText
+    private lateinit var etHumedad: EditText
 
     private lateinit var CalasAdapter: CalasAdapter
     private lateinit var rvCalas: RecyclerView
@@ -54,7 +63,17 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var btnCancelar: Button
     private lateinit var btnGuardar: Button
     private lateinit var btnVerCalendarioCompactaciones: Button
+
     private lateinit var fbNuevaCalaCompactacion: FloatingActionButton
+
+    //    controladores del item Cala
+    private lateinit var tvIdCalaCompactacion: TextView
+    private lateinit var tvEstacionCalaCompactacion: TextView
+    private lateinit var tvProfundidadCalaCompactacion: TextView
+    private lateinit var tvMVSLCalaCompactacion: TextView
+    private lateinit var tvHumedadCalaCompactacion: TextView
+    private lateinit var tvPorcentajeCalaCompactacion: TextView
+
 
     private lateinit var personal: String
 
@@ -91,13 +110,25 @@ class RegistroCompactaciones : AppCompatActivity() {
         val etEstacionCalaCompactacion: EditText =
             dialog.findViewById(R.id.etEstacionCalaCompactacion)
         val etProfCalaCompactacion: EditText = dialog.findViewById(R.id.etProfCalaCompactacion)
-        val etMVSMCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSMCalaCompactacion)
+        val etMVSLCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSLCalaCompactacion)
         val etHumedadLugarCalaCopactacion: EditText =
             dialog.findViewById(R.id.etHumedadLugarCalaCopactacion)
 
 
         btnGuardarCalaCompactacion.setOnClickListener {
             val estacion = etEstacionCalaCompactacion.text.toString()
+            val profundidad = etProfCalaCompactacion.text.toString().toDouble()
+            val MSVL = etMVSLCalaCompactacion.text.toString().toDouble()
+            val humedad = etHumedadLugarCalaCopactacion.text.toString().toDouble()
+//            val porcentajeCompactacion = round( MSVL / etMVSM.text.toString().toDouble() * 100.0)
+            val porcentajeCompactacion = ( MSVL / etMVSM.text.toString().toDouble() * 100.0*100).roundToInt()/100.0
+
+
+
+
+
+
+
             if (estacion.isEmpty()) {
                 dialog.hide()
 
@@ -106,7 +137,8 @@ class RegistroCompactaciones : AppCompatActivity() {
             }
 
 
-            calaNueva = ClaseCala(1, etEstacionCalaCompactacion.text.toString())
+            calaNueva = ClaseCala(1, estacion, profundidad, MSVL, humedad, porcentajeCompactacion)
+//            calaNueva = ClaseCala(1, estacion,profundidad,2.0,3.0,4.0)
             listaCalasmutableListOf.add(calaNueva)
 
 
@@ -274,21 +306,29 @@ class RegistroCompactaciones : AppCompatActivity() {
     }
 
     private fun initComponet() {
+        //REPORTE DE COMPACTACION
         etObra = findViewById(R.id.etObraCompactacion)
         etFecha = findViewById(R.id.etFechaCompactacion)
+
+        //DATOS DE LA PRUEBA
         etCapa = findViewById(R.id.etCapaCompactacion)
         etTramo = findViewById(R.id.etTramoCompactacion)
-
+        etSubTramo = findViewById(R.id.etSubTramo)
+        etcompactacionProyecto = findViewById(R.id.etcompactacionProyecto)
+        etMVSM = findViewById(R.id.etMVSM)
+        etHumedad = findViewById(R.id.etHumedad)
         tvNumeroReporteCompactacion = findViewById(R.id.tvNumeroReporteCompactacion)
 
+
+        //REGISTRO DE CALAS
+        rvCalas = findViewById(R.id.rvCalasCompactaciones)
+
+        //BOTONES
         btnCancelar = findViewById(R.id.btnCancelarRegistroCompactacion)
         btnGuardar = findViewById(R.id.btnGuardarRegistroCompactacion)
         btnVerCalendarioCompactaciones = findViewById(R.id.btnVerCalendarioCompactaciones)
-
         fbNuevaCalaCompactacion = findViewById(R.id.fbNuevaCalaCompactacion)
 
-
-        rvCalas = findViewById(R.id.rvCalasCompactaciones)
 
     }
 

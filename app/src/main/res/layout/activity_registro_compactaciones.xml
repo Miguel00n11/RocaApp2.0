@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/material_motion_duration_long_1"
-            android:text="Reporte Compactación "
+            android:text="Reporte de compactación "
             android:textSize="24sp" />
 
         <TextView
@@ -100,7 +100,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Datos de Prueba"
+                android:text="Datos de la prueba"
                 android:textSize="24sp" />
 
 
@@ -252,7 +252,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Compactaciones"/>
+                    android:text="Registro de calas"
+                    android:textSize="24sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvCalasCompactaciones"

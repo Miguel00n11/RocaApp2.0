@@ -38,7 +38,7 @@
         android:textColorHint="@color/white"/>
 
     <EditText
-        android:id="@+id/etMVSMCalaCompactacion"
+        android:id="@+id/etMVSLCalaCompactacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="MVSL"
