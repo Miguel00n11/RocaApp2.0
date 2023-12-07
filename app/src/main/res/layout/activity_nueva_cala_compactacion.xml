@@ -25,34 +25,40 @@
         android:id="@+id/etEstacionCalaCompactacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Estación"
         android:backgroundTint="@color/white"
-        android:textColorHint="@color/white"/>
+        android:hint="Estación"
+        android:inputType="text"
+        android:textColorHint="@color/white" />
 
     <EditText
         android:id="@+id/etProfCalaCompactacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Prof. de cala"
         android:backgroundTint="@color/white"
-        android:textColorHint="@color/white"/>
+        android:hint="Prof. de cala"
+        android:inputType="number|numberDecimal"
+        android:selectAllOnFocus="true"
+        android:text="20"
+        android:textColorHint="@color/white" />
 
     <EditText
         android:id="@+id/etMVSLCalaCompactacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="MVSL"
         android:backgroundTint="@color/white"
-        android:textColorHint="@color/white"/>
+        android:hint="MVSL"
+        android:inputType="number|numberDecimal"
+        android:textColorHint="@color/white" />
 
 
     <EditText
         android:id="@+id/etHumedadLugarCalaCopactacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="% Lugar"
         android:backgroundTint="@color/white"
-        android:textColorHint="@color/white"/>
+        android:hint="% Lugar"
+        android:inputType="number|numberDecimal"
+        android:textColorHint="@color/white" />
 
     <Button
         android:id="@+id/btnGuardarCalaCompactacion"

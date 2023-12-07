@@ -100,69 +100,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         CalasAdapter.notifyDataSetChanged()
     }
 
-    private fun showDialog() {
-        val dialog = Dialog(this)
-        dialog.setContentView(R.layout.activity_nueva_cala_compactacion)
-
-        val btnGuardarCalaCompactacion: Button =
-            dialog.findViewById(R.id.btnGuardarCalaCompactacion)
-
-        val etEstacionCalaCompactacion: EditText =
-            dialog.findViewById(R.id.etEstacionCalaCompactacion)
-        val etProfCalaCompactacion: EditText = dialog.findViewById(R.id.etProfCalaCompactacion)
-        val etMVSLCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSLCalaCompactacion)
-        val etHumedadLugarCalaCopactacion: EditText =
-            dialog.findViewById(R.id.etHumedadLugarCalaCopactacion)
-
-
-        btnGuardarCalaCompactacion.setOnClickListener {
-            val estacion = etEstacionCalaCompactacion.text.toString()
-            val profundidad = etProfCalaCompactacion.text.toString().toDouble()
-            val MSVL = etMVSLCalaCompactacion.text.toString().toDouble()
-            val humedad = etHumedadLugarCalaCopactacion.text.toString().toDouble()
-//            val porcentajeCompactacion = round( MSVL / etMVSM.text.toString().toDouble() * 100.0)
-            val porcentajeCompactacion = ( MSVL / etMVSM.text.toString().toDouble() * 100.0*100).roundToInt()/100.0
-
-
-
-
-
-
-
-            if (estacion.isEmpty()) {
-                dialog.hide()
-
-                return@setOnClickListener
-
-            }
-
-
-            calaNueva = ClaseCala(1, estacion, profundidad, MSVL, humedad, porcentajeCompactacion)
-//            calaNueva = ClaseCala(1, estacion,profundidad,2.0,3.0,4.0)
-            listaCalasmutableListOf.add(calaNueva)
-
-
-            updateTask()
-
-            dialog.hide()
-
-//            Toast.makeText(this, listaCalasmutableListOf.count().toString(), Toast.LENGTH_SHORT).show()
-
-        }
-
-
-
-        dialog.show()
-
-
-    }
-
-//    fun nuevaCala() {
-//        val nuevaCala = ClaseCala(1, "1")
-//        listaCalasmutableListOf.add(nuevaCala)
-//
-//    }
-
     private fun saveLocally(
         obra: String,
         fecha: String,
@@ -180,6 +117,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         // Guardar la lista actualizada localmente
         saveLocalRecords(registrosLocales)
     }
+
 
     private fun getLocalRecords(): MutableList<Registro> {
         val registrosJson = sharedPreferences.getString("registros", "[]")
@@ -217,7 +155,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         saveLocalRecords(registrosLocales)
     }
 
-
     data class Registro(
         val obra: String,
         val fecha: String,
@@ -250,6 +187,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     }
 
+
     private fun initUI() {
 
 
@@ -262,10 +200,129 @@ class RegistroCompactaciones : AppCompatActivity() {
         }
         fbNuevaCalaCompactacion.setOnClickListener { showDialog() }
 
-        CalasAdapter = CalasAdapter(listaCalasmutableListOf)
+        CalasAdapter =
+            CalasAdapter(listaCalasmutableListOf) { position -> onItemSelected(position) }
         rvCalas.layoutManager = LinearLayoutManager(this)
         rvCalas.adapter = CalasAdapter
 
+
+    }
+
+    private fun onItemSelected(position: Int) {
+//        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
+
+        showDialog(listaCalasmutableListOf[position],position)
+
+    }
+    private fun showDialog(calaSeleccionada:ClaseCala,indice:Int) {
+
+
+
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.activity_nueva_cala_compactacion)
+
+        val btnGuardarCalaCompactacion: Button =
+            dialog.findViewById(R.id.btnGuardarCalaCompactacion)
+
+        val etEstacionCalaCompactacion: EditText =
+            dialog.findViewById(R.id.etEstacionCalaCompactacion)
+        val etProfCalaCompactacion: EditText = dialog.findViewById(R.id.etProfCalaCompactacion)
+        val etMVSLCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSLCalaCompactacion)
+        val etHumedadLugarCalaCopactacion: EditText =
+            dialog.findViewById(R.id.etHumedadLugarCalaCopactacion)
+
+        etEstacionCalaCompactacion.setText(calaSeleccionada.Estacion)
+        etProfCalaCompactacion.setText(calaSeleccionada.Profundidad.toString())
+        etMVSLCalaCompactacion.setText(calaSeleccionada.MVSL.toString())
+        etHumedadLugarCalaCopactacion.setText(calaSeleccionada.Humedad.toString())
+
+        btnGuardarCalaCompactacion.setOnClickListener {
+
+            val estacion = etEstacionCalaCompactacion.text.toString()
+            val profundidad = etProfCalaCompactacion.text.toString().toDouble()
+            val MSVL = etMVSLCalaCompactacion.text.toString().toDouble()
+            val humedad = etHumedadLugarCalaCopactacion.text.toString().toDouble()
+            val porcentajeCompactacion =
+                (MSVL / etMVSM.text.toString().toDouble() * 100.0 * 100).roundToInt() / 100.0
+
+            if (estacion.isEmpty()) {
+                dialog.hide()
+
+                return@setOnClickListener
+
+            }
+
+            calaNueva = ClaseCala(
+                indice+1,
+                estacion,
+                profundidad,
+                MSVL,
+                humedad,
+                porcentajeCompactacion
+            )
+            listaCalasmutableListOf.set(indice,calaNueva)
+
+
+            updateTask()
+
+            dialog.hide()
+
+        }
+
+        dialog.show()
+
+    }
+
+
+    private fun showDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.activity_nueva_cala_compactacion)
+
+        val btnGuardarCalaCompactacion: Button =
+            dialog.findViewById(R.id.btnGuardarCalaCompactacion)
+
+        val etEstacionCalaCompactacion: EditText =
+            dialog.findViewById(R.id.etEstacionCalaCompactacion)
+        val etProfCalaCompactacion: EditText = dialog.findViewById(R.id.etProfCalaCompactacion)
+        val etMVSLCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSLCalaCompactacion)
+        val etHumedadLugarCalaCopactacion: EditText =
+            dialog.findViewById(R.id.etHumedadLugarCalaCopactacion)
+
+
+        btnGuardarCalaCompactacion.setOnClickListener {
+
+            val estacion = etEstacionCalaCompactacion.text.toString()
+            val profundidad = etProfCalaCompactacion.text.toString().toDouble()
+            val MSVL = etMVSLCalaCompactacion.text.toString().toDouble()
+            val humedad = etHumedadLugarCalaCopactacion.text.toString().toDouble()
+            val porcentajeCompactacion =
+                (MSVL / etMVSM.text.toString().toDouble() * 100.0 * 100).roundToInt() / 100.0
+
+            if (estacion.isEmpty()) {
+                dialog.hide()
+
+                return@setOnClickListener
+
+            }
+
+            calaNueva = ClaseCala(
+                listaCalasmutableListOf.count() + 1,
+                estacion,
+                profundidad,
+                MSVL,
+                humedad,
+                porcentajeCompactacion
+            )
+            listaCalasmutableListOf.add(calaNueva)
+
+
+            updateTask()
+
+            dialog.hide()
+
+        }
+
+        dialog.show()
 
     }
 

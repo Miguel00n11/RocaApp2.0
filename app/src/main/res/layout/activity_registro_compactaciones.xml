@@ -59,7 +59,8 @@
                     android:id="@+id/etObraCompactacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Obra" />
+                    android:hint="Obra"
+                    android:inputType="text" />
 
 
             </LinearLayout>
@@ -122,7 +123,8 @@
                     android:id="@+id/etCapaCompactacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Capa" />
+                    android:hint="Capa"
+                    android:inputType="text" />
 
 
             </LinearLayout>
@@ -145,7 +147,8 @@
                     android:id="@+id/etTramoCompactacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tramo" />
+                    android:hint="Tramo"
+                    android:inputType="text" />
 
 
             </LinearLayout>
@@ -167,7 +170,8 @@
                     android:id="@+id/etSubTramo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Subtramo" />
+                    android:hint="Subtramo"
+                    android:inputType="text" />
 
 
             </LinearLayout>
@@ -190,7 +194,8 @@
                     android:id="@+id/etcompactacionProyecto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Compactación" />
+                    android:hint="Compactación"
+                    android:inputType="number|numberDecimal" />
 
 
             </LinearLayout>
@@ -212,7 +217,8 @@
                     android:id="@+id/etMVSM"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="M.V.S.M." />
+                    android:hint="M.V.S.M."
+                    android:inputType="number|numberDecimal" />
 
 
             </LinearLayout>
@@ -235,7 +241,8 @@
                     android:id="@+id/etHumedad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint=" [%]" />
+                    android:hint=" [%]"
+                    android:inputType="number|numberDecimal" />
 
 
             </LinearLayout>

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.miguelrodriguez.rocaapp20.R
 
-class CalasAdapter(private val listaCala:List<ClaseCala>):RecyclerView.Adapter<CalasViewHolder>(){
+class CalasAdapter(private val listaCala:List<ClaseCala>,private val onCalaSelected:(Int)->Unit):RecyclerView.Adapter<CalasViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalasViewHolder {
         val view=
             LayoutInflater.from(parent.context).inflate(R.layout.item_cala_compactacion,parent,false)
@@ -14,7 +14,7 @@ class CalasAdapter(private val listaCala:List<ClaseCala>):RecyclerView.Adapter<C
 
     override fun onBindViewHolder(holder: CalasViewHolder, position: Int) {
         holder.render(listaCala[position])
-//        holder.itemView.setOnClickListener { }
+        holder.itemView.setOnClickListener {onCalaSelected(position) }
     }
 
     override fun getItemCount(): Int {
