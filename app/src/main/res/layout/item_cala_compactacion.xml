@@ -104,7 +104,7 @@
             android:layout_marginHorizontal="12dp"
             android:backgroundTint="#E64A19"
             android:src="@drawable/baseline_delete_forever_24"
-            app:maxImageSize="54dp"
+            app:maxImageSize="44dp"
             app:tint="@color/white" />
     </LinearLayout>
 
