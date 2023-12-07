@@ -27,6 +27,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:paddingVertical="8dp">
 
@@ -41,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Estacion"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvPorcentajeCalaCompactacion"
@@ -70,7 +71,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="profundidad"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvMVSLCalaCompactacion"
@@ -79,7 +80,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="MVSL"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvHumedadCalaCompactacion"
@@ -88,12 +89,23 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Humedad%"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
 
         </LinearLayout>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+            android:id="@+id/btnEliminarCalaCompactacion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp"
+            android:backgroundTint="#E64A19"
+            android:src="@drawable/baseline_delete_forever_24"
+            app:maxImageSize="54dp"
+            app:tint="@color/white" />
     </LinearLayout>
 
 

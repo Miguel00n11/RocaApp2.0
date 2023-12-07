@@ -73,6 +73,8 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var tvMVSLCalaCompactacion: TextView
     private lateinit var tvHumedadCalaCompactacion: TextView
     private lateinit var tvPorcentajeCalaCompactacion: TextView
+    
+//    private lateinit var btnEliminarCalaCompactaciones: FloatingActionButton
 
 
     private lateinit var personal: String
@@ -201,10 +203,11 @@ class RegistroCompactaciones : AppCompatActivity() {
         fbNuevaCalaCompactacion.setOnClickListener { showDialog() }
 
         CalasAdapter =
-            CalasAdapter(listaCalasmutableListOf) { position -> onItemSelected(position) }
+            CalasAdapter(listaCalasmutableListOf,
+                onCalaSelected = { position -> onItemSelected(position) },
+                onItemDelete = { position -> onItemDelete(position) })
         rvCalas.layoutManager = LinearLayoutManager(this)
         rvCalas.adapter = CalasAdapter
-
 
     }
 
@@ -213,6 +216,10 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         showDialog(listaCalasmutableListOf[position],position)
 
+    }
+    private fun onItemDelete(position: Int) {
+        listaCalasmutableListOf.removeAt(position)
+        updateTask()
     }
     private fun showDialog(calaSeleccionada:ClaseCala,indice:Int) {
 
