@@ -14,6 +14,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
+import com.miguelrodriguez.rocaapp20.Recycler.OnItemSwipeListener
 import java.util.Objects
 import kotlin.math.round
 import kotlin.math.roundToInt
@@ -93,6 +95,31 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         personal = MainActivity.NombreUsuarioCompanion
         ConsultarUltimoRegistro()
+
+
+        // Configurar el ItemTouchHelper después de haber inicializado el adaptador y la RecyclerView
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                CalasAdapter.removeItem(position)
+            }
+        })
+
+        itemTouchHelper.attachToRecyclerView(rvCalas)
+
+
+
 
     }
 
@@ -200,8 +227,17 @@ class RegistroCompactaciones : AppCompatActivity() {
         }
         fbNuevaCalaCompactacion.setOnClickListener { showDialog() }
 
-        CalasAdapter =
-            CalasAdapter(listaCalasmutableListOf) { position -> onItemSelected(position) }
+        CalasAdapter = CalasAdapter(
+            listaCalasmutableListOf,
+            { position -> onItemSelected(position) },
+            object : OnItemSwipeListener {
+                override fun onItemSwiped(position: Int, removedItem: ClaseCala) {
+                    // Aquí puedes manejar la lógica cuando se ha eliminado un elemento
+                    // Puedes dejarlo en blanco si no necesitas realizar ninguna acción específica al eliminar
+
+                }
+            })
+
         rvCalas.layoutManager = LinearLayoutManager(this)
         rvCalas.adapter = CalasAdapter
 
@@ -209,13 +245,10 @@ class RegistroCompactaciones : AppCompatActivity() {
     }
 
     private fun onItemSelected(position: Int) {
-//        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
-
-        showDialog(listaCalasmutableListOf[position],position)
-
+        showDialog(listaCalasmutableListOf[position], position)
     }
-    private fun showDialog(calaSeleccionada:ClaseCala,indice:Int) {
 
+    private fun showDialog(calaSeleccionada: ClaseCala, indice: Int) {
 
 
         val dialog = Dialog(this)
@@ -253,14 +286,14 @@ class RegistroCompactaciones : AppCompatActivity() {
             }
 
             calaNueva = ClaseCala(
-                indice+1,
+                indice + 1,
                 estacion,
                 profundidad,
                 MSVL,
                 humedad,
                 porcentajeCompactacion
             )
-            listaCalasmutableListOf.set(indice,calaNueva)
+            listaCalasmutableListOf.set(indice, calaNueva)
 
 
             updateTask()
