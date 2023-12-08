@@ -28,6 +28,7 @@
         android:backgroundTint="@color/white"
         android:hint="Estación"
         android:inputType="text"
+        android:selectAllOnFocus="true"
         android:textColorHint="@color/white" />
 
     <EditText
@@ -48,6 +49,7 @@
         android:backgroundTint="@color/white"
         android:hint="MVSL"
         android:inputType="number|numberDecimal"
+        android:selectAllOnFocus="true"
         android:textColorHint="@color/white" />
 
 
@@ -58,6 +60,7 @@
         android:backgroundTint="@color/white"
         android:hint="% Lugar"
         android:inputType="number|numberDecimal"
+        android:selectAllOnFocus="true"
         android:textColorHint="@color/white" />
 
     <Button

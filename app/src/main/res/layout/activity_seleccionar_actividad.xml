@@ -6,15 +6,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="top"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-
-        android:id="@+id/btnRegistroCompactacion"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Compactaciones"
-        android:textSize="24sp" />
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+
+            android:id="@+id/btnRegistroCompactacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#C2185B"
+            android:text="+ Reportes compactaciones"
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
+
+
 
 
 

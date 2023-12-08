@@ -29,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.Objects
 import kotlin.math.round
 import kotlin.math.roundToInt
@@ -147,7 +149,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
             // Guardar el registro en Firebase Realtime Database
-            dataReference.child(personal).child(nuevaClave!!).setValue(registro)
+            dataReference.child(personal).child(etObra.text.toString()).child(nuevaClave!!).setValue(registro)
 
             // Eliminar el registro local después de la sincronización
             registrosLocales.remove(registro)
@@ -341,8 +343,8 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         val datePickerDialog = DatePickerDialog(
             this, { _, year, month, dayOfMonth ->
-                // Manejar la fecha seleccionada, por ejemplo, puedes mostrarla en el EditText
-                val fechaSeleccionada = "$dayOfMonth/${month + 1}/$year"
+                // Formatear la fecha seleccionada con dos dígitos para el día
+                val fechaSeleccionada = String.format("%02d/%02d/%d", dayOfMonth, month + 1, year)
                 etFecha.setText(fechaSeleccionada)
             }, año, mes, dia
         )
@@ -374,6 +376,8 @@ class RegistroCompactaciones : AppCompatActivity() {
         etObra = findViewById(R.id.etObraCompactacion)
         etFecha = findViewById(R.id.etFechaCompactacion)
 
+        FechaDeHoy()
+
         //DATOS DE LA PRUEBA
         etCapa = findViewById(R.id.etCapaCompactacion)
         etTramo = findViewById(R.id.etTramoCompactacion)
@@ -394,6 +398,12 @@ class RegistroCompactaciones : AppCompatActivity() {
         fbNuevaCalaCompactacion = findViewById(R.id.fbNuevaCalaCompactacion)
 
 
+    }
+
+    private fun FechaDeHoy() {
+        val calendario = Calendar.getInstance()
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        etFecha.setText(formatoFecha.format(calendario.time))
     }
 
     private fun mostrarDialogo() {
