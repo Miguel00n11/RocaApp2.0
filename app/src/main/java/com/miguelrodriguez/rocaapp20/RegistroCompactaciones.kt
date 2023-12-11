@@ -75,13 +75,15 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var tvMVSLCalaCompactacion: TextView
     private lateinit var tvHumedadCalaCompactacion: TextView
     private lateinit var tvPorcentajeCalaCompactacion: TextView
-    
+
 //    private lateinit var btnEliminarCalaCompactaciones: FloatingActionButton
 
 
     private lateinit var personal: String
 
     private lateinit var calaNueva: ClaseCala
+
+    var reporteAGuardar: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,12 +93,16 @@ class RegistroCompactaciones : AppCompatActivity() {
         listaCalasmutableListOf.clear()
 
 
+
         initComponet()
 
         initUI()
 
         personal = MainActivity.NombreUsuarioCompanion
         ConsultarUltimoRegistro()
+
+//        obtenerElReporteAGuardar()
+
 
     }
 
@@ -109,13 +115,21 @@ class RegistroCompactaciones : AppCompatActivity() {
         fecha: String,
         personal: String,
         numeroReporte: Int,
-        listaCalas: List<ClaseCala>
+        listaCalas: List<ClaseCala>,
+        capa: String,
+        Tramo: String,
+        subTramo: String,
+        compactacion: Double,
+        msvm:Double,
+        humedad: Double
+
+
     ) {
         // Obtener una lista existente de registros locales o crear una nueva
         val registrosLocales = getLocalRecords()
 
         // Agregar el nuevo registro a la lista
-        val nuevoRegistro = Registro(obra, fecha, personal, numeroReporte, listaCalas)
+        val nuevoRegistro = Registro(obra, fecha, personal, numeroReporte,capa,Tramo,subTramo,compactacion, msvm,humedad,listaCalas)
         registrosLocales.add(nuevoRegistro)
 
         // Guardar la lista actualizada localmente
@@ -147,9 +161,30 @@ class RegistroCompactaciones : AppCompatActivity() {
             // Generar una nueva clave única para cada registro
             val nuevaClave = dataReference.push().key
 
+            val reportesReferencia = dataReference.child("Reportes")
+
+            reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    val totalReportes = snapshot.childrenCount.toInt()
+                    val nuevoNumeroReporte = totalReportes + 1
+
+
+                    // Guardar el registro en Firebase Realtime Database
+                    dataReference.child("Reportes").child(nuevoNumeroReporte.toString())
+                        .setValue(registro)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+
+                }
+            })
+
 
             // Guardar el registro en Firebase Realtime Database
-            dataReference.child(personal).child(etObra.text.toString()).child(nuevaClave!!).setValue(registro)
+//            dataReference.child("Reportes").child(nuevaClave!!).setValue(registro)
+
 
             // Eliminar el registro local después de la sincronización
             registrosLocales.remove(registro)
@@ -163,7 +198,14 @@ class RegistroCompactaciones : AppCompatActivity() {
         val obra: String,
         val fecha: String,
         val personal: String,
+
         val numeroReporte: Int,
+        val capa: String,
+        val Tramo: String,
+        val subTramo: String,
+        val compactacion: Double,
+        val mvsm: Double,
+        val humedad: Double,
         val listaCalas: List<ClaseCala>
     )
 
@@ -191,6 +233,36 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     }
 
+    private fun obtenerElReporteAGuardar() {
+        // Obtén la referencia de la base de datos
+        dataReference = FirebaseDatabase.getInstance().reference
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+
+
+        // Agrega un listener para contar el total de registros
+        dataReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Obtiene el número total de registros
+                val reporteAGuardar1 = (dataSnapshot.child(personal).childrenCount + 1).toInt()
+
+                // Muestra el Toast con el valor obtenido
+                Toast.makeText(
+                    this@RegistroCompactaciones,
+                    reporteAGuardar1.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Puedes hacer más cosas con reporteAGuardar1 aquí, si es necesario
+
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("Error al leer la base de datos: ${databaseError.message}")
+            }
+        })
+    }
+
 
     private fun initUI() {
 
@@ -216,15 +288,16 @@ class RegistroCompactaciones : AppCompatActivity() {
     private fun onItemSelected(position: Int) {
 //        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
 
-        showDialog(listaCalasmutableListOf[position],position)
+        showDialog(listaCalasmutableListOf[position], position)
 
     }
+
     private fun onItemDelete(position: Int) {
         listaCalasmutableListOf.removeAt(position)
         updateTask()
     }
-    private fun showDialog(calaSeleccionada:ClaseCala,indice:Int) {
 
+    private fun showDialog(calaSeleccionada: ClaseCala, indice: Int) {
 
 
         val dialog = Dialog(this)
@@ -262,14 +335,14 @@ class RegistroCompactaciones : AppCompatActivity() {
             }
 
             calaNueva = ClaseCala(
-                indice+1,
+                indice + 1,
                 estacion,
                 profundidad,
                 MSVL,
                 humedad,
                 porcentajeCompactacion
             )
-            listaCalasmutableListOf.set(indice,calaNueva)
+            listaCalasmutableListOf.set(indice, calaNueva)
 
 
             updateTask()
@@ -420,9 +493,16 @@ class RegistroCompactaciones : AppCompatActivity() {
             var obra: String = etObra.text.toString()
             var fecha: String = etFecha.text.toString()
             var numeroReporte: Int = tvNumeroReporteCompactacion.text.toString().toInt()
+            var capa:String=etCapa.text.toString()
+            var Tramo:String=etTramo.text.toString()
+            var subTramo:String=etSubTramo.text.toString()
+            var compactacion:Double=etcompactacionProyecto.text.toString().toDouble()
+            var msvm:Double=etMVSM.text.toString().toDouble()
+            var humedad:Double=etHumedad.text.toString().toDouble()
+
 
             // Agregar un nuevo registro localmente
-            saveLocally(obra, fecha, personal, numeroReporte, listaCalasmutableListOf)
+            saveLocally(obra, fecha, personal, numeroReporte,listaCalasmutableListOf, capa , Tramo, subTramo, compactacion , msvm , humedad )
 
             // Sincronizar los datos cuando hay conexión a Internet
             syncDataWithFirebase(numeroReporte, listaCalasmutableListOf)
