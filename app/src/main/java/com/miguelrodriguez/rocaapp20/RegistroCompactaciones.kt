@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
+import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Objects
@@ -39,7 +40,7 @@ import kotlin.math.roundToLong
 class RegistroCompactaciones : AppCompatActivity() {
 
 
-    private val listaCalasmutableListOf =
+    private var listaCalasmutableListOf =
         mutableListOf(ClaseCala(1, "estacion", 1.0, 1.0, 1.0, 1.0))
 
 
@@ -80,6 +81,8 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
     private lateinit var personal: String
+    private lateinit var reporteSelecionado: ClaseObra
+    private var editar: Boolean=false
 
     private lateinit var calaNueva: ClaseCala
 
@@ -92,9 +95,13 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         listaCalasmutableListOf.clear()
 
+        reporteSelecionado=SeleccionarActividad.reporteSelecionado
+
+        editar=SeleccionarActividad.editar
 
 
         initComponet()
+        if ( editar==true ){cargarObraSeleccionada(reporteSelecionado)}
 
         initUI()
 
@@ -105,6 +112,8 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
     }
+
+
 
     private fun updateTask() {
         CalasAdapter.notifyDataSetChanged()
@@ -167,7 +176,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     val totalReportes = snapshot.childrenCount.toInt()
-                    val nuevoNumeroReporte = totalReportes + 1
+                    val nuevoNumeroReporte = totalReportes
 
 
                     // Guardar el registro en Firebase Realtime Database
@@ -263,11 +272,23 @@ class RegistroCompactaciones : AppCompatActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        // Aquí puedes realizar acciones específicas cuando se presiona el botón de retroceso
+        // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación o realizar alguna operación antes de cerrar la actividad
+        // Puedes agregar tu lógica aquí o llamar al método super.onBackPressed() para cerrar la actividad sin ninguna acción adicional.
+        SeleccionarActividad.editar=false
+        super.onBackPressed()
+    }
 
     private fun initUI() {
 
 
-        btnCancelar.setOnClickListener { onBackPressed() }
+        btnCancelar.setOnClickListener {
+
+
+            onBackPressed()
+
+        }
         btnGuardar.setOnClickListener {
 
             mostrarDialogo()
@@ -388,7 +409,7 @@ class RegistroCompactaciones : AppCompatActivity() {
             }
 
             calaNueva = ClaseCala(
-                listaCalasmutableListOf.count() + 1,
+                listaCalasmutableListOf.count(),
                 estacion,
                 profundidad,
                 MSVL,
@@ -443,7 +464,29 @@ class RegistroCompactaciones : AppCompatActivity() {
         newChildRef.setValue(data)
 
     }
+    private fun cargarObraSeleccionada(reporteSelecionado: ClaseObra) {
 
+        etObra.setText(reporteSelecionado.Obra)
+        etFecha.setText(reporteSelecionado.fecha)
+        etCapa.setText(reporteSelecionado.capa)
+        etTramo.setText(reporteSelecionado.tramo)
+        etSubTramo.setText(reporteSelecionado.subtramo)
+        etcompactacionProyecto.setText(reporteSelecionado.compactacion)
+        etMVSM.setText(reporteSelecionado.mvsm)
+        etHumedad.setText(reporteSelecionado.humedad)
+
+        listaCalasmutableListOf=reporteSelecionado.listaCalas
+
+        CalasAdapter =
+            CalasAdapter(reporteSelecionado.listaCalas,
+                onCalaSelected = { position -> onItemSelected(position) },
+                onItemDelete = { position -> onItemDelete(position) })
+        rvCalas.layoutManager = LinearLayoutManager(this)
+        rvCalas.adapter = CalasAdapter
+
+//        Toast.makeText(this, reporteSelecionado.listaCalas.count(), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this,reporteSelecionado.listaCalas[0].MVSL.toString() , Toast.LENGTH_SHORT).show()
+    }
     private fun initComponet() {
         //REPORTE DE COMPACTACION
         etObra = findViewById(R.id.etObraCompactacion)
@@ -472,6 +515,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
     }
+
 
     private fun FechaDeHoy() {
         val calendario = Calendar.getInstance()

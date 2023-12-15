@@ -5,23 +5,67 @@
     android:layout_height="wrap_content"
     android:backgroundTint="@color/Background_Resultados"
     android:orientation="vertical"
+    android:layout_margin="11dp"
     app:cardCornerRadius="22dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="22dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvItemObrasCompactacion"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Obras"
-            android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textColor="#3C3C3C"
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvReporteCompactacion"
+            android:layout_width="match_parent"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="reporte"
+            android:gravity="right"
+            android:textColor="#3C3C3C"
+            android:textSize="16dp"
             android:textStyle="bold"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvCapaCompactacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="capa"
+            android:textColor="#3C3C3C"
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvFechaCompactacion"
+            android:layout_width="match_parent"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="fecha"
+            android:gravity="right"
+            android:textColor="#3C3C3C"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</LinearLayout>
 
 
 </androidx.cardview.widget.CardView>
