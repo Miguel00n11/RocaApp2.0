@@ -332,6 +332,13 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     private fun onItemDelete(position: Int) {
         listaCalasmutableListOf.removeAt(position)
+        listaCalasmutableListOf.forEachIndexed { index, elemento ->
+            // Puedes realizar alguna lógica para determinar la nueva numeración
+            val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
+
+            // Reemplazar la numeración en cada objeto
+            elemento.id = nuevaNumeracion
+        }
         updateTask()
     }
 
