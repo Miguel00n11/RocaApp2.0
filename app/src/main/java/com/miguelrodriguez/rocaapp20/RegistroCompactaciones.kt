@@ -175,13 +175,23 @@ class RegistroCompactaciones : AppCompatActivity() {
             reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
+
                     val totalReportes = snapshot.childrenCount.toInt()
-                    val nuevoNumeroReporte = totalReportes
+                    val nuevoNumeroReporte =   tvNumeroReporteCompactacion.text
+
+                    if (editar==true){
+                        // Guardar el registro en Firebase Realtime Database
+                        dataReference.child("Reportes").child(nuevoNumeroReporte.toString())
+                            .setValue(registro)
+                    }else{
+                        // Guardar el registro en Firebase Realtime Database
+                        dataReference.child("Reportes").child(totalReportes.toString())
+                            .setValue(registro)
+
+                    }
 
 
-                    // Guardar el registro en Firebase Realtime Database
-                    dataReference.child("Reportes").child(nuevoNumeroReporte.toString())
-                        .setValue(registro)
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -229,8 +239,13 @@ class RegistroCompactaciones : AppCompatActivity() {
         dataReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Obtiene el número total de registros
-                tvNumeroReporteCompactacion.text =
-                    (dataSnapshot.child(personal).childrenCount + 1).toString()
+                if (editar==true){
+                    tvNumeroReporteCompactacion.text =reporteSelecionado.reporte
+                }else{
+                    tvNumeroReporteCompactacion.text =
+                        (dataSnapshot.child("Reportes").childrenCount ).toString()
+                }
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -242,35 +257,35 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     }
 
-    private fun obtenerElReporteAGuardar() {
-        // Obtén la referencia de la base de datos
-        dataReference = FirebaseDatabase.getInstance().reference
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
-
-
-        // Agrega un listener para contar el total de registros
-        dataReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Obtiene el número total de registros
-                val reporteAGuardar1 = (dataSnapshot.child(personal).childrenCount + 1).toInt()
-
-                // Muestra el Toast con el valor obtenido
-                Toast.makeText(
-                    this@RegistroCompactaciones,
-                    reporteAGuardar1.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                // Puedes hacer más cosas con reporteAGuardar1 aquí, si es necesario
-
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                println("Error al leer la base de datos: ${databaseError.message}")
-            }
-        })
-    }
+//    private fun obtenerElReporteAGuardar() {
+//        // Obtén la referencia de la base de datos
+//        dataReference = FirebaseDatabase.getInstance().reference
+//        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+//
+//
+//        // Agrega un listener para contar el total de registros
+//        dataReference.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                // Obtiene el número total de registros
+//                val reporteAGuardar1 = (dataSnapshot.child(personal).childrenCount + 1).toInt()
+//
+//                // Muestra el Toast con el valor obtenido
+//                Toast.makeText(
+//                    this@RegistroCompactaciones,
+//                    reporteAGuardar1.toString(),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//
+//                // Puedes hacer más cosas con reporteAGuardar1 aquí, si es necesario
+//
+//
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                println("Error al leer la base de datos: ${databaseError.message}")
+//            }
+//        })
+//    }
 
     override fun onBackPressed() {
         // Aquí puedes realizar acciones específicas cuando se presiona el botón de retroceso
@@ -284,6 +299,8 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
         btnCancelar.setOnClickListener {
+
+            SeleccionarActividad.editar=false
 
 
             onBackPressed()
@@ -446,24 +463,24 @@ class RegistroCompactaciones : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-    private fun GuardarCompactacion(
-        obra: String, fecha: String, capa: String, tramo: String, personal: String
-    ) {
-        // Obtén la referencia de la base de datos
-        dataReference = FirebaseDatabase.getInstance().reference
-
-        // Crear un objeto con los datos que deseas almacenar
-        val data = HashMap<String, Any>()
-        data["Tramo"] = tramo
-        data["Fecha"] = fecha
-        data["Capa"] = capa
-
-        // Generar un nuevo nodo único en la base de datos
-        val newChildRef =
-            dataReference.child(personal).child(tvNumeroReporteCompactacion.text.toString())
-        newChildRef.setValue(data)
-
-    }
+//    private fun GuardarCompactacion(
+//        obra: String, fecha: String, capa: String, tramo: String, personal: String
+//    ) {
+//        // Obtén la referencia de la base de datos
+//        dataReference = FirebaseDatabase.getInstance().reference
+//
+//        // Crear un objeto con los datos que deseas almacenar
+//        val data = HashMap<String, Any>()
+//        data["Tramo"] = tramo
+//        data["Fecha"] = fecha
+//        data["Capa"] = capa
+//
+//        // Generar un nuevo nodo único en la base de datos
+//        val newChildRef =
+//            dataReference.child(personal).child(tvNumeroReporteCompactacion.text.toString())
+//        newChildRef.setValue(data)
+//
+//    }
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObra) {
 
         etObra.setText(reporteSelecionado.Obra)
@@ -485,7 +502,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         rvCalas.adapter = CalasAdapter
 
 //        Toast.makeText(this, reporteSelecionado.listaCalas.count(), Toast.LENGTH_SHORT).show()
-        Toast.makeText(this,reporteSelecionado.listaCalas[0].MVSL.toString() , Toast.LENGTH_SHORT).show()
     }
     private fun initComponet() {
         //REPORTE DE COMPACTACION
