@@ -418,6 +418,8 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         btnGuardarCalaCompactacion.setOnClickListener {
 
+
+            if (etMVSLCalaCompactacion.text.toString().toDouble()==null){return@setOnClickListener}
             val estacion = etEstacionCalaCompactacion.text.toString()
             val profundidad = etProfCalaCompactacion.text.toString().toDouble()
             val MSVL = etMVSLCalaCompactacion.text.toString().toDouble()
@@ -547,7 +549,7 @@ class RegistroCompactaciones : AppCompatActivity() {
     }
 
     private fun mostrarDialogo() {
-        // Crea un objeto AlertDialog
+        // Crea un objeto AlertDialog66
         val builder = AlertDialog.Builder(this)
 
         // Configura el título y el mensaje del cuadro de diálogo
@@ -556,6 +558,13 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
+
+//            if (etMVSM.text.toString()==""||etMVSM.text.toString().toDouble()==0.0){
+//                Toast.makeText(this, "Colocar MVSM", Toast.LENGTH_SHORT).show()
+//                return@setPositiveButton}
+
+            try {
+
 
             var obra: String = etObra.text.toString()
             var fecha: String = etFecha.text.toString()
@@ -578,7 +587,12 @@ class RegistroCompactaciones : AppCompatActivity() {
             listaCalasmutableListOf.clear()
             updateTask()
             Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
+            }
 
+            catch (e: NumberFormatException) {
+                Toast.makeText(this, "llnear correctamente los campos", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton
+            }
         }
 
         // Configura el botón negativo (no)

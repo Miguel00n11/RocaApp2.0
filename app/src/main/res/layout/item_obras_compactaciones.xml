@@ -3,69 +3,99 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/Background_Resultados"
+    android:layout_margin="6dp"
+    android:backgroundTint="#3949AB"
     android:orientation="vertical"
-    android:layout_margin="11dp"
-    app:cardCornerRadius="22dp">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
+    app:cardCornerRadius="18dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="6dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvItemObrasCompactacion"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Obras"
-            android:textColor="#3C3C3C"
             android:layout_weight="1"
-            android:textSize="16dp"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/tvReporteCompactacion"
-            android:layout_width="match_parent"
-            android:layout_weight="3"
-            android:layout_height="wrap_content"
-            android:hint="reporte"
-            android:gravity="right"
-            android:textColor="#3C3C3C"
-            android:textSize="16dp"
-            android:textStyle="bold"/>
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvItemObrasCompactacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Obras"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvReporteCompactacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="right"
+                    android:hint="reporte"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvCapaCompactacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="capa"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvFechaCompactacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:gravity="right"
+                    android:hint="fecha"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+                android:id="@+id/btnEliminarReporteCompactacion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:backgroundTint="#E64A19"
+                android:src="@drawable/baseline_delete_forever_24"
+                app:maxImageSize="40dp"
+                android:scaleType="center"
+                android:scaleX=".6"
+                android:scaleY=".6"
+                app:tint="@color/white" />
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/tvCapaCompactacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="capa"
-            android:textColor="#3C3C3C"
-            android:layout_weight="1"
-            android:textSize="16dp"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/tvFechaCompactacion"
-            android:layout_width="match_parent"
-            android:layout_weight="3"
-            android:layout_height="wrap_content"
-            android:hint="fecha"
-            android:gravity="right"
-            android:textColor="#3C3C3C"
-            android:textSize="16dp"
-            android:textStyle="bold"/>
-
-    </LinearLayout>
-
-</LinearLayout>
-
 
 </androidx.cardview.widget.CardView>

@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--    Resultados Compactacion-->
+    <color name="btn_Background_Seleccionar_Actividad">#2C384A</color>
     <color name="btn_Background_Cancelar">#2C384A</color>
     <color name="btn_Background_Acceder">#039AE4</color>
     <color name="btn_Text_Acceder">#FFFFFFFF</color>

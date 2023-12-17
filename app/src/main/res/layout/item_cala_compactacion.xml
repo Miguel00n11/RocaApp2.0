@@ -105,6 +105,9 @@
             android:backgroundTint="#E64A19"
             android:src="@drawable/baseline_delete_forever_24"
             app:maxImageSize="40dp"
+            android:scaleType="center"
+            android:scaleX=".6"
+            android:scaleY=".6"
             app:tint="@color/white" />
     </LinearLayout>
 

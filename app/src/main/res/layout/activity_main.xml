@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="24dp"
     android:gravity="center"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ImageView
         android:layout_width="300dp"
         android:layout_height="100dp"
-        android:src="@drawable/baseline_face_24"
-        app:tint="#FF5722" />
+        android:src="@drawable/logoroca" />
 
     <EditText
         android:id="@+id/etEmail"

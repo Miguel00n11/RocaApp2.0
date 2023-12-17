@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
-        android:hint="Prof. de cala"
+        android:hint="Prof. de cala [cm]"
         android:inputType="number|numberDecimal"
         android:selectAllOnFocus="true"
         android:text="20"
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
-        android:hint="MVSL"
+        android:hint="MVSL [kg/m³]"
         android:inputType="number|numberDecimal"
         android:selectAllOnFocus="true"
         android:textColorHint="@color/white" />
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
-        android:hint="% Lugar"
+        android:hint="% Humedad de Lugar"
         android:inputType="number|numberDecimal"
         android:selectAllOnFocus="true"
         android:textColorHint="@color/white" />

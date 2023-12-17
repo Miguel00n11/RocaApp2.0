@@ -7,24 +7,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="1"
+        android:background="@color/btn_Background_Cancelar"
+        android:orientation="vertical"
+        tools:context=".MainActivity"
         android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="Lista de Reportes de Compactaciones"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvObrasCompactacion"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             tools:ignore="MissingConstraints" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:background="@color/btn_Background_Cancelar"
         android:layout_height="wrap_content">
         <Button
 

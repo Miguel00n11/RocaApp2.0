@@ -1,5 +1,6 @@
 package com.miguelrodriguez.rocaapp20
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -26,18 +27,18 @@ class SeleccionarActividad : AppCompatActivity() {
     private lateinit var personal: String
     private lateinit var cala1: MutableList<ClaseCala>
 
-   companion object{
-       lateinit var reporteSelecionado:ClaseObra
-        var editar:Boolean = false
+    companion object {
+        lateinit var reporteSelecionado: ClaseObra
+        var editar: Boolean = false
     }
 
 
-    private lateinit var btnRegistroCompactacion:Button
-    private lateinit var rvObrasCompactacion:RecyclerView
-    private lateinit var ObraAdapter:ObraAdapter
+    private lateinit var btnRegistroCompactacion: Button
+    private lateinit var rvObrasCompactacion: RecyclerView
+    private lateinit var ObraAdapter: ObraAdapter
     private lateinit var claseObra: ClaseObra
-    private lateinit var listaObrasmutableListOf:MutableList<ClaseObra>
-    private lateinit var listacalasmutableListOf:MutableList<ClaseCala>
+    private lateinit var listaObrasmutableListOf: MutableList<ClaseObra>
+    private lateinit var listacalasmutableListOf: MutableList<ClaseCala>
 
 //    private val listaObrasmutableListOf =
 //        mutableListOf(ClaseObra(1, "estacion","1","1","1",
@@ -52,17 +53,24 @@ class SeleccionarActividad : AppCompatActivity() {
 //        // Opcional: Configura la persistencia si es necesario
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
 
-        listacalasmutableListOf= mutableListOf(ClaseCala(1,"1",1.1,1.1,1.1,1.1))
+        listacalasmutableListOf = mutableListOf(ClaseCala(1, "1", 1.1, 1.1, 1.1, 1.1))
 
-        listaObrasmutableListOf=mutableListOf(ClaseObra(1, "estacion","1","1","1",
-            "1","1","1","1","1", listacalasmutableListOf ))
+        listaObrasmutableListOf = mutableListOf(
+            ClaseObra(
+                1, "estacion", "1", "1", "1",
+                "1", "1", "1", "1", "1", listacalasmutableListOf
+            )
+        )
 
+        listaObrasmutableListOf.clear()
         personal = MainActivity.NombreUsuarioCompanion
 
 
 
-        reporteSelecionado=ClaseObra(1, "estacion","1","1","1",
-            "1","1","1","1","1",listacalasmutableListOf  )
+        reporteSelecionado = ClaseObra(
+            1, "estacion", "1", "1", "1",
+            "1", "1", "1", "1", "1", listacalasmutableListOf
+        )
 
         initComponent()
         initUI()
@@ -71,17 +79,25 @@ class SeleccionarActividad : AppCompatActivity() {
     }
 
 
-
     private fun onItemDelete(position: Int) {
+
+
+        val reportNumber = listaObrasmutableListOf[position].reporte.toInt()
+        deleteReport(reportNumber)
         listaObrasmutableListOf.removeAt(position)
-//        updateTask()
+        updateTask()
     }
+
+    private fun updateTask() {
+        ObraAdapter.notifyDataSetChanged()
+    }
+
     private fun initUI() {
         // Referencia a la base de datos de Firebase
         dataReference = FirebaseDatabase.getInstance().reference.child("Reportes")
 
         btnRegistroCompactacion.setOnClickListener {
-            val intent=Intent(this, RegistroCompactaciones::class.java)
+            val intent = Intent(this, RegistroCompactaciones::class.java)
             startActivity(intent)
         }
 
@@ -99,7 +115,8 @@ class SeleccionarActividad : AppCompatActivity() {
                 // Limpia la lista actual
                 listaObrasmutableListOf.clear()
 
-                val personalDeseado = "miguel" // Reemplaza con el nombre del personal que deseas filtrar
+                val personalDeseado =
+                    "miguel" // Reemplaza con el nombre del personal que deseas filtrar
 
                 for (snapshot in dataSnapshot.children) {
                     val numeroReporteKey = snapshot.key // Obtiene el número de informe (1, 2, 3, 4)
@@ -121,11 +138,20 @@ class SeleccionarActividad : AppCompatActivity() {
                         val humedad = calaSnapshot.child("humedad").getValue(Double::class.java)
                         val id = calaSnapshot.child("id").getValue(Int::class.java)
                         val mvsl = calaSnapshot.child("mvsl").getValue(Double::class.java)
-                        val porcentaje = calaSnapshot.child("porcentaje").getValue(Double::class.java)
-                        val profundidad = calaSnapshot.child("profundidad").getValue(Double::class.java)
+                        val porcentaje =
+                            calaSnapshot.child("porcentaje").getValue(Double::class.java)
+                        val profundidad =
+                            calaSnapshot.child("profundidad").getValue(Double::class.java)
 
                         // Crea un objeto ClaseCala y agrégalo a la lista
-                        val cala = ClaseCala(id!!,estacion!!,profundidad!!,mvsl!!,humedad!!,porcentaje!! )
+                        val cala = ClaseCala(
+                            id!!,
+                            estacion!!,
+                            profundidad!!,
+                            mvsl!!,
+                            humedad!!,
+                            porcentaje!!
+                        )
                         listaCalas.add(cala)
                     }
 
@@ -139,7 +165,8 @@ class SeleccionarActividad : AppCompatActivity() {
                     // Verifica si el personal coincide con el personal deseado
                     if (personal1 == personal) {
                         // Crea un objeto ClaseObra y agrégalo a la lista solo si el personal coincide
-                        val obra = ClaseObra(numReporte!!,
+                        val obra = ClaseObra(
+                            numReporte!!,
                             obra1.toString(),
                             numReporte.toString(),
                             capa.toString(),
@@ -150,7 +177,6 @@ class SeleccionarActividad : AppCompatActivity() {
                             mvsm.toString(),
                             humedad.toString(),
                             listaCalas
-
 
 
                         ) // Asegúrate de ajustar los parámetros según tu clase
@@ -169,7 +195,22 @@ class SeleccionarActividad : AppCompatActivity() {
         })
 
 
+    }
 
+    private fun deleteReport(reportNumber: Int) {
+        val reportReference = dataReference.child(reportNumber.toString())
+
+        reportReference.removeValue()
+            .addOnSuccessListener {
+                Toast.makeText(this, "Reporte eliminado exitosamente", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this,
+                    "Error al eliminar el reporte: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     private fun onItemSelected(position: Int) {
@@ -178,15 +219,40 @@ class SeleccionarActividad : AppCompatActivity() {
 //        listaCalasmutableListOf[position], position
 
 
-        editar=true
-        reporteSelecionado=listaObrasmutableListOf[position]
-        val intent=Intent(this, RegistroCompactaciones::class.java)
+        editar = true
+        reporteSelecionado = listaObrasmutableListOf[position]
+        val intent = Intent(this, RegistroCompactaciones::class.java)
 //        intent.putExtra("ReporteSeleccionado",listaObrasmutableListOf[position])
         startActivity(intent)
 
     }
+
     private fun initComponent() {
-        btnRegistroCompactacion=findViewById(R.id.btnRegistroCompactacion)
-        rvObrasCompactacion=findViewById(R.id.rvObrasCompactacion)
+        btnRegistroCompactacion = findViewById(R.id.btnRegistroCompactacion)
+        rvObrasCompactacion = findViewById(R.id.rvObrasCompactacion)
+    }
+
+    private fun mostrarDialogo() {
+        // Crea un objeto AlertDialog66
+        val builder = AlertDialog.Builder(this)
+
+        // Configura el título y el mensaje del cuadro de diálogo
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Deseas guardar este reporte?")
+
+        // Configura el botón positivo (sí)
+        builder.setPositiveButton("Sí") { dialog, which ->
+
+
+        }
+
+        // Configura el botón negativo (no)
+        builder.setNegativeButton("No") { dialog, which ->
+            return@setNegativeButton
+            // Código a ejecutar si el usuario hace clic en No
+        }
+
+        // Muestra el cuadro de diálogo
+        builder.show()
     }
 }

@@ -25,6 +25,14 @@
 
 
     </style>
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Otros atributos del tema -->
+
+        <!-- Cambia el color de la barra de acción -->
+        <item name="colorPrimary">@color/btn_Background_Seleccionar_Actividad</item>
+        <item name="colorPrimaryDark">@color/btn_Background_Seleccionar_Actividad</item>
+        <item name="colorAccent">@color/btn_Background_Seleccionar_Actividad</item>
+    </style>
 
     <style name="Theme.BotonRegresar" parent="Base.Theme.RocaApp20">
         <item name="android:textColor">@color/btn_Text_Cancelar</item>

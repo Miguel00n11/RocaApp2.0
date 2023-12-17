@@ -192,7 +192,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Compactación:" />
+                    android:text="Compactación Proy. [%]:" />
 
                 <EditText
                     android:id="@+id/etcompactacionProyecto"
@@ -217,13 +217,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="M.V.S.M.:" />
+                    android:text="M.V.S.M. [kg/m³]:" />
 
                 <EditText
                     android:id="@+id/etMVSM"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="M.V.S.M."
+                    android:hint="M.V.S.M. [kg/m³]"
                     android:inputType="number|numberDecimal"
                     android:selectAllOnFocus="true" />
 
@@ -242,7 +242,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Humedad [%]:" />
+                    android:text="Humedad Op. [%]:" />
 
                 <EditText
                     android:id="@+id/etHumedad"
