@@ -60,7 +60,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Obra"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:selectAllOnFocus="true" />
 
 
             </LinearLayout>
@@ -92,6 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:backgroundTint="@color/btn_Background_Acceder"
+                    android:imeOptions="actionNext"
                     android:onClick="mostrarCalendario"
                     android:text="..." />
 
