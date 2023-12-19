@@ -94,7 +94,7 @@ class SeleccionarActividad : AppCompatActivity() {
 
     private fun initUI() {
         // Referencia a la base de datos de Firebase
-        dataReference = FirebaseDatabase.getInstance().reference.child("Reportes")
+        dataReference = FirebaseDatabase.getInstance().reference.child("Reportes").child(personal)
 
         btnRegistroCompactacion.setOnClickListener {
             val intent = Intent(this, RegistroCompactaciones::class.java)

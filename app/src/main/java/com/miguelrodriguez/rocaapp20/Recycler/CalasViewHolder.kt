@@ -1,5 +1,6 @@
 package com.miguelrodriguez.rocaapp20.Recycler
 
+import android.app.AlertDialog
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -51,4 +52,5 @@ class CalasViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             onCalaSelected(adapterPosition)
         }
     }
+
 }

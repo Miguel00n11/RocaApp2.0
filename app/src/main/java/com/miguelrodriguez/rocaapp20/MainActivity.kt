@@ -43,9 +43,21 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun obtenerNombreUsuarioDesdeCorreo(correo: String): String {
+        val indiceArroba = correo.indexOf('@')
+        return if (indiceArroba != -1) {
+            val nombreUsuario = correo.substring(0, indiceArroba)
+            NombreUsuarioCompanion = nombreUsuario // Asigna el nombre de usuario a la variable global
+            nombreUsuario
+        } else {
+            correo // Devuelve el correo completo si no se encuentra el símbolo "@"
+        }
+    }
     private fun initUI() {
 
         btnAcceder.setOnClickListener {
+            obtenerNombreUsuarioDesdeCorreo(NombreUsuario.text.toString())
+
             acceder1(
                 NombreUsuario.text.toString(),
                 Password.text.toString()
@@ -83,7 +95,8 @@ class MainActivity : AppCompatActivity() {
                             Log.d("TAG", "createUserWithEmail:success")
                             consultar_datos.usuarioApp = email
                             val user = auth.currentUser
-                            NombreUsuarioCompanion = NombreUsuario.text.toString()
+//                            NombreUsuarioCompanion = NombreUsuario.text.toString()
+
                             Acceder()
 //                    updateUI(user)
                         } else {
