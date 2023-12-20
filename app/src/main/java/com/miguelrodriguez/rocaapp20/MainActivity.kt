@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     private fun abrirCalculo_Compactacion() {
-        val intent = Intent(this, SeleccionarActividad::class.java)
+        val intent = Intent(this, Seleccionar_actividad::class.java)
         NombreUsuarioCompanion = NombreUsuario.text.toString()
 //        intent.putExtra(NombreUsuarioCompanion,NombreUsuario)
         startActivity(intent)
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun Acceder() {
 
-        val Acceder = Intent(this, SeleccionarActividad::class.java)
+        val Acceder = Intent(this, Seleccionar_actividad::class.java)
         consultar_datos.modoInvitado = false
 //        Registrarse.putExtra(TAG,"K")
 //            putExtra("Provider",provider.name)

@@ -26,9 +26,9 @@ class CalasViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun render(listaCalas: ClaseCala) {
 
-        tvIdCalaCompactacion.text = listaCalas.id.toString()
+        tvIdCalaCompactacion.text = listaCalas.cala.toString()
         tvEstacionCalaCompactacion.text = listaCalas.Estacion
-        tvProfundidadCalaCompactacion.text = listaCalas.Profundidad.toString()
+        tvProfundidadCalaCompactacion.text = listaCalas.prof.toString()
         tvMVSLCalaCompactacion.text = listaCalas.MVSL.toString()
         tvHumedadCalaCompactacion.text = listaCalas.Humedad.toString()
         tvPorcentajeCalaCompactacion.text = listaCalas.Porcentaje.toString() + "%"

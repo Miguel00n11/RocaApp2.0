@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 
 
-class SeleccionarActividad : AppCompatActivity() {
+class ReportesCompactaciones : AppCompatActivity() {
 
     private lateinit var dataReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
@@ -46,7 +46,7 @@ class SeleccionarActividad : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_seleccionar_actividad)
+        setContentView(R.layout.activity_reportes_compactaciones)
 
         // Inicializa Firebase
         FirebaseApp.initializeApp(this)
@@ -85,6 +85,13 @@ class SeleccionarActividad : AppCompatActivity() {
         val reportNumber = listaObrasmutableListOf[position].reporte.toInt()
         deleteReport(reportNumber)
         listaObrasmutableListOf.removeAt(position)
+        listaObrasmutableListOf.forEachIndexed { index, elemento ->
+            // Puedes realizar alguna lógica para determinar la nueva numeración
+            val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
+
+            // Reemplazar la numeración en cada objeto
+            elemento.reporte = nuevaNumeracion.toString()
+        }
         updateTask()
     }
 
@@ -136,23 +143,23 @@ class SeleccionarActividad : AppCompatActivity() {
                         // Asegúrate de ajustar los nombres de los campos según tu modelo ClaseCala
                         val estacion = calaSnapshot.child("estacion").getValue(String::class.java)
                         val humedad = calaSnapshot.child("humedad").getValue(Double::class.java)
-                        val id = calaSnapshot.child("id").getValue(Int::class.java)
+                        val cala = calaSnapshot.child("cala").getValue(Int::class.java)
                         val mvsl = calaSnapshot.child("mvsl").getValue(Double::class.java)
                         val porcentaje =
                             calaSnapshot.child("porcentaje").getValue(Double::class.java)
-                        val profundidad =
-                            calaSnapshot.child("profundidad").getValue(Double::class.java)
+                        val prof =
+                            calaSnapshot.child("prof").getValue(Double::class.java)
 
                         // Crea un objeto ClaseCala y agrégalo a la lista
-                        val cala = ClaseCala(
-                            id!!,
+                        val cala1 = ClaseCala(
+                            cala!!,
                             estacion!!,
-                            profundidad!!,
+                            prof!!,
                             mvsl!!,
                             humedad!!,
                             porcentaje!!
                         )
-                        listaCalas.add(cala)
+                        listaCalas.add(cala1)
                     }
 
 

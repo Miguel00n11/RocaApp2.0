@@ -3,7 +3,7 @@ package com.miguelrodriguez.rocaapp20.Recycler
 data class ClaseObra(
     val id:Int,
     val Obra:String,
-    val reporte:String,
+    var reporte:String,
     val capa:String,
     val fecha:String,
     val tramo:String,
