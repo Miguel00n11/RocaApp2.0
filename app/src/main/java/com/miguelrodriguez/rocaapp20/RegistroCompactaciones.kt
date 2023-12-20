@@ -10,14 +10,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import java.util.Calendar
@@ -33,10 +30,7 @@ import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
 import java.text.SimpleDateFormat
 import java.util.Locale
-import java.util.Objects
-import kotlin.math.round
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 class RegistroCompactaciones : AppCompatActivity() {
 
@@ -96,9 +90,9 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         listaCalasmutableListOf.clear()
 
-        reporteSelecionado = SeleccionarActividad.reporteSelecionado
+        reporteSelecionado = ReportesCompactaciones.reporteSelecionado
 
-        editar = SeleccionarActividad.editar
+        editar = ReportesCompactaciones.editar
 
 
 
@@ -124,7 +118,7 @@ class RegistroCompactaciones : AppCompatActivity() {
             val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
 
             // Reemplazar la numeración en cada objeto
-            elemento.id = nuevaNumeracion
+            elemento.cala = nuevaNumeracion
         }
 
     }
@@ -234,6 +228,7 @@ class RegistroCompactaciones : AppCompatActivity() {
             })
 
 
+
             // Guardar el registro en Firebase Realtime Database
 //            dataReference.child("Reportes").child(nuevaClave!!).setValue(registro)
 
@@ -325,7 +320,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación o realizar alguna operación antes de cerrar la actividad
         // Puedes agregar tu lógica aquí o llamar al método super.onBackPressed() para cerrar la actividad sin ninguna acción adicional.
         if (editar==true){restaurarDatosOriginales()}
-        SeleccionarActividad.editar = false
+        ReportesCompactaciones.editar = false
         super.onBackPressed()
     }
 
@@ -335,7 +330,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         btnCancelar.setOnClickListener {
 
             restaurarDatosOriginales()
-            SeleccionarActividad.editar = false
+            ReportesCompactaciones.editar = false
 
 
             onBackPressed()
@@ -383,7 +378,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                 val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
 
                 // Reemplazar la numeración en cada objeto
-                elemento.id = nuevaNumeracion
+                elemento.cala = nuevaNumeracion
             }
             updateTask()
 
@@ -430,7 +425,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         }
 
         etEstacionCalaCompactacion.setText(calaSeleccionada.Estacion)
-        etProfCalaCompactacion.setText(calaSeleccionada.Profundidad.toString())
+        etProfCalaCompactacion.setText(calaSeleccionada.prof.toString())
         etMVSLCalaCompactacion.setText(calaSeleccionada.MVSL.toString())
         etHumedadLugarCalaCopactacion.setText(calaSeleccionada.Humedad.toString())
 
