@@ -1,8 +1,11 @@
 package com.miguelrodriguez.rocaapp20
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -56,10 +59,6 @@ class ReportesCompactaciones : AppCompatActivity() {
         listacalasmutableListOf = mutableListOf(ClaseCala(1, "1", 1.1, 1.1, 1.1, 1.1))
 
         listaObrasmutableListOf = mutableListOf(
-            ClaseObra(
-                1, "estacion", "1", "1", "1",
-                "1", "1", "1", "1", "1", listacalasmutableListOf
-            )
         )
 
         listaObrasmutableListOf.clear()
@@ -69,7 +68,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
         reporteSelecionado = ClaseObra(
             1, "estacion", "1", "1", "1",
-            "1", "1", "1", "1", "1", listacalasmutableListOf
+            "1", "1", "1", "1", "1","hola", listacalasmutableListOf
         )
 
         initComponent()
@@ -79,21 +78,21 @@ class ReportesCompactaciones : AppCompatActivity() {
     }
 
 
-    private fun onItemDelete(position: Int) {
-
-
-        val reportNumber = listaObrasmutableListOf[position].reporte.toInt()
-        deleteReport(reportNumber)
-        listaObrasmutableListOf.removeAt(position)
-        listaObrasmutableListOf.forEachIndexed { index, elemento ->
-            // Puedes realizar alguna lógica para determinar la nueva numeración
-            val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
-
-            // Reemplazar la numeración en cada objeto
-            elemento.reporte = nuevaNumeracion.toString()
-        }
-        updateTask()
-    }
+//    private fun onItemDelete(position: Int) {
+//
+//
+//        val reportNumber = listaObrasmutableListOf[position].reporte.toInt()
+//        deleteReport(reportNumber)
+//        listaObrasmutableListOf.removeAt(position)
+////        listaObrasmutableListOf.forEachIndexed { index, elemento ->
+////            // Puedes realizar alguna lógica para determinar la nueva numeración
+////            val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
+////
+////            // Reemplazar la numeración en cada objeto
+////            elemento.reporte = nuevaNumeracion.toString()
+////        }
+//        updateTask()
+//    }
 
     private fun updateTask() {
         ObraAdapter.notifyDataSetChanged()
@@ -134,6 +133,7 @@ class ReportesCompactaciones : AppCompatActivity() {
                     val compactacion = snapshot.child("compactacion").getValue(Int::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
                     val humedad = snapshot.child("humedad").getValue(Int::class.java)
+                    var llave = snapshot.child("llave").getValue(String::class.java)
 //                    val listaCalas = snapshot.child("listaCalas").getValue(MutableList<ClaseCala>::class.java)
 
                     val listaCalasSnapshot = snapshot.child("listaCalas")
@@ -149,7 +149,6 @@ class ReportesCompactaciones : AppCompatActivity() {
                             calaSnapshot.child("porcentaje").getValue(Double::class.java)
                         val prof =
                             calaSnapshot.child("prof").getValue(Double::class.java)
-
                         // Crea un objeto ClaseCala y agrégalo a la lista
                         val cala1 = ClaseCala(
                             cala!!,
@@ -183,6 +182,8 @@ class ReportesCompactaciones : AppCompatActivity() {
                             compactacion.toString(),
                             mvsm.toString(),
                             humedad.toString(),
+                            llave.toString(),
+
                             listaCalas
 
 
@@ -204,21 +205,47 @@ class ReportesCompactaciones : AppCompatActivity() {
 
     }
 
-    private fun deleteReport(reportNumber: Int) {
-        val reportReference = dataReference.child(reportNumber.toString())
+    private fun onItemDelete(position: Int) {
+        if (isNetworkAvailable()) {
+            val reportKey = listaObrasmutableListOf[position].llave // Utiliza la clave única del informe
+
+            // Elimina el informe de la base de datos Firebase
+            deleteReport(reportKey)
+
+            // Elimina el informe de la lista local
+            listaObrasmutableListOf.removeAt(position)
+
+            // Notifica al adaptador que los datos han cambiado
+            updateTask()
+        } else {
+            Toast.makeText(this, "No hay conexión a Internet", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun deleteReport(reportKey: String) {
+        val reportReference = dataReference.child(reportKey)
 
         reportReference.removeValue()
             .addOnSuccessListener {
-                Toast.makeText(this, "Reporte eliminado exitosamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
                 Toast.makeText(
                     this,
-                    "Error al eliminar el reporte: ${e.message}",
+                    "Error al eliminar el informe: ${e.message}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
     }
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+        return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            ?: false
+    }
+
+
 
     private fun onItemSelected(position: Int) {
 //        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()

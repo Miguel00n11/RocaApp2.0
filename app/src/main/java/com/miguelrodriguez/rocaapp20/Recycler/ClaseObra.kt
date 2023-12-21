@@ -11,6 +11,7 @@ data class ClaseObra(
     val compactacion:String,
     val mvsm:String,
     val humedad:String,
+    var llave:String,
     val listaCalas:MutableList<ClaseCala>
 
 

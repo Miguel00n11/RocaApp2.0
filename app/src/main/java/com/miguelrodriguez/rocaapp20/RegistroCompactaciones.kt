@@ -51,6 +51,7 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var etcompactacionProyecto: EditText
     private lateinit var etMVSM: EditText
     private lateinit var etHumedad: EditText
+    private lateinit var llave: String
 
     private lateinit var CalasAdapter: CalasAdapter
     private lateinit var rvCalas: RecyclerView
@@ -110,6 +111,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 //        obtenerElReporteAGuardar()
 
 //        dataReference=FirebaseDatabase.getInstance().reference
+        llave=dataReference.push().key.toString()
 
         listaCalasOriginal.addAll(listaCalasmutableListOf)
 
@@ -139,7 +141,8 @@ class RegistroCompactaciones : AppCompatActivity() {
         subTramo: String,
         compactacion: Double,
         msvm: Double,
-        humedad: Double
+        humedad: Double,
+        llave: String
 
 
     ) {
@@ -158,6 +161,7 @@ class RegistroCompactaciones : AppCompatActivity() {
             compactacion,
             msvm,
             humedad,
+            llave,
             listaCalas
         )
         registrosLocales.add(nuevoRegistro)
@@ -174,6 +178,7 @@ class RegistroCompactaciones : AppCompatActivity() {
     }
 
     private fun saveLocalRecords(registros: List<Registro>) {
+
         val registrosJson = Gson().toJson(registros)
         sharedPreferences.edit().putString("registros", registrosJson).apply()
     }
@@ -193,7 +198,10 @@ class RegistroCompactaciones : AppCompatActivity() {
         for (registro in registrosLocales) {
 
             // Generar una nueva clave única para cada registro
-            val nuevaClave = dataReference.push().key
+//            val nuevaClave = dataReference.push().key
+//            llave=nuevaClave!!
+
+
 
             val reportesReferencia = dataReference.child("Reportes").child(personal)
 
@@ -207,13 +215,14 @@ class RegistroCompactaciones : AppCompatActivity() {
                     if (accion == true) {
                         // Guardar el registro en Firebase Realtime Database
                         dataReference.child("Reportes").child(personal)
-                            .child(totalReportes.toString())
+                            .child(reporteSelecionado.llave)
                             .setValue(registro)
                         onBackPressed()
                     } else {
                         // Guardar el registro en Firebase Realtime Database
+                        registro.llave=llave
                         dataReference.child("Reportes").child(personal)
-                            .child(nuevoNumeroReporte.toString())
+                            .child(llave)
                             .setValue(registro)
 
                     }
@@ -253,6 +262,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         val compactacion: Double,
         val mvsm: Double,
         val humedad: Double,
+        var llave: String,
         val listaCalas: List<ClaseCala>
     )
 
@@ -534,6 +544,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                 )
                 listaCalasmutableListOf.add(calaNueva)
 
+                llave=dataReference.push().key.toString()
 
                 updateTask()
 
@@ -598,6 +609,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         etcompactacionProyecto.setText(reporteSelecionado.compactacion)
         etMVSM.setText(reporteSelecionado.mvsm)
         etHumedad.setText(reporteSelecionado.humedad)
+        llave=reporteSelecionado.llave
 
         listaCalasmutableListOf = reporteSelecionado.listaCalas
 
@@ -673,6 +685,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                 var subTramo: String = etSubTramo.text.toString()
                 var compactacion: Double = etcompactacionProyecto.text.toString().toDouble()
                 var msvm: Double = etMVSM.text.toString().toDouble()
+                var llave=reporteSelecionado.llave
                 var humedad: Double = etHumedad.text.toString().toDouble()
 
 
@@ -688,7 +701,8 @@ class RegistroCompactaciones : AppCompatActivity() {
                     subTramo,
                     compactacion,
                     msvm,
-                    humedad
+                    humedad,
+                    llave
                 )
 
 
@@ -698,6 +712,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                 ConsultarUltimoRegistro()
                 listaCalasmutableListOf.clear()
                 updateTask()
+                llave=dataReference.push().key.toString()
                 Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
