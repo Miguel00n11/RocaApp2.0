@@ -226,6 +226,20 @@ class RegistroCompactaciones : AppCompatActivity() {
                             .setValue(registro)
 
                     }
+                    if (accion == true) {
+                        // Guardar el registro en Firebase Realtime Database
+                        dataReference.child("Respaldo").child(personal)
+                            .child(reporteSelecionado.llave)
+                            .setValue(registro)
+                        onBackPressed()
+                    } else {
+                        // Guardar el registro en Firebase Realtime Database
+                        registro.llave=llave
+                        dataReference.child("Respaldo").child(personal)
+                            .child(llave)
+                            .setValue(registro)
+
+                    }
 
 
                 }
