@@ -40,6 +40,15 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_height="match_parent"/>
+            <Button
+                android:id="@+id/btnItReportesMecanicas"
+                android:layout_width="match_parent"
+                android:text="Mecánicas de suelos"
+                android:padding="24sp"
+                android:backgroundTint="#F4511E"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
 

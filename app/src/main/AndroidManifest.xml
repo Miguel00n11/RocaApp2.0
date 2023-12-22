@@ -13,9 +13,15 @@
         android:theme="@style/Theme.RocaApp20"
         tools:targetApi="31">
         <activity
-            android:name=".Seleccionar_actividad"
-            android:theme="@style/AppTheme"
+            android:name=".RegistroMecanica"
             android:exported="false" />
+        <activity
+            android:name=".ReportesMecanicas"
+            android:exported="false" />
+        <activity
+            android:name=".Seleccionar_actividad"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".nueva_cala_compactacion"
             android:exported="false" />

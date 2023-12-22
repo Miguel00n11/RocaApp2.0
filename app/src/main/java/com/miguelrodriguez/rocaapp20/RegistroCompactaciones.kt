@@ -65,15 +65,6 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     private lateinit var fbNuevaCalaCompactacion: FloatingActionButton
 
-    //    controladores del item Cala
-    private lateinit var tvIdCalaCompactacion: TextView
-    private lateinit var tvEstacionCalaCompactacion: TextView
-    private lateinit var tvProfundidadCalaCompactacion: TextView
-    private lateinit var tvMVSLCalaCompactacion: TextView
-    private lateinit var tvHumedadCalaCompactacion: TextView
-    private lateinit var tvPorcentajeCalaCompactacion: TextView
-
-//    private lateinit var btnEliminarCalaCompactaciones: FloatingActionButton
 
 
     private lateinit var personal: String
@@ -81,9 +72,6 @@ class RegistroCompactaciones : AppCompatActivity() {
     private var editar: Boolean = false
 
     private lateinit var calaNueva: ClaseCala
-
-    var reporteAGuardar: Int = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,8 +82,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         reporteSelecionado = ReportesCompactaciones.reporteSelecionado
 
         editar = ReportesCompactaciones.editar
-
-
 
 
         initComponet()
@@ -309,36 +295,6 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     }
 
-//    private fun obtenerElReporteAGuardar() {
-//        // Obtén la referencia de la base de datos
-//        dataReference = FirebaseDatabase.getInstance().reference
-//        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
-//
-//
-//        // Agrega un listener para contar el total de registros
-//        dataReference.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                // Obtiene el número total de registros
-//                val reporteAGuardar1 = (dataSnapshot.child(personal).childrenCount + 1).toInt()
-//
-//                // Muestra el Toast con el valor obtenido
-//                Toast.makeText(
-//                    this@RegistroCompactaciones,
-//                    reporteAGuardar1.toString(),
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//
-//                // Puedes hacer más cosas con reporteAGuardar1 aquí, si es necesario
-//
-//
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                println("Error al leer la base de datos: ${databaseError.message}")
-//            }
-//        })
-//    }
-
     override fun onBackPressed() {
         // Aquí puedes realizar acciones específicas cuando se presiona el botón de retroceso
         // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación o realizar alguna operación antes de cerrar la actividad
@@ -378,7 +334,6 @@ class RegistroCompactaciones : AppCompatActivity() {
     }
 
     private fun onItemSelected(position: Int) {
-//        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
 
         showDialog(listaCalasmutableListOf[position], position)
 
@@ -464,13 +419,6 @@ class RegistroCompactaciones : AppCompatActivity() {
                     (MSVL / etMVSM.text.toString().toDouble() * 100.0 * 100).roundToInt() / 100.0
 
 
-//            if (estacion.isEmpty()) {
-//                dialog.hide()
-//
-//                return@setOnClickListener
-//
-//            }
-
                 calaNueva = ClaseCala(
                     indice,
                     estacion,
@@ -493,14 +441,11 @@ class RegistroCompactaciones : AppCompatActivity() {
                 Toast.makeText(this, "La MVSM debe ser diferente a 0.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-
         }
 
         dialog.show()
 
     }
-
 
     private fun showDialog() {
         val dialog = Dialog(this)
@@ -530,7 +475,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         btnGuardarCalaCompactacion.setOnClickListener {
 
             try {
-                if (etMVSLCalaCompactacion.text.toString().toDouble() == null) {
+                if (etMVSLCalaCompactacion.text == null) {
                     return@setOnClickListener
                 }
                 val estacion = etEstacionCalaCompactacion.text.toString()
@@ -539,14 +484,6 @@ class RegistroCompactaciones : AppCompatActivity() {
                 val humedad = etHumedadLugarCalaCopactacion.text.toString().toDouble()
                 val porcentajeCompactacion =
                     (MSVL / etMVSM.text.toString().toDouble() * 100.0 * 100).roundToInt() / 100.0
-
-//            if (estacion.isEmpty()) {
-//                dialog.hide()
-//
-//                return@setOnClickListener
-//
-//            }
-
 
                 calaNueva = ClaseCala(
                     listaCalasmutableListOf.count(),
@@ -595,24 +532,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-    //    private fun GuardarCompactacion(
-//        obra: String, fecha: String, capa: String, tramo: String, personal: String
-//    ) {
-//        // Obtén la referencia de la base de datos
-//        dataReference = FirebaseDatabase.getInstance().reference
-//
-//        // Crear un objeto con los datos que deseas almacenar
-//        val data = HashMap<String, Any>()
-//        data["Tramo"] = tramo
-//        data["Fecha"] = fecha
-//        data["Capa"] = capa
-//
-//        // Generar un nuevo nodo único en la base de datos
-//        val newChildRef =
-//            dataReference.child(personal).child(tvNumeroReporteCompactacion.text.toString())
-//        newChildRef.setValue(data)
-//
-//    }
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObra) {
 
         etObra.setText(reporteSelecionado.Obra)
@@ -634,7 +553,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         rvCalas.layoutManager = LinearLayoutManager(this)
         rvCalas.adapter = CalasAdapter
 
-//        Toast.makeText(this, reporteSelecionado.listaCalas.count(), Toast.LENGTH_SHORT).show()
     }
 
     private fun initComponet() {
@@ -684,23 +602,19 @@ class RegistroCompactaciones : AppCompatActivity() {
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
 
-//            if (etMVSM.text.toString()==""||etMVSM.text.toString().toDouble()==0.0){
-//                Toast.makeText(this, "Colocar MVSM", Toast.LENGTH_SHORT).show()
-//                return@setPositiveButton}
-
             try {
 
 
-                var obra: String = etObra.text.toString()
-                var fecha: String = etFecha.text.toString()
-                var numeroReporte: Int = tvNumeroReporteCompactacion.text.toString().toInt()
-                var capa: String = etCapa.text.toString()
-                var Tramo: String = etTramo.text.toString()
-                var subTramo: String = etSubTramo.text.toString()
-                var compactacion: Double = etcompactacionProyecto.text.toString().toDouble()
-                var msvm: Double = etMVSM.text.toString().toDouble()
+                val obra: String = etObra.text.toString()
+                val fecha: String = etFecha.text.toString()
+                val numeroReporte: Int = tvNumeroReporteCompactacion.text.toString().toInt()
+                val capa: String = etCapa.text.toString()
+                val Tramo: String = etTramo.text.toString()
+                val subTramo: String = etSubTramo.text.toString()
+                val compactacion: Double = etcompactacionProyecto.text.toString().toDouble()
+                val msvm: Double = etMVSM.text.toString().toDouble()
                 var llave=reporteSelecionado.llave
-                var humedad: Double = etHumedad.text.toString().toDouble()
+                val humedad: Double = etHumedad.text.toString().toDouble()
 
 
                 // Agregar un nuevo registro localmente
