@@ -17,8 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/material_motion_duration_long_1"
-            android:text="Reporte de mecánica "
-            android:textSize="24sp" />
+            android:text="Reporte de Muestreo de Material"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tvNumeroReporteCompactacion"
@@ -56,7 +56,7 @@
                     android:text="Obra:" />
 
                 <EditText
-                    android:id="@+id/etObraCompactacion"
+                    android:id="@+id/etObraMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Obra"
@@ -81,30 +81,44 @@
                     android:text="Fecha:" />
 
                 <EditText
-                    android:id="@+id/etFechaCompactacion"
+                    android:id="@+id/etFechaMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="Fecha"
                     android:inputType="date" />
 
+
                 <Button
-                    android:id="@+id/btnVerCalendarioCompactaciones"
+                    android:id="@+id/btnVerCalendarioMuestreoMaterial"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:onClick="mostrarCalendarioMuestreoMecanica"
                     android:backgroundTint="@color/btn_Background_Acceder"
                     android:imeOptions="actionNext"
-                    android:onClick="mostrarCalendario"
                     android:text="..." />
 
 
             </LinearLayout>
 
+            <Spinner
+                android:id="@+id/spnMuestreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginHorizontal="40dp"
+
+                android:textAlignment="center"
+
+                android:backgroundTint="@color/btn_Background_Acceder"
+                android:backgroundTintMode="add"
+                android:textSize="16sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Datos de la prueba"
-                android:textSize="24sp" />
+                android:text="Datos del Muestreo de terraceria o producto Asfáltico"
+                android:textSize="16sp" />
 
 
             <LinearLayout
@@ -122,7 +136,7 @@
                     android:text="Capa:" />
 
                 <EditText
-                    android:id="@+id/etCapaCompactacion"
+                    android:id="@+id/etCapaMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Capa"
@@ -147,7 +161,7 @@
                     android:text="Tramo:" />
 
                 <EditText
-                    android:id="@+id/etTramoCompactacion"
+                    android:id="@+id/etTramoMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Tramo"
@@ -172,7 +186,7 @@
                     android:text="Subtramo:" />
 
                 <EditText
-                    android:id="@+id/etSubTramo"
+                    android:id="@+id/etSubTramoMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Subtramo"
@@ -194,13 +208,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Compactación Proy. [%]:" />
+                    android:text="Procedencia:" />
 
                 <EditText
-                    android:id="@+id/etcompactacionProyecto"
+                    android:id="@+id/etProcedenciaMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Compactación"
+                    android:hint="Procedencia:"
                     android:inputType="number|numberDecimal"
                     android:selectAllOnFocus="true" />
 
@@ -219,13 +233,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="M.V.S.M. [kg/m³]:" />
+                    android:text="Lugar de muestreo:" />
 
                 <EditText
-                    android:id="@+id/etMVSM"
+                    android:id="@+id/etLugarMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="M.V.S.M. [kg/m³]"
+                    android:hint="Lugar de muestreo:"
                     android:inputType="number|numberDecimal"
                     android:selectAllOnFocus="true" />
 
@@ -244,36 +258,44 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Humedad Op. [%]:" />
+                    android:text="Estación:" />
 
                 <EditText
-                    android:id="@+id/etHumedad"
+                    android:id="@+id/etEstacionMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint=" [%]"
+                    android:hint="Estación:"
                     android:inputType="number|numberDecimal"
                     android:selectAllOnFocus="true" />
 
 
+
             </LinearLayout>
+            <Spinner
+                android:id="@+id/spnEstudioMuestreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:textAlignment="center"
+                android:backgroundTint="@color/btn_Background_Acceder"
+                android:backgroundTintMode="add"
+                android:textSize="16sp" />
 
             <LinearLayout
-
 
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="12dp"
                 android:orientation="vertical">
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Registro de calas"
-                    android:textSize="24sp" />
+                    android:text="Registro de estratos"
+                    android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCalasCompactaciones"
+                    android:id="@+id/rvMuestreoEstratos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -289,7 +311,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fbNuevaCalaCompactacion"
+                    android:id="@+id/fbNuevoEstrato"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/Background_Resultados"
@@ -309,7 +331,7 @@
 
 
                 <Button
-                    android:id="@+id/btnCancelarRegistroCompactacion"
+                    android:id="@+id/btnCancelarRegistroMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="6dp"
@@ -318,7 +340,7 @@
                     android:text="Cancelar" />
 
                 <Button
-                    android:id="@+id/btnGuardarRegistroCompactacion"
+                    android:id="@+id/btnGuardarRegistroMuestreoMecanica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"

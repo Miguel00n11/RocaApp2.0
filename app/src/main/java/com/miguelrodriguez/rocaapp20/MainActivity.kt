@@ -19,6 +19,7 @@ import java.lang.Exception
 class MainActivity : AppCompatActivity() {
 
     private lateinit var btnAcceder: Button
+    private lateinit var btnAccederInvitado: Button
     private lateinit var NombreUsuario: EditText
     private lateinit var Password: EditText
     private lateinit var auth: FirebaseAuth
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                 Password.text.toString()
             )
         }
+        btnAccederInvitado.setOnClickListener { Acceder() }
     }
 
 //    private fun abrirCalculo_Compactacion(NombreUsuario:String) {
@@ -80,6 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initComponent() {
         btnAcceder = findViewById(R.id.btnAcceder)
+        btnAccederInvitado = findViewById(R.id.btnAccederInvitado)
         NombreUsuario = findViewById(R.id.etEmail)
         Password = findViewById(R.id.etPassword)
 

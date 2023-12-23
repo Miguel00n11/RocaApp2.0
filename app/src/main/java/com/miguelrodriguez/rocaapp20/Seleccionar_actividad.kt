@@ -23,7 +23,7 @@ class Seleccionar_actividad : AppCompatActivity() {
 
         }
         btnItReportesMecanicas.setOnClickListener {
-            val intent=Intent(this,ReportesMecanicas::class.java)
+            val intent=Intent(this,ReportesMuestreoMaterial::class.java)
             startActivity(intent)
         }
     }
