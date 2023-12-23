@@ -13,5 +13,8 @@
     <color name="Texto_Resultados">#024942</color>
     <color name="background_Registro_Cala">#FF8F00</color>
 
+    <!--    Resultados Compactacion-->
+    <color name="background_Registro_Estrato">#7CB342</color>
+
 
 </resources>

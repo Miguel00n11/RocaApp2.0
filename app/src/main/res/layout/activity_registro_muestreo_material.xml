@@ -21,7 +21,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvNumeroReporteCompactacion"
+            android:id="@+id/tvNumeroReporteMuestreoMecanica"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/material_motion_duration_long_1"
@@ -93,9 +93,9 @@
                     android:id="@+id/btnVerCalendarioMuestreoMaterial"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:onClick="mostrarCalendarioMuestreoMecanica"
                     android:backgroundTint="@color/btn_Background_Acceder"
                     android:imeOptions="actionNext"
+                    android:onClick="mostrarCalendarioMuestreoMecanica"
                     android:text="..." />
 
 
@@ -107,11 +107,23 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="3dp"
+                android:backgroundTint="@color/btn_Background_Acceder"
 
+                android:backgroundTintMode="add"
                 android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spnEstudioMuestreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="3dp"
 
                 android:backgroundTint="@color/btn_Background_Acceder"
                 android:backgroundTintMode="add"
+                android:textAlignment="center"
                 android:textSize="16sp" />
 
             <TextView
@@ -269,17 +281,7 @@
                     android:selectAllOnFocus="true" />
 
 
-
             </LinearLayout>
-            <Spinner
-                android:id="@+id/spnEstudioMuestreo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="40dp"
-                android:textAlignment="center"
-                android:backgroundTint="@color/btn_Background_Acceder"
-                android:backgroundTintMode="add"
-                android:textSize="16sp" />
 
             <LinearLayout
 
