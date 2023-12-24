@@ -78,22 +78,6 @@ class ReportesCompactaciones : AppCompatActivity() {
     }
 
 
-//    private fun onItemDelete(position: Int) {
-//
-//
-//        val reportNumber = listaObrasmutableListOf[position].reporte.toInt()
-//        deleteReport(reportNumber)
-//        listaObrasmutableListOf.removeAt(position)
-////        listaObrasmutableListOf.forEachIndexed { index, elemento ->
-////            // Puedes realizar alguna lógica para determinar la nueva numeración
-////            val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
-////
-////            // Reemplazar la numeración en cada objeto
-////            elemento.reporte = nuevaNumeracion.toString()
-////        }
-//        updateTask()
-//    }
-
     private fun updateTask() {
         ObraAdapter.notifyDataSetChanged()
     }

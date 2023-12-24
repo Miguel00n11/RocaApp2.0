@@ -28,7 +28,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
+import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseEstratos
+import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
 import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
 import java.util.Calendar
@@ -39,33 +42,33 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
 
 
-
     private lateinit var spnMuestreo: Spinner
     private lateinit var spnEstudioMuestreo: Spinner
-    private lateinit var etObraMuestreoMecanica:EditText
+    private lateinit var etObraMuestreoMecanica: EditText
     private lateinit var etFechaMuestreoMecanica: EditText
-    private lateinit var etCapaMuestreoMecanica:EditText
-    private lateinit var etTramoMuestreoMecanica:EditText
-    private lateinit var etSubTramoMuestreoMecanica:EditText
-    private lateinit var etProcedenciaMuestreoMecanica:EditText
-    private lateinit var etLugarMuestreoMecanica:EditText
-    private lateinit var etEstacionMuestreoMecanica:EditText
-    private lateinit var fbNuevoEstrato:FloatingActionButton
-    private lateinit var btnGuardarRegistroMuestreoMecanica:Button
-    private lateinit var btnCancelarRegistroMuestreoMecanica:Button
+    private lateinit var etCapaMuestreoMecanica: EditText
+    private lateinit var etTramoMuestreoMecanica: EditText
+    private lateinit var etSubTramoMuestreoMecanica: EditText
+    private lateinit var etProcedenciaMuestreoMecanica: EditText
+    private lateinit var etLugarMuestreoMecanica: EditText
+    private lateinit var etEstacionMuestreoMecanica: EditText
+    private lateinit var fbNuevoEstrato: FloatingActionButton
+    private lateinit var btnGuardarRegistroMuestreoMecanica: Button
+    private lateinit var btnCancelarRegistroMuestreoMecanica: Button
 
-    private lateinit var llave:String
-    private lateinit var tvNumeroReporteMuestreoMecanica:TextView
-    private lateinit var reporteSelecionado: ClaseObraMecanica
+    private lateinit var llave: String
+    private lateinit var tvNumeroReporteMuestreoMecanica: TextView
+    private lateinit var reporteSelecionadoMuestroMaterial: ClaseObraMecanica
     private lateinit var personal: String
+    private lateinit var reporteSelecionado: ClaseObraMecanica
     private var editar: Boolean = false
 
-    private lateinit var rvMuestreoEstratos:RecyclerView
-    private lateinit var EstratosAdapter:EstratosAdapter
+    private lateinit var rvMuestreoEstratos: RecyclerView
+    private lateinit var EstratosAdapter: EstratosAdapter
     private lateinit var listaEstratosAdapter: MutableList<ClaseEstratos>
-    private  var listaEstratosmutableListOf: MutableList<ClaseEstratos> = mutableListOf()
-    private lateinit var estratoNuevo:ClaseEstratos
-
+    private var listaEstratosmutableListOf: MutableList<ClaseEstratos> = mutableListOf()
+    private var listaEstratosOriginal: MutableList<ClaseEstratos> = mutableListOf()
+    private lateinit var estratoNuevo: ClaseEstratos
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +80,10 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     private fun InitComponent() {
+        listaEstratosOriginal.clear()
+        reporteSelecionado = ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
+        editar = ReportesMuestreoMaterial.editarMuestreoMaterial
+
         spnMuestreo = findViewById(R.id.spnMuestreo)
         spnEstudioMuestreo = findViewById(R.id.spnEstudioMuestreo)
         etFechaMuestreoMecanica = findViewById(R.id.etFechaMuestreoMecanica)
@@ -98,15 +105,62 @@ class RegistroMecanica : AppCompatActivity() {
 
         dataReference = FirebaseDatabase.getInstance().reference
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
-        reporteSelecionado = ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
+        reporteSelecionadoMuestroMaterial =
+            ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
+
+
+        if (editar == true) {
+            Toast.makeText(this, ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial.listaEstratos.count().toString(), Toast.LENGTH_SHORT).show()
+            cargarObraSeleccionada(reporteSelecionado)
+        }
+
+
+
+    }
+
+    private fun cargarObraSeleccionada(reporteSelecionado: ClaseObraMecanica) {
+
+        tvNumeroReporteMuestreoMecanica.setText(reporteSelecionado.id.toString())
+        etObraMuestreoMecanica.setText(reporteSelecionado.Obra)
+        etFechaMuestreoMecanica.setText(reporteSelecionado.fecha)
+        etCapaMuestreoMecanica.setText(reporteSelecionado.capa)
+        etTramoMuestreoMecanica.setText(reporteSelecionado.tramo)
+        etSubTramoMuestreoMecanica.setText(reporteSelecionado.subtramo)
+        etProcedenciaMuestreoMecanica.setText(reporteSelecionado.procedencia)
+        etEstacionMuestreoMecanica.setText(reporteSelecionado.estacion)
+        llave = reporteSelecionado.llave
+//        spnMuestreo.setText(reporteSelecionado.tipoMuestreo)
+//        spnEstudioMuestreo.setText(reporteSelecionado.estudioMuestreo)
+        listaEstratosmutableListOf = reporteSelecionado.listaEstratos
+
+        EstratosAdapter =
+            EstratosAdapter(reporteSelecionado.listaEstratos,
+                onEstratoSelected = { position -> onEstratoSelected(position) },
+                onItemDelete = { position -> onItemDelete(position) })
+        rvMuestreoEstratos.layoutManager = LinearLayoutManager(this)
+        rvMuestreoEstratos.adapter = EstratosAdapter
 
     }
 
     private fun InitUI() {
-        cargarItemsMuestreo()
+//        cargarItemsMuestreo()
 
+        btnCancelarRegistroMuestreoMecanica.setOnClickListener {
+
+            restaurarDatosOriginales()
+            ReportesCompactaciones.editar = false
+
+
+            onBackPressed()
+
+        }
         spnMuestreo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
             }
 
@@ -119,15 +173,41 @@ class RegistroMecanica : AppCompatActivity() {
         }
 
         fbNuevoEstrato.setOnClickListener { showDialog() }
-        llave=dataReference.push().key.toString()
 
-        EstratosAdapter= EstratosAdapter(listaEstratosmutableListOf,
+        EstratosAdapter = EstratosAdapter(listaEstratosmutableListOf,
             onEstratoSelected = { position -> onEstratoSelected(position) },
             onItemDelete = { position -> onItemDelete(position) })
         rvMuestreoEstratos.layoutManager = LinearLayoutManager(this)
         rvMuestreoEstratos.adapter = EstratosAdapter
 
+        llave = dataReference.push().key.toString()
+
+        listaEstratosOriginal.addAll(listaEstratosmutableListOf)
+
+        listaEstratosOriginal.forEachIndexed { index, elemento ->
+            // Puedes realizar alguna lógica para determinar la nueva numeración
+            val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
+
+            // Reemplazar la numeración en cada objeto
+            elemento.idEstrato = nuevaNumeracion
+        }
+
+
     }
+    private fun restaurarDatosOriginales() {
+        listaEstratosmutableListOf.clear()
+        listaEstratosmutableListOf.addAll(listaEstratosOriginal)
+        updateTask()
+    }
+    override fun onBackPressed() {
+        // Aquí puedes realizar acciones específicas cuando se presiona el botón de retroceso
+        // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación o realizar alguna operación antes de cerrar la actividad
+        // Puedes agregar tu lógica aquí o llamar al método super.onBackPressed() para cerrar la actividad sin ninguna acción adicional.
+        if (editar==true){restaurarDatosOriginales()}
+        ReportesMuestreoMaterial.editarMuestreoMaterial = false
+        super.onBackPressed()
+    }
+
     private fun mostrarDialogo() {
         // Crea un objeto AlertDialog66
         val builder = AlertDialog.Builder(this)
@@ -153,9 +233,7 @@ class RegistroMecanica : AppCompatActivity() {
                 val estacion: String = etEstacionMuestreoMecanica.text.toString()
                 val tipoMuestreo: String = spnMuestreo.selectedItem.toString()
                 val estudioMuestreo: String = spnEstudioMuestreo.selectedItem.toString()
-                var llave=reporteSelecionado.llave
-
-
+                var llave = reporteSelecionadoMuestroMaterial.llave
 
 
                 // Agregar un nuevo registro localmente
@@ -183,7 +261,7 @@ class RegistroMecanica : AppCompatActivity() {
 //                ConsultarUltimoRegistro()
                 listaEstratosmutableListOf.clear()
                 updateTask()
-                llave=dataReference.push().key.toString()
+                llave = dataReference.push().key.toString()
                 Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
@@ -202,11 +280,13 @@ class RegistroMecanica : AppCompatActivity() {
         // Muestra el cuadro de diálogo
         builder.show()
     }
+
     private fun getLocalRecords(): MutableList<Registro> {
         val registrosJson = sharedPreferences.getString("registros", "[]")
         return Gson().fromJson(registrosJson, object : TypeToken<MutableList<Registro>>() {}.type)
             ?: mutableListOf()
     }
+
     private fun syncDataWithFirebase(
         numeroReporte: Int,
         listaEstratos: List<ClaseEstratos>,
@@ -226,8 +306,6 @@ class RegistroMecanica : AppCompatActivity() {
 //            llave=nuevaClave!!
 
 
-
-
             val reportesReferencia = dataReference.child("Reportes").child(personal)
 
             reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -240,12 +318,12 @@ class RegistroMecanica : AppCompatActivity() {
                     if (accion == true) {
                         // Guardar el registro en Firebase Realtime Database
                         dataReference.child("ReportesMecanicas").child(personal)
-                            .child(reporteSelecionado.llave)
+                            .child(reporteSelecionadoMuestroMaterial.llave)
                             .setValue(registro)
                         onBackPressed()
                     } else {
                         // Guardar el registro en Firebase Realtime Database
-                        registro.llave=llave
+                        registro.llave = llave
                         dataReference.child("ReportesMecanicas").child(personal)
                             .child(llave)
                             .setValue(registro)
@@ -254,12 +332,12 @@ class RegistroMecanica : AppCompatActivity() {
                     if (accion == true) {
                         // Guardar el registro en Firebase Realtime Database
                         dataReference.child("RespaldoMecanicas").child(personal)
-                            .child(reporteSelecionado.llave)
+                            .child(reporteSelecionadoMuestroMaterial.llave)
                             .setValue(registro)
                         onBackPressed()
                     } else {
                         // Guardar el registro en Firebase Realtime Database
-                        registro.llave=llave
+                        registro.llave = llave
                         dataReference.child("RespaldoMecanicas").child(personal)
                             .child(llave)
                             .setValue(registro)
@@ -274,7 +352,6 @@ class RegistroMecanica : AppCompatActivity() {
 
                 }
             })
-
 
 
             // Guardar el registro en Firebase Realtime Database
@@ -295,6 +372,7 @@ class RegistroMecanica : AppCompatActivity() {
         val registrosJson = Gson().toJson(registros)
         sharedPreferences.edit().putString("registros", registrosJson).apply()
     }
+
     private fun saveLocally(
         obra: String,
         fecha: String,
@@ -308,8 +386,8 @@ class RegistroMecanica : AppCompatActivity() {
         lugarMuestreo: String,
         estacion: String,
         llave: String,
-        tipoMuestreo:String,
-        estudioMuestreo:String
+        tipoMuestreo: String,
+        estudioMuestreo: String
 
 
     ) {
@@ -338,6 +416,7 @@ class RegistroMecanica : AppCompatActivity() {
         // Guardar la lista actualizada localmente
         saveLocalRecords(registrosLocales)
     }
+
     private fun showDialog() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.activity_nuevo_estrato_mecanica)
@@ -354,7 +433,7 @@ class RegistroMecanica : AppCompatActivity() {
         btnGuardarEstrato.setOnClickListener {
 
             try {
-                if (etNombreEstrato.text == null||etEspesorEstrato==null) {
+                if (etNombreEstrato.text == null || etEspesorEstrato == null) {
                     return@setOnClickListener
                 }
                 val Nombre = etNombreEstrato.text.toString()
@@ -376,8 +455,7 @@ class RegistroMecanica : AppCompatActivity() {
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }
-            catch (e: IllegalArgumentException) {
+            } catch (e: IllegalArgumentException) {
                 Toast.makeText(this, "La MVSM debe ser diferente a 0.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -387,10 +465,12 @@ class RegistroMecanica : AppCompatActivity() {
         dialog.show()
 
     }
+
     private fun onEstratoSelected(position: Int) {
 
 
     }
+
     private fun onItemDelete(position: Int) {
 //        if (isNetworkAvailable()) {
 //            val reportKey = listaEstratosmutableListOf[position].llave // Utiliza la clave única del informe
@@ -407,6 +487,7 @@ class RegistroMecanica : AppCompatActivity() {
 //            Toast.makeText(this, "No hay conexión a Internet", Toast.LENGTH_SHORT).show()
 //        }
     }
+
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -415,7 +496,8 @@ class RegistroMecanica : AppCompatActivity() {
         return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             ?: false
     }
-//    private fun deleteReport(reportKey: String) {
+
+    //    private fun deleteReport(reportKey: String) {
 //        val reportReference = dataReference.child(reportKey)
 //
 //        reportReference.removeValue()
@@ -458,6 +540,7 @@ class RegistroMecanica : AppCompatActivity() {
 
         datePickerDialog.show()
     }
+
     private fun cargarItemsEstudioMuestreo(selectedOption: String) {
         // Handle different options as needed
         when (selectedOption) {
@@ -476,6 +559,7 @@ class RegistroMecanica : AppCompatActivity() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
             }
+
             "Asfalto" -> {
                 val items = arrayOf(
                     "Carpeta Asf.",
@@ -484,27 +568,32 @@ class RegistroMecanica : AppCompatActivity() {
                     "Agregados",
                     "Sello",
                     "Emulsión",
-                    "Otro")
+                    "Otro"
+                )
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
             }
+
             "Prefabricado" -> {
                 val items = arrayOf(
                     "Compresión",
                     "Densidad",
                     "Absorción",
                     "Permeabilidad",
-                    "Otro")
+                    "Otro"
+                )
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
             }
+
             "Acero" -> {
                 val items = arrayOf(
                     "Tensión",
                     "Doblado",
-                    "Otro")
+                    "Otro"
+                )
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
@@ -515,6 +604,7 @@ class RegistroMecanica : AppCompatActivity() {
             }
         }
     }
+
     data class Registro(
         val obra: String,
         val fecha: String,
