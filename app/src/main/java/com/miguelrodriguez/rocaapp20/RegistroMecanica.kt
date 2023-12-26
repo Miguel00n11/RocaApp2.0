@@ -77,7 +77,139 @@ class RegistroMecanica : AppCompatActivity() {
 
         InitComponent()
         InitUI()
+        cargarspinner2()
     }
+
+    //    override fun onWindowFocusChanged(hasFocus: Boolean) {
+//        super.onWindowFocusChanged(hasFocus)
+//
+//        if (hasFocus) {
+//            // Aquí puedes ejecutar el código después de que la interfaz de usuario se haya cargado completamente
+//            // Por ejemplo, podrías realizar alguna operación o actualizar elementos adicionales
+//            // ...
+//
+//            // También podrías llamar a la función cargarObraSeleccionada aquí si deseas ejecutar algo específico después de cargar la obra
+//            // cargarObraSeleccionada(reporteSelecionado)
+//        cargarspinner2()
+//
+//        }
+    private fun cargarItemsEstudioMuestreo2(selectedOption: String) {
+        // Handle different options as needed
+        when (selectedOption) {
+            "Terracería" -> {
+                // Load items specific to "Terracería"
+                val items = arrayOf(
+                    "Base Hidráulica",
+                    "Sub Base",
+                    "Sub Rasante",
+                    "Sub Yacente",
+                    "Terraplen",
+                    "Terreno Natural",
+                    "Para Identificación"
+                )
+                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spnEstudioMuestreo.adapter = adapter
+                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+                        spnEstudioMuestreo.setSelection(i)
+                        break
+                    }
+                }
+            }
+
+            "Asfalto" -> {
+                val items = arrayOf(
+                    "Carpeta Asf.",
+                    "Base Negra",
+                    "Peso Vol.",
+                    "Agregados",
+                    "Sello",
+                    "Emulsión",
+                    "Otro"
+                )
+                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spnEstudioMuestreo.adapter = adapter
+
+                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+                        spnEstudioMuestreo.setSelection(i)
+                        break
+                    }
+                }
+
+            }
+
+            "Prefabricado" -> {
+                val items = arrayOf(
+                    "Compresión",
+                    "Densidad",
+                    "Absorción",
+                    "Permeabilidad",
+                    "Otro"
+                )
+                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spnEstudioMuestreo.adapter = adapter
+                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+                        spnEstudioMuestreo.setSelection(i)
+                        break
+                    }
+                }
+            }
+
+            "Acero" -> {
+                val items = arrayOf(
+                    "Tensión",
+                    "Doblado",
+                    "Otro"
+                )
+                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spnEstudioMuestreo.adapter = adapter
+                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+                        spnEstudioMuestreo.setSelection(i)
+                        break
+                    }
+                }
+            }
+            // Add cases for other options as needed
+            else -> {
+                // Default case or handle other options
+            }
+        }
+    }
+
+    private fun cargarspinner2() {
+
+
+        val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+        cargarItemsEstudioMuestreo2(spnMuestreo.selectedItem.toString())
+        val adapter = spnEstudioMuestreo.adapter
+
+        for (i in 0 until adapter.count) {
+            if (adapter.getItem(i).toString() == textoASeleccionar) {
+                spnEstudioMuestreo.setSelection(i)
+                break
+            }
+        }
+
+
+    }
+
+//    }
 
     private fun InitComponent() {
         listaEstratosOriginal.clear()
@@ -109,16 +241,18 @@ class RegistroMecanica : AppCompatActivity() {
             ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
 
 
+        cargarItemsMuestreo()
+
         if (editar == true) {
-            Toast.makeText(this, ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial.listaEstratos.count().toString(), Toast.LENGTH_SHORT).show()
             cargarObraSeleccionada(reporteSelecionado)
         }
-
 
 
     }
 
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObraMecanica) {
+
+//        cargarItemsMuestreo()
 
         tvNumeroReporteMuestreoMecanica.setText(reporteSelecionado.id.toString())
         etObraMuestreoMecanica.setText(reporteSelecionado.Obra)
@@ -129,6 +263,27 @@ class RegistroMecanica : AppCompatActivity() {
         etProcedenciaMuestreoMecanica.setText(reporteSelecionado.procedencia)
         etEstacionMuestreoMecanica.setText(reporteSelecionado.estacion)
         llave = reporteSelecionado.llave
+//        spnMuestreo.setSelection(1)
+
+        val textoASeleccionar = reporteSelecionado.tipoMuestreo
+        val adapter = spnMuestreo.adapter
+
+        for (i in 0 until adapter.count) {
+            if (adapter.getItem(i).toString() == textoASeleccionar) {
+                spnMuestreo.setSelection(i)
+                break
+            }
+        }
+
+//        val textoASeleccionar2 = reporteSelecionado.estudioMuestreo
+//        val adapter2 = spnEstudioMuestreo.adapter
+//
+//        for (i in 0 until adapter2.count) {
+//            if (adapter2.getItem(i).toString() == textoASeleccionar2) {
+//                spnEstudioMuestreo.setSelection(i)
+//                break
+//            }
+//        }
 //        spnMuestreo.setText(reporteSelecionado.tipoMuestreo)
 //        spnEstudioMuestreo.setText(reporteSelecionado.estudioMuestreo)
         listaEstratosmutableListOf = reporteSelecionado.listaEstratos
@@ -143,7 +298,6 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     private fun InitUI() {
-//        cargarItemsMuestreo()
 
         btnCancelarRegistroMuestreoMecanica.setOnClickListener {
 
@@ -161,7 +315,12 @@ class RegistroMecanica : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
+                if (editar == true) {
+                    cargarItemsEstudioMuestreo2(spnMuestreo.selectedItem.toString())
+                } else {
+                    cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
+                }
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -194,16 +353,20 @@ class RegistroMecanica : AppCompatActivity() {
 
 
     }
+
     private fun restaurarDatosOriginales() {
         listaEstratosmutableListOf.clear()
         listaEstratosmutableListOf.addAll(listaEstratosOriginal)
         updateTask()
     }
+
     override fun onBackPressed() {
         // Aquí puedes realizar acciones específicas cuando se presiona el botón de retroceso
         // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación o realizar alguna operación antes de cerrar la actividad
         // Puedes agregar tu lógica aquí o llamar al método super.onBackPressed() para cerrar la actividad sin ninguna acción adicional.
-        if (editar==true){restaurarDatosOriginales()}
+        if (editar == true) {
+            restaurarDatosOriginales()
+        }
         ReportesMuestreoMaterial.editarMuestreoMaterial = false
         super.onBackPressed()
     }
@@ -468,6 +631,63 @@ class RegistroMecanica : AppCompatActivity() {
 
     private fun onEstratoSelected(position: Int) {
 
+        showDialog(listaEstratosmutableListOf[position], position)
+
+    }
+
+    private fun showDialog(estratoSelecionado: ClaseEstratos, indice: Int) {
+
+
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.activity_nuevo_estrato_mecanica)
+
+        val btnGuardarEstrato: Button =
+            dialog.findViewById(R.id.btnGuardarEstrato)
+
+        val etNombreEstrato: EditText =
+            dialog.findViewById(R.id.etNombreEstrato)
+        val etEspesorEstrato: EditText = dialog.findViewById(R.id.etEspesorEstrato)
+
+        try {
+
+        } catch (e: NumberFormatException) {
+            Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        etNombreEstrato.setText(estratoSelecionado.nombre)
+        etEspesorEstrato.setText(estratoSelecionado.espesor.toString())
+//        etMVSLCalaCompactacion.setText(calaSeleccionada.MVSL.toString())
+//        etHumedadLugarCalaCopactacion.setText(calaSeleccionada.Humedad.toString())
+
+        btnGuardarEstrato.setOnClickListener {
+
+            try {
+                val nombre = etNombreEstrato.text.toString()
+                val espesor = etEspesorEstrato.text.toString().toDouble()
+
+
+                estratoNuevo = ClaseEstratos(
+                    indice,
+                    nombre,
+                    espesor
+                )
+                listaEstratosmutableListOf.set(indice, estratoNuevo)
+
+
+                updateTask()
+
+                dialog.hide()
+            } catch (e: NumberFormatException) {
+                Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } catch (e: IllegalArgumentException) {
+                Toast.makeText(this, "La MVSM debe ser diferente a 0.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+        }
+
+        dialog.show()
 
     }
 
@@ -497,6 +717,7 @@ class RegistroMecanica : AppCompatActivity() {
             ?: false
     }
 
+
     //    private fun deleteReport(reportKey: String) {
 //        val reportReference = dataReference.child(reportKey)
 //
@@ -515,7 +736,6 @@ class RegistroMecanica : AppCompatActivity() {
     private fun updateTask() {
         EstratosAdapter.notifyDataSetChanged()
     }
-
 
     private fun cargarItemsMuestreo() {
         val itemMuestreo = arrayOf("Terracería", "Asfalto", "Acero", "Prefabricado")

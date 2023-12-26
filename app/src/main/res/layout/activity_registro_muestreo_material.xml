@@ -111,6 +111,7 @@
                 android:backgroundTint="@color/btn_Background_Acceder"
 
                 android:backgroundTintMode="add"
+                android:spinnerMode="dialog"
                 android:textAlignment="center"
                 android:textSize="16sp" />
 
@@ -123,6 +124,7 @@
 
                 android:backgroundTint="@color/btn_Background_Acceder"
                 android:backgroundTintMode="add"
+                android:spinnerMode="dialog"
                 android:textAlignment="center"
                 android:textSize="16sp" />
 
