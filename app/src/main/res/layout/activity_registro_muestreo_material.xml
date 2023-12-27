@@ -314,6 +314,31 @@
                 android:gravity="end"
                 android:orientation="horizontal">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvImagenMecanica"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                    <Button
+                        android:id="@+id/btnAgregarImagenes"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"
+                        android:text="Agregar Imagenes..."/>
+                </LinearLayout>
+
+
+
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fbNuevoEstrato"
                     android:layout_width="wrap_content"
