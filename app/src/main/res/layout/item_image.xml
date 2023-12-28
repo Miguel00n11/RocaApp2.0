@@ -25,6 +25,7 @@
             android:layout_margin="4dp"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnEliminarImagen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#E53935"

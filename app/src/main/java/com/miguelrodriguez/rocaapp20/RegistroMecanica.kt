@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.Image
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -93,9 +94,13 @@ class RegistroMecanica : AppCompatActivity() {
 
         // Inicializar RecyclerView y Adapter
         rvImagenesMecanica = findViewById(R.id.rvImagenesMecanica)
-        imageAdapter = ImageAdapter(imageList)
+        imageAdapter = ImageAdapter(imageList,
+            onImageDelete = {position->onImageDelete(position)})
         rvImagenesMecanica.layoutManager = LinearLayoutManager(this)
         rvImagenesMecanica.adapter = imageAdapter
+
+
+
         storageReference = FirebaseStorage.getInstance().reference
 
         val btnSelectImages: Button = findViewById(R.id.btnSelectImages)
@@ -106,6 +111,35 @@ class RegistroMecanica : AppCompatActivity() {
         InitComponent()
         InitUI()
     }
+
+    private fun onImageDelete(position: Int) {
+        // Crea un objeto AlertDialog66
+        val builder = AlertDialog.Builder(this)
+
+        // Configura el título y el mensaje del cuadro de diálogo
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Deseas eliminar esta imagen?")
+
+        // Configura el botón positivo (sí)
+        builder.setPositiveButton("Sí") { dialog, which ->
+
+            imageList.removeAt(position)
+
+            updateTask()
+
+        }
+
+        // Configura el botón negativo (no)
+        builder.setNegativeButton("No") { dialog, which ->
+            return@setNegativeButton
+            // Código a ejecutar si el usuario hace clic en No
+        }
+
+        // Muestra el cuadro de diálogo
+        builder.show()
+
+    }
+
 
     private fun openImageChooser() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -338,13 +372,14 @@ class RegistroMecanica : AppCompatActivity() {
 
 //                ConsultarUltimoRegistro()
                 listaEstratosmutableListOf.clear()
-                updateTask()
-                llave = dataReference.push().key.toString()
+//                llave = dataReference.push().key.toString()
 
                 // Subir imágenes a Firebase Storage
-                subirImagenesAFirebaseStorage(llave)
+                subirImagenesAFirebaseStorage(editar)
+                updateTask()
 
-//                Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
+
+                Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
                 return@setPositiveButton
@@ -453,7 +488,13 @@ class RegistroMecanica : AppCompatActivity() {
         sharedPreferences.edit().putString("registros", registrosJson).apply()
     }
 
-    private fun subirImagenesAFirebaseStorage(llave: String) {
+    private fun subirImagenesAFirebaseStorage(accion:Boolean) {
+        if (accion==true)
+        {
+
+        }else{
+
+        }
         for ((index, imageUri) in imageList.withIndex()) {
             val imageFileName = "imagen_$index.jpg"
             val imageRef = storageReference.child("$llave/$imageFileName")
@@ -468,7 +509,7 @@ class RegistroMecanica : AppCompatActivity() {
                 Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT).show()
             }
         }
-        Toast.makeText(this, imageList.count().toString(), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, imageList.count().toString(), Toast.LENGTH_SHORT).show()
     }
 
     private fun saveLocally(
@@ -546,9 +587,6 @@ class RegistroMecanica : AppCompatActivity() {
                 listaEstratosmutableListOf.add(estratoNuevo)
 
 //                llave=dataReference.push().key.toString()
-
-                // Subir imágenes a Firebase Storage
-                subirImagenesAFirebaseStorage(llave)
 
                 updateTask()
 
@@ -672,6 +710,8 @@ class RegistroMecanica : AppCompatActivity() {
 //    }
     private fun updateTask() {
         EstratosAdapter.notifyDataSetChanged()
+        imageAdapter.notifyDataSetChanged()
+
     }
 
     private fun cargarItemsMuestreo() {
