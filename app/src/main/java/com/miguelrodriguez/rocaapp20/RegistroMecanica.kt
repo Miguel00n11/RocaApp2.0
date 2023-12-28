@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -26,6 +27,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
@@ -37,6 +41,8 @@ import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ImageAdapter
 import java.util.Calendar
 import kotlin.math.roundToInt
+
+import java.util.UUID
 
 class RegistroMecanica : AppCompatActivity() {
     private lateinit var dataReference: DatabaseReference
@@ -75,16 +81,22 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var rvImagenesMecanica: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
 
+    private lateinit var storageReference: StorageReference
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_muestreo_material)
+
 
         // Inicializar RecyclerView y Adapter
         rvImagenesMecanica = findViewById(R.id.rvImagenesMecanica)
         imageAdapter = ImageAdapter(imageList)
         rvImagenesMecanica.layoutManager = LinearLayoutManager(this)
         rvImagenesMecanica.adapter = imageAdapter
+        storageReference = FirebaseStorage.getInstance().reference
 
         val btnSelectImages: Button = findViewById(R.id.btnSelectImages)
         btnSelectImages.setOnClickListener {
@@ -328,13 +340,18 @@ class RegistroMecanica : AppCompatActivity() {
                 listaEstratosmutableListOf.clear()
                 updateTask()
                 llave = dataReference.push().key.toString()
-                Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
+
+                // Subir imágenes a Firebase Storage
+                subirImagenesAFirebaseStorage(llave)
+
+//                Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
                 return@setPositiveButton
             }
 
         }
+
 
 
         // Configura el botón negativo (no)
@@ -436,6 +453,24 @@ class RegistroMecanica : AppCompatActivity() {
         sharedPreferences.edit().putString("registros", registrosJson).apply()
     }
 
+    private fun subirImagenesAFirebaseStorage(llave: String) {
+        for ((index, imageUri) in imageList.withIndex()) {
+            val imageFileName = "imagen_$index.jpg"
+            val imageRef = storageReference.child("$llave/$imageFileName")
+
+            val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
+
+            uploadTask.addOnSuccessListener {
+                // Imagen subida exitosamente
+                // Puedes obtener la URL de la imagen con it.metadata?.reference?.downloadUrl
+            }.addOnFailureListener {
+                // Manejar el fallo de la subida
+                Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT).show()
+            }
+        }
+        Toast.makeText(this, imageList.count().toString(), Toast.LENGTH_SHORT).show()
+    }
+
     private fun saveLocally(
         obra: String,
         fecha: String,
@@ -512,6 +547,9 @@ class RegistroMecanica : AppCompatActivity() {
 
 //                llave=dataReference.push().key.toString()
 
+                // Subir imágenes a Firebase Storage
+                subirImagenesAFirebaseStorage(llave)
+
                 updateTask()
 
                 dialog.hide()
@@ -528,6 +566,7 @@ class RegistroMecanica : AppCompatActivity() {
         dialog.show()
 
     }
+
 
     private fun onEstratoSelected(position: Int) {
 
