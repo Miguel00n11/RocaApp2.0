@@ -283,8 +283,16 @@
                     android:selectAllOnFocus="true" />
 
 
-            </LinearLayout>
 
+            </LinearLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fbNuevoEstrato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:backgroundTint="@color/Background_Resultados"
+                android:src="@drawable/plus_large_svgrepo_com"
+                app:maxImageSize="40dp" />
             <LinearLayout
 
                 android:layout_width="match_parent"
@@ -297,6 +305,8 @@
                     android:layout_height="wrap_content"
                     android:text="Registro de estratos"
                     android:textSize="16sp" />
+
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvMuestreoEstratos"
@@ -311,14 +321,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="24dp"
-                android:gravity="end"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
 
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -326,25 +331,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <Button
-                        android:id="@+id/btnAgregarImagenes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Agregar imagenes..."
-                        android:gravity="center"/>
 
-
-                </LinearLayout>
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fbNuevoEstrato"
+                <Button
+                    android:id="@+id/btnSelectImages"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/Background_Resultados"
-                    android:src="@drawable/plus_large_svgrepo_com"
-                    app:maxImageSize="40dp" />
-
+                    android:gravity="center"
+                    android:text="Agregar imagenes..." />
             </LinearLayout>
+
+
 
             <LinearLayout
 

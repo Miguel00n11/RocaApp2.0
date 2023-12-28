@@ -34,6 +34,7 @@ import com.miguelrodriguez.rocaapp20.Recycler.ClaseEstratos
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
 import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
+import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ImageAdapter
 import java.util.Calendar
 import kotlin.math.roundToInt
 
@@ -70,146 +71,64 @@ class RegistroMecanica : AppCompatActivity() {
     private var listaEstratosOriginal: MutableList<ClaseEstratos> = mutableListOf()
     private lateinit var estratoNuevo: ClaseEstratos
 
+    private val imageList = mutableListOf<String>() // Lista para almacenar las rutas de las imágenes
+    private lateinit var rvImagenesMecanica: RecyclerView
+    private lateinit var imageAdapter: ImageAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_muestreo_material)
 
+        // Inicializar RecyclerView y Adapter
+        rvImagenesMecanica = findViewById(R.id.rvImagenesMecanica)
+        imageAdapter = ImageAdapter(imageList)
+        rvImagenesMecanica.layoutManager = LinearLayoutManager(this)
+        rvImagenesMecanica.adapter = imageAdapter
+
+        val btnSelectImages: Button = findViewById(R.id.btnSelectImages)
+        btnSelectImages.setOnClickListener {
+            openImageChooser()
+        }
+
         InitComponent()
         InitUI()
-        cargarspinner2()
     }
 
-    //    override fun onWindowFocusChanged(hasFocus: Boolean) {
-//        super.onWindowFocusChanged(hasFocus)
-//
-//        if (hasFocus) {
-//            // Aquí puedes ejecutar el código después de que la interfaz de usuario se haya cargado completamente
-//            // Por ejemplo, podrías realizar alguna operación o actualizar elementos adicionales
-//            // ...
-//
-//            // También podrías llamar a la función cargarObraSeleccionada aquí si deseas ejecutar algo específico después de cargar la obra
-//            // cargarObraSeleccionada(reporteSelecionado)
-//        cargarspinner2()
-//
-//        }
-    private fun cargarItemsEstudioMuestreo2(selectedOption: String) {
-        // Handle different options as needed
-        when (selectedOption) {
-            "Terracería" -> {
-                // Load items specific to "Terracería"
-                val items = arrayOf(
-                    "Base Hidráulica",
-                    "Sub Base",
-                    "Sub Rasante",
-                    "Sub Yacente",
-                    "Terraplen",
-                    "Terreno Natural",
-                    "Para Identificación"
-                )
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spnEstudioMuestreo.adapter = adapter
-                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+    private fun openImageChooser() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        startActivityForResult(intent, PICK_IMAGES_REQUEST)
+    }
 
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-                        spnEstudioMuestreo.setSelection(i)
-                        break
-                    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGES_REQUEST && resultCode == RESULT_OK) {
+            if (data?.clipData != null) {
+                // Seleccionar varias imágenes
+                val clipData = data.clipData
+                for (i in 0 until clipData!!.itemCount) {
+                    val imageUri = clipData.getItemAt(i).uri
+                    imageList.add(imageUri.toString())
                 }
+            } else if (data?.data != null) {
+                // Seleccionar una sola imagen
+                val imageUri = data.data
+                imageList.add(imageUri.toString())
             }
 
-            "Asfalto" -> {
-                val items = arrayOf(
-                    "Carpeta Asf.",
-                    "Base Negra",
-                    "Peso Vol.",
-                    "Agregados",
-                    "Sello",
-                    "Emulsión",
-                    "Otro"
-                )
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spnEstudioMuestreo.adapter = adapter
-
-                val textoASeleccionar = reporteSelecionado.estudioMuestreo
-
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-                        spnEstudioMuestreo.setSelection(i)
-                        break
-                    }
-                }
-
-            }
-
-            "Prefabricado" -> {
-                val items = arrayOf(
-                    "Compresión",
-                    "Densidad",
-                    "Absorción",
-                    "Permeabilidad",
-                    "Otro"
-                )
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spnEstudioMuestreo.adapter = adapter
-                val textoASeleccionar = reporteSelecionado.estudioMuestreo
-
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-                        spnEstudioMuestreo.setSelection(i)
-                        break
-                    }
-                }
-            }
-
-            "Acero" -> {
-                val items = arrayOf(
-                    "Tensión",
-                    "Doblado",
-                    "Otro"
-                )
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spnEstudioMuestreo.adapter = adapter
-                val textoASeleccionar = reporteSelecionado.estudioMuestreo
-
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-                        spnEstudioMuestreo.setSelection(i)
-                        break
-                    }
-                }
-            }
-            // Add cases for other options as needed
-            else -> {
-                // Default case or handle other options
-            }
+            // Actualizar el RecyclerView
+            imageAdapter.notifyDataSetChanged()
         }
     }
 
-    private fun cargarspinner2() {
-
-
-        val textoASeleccionar = reporteSelecionado.estudioMuestreo
-
-        cargarItemsEstudioMuestreo2(spnMuestreo.selectedItem.toString())
-        val adapter = spnEstudioMuestreo.adapter
-
-        for (i in 0 until adapter.count) {
-            if (adapter.getItem(i).toString() == textoASeleccionar) {
-                spnEstudioMuestreo.setSelection(i)
-                break
-            }
-        }
-
-
+    companion object {
+        const val PICK_IMAGES_REQUEST = 1
     }
 
-//    }
+
 
     private fun InitComponent() {
         listaEstratosOriginal.clear()
@@ -252,8 +171,6 @@ class RegistroMecanica : AppCompatActivity() {
 
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObraMecanica) {
 
-//        cargarItemsMuestreo()
-
         tvNumeroReporteMuestreoMecanica.setText(reporteSelecionado.id.toString())
         etObraMuestreoMecanica.setText(reporteSelecionado.Obra)
         etFechaMuestreoMecanica.setText(reporteSelecionado.fecha)
@@ -263,7 +180,6 @@ class RegistroMecanica : AppCompatActivity() {
         etProcedenciaMuestreoMecanica.setText(reporteSelecionado.procedencia)
         etEstacionMuestreoMecanica.setText(reporteSelecionado.estacion)
         llave = reporteSelecionado.llave
-//        spnMuestreo.setSelection(1)
 
         val textoASeleccionar = reporteSelecionado.tipoMuestreo
         val adapter = spnMuestreo.adapter
@@ -275,17 +191,6 @@ class RegistroMecanica : AppCompatActivity() {
             }
         }
 
-//        val textoASeleccionar2 = reporteSelecionado.estudioMuestreo
-//        val adapter2 = spnEstudioMuestreo.adapter
-//
-//        for (i in 0 until adapter2.count) {
-//            if (adapter2.getItem(i).toString() == textoASeleccionar2) {
-//                spnEstudioMuestreo.setSelection(i)
-//                break
-//            }
-//        }
-//        spnMuestreo.setText(reporteSelecionado.tipoMuestreo)
-//        spnEstudioMuestreo.setText(reporteSelecionado.estudioMuestreo)
         listaEstratosmutableListOf = reporteSelecionado.listaEstratos
 
         EstratosAdapter =
@@ -315,11 +220,9 @@ class RegistroMecanica : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                if (editar == true) {
-                    cargarItemsEstudioMuestreo2(spnMuestreo.selectedItem.toString())
-                } else {
+
                     cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
-                }
+
 
             }
 
@@ -474,9 +377,6 @@ class RegistroMecanica : AppCompatActivity() {
             reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
-//
-//                    val nuevoNumeroReporte = snapshot.childrenCount.toInt()
-//                    val totalReportes = tvNumeroReporteCompactacion.text
 
                     if (accion == true) {
                         // Guardar el registro en Firebase Realtime Database
@@ -657,8 +557,6 @@ class RegistroMecanica : AppCompatActivity() {
 
         etNombreEstrato.setText(estratoSelecionado.nombre)
         etEspesorEstrato.setText(estratoSelecionado.espesor.toString())
-//        etMVSLCalaCompactacion.setText(calaSeleccionada.MVSL.toString())
-//        etHumedadLugarCalaCopactacion.setText(calaSeleccionada.Humedad.toString())
 
         btnGuardarEstrato.setOnClickListener {
 
@@ -778,6 +676,15 @@ class RegistroMecanica : AppCompatActivity() {
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
+
+                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+                        spnEstudioMuestreo.setSelection(i)
+                        break
+                    }
+                }
             }
 
             "Asfalto" -> {
@@ -793,6 +700,15 @@ class RegistroMecanica : AppCompatActivity() {
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
+
+                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+                        spnEstudioMuestreo.setSelection(i)
+                        break
+                    }
+                }
             }
 
             "Prefabricado" -> {
@@ -806,6 +722,15 @@ class RegistroMecanica : AppCompatActivity() {
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
+
+                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+                        spnEstudioMuestreo.setSelection(i)
+                        break
+                    }
+                }
             }
 
             "Acero" -> {
@@ -817,6 +742,15 @@ class RegistroMecanica : AppCompatActivity() {
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
+
+                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+
+                for (i in 0 until adapter.count) {
+                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+                        spnEstudioMuestreo.setSelection(i)
+                        break
+                    }
+                }
             }
             // Add cases for other options as needed
             else -> {
