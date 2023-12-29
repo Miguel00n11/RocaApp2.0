@@ -197,6 +197,7 @@ class RegistroMecanica : AppCompatActivity() {
         etLugarMuestreoMecanica = findViewById(R.id.etLugarMuestreoMecanica)
         etEstacionMuestreoMecanica = findViewById(R.id.etEstacionMuestreoMecanica)
         rvMuestreoEstratos = findViewById(R.id.rvMuestreoEstratos)
+        rvImagenesMecanica = findViewById(R.id.rvImagenesMecanica)
         fbNuevoEstrato = findViewById(R.id.fbNuevoEstrato)
         btnGuardarRegistroMuestreoMecanica = findViewById(R.id.btnGuardarRegistroMuestreoMecanica)
         btnCancelarRegistroMuestreoMecanica = findViewById(R.id.btnCancelarRegistroMuestreoMecanica)
@@ -222,69 +223,38 @@ class RegistroMecanica : AppCompatActivity() {
             val storage = FirebaseStorage.getInstance()
             val storageRef = storage.reference
 
-            val imageRef = storageRef.child(llave).child("imagen_0.jpg")
 
-            val cantidadImagenes=storageRef.child(llave).listAll()
+            val imageRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
 
+// Suponiendo que tienes una lista de rutas de imágenes llamada imagePaths
+            imageRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val tempList = mutableListOf<String>()
 
-// Obtener la URL de descarga de la imagen
-            imageRef.downloadUrl.addOnSuccessListener { uri ->
-                // La URL de descarga (token) está disponible en el objeto Uri
-                val downloadUrl = uri.toString()
+                    for (elementoSnapshot in dataSnapshot.children) {
+                        val elemento = elementoSnapshot.getValue(String::class.java)
+                        println("Elemento: $elemento")
 
-                // Ahora puedes usar `downloadUrl` según tus necesidades
+                        elemento?.let {
+                            tempList.add(it)
+                        }
+                    }
 
-                imagePaths.add(downloadUrl)
+                    imageList.clear()
+                    imageList.addAll(tempList)
 
-                // Suponiendo que tienes una lista de rutas de imágenes llamada imagePaths
-                imageAdapter = ImageAdapter(imagePaths) { position ->
-                    // Aquí manejas la eliminación de la imagen en la posición dada
-                    // Puedes implementar esta parte según tus necesidades
-
+                    // Configuramos el adaptador y notificamos los cambios
+                    imageAdapter = ImageAdapter(imageList) { position ->
+                        // Manejar eventos, si es necesario
+                    }
+                    rvImagenesMecanica.adapter = imageAdapter
+                    imageAdapter.notifyDataSetChanged()
                 }
 
-                rvImagenesMecanica.adapter = imageAdapter
-                imageAdapter.notifyDataSetChanged()
-
-
-            }.addOnFailureListener { exception ->
-                // Manejar el error
-            }
-
-            val imageRef1 = storageRef.child(llave).child("imagen_1.jpg")
-
-
-
-//// Obtener la URL de descarga de la imagen
-//            imageRef1.downloadUrl.addOnSuccessListener { uri ->
-//                // La URL de descarga (token) está disponible en el objeto Uri
-//                val downloadUrl = uri.toString()
-//
-//                // Ahora puedes usar `downloadUrl` según tus necesidades
-//
-//                imagePaths.add(downloadUrl)
-//
-//                // Suponiendo que tienes una lista de rutas de imágenes llamada imagePaths
-//                imageAdapter = ImageAdapter(imagePaths) { position ->
-//                    // Aquí manejas la eliminación de la imagen en la posición dada
-//                    // Puedes implementar esta parte según tus necesidades
-//
-//                }
-//
-//                rvImagenesMecanica.adapter = imageAdapter
-//                imageAdapter.notifyDataSetChanged()
-//
-//
-//            }.addOnFailureListener { exception ->
-//                // Manejar el error
-//            }
-
-
-
-
-
-
-
+                override fun onCancelled(databaseError: DatabaseError) {
+                    println("Error al obtener la lista de elementos: ${databaseError.message}")
+                }
+            })
 
 
 
@@ -449,8 +419,8 @@ class RegistroMecanica : AppCompatActivity() {
                 )
 
 
-                // Subir imágenes a Firebase Storage
                 subirImagenesAFirebaseStorage(editar)
+                // Subir imágenes a Firebase Storage
                 // Sincronizar los datos cuando hay conexión a Internet
                 syncDataWithFirebase(numeroReporte, listaEstratosmutableListOf, editar)
 
@@ -570,35 +540,72 @@ class RegistroMecanica : AppCompatActivity() {
         sharedPreferences.edit().putString("registros", registrosJson).apply()
     }
 
-    private fun subirImagenesAFirebaseStorage(accion:Boolean) {
-        if (accion==true)
-        {
+    private fun subirImagenesAFirebaseStorage(accion: Boolean) {
 
-        }else{
+        val registrosLocales = getLocalRecords()
 
-        }
-        for ((index, imageUri) in imageList.withIndex()) {
-            val imageFileName = "imagen_$index.jpg"
-            val imageRef = storageReference.child("$llave/$imageFileName")
 
-            val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
-            var downloadUrl=""
 
-            uploadTask.addOnSuccessListener {taskSnapshot ->
 
-            // Imagen subida exitosamente
-                // Puedes obtener la URL de la imagen con it.metadata?.reference?.downloadUrl
-                downloadUrl = taskSnapshot.storage.downloadUrl.toString()
-                imageList.add(downloadUrl.toString())
+        if (accion) {
+            // Código para el caso de acción verdadera
+            llave=reporteSelecionadoMuestroMaterial.llave
 
-            }.addOnFailureListener {
-                // Manejar el fallo de la subida
-                Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT).show()
+        } else {
+            // Código para el caso de acción falsa
+
+            val downloadUrls = mutableListOf<String>() // Lista para almacenar las URLs de descarga
+            for ((index, imageUri) in imageList.withIndex()) {
+//            val reportesReferencia = dataReference.child("Reportes").child(personal)
+                val imageFileName = "imagen_$index.jpg"
+                val imageRef = storageReference.child("$llave/$imageFileName")
+
+                val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
+
+                uploadTask.addOnSuccessListener { taskSnapshot ->
+                    // Imagen subida exitosamente
+                    // Puedes obtener la URL de la imagen con taskSnapshot.storage.downloadUrl
+                    taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                        // Aquí obtienes la URL de descarga
+                        val downloadUrl = uri.toString()
+
+                        // Agregar la URL a la lista
+                        downloadUrls.add(downloadUrl)
+
+                        // Si has subido todas las imágenes, puedes hacer algo con la lista de URLs
+                        if (downloadUrls.size == imageList.size) {
+                            // Aquí puedes trabajar con la lista completa de URLs
+                            // Por ejemplo, subir la lista a otra ubicación en Firebase Database
+                            subirUrlsAFirebaseDatabase(downloadUrls)
+                        }
+                    }
+                }.addOnFailureListener {
+                    // Manejar el fallo de la subida
+                    Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT).show()
+                }
             }
-            Toast.makeText(this, downloadUrl.toString(), Toast.LENGTH_SHORT).show()
-
         }
-//        Toast.makeText(this, imageList.count().toString(), Toast.LENGTH_SHORT).show()
+
+
+
+
+
+
+    }
+    // Función para subir la lista de URLs a Firebase Database (puedes adaptarla según tus necesidades)
+    private fun subirUrlsAFirebaseDatabase(downloadUrls: List<String>) {
+        // Subir la lista de URLs a Firebase Database
+        // Puedes adaptar esto según tu estructura de datos y lógica de la base de datos
+        val database = FirebaseDatabase.getInstance()
+        val databaseReference = database.reference.child("ImagenesMecanicas").child(personal).child(llave)
+
+        // Limpiar la base de datos antes de agregar nuevas URLs (si es necesario)
+        databaseReference.removeValue()
+
+        // Agregar las URLs a la base de datos
+        for ((index, url) in downloadUrls.withIndex()) {
+            databaseReference.child("imagen_$index").setValue(url)
+        }
     }
 
     private fun saveLocally(
