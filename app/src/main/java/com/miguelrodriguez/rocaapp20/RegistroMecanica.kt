@@ -40,6 +40,7 @@ import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
 import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ImageAdapter
+import java.io.File
 import java.util.Calendar
 import kotlin.math.roundToInt
 
@@ -157,7 +158,6 @@ class RegistroMecanica : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (editar){
-            imageList.clear()
 
             val listaRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
 
@@ -168,6 +168,7 @@ class RegistroMecanica : AppCompatActivity() {
 
                     for (i in 1..count ){
                         imageList.add(dataSnapshot.toString())
+
                     }
 //                    println("Número de elementos en la lista: $count")
                 }
@@ -176,6 +177,7 @@ class RegistroMecanica : AppCompatActivity() {
                     println("Error al obtener el conteo de elementos: ${databaseError.message}")
                 }
             })
+
         }
         if (requestCode == PICK_IMAGES_REQUEST && resultCode == RESULT_OK) {
             if (data?.clipData != null) {
@@ -572,9 +574,36 @@ class RegistroMecanica : AppCompatActivity() {
             // Código para el caso de acción verdadera
             llave=reporteSelecionadoMuestroMaterial.llave
             val downloadUrls = mutableListOf<String>() // Lista para almacenar las URLs de descarga
+
+
+            val listaRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
+
+            listaRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Itera sobre los hijos y agrega los valores reales al ArrayList
+                    for (childSnapshot in dataSnapshot.children) {
+                        val value = childSnapshot.getValue(String::class.java)
+                        value?.let {
+                            downloadUrls.add(it)
+                        }
+                    }
+
+                    // Ahora 'downloadUrls' contiene los valores de la lista
+                    println("Número de elementos en la lista: ${downloadUrls.size}")
+                    // Aquí puedes realizar cualquier otra operación con la lista
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    println("Error al obtener el conteo de elementos: ${databaseError.message}")
+                }
+            })
+
+
+
             for ((index, imageUri) in imageList.withIndex()) {
-//            val reportesReferencia = dataReference.child("Reportes").child(personal)
-                val llaveImagen=dataReference.key
+//                val llaveImagen=dataReference.push().key
+                val fileName = obtenerNombreArchivoDesdeRuta(imageUri)
+                val llaveImagen=imageUri
 
 
                 val imageFileName = "imagen_$llaveImagen.jpg"
@@ -601,7 +630,7 @@ class RegistroMecanica : AppCompatActivity() {
                     }
                 }.addOnFailureListener {
                     // Manejar el fallo de la subida
-                    Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error al subir la imagen en editar $index", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -609,10 +638,11 @@ class RegistroMecanica : AppCompatActivity() {
             // Código para el caso de acción falsa
 
             val downloadUrls = mutableListOf<String>() // Lista para almacenar las URLs de descarga
+
             for ((index, imageUri) in imageList.withIndex()) {
-//            val reportesReferencia = dataReference.child("Reportes").child(personal)
-                val llaveImagen=dataReference.key
-                val imageFileName = "imagen_$index.jpg"
+//                val llaveImagen=dataReference.push().key
+                val llaveImagen=imageUri
+                val imageFileName = "imagen_$llaveImagen.jpg"
                 val imageRef = storageReference.child("$llave/$imageFileName")
 
                 val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
@@ -646,6 +676,10 @@ class RegistroMecanica : AppCompatActivity() {
 
 
 
+    }
+    private fun obtenerNombreArchivoDesdeRuta(rutaCompleta: String): String {
+        val file = File(rutaCompleta)
+        return file.name
     }
     // Función para subir la lista de URLs a Firebase Database (puedes adaptarla según tus necesidades)
     private fun subirUrlsAFirebaseDatabase(downloadUrls: List<String>) {
