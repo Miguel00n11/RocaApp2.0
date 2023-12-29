@@ -83,6 +83,7 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var imageAdapter: ImageAdapter
 
     private lateinit var storageReference: StorageReference
+    private val imagePaths = mutableListOf<String>()
 
 
 
@@ -90,6 +91,7 @@ class RegistroMecanica : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_muestreo_material)
+
 
 
         // Inicializar RecyclerView y Adapter
@@ -110,6 +112,8 @@ class RegistroMecanica : AppCompatActivity() {
 
         InitComponent()
         InitUI()
+
+
     }
 
     private fun onImageDelete(position: Int) {
@@ -210,7 +214,83 @@ class RegistroMecanica : AppCompatActivity() {
 
         if (editar == true) {
             cargarObraSeleccionada(reporteSelecionado)
+
+
+
+            // Obtener referencia a la imagen en Firebase Storage
+            val storage = FirebaseStorage.getInstance()
+            val storageRef = storage.reference
+
+            val imageRef = storageRef.child(llave).child("imagen_0.jpg")
+
+            val cantidadImagenes=storageRef.child(llave).listAll()
+
+
+// Obtener la URL de descarga de la imagen
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                // La URL de descarga (token) está disponible en el objeto Uri
+                val downloadUrl = uri.toString()
+
+                // Ahora puedes usar `downloadUrl` según tus necesidades
+
+                imagePaths.add(downloadUrl)
+
+                // Suponiendo que tienes una lista de rutas de imágenes llamada imagePaths
+                imageAdapter = ImageAdapter(imagePaths) { position ->
+                    // Aquí manejas la eliminación de la imagen en la posición dada
+                    // Puedes implementar esta parte según tus necesidades
+
+                }
+
+                rvImagenesMecanica.adapter = imageAdapter
+                imageAdapter.notifyDataSetChanged()
+
+
+            }.addOnFailureListener { exception ->
+                // Manejar el error
+            }
+
+            val imageRef1 = storageRef.child(llave).child("imagen_1.jpg")
+
+
+
+//// Obtener la URL de descarga de la imagen
+//            imageRef1.downloadUrl.addOnSuccessListener { uri ->
+//                // La URL de descarga (token) está disponible en el objeto Uri
+//                val downloadUrl = uri.toString()
+//
+//                // Ahora puedes usar `downloadUrl` según tus necesidades
+//
+//                imagePaths.add(downloadUrl)
+//
+//                // Suponiendo que tienes una lista de rutas de imágenes llamada imagePaths
+//                imageAdapter = ImageAdapter(imagePaths) { position ->
+//                    // Aquí manejas la eliminación de la imagen en la posición dada
+//                    // Puedes implementar esta parte según tus necesidades
+//
+//                }
+//
+//                rvImagenesMecanica.adapter = imageAdapter
+//                imageAdapter.notifyDataSetChanged()
+//
+//
+//            }.addOnFailureListener { exception ->
+//                // Manejar el error
+//            }
+
+
+
+
+
+
+
+
+
+
+
+
         }
+
 
 
     }
