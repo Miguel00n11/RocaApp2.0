@@ -603,10 +603,8 @@ class RegistroMecanica : AppCompatActivity() {
             for ((index, imageUri) in imageList.withIndex()) {
 //                val llaveImagen=dataReference.push().key
                 val fileName = obtenerNombreArchivoDesdeRuta(imageUri)
-                val llaveImagen=imageUri
 
-
-                val imageFileName = "imagen_$llaveImagen.jpg"
+                val imageFileName = "$fileName.jpg"
                 val imageRef = storageReference.child("$llave/$imageFileName")
 
                 val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
@@ -641,8 +639,8 @@ class RegistroMecanica : AppCompatActivity() {
 
             for ((index, imageUri) in imageList.withIndex()) {
 //                val llaveImagen=dataReference.push().key
-                val llaveImagen=imageUri
-                val imageFileName = "imagen_$llaveImagen.jpg"
+                val fileName = obtenerNombreArchivoDesdeRuta(imageUri)
+                val imageFileName = "$fileName.jpg"
                 val imageRef = storageReference.child("$llave/$imageFileName")
 
                 val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
