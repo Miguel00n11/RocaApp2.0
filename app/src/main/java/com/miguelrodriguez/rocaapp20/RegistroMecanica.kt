@@ -156,6 +156,27 @@ class RegistroMecanica : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if (editar){
+            imageList.clear()
+
+            val listaRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
+
+            listaRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val count = dataSnapshot.childrenCount.toInt()
+                    // 'count' ahora contiene el número de elementos en tu lista
+
+                    for (i in 1..count ){
+                        imageList.add(dataSnapshot.toString())
+                    }
+//                    println("Número de elementos en la lista: $count")
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    println("Error al obtener el conteo de elementos: ${databaseError.message}")
+                }
+            })
+        }
         if (requestCode == PICK_IMAGES_REQUEST && resultCode == RESULT_OK) {
             if (data?.clipData != null) {
                 // Seleccionar varias imágenes
@@ -550,6 +571,39 @@ class RegistroMecanica : AppCompatActivity() {
         if (accion) {
             // Código para el caso de acción verdadera
             llave=reporteSelecionadoMuestroMaterial.llave
+            val downloadUrls = mutableListOf<String>() // Lista para almacenar las URLs de descarga
+            for ((index, imageUri) in imageList.withIndex()) {
+//            val reportesReferencia = dataReference.child("Reportes").child(personal)
+                val llaveImagen=dataReference.key
+
+
+                val imageFileName = "imagen_$llaveImagen.jpg"
+                val imageRef = storageReference.child("$llave/$imageFileName")
+
+                val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
+
+                uploadTask.addOnSuccessListener { taskSnapshot ->
+                    // Imagen subida exitosamente
+                    // Puedes obtener la URL de la imagen con taskSnapshot.storage.downloadUrl
+                    taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                        // Aquí obtienes la URL de descarga
+                        val downloadUrl = uri.toString()
+
+                        // Agregar la URL a la lista
+                        downloadUrls.add(downloadUrl)
+
+                        // Si has subido todas las imágenes, puedes hacer algo con la lista de URLs
+                        if (downloadUrls.size == imageList.size) {
+                            // Aquí puedes trabajar con la lista completa de URLs
+                            // Por ejemplo, subir la lista a otra ubicación en Firebase Database
+                            subirUrlsAFirebaseDatabase(downloadUrls)
+                        }
+                    }
+                }.addOnFailureListener {
+                    // Manejar el fallo de la subida
+                    Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT).show()
+                }
+            }
 
         } else {
             // Código para el caso de acción falsa
@@ -557,6 +611,7 @@ class RegistroMecanica : AppCompatActivity() {
             val downloadUrls = mutableListOf<String>() // Lista para almacenar las URLs de descarga
             for ((index, imageUri) in imageList.withIndex()) {
 //            val reportesReferencia = dataReference.child("Reportes").child(personal)
+                val llaveImagen=dataReference.key
                 val imageFileName = "imagen_$index.jpg"
                 val imageRef = storageReference.child("$llave/$imageFileName")
 
