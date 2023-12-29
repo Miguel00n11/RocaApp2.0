@@ -75,6 +75,7 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var EstratosAdapter: EstratosAdapter
     private lateinit var listaEstratosAdapter: MutableList<ClaseEstratos>
     private var listaEstratosmutableListOf: MutableList<ClaseEstratos> = mutableListOf()
+//    private var listaImagenesmutableListOf: MutableList<String> = mutableListOf()
     private var listaEstratosOriginal: MutableList<ClaseEstratos> = mutableListOf()
     private lateinit var estratoNuevo: ClaseEstratos
 
@@ -443,10 +444,13 @@ class RegistroMecanica : AppCompatActivity() {
                     estacion,
                     llave,
                     tipoMuestreo,
-                    estudioMuestreo
+                    estudioMuestreo,
+                    imageList
                 )
 
 
+                // Subir imágenes a Firebase Storage
+                subirImagenesAFirebaseStorage(editar)
                 // Sincronizar los datos cuando hay conexión a Internet
                 syncDataWithFirebase(numeroReporte, listaEstratosmutableListOf, editar)
 
@@ -454,8 +458,6 @@ class RegistroMecanica : AppCompatActivity() {
                 listaEstratosmutableListOf.clear()
 //                llave = dataReference.push().key.toString()
 
-                // Subir imágenes a Firebase Storage
-                subirImagenesAFirebaseStorage(editar)
                 updateTask()
 
 
@@ -580,14 +582,21 @@ class RegistroMecanica : AppCompatActivity() {
             val imageRef = storageReference.child("$llave/$imageFileName")
 
             val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
+            var downloadUrl=""
 
-            uploadTask.addOnSuccessListener {
-                // Imagen subida exitosamente
+            uploadTask.addOnSuccessListener {taskSnapshot ->
+
+            // Imagen subida exitosamente
                 // Puedes obtener la URL de la imagen con it.metadata?.reference?.downloadUrl
+                downloadUrl = taskSnapshot.storage.downloadUrl.toString()
+                imageList.add(downloadUrl.toString())
+
             }.addOnFailureListener {
                 // Manejar el fallo de la subida
                 Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT).show()
             }
+            Toast.makeText(this, downloadUrl.toString(), Toast.LENGTH_SHORT).show()
+
         }
 //        Toast.makeText(this, imageList.count().toString(), Toast.LENGTH_SHORT).show()
     }
@@ -606,7 +615,8 @@ class RegistroMecanica : AppCompatActivity() {
         estacion: String,
         llave: String,
         tipoMuestreo: String,
-        estudioMuestreo: String
+        estudioMuestreo: String,
+        listaImagenes:List<String>
 
 
     ) {
@@ -628,7 +638,8 @@ class RegistroMecanica : AppCompatActivity() {
             llave,
             tipoMuestreo,
             estudioMuestreo,
-            listaEstratos
+            listaEstratos,
+            listaImagenes
         )
         registrosLocales.add(nuevoRegistro)
 
@@ -932,6 +943,7 @@ class RegistroMecanica : AppCompatActivity() {
         var llave: String,
         var tipoMuestreo: String,
         var estudioMuestreo: String,
-        val listaEstratos: List<ClaseEstratos>
+        val listaEstratos: List<ClaseEstratos>,
+        val listaImagenes:List<String>
     )
 }

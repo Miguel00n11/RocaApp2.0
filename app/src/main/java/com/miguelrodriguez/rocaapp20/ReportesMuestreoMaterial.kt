@@ -35,6 +35,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     private lateinit var etFechaMuestreoMecanica: Button
     private lateinit var listaObrasmutableListOf: MutableList<ClaseObraMecanica>
     private lateinit var listaEstratossmutableListOf: MutableList<ClaseEstratos>
+    private lateinit var listaImagenesmutableListOf: MutableList<String>
 
     private lateinit var personal: String
     private lateinit var reporteSelecionado: ClaseObraMecanica
@@ -80,6 +81,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
     private fun InitComponet() {
         listaEstratossmutableListOf = mutableListOf(ClaseEstratos(1, "1", 1.0))
+        listaImagenesmutableListOf = mutableListOf("a1")
         listaObrasmutableListOf = mutableListOf()
         listaObrasmutableListOf.clear()
         personal = MainActivity.NombreUsuarioCompanion
@@ -87,7 +89,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         reporteSelecionadoMuestroMaterial = ClaseObraMecanica(
             1, "estacion", "1", "1", "1",
             "1", "1", "1", "1", "1", "ho111la",
-            "tipo", "estudio", listaEstratossmutableListOf
+            "tipo", "estudio", listaEstratossmutableListOf, listaImagenesmutableListOf
         )
 
 //        listaEstratossmutableListOf = mutableListOf(ClaseEstratos(1, "h", 1.0))
@@ -162,6 +164,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
                     val listaEstratosSnapshot = snapshot.child("listaEstratos")
                     val listaEstratos: MutableList<ClaseEstratos> = mutableListOf()
+                    val listaImagenes: MutableList<String> = mutableListOf()
 
                     for (snapshot in listaEstratosSnapshot.children) {
 
@@ -212,7 +215,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                             llave.toString(),
                             tipoMuestreo.toString(),
                             estudioMuestreo.toString(),
-                            listaEstratos
+                            listaEstratos,
+                            listaImagenes
 
 
                         ) // Asegúrate de ajustar los parámetros según tu clase
