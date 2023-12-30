@@ -578,7 +578,7 @@ class RegistroMecanica : AppCompatActivity() {
             llave=reporteSelecionadoMuestroMaterial.llave
             val downloadUrls = mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
 
-            dataReference.child("ImagenesMecanicas").child(personal).child(llave).removeValue()
+//            dataReference.child("ImagenesMecanicas").child(personal).child(llave).removeValue()
 
             val listaRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
 
