@@ -39,6 +39,7 @@ import com.miguelrodriguez.rocaapp20.Recycler.ClaseEstratos
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
 import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
+import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ClaseImagenes
 import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ImageAdapter
 import java.io.File
 import java.util.Calendar
@@ -573,7 +574,7 @@ class RegistroMecanica : AppCompatActivity() {
         if (accion) {
             // Código para el caso de acción verdadera
             llave=reporteSelecionadoMuestroMaterial.llave
-            val downloadUrls = mutableListOf<String>() // Lista para almacenar las URLs de descarga
+            val downloadUrls = mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
 
 
             val listaRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
@@ -584,7 +585,7 @@ class RegistroMecanica : AppCompatActivity() {
                     for (childSnapshot in dataSnapshot.children) {
                         val value = childSnapshot.getValue(String::class.java)
                         value?.let {
-                            downloadUrls.add(it)
+                            downloadUrls.add(ClaseImagenes(value,childSnapshot.key.toString()))
                         }
                     }
 
@@ -602,6 +603,7 @@ class RegistroMecanica : AppCompatActivity() {
 
             for ((index, imageUri) in imageList.withIndex()) {
 //                val llaveImagen=dataReference.push().key
+
                 val fileName = obtenerNombreArchivoDesdeRuta(imageUri)
 
                 val imageFileName = "$fileName.jpg"
@@ -617,7 +619,7 @@ class RegistroMecanica : AppCompatActivity() {
                         val downloadUrl = uri.toString()
 
                         // Agregar la URL a la lista
-                        downloadUrls.add(downloadUrl)
+                        downloadUrls.add(ClaseImagenes(downloadUrl,fileName))
 
                         // Si has subido todas las imágenes, puedes hacer algo con la lista de URLs
                         if (downloadUrls.size == imageList.size) {
@@ -626,16 +628,18 @@ class RegistroMecanica : AppCompatActivity() {
                             subirUrlsAFirebaseDatabase(downloadUrls)
                         }
                     }
+                    Toast.makeText(this,downloadUrls[0].NombreArchivo , Toast.LENGTH_SHORT).show()
+
                 }.addOnFailureListener {
                     // Manejar el fallo de la subida
-                    Toast.makeText(this, "Error al subir la imagen en editar $index", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "Error al subir la imagen en editar $index", Toast.LENGTH_SHORT).show()
                 }
             }
 
         } else {
             // Código para el caso de acción falsa
 
-            val downloadUrls = mutableListOf<String>() // Lista para almacenar las URLs de descarga
+            val downloadUrls = mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
 
             for ((index, imageUri) in imageList.withIndex()) {
 //                val llaveImagen=dataReference.push().key
@@ -652,13 +656,16 @@ class RegistroMecanica : AppCompatActivity() {
                         // Aquí obtienes la URL de descarga
                         val downloadUrl = uri.toString()
 
+                        val nombreImagen=File(uri.toString())
                         // Agregar la URL a la lista
-                        downloadUrls.add(downloadUrl)
+                        downloadUrls.add(ClaseImagenes(downloadUrl,fileName))
 
                         // Si has subido todas las imágenes, puedes hacer algo con la lista de URLs
                         if (downloadUrls.size == imageList.size) {
                             // Aquí puedes trabajar con la lista completa de URLs
                             // Por ejemplo, subir la lista a otra ubicación en Firebase Database
+                            Toast.makeText(this, imageFileName, Toast.LENGTH_SHORT).show()
+
                             subirUrlsAFirebaseDatabase(downloadUrls)
                         }
                     }
@@ -680,7 +687,7 @@ class RegistroMecanica : AppCompatActivity() {
         return file.name
     }
     // Función para subir la lista de URLs a Firebase Database (puedes adaptarla según tus necesidades)
-    private fun subirUrlsAFirebaseDatabase(downloadUrls: List<String>) {
+    private fun subirUrlsAFirebaseDatabase(downloadUrls: List<ClaseImagenes>) {
         // Subir la lista de URLs a Firebase Database
         // Puedes adaptar esto según tu estructura de datos y lógica de la base de datos
         val database = FirebaseDatabase.getInstance()
@@ -691,7 +698,7 @@ class RegistroMecanica : AppCompatActivity() {
 
         // Agregar las URLs a la base de datos
         for ((index, url) in downloadUrls.withIndex()) {
-            databaseReference.child("imagen_$index").setValue(url)
+            databaseReference.child(url.NombreArchivo).setValue(url.ImagenUrl)
         }
     }
 
