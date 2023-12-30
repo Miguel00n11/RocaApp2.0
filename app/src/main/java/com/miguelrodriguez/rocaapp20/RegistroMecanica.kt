@@ -72,16 +72,19 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var personal: String
     private lateinit var reporteSelecionado: ClaseObraMecanica
     private var editar: Boolean = false
+    private var siNo: Boolean = false
 
     private lateinit var rvMuestreoEstratos: RecyclerView
     private lateinit var EstratosAdapter: EstratosAdapter
     private lateinit var listaEstratosAdapter: MutableList<ClaseEstratos>
     private var listaEstratosmutableListOf: MutableList<ClaseEstratos> = mutableListOf()
-//    private var listaImagenesmutableListOf: MutableList<String> = mutableListOf()
+
+    //    private var listaImagenesmutableListOf: MutableList<String> = mutableListOf()
     private var listaEstratosOriginal: MutableList<ClaseEstratos> = mutableListOf()
     private lateinit var estratoNuevo: ClaseEstratos
 
-    private val imageList = mutableListOf<String>() // Lista para almacenar las rutas de las imágenes
+    private val imageList =
+        mutableListOf<String>() // Lista para almacenar las rutas de las imágenes
     private lateinit var rvImagenesMecanica: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
 
@@ -89,18 +92,15 @@ class RegistroMecanica : AppCompatActivity() {
     private val imagePaths = mutableListOf<String>()
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_muestreo_material)
 
 
-
         // Inicializar RecyclerView y Adapter
         rvImagenesMecanica = findViewById(R.id.rvImagenesMecanica)
         imageAdapter = ImageAdapter(imageList,
-            onImageDelete = {position->onImageDelete(position)})
+            onImageDelete = { position -> onImageDelete(position) })
         rvImagenesMecanica.layoutManager = LinearLayoutManager(this)
         rvImagenesMecanica.adapter = imageAdapter
 
@@ -130,9 +130,12 @@ class RegistroMecanica : AppCompatActivity() {
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
 
+
             imageList.removeAt(position)
 
             updateTask()
+
+
 
         }
 
@@ -147,6 +150,32 @@ class RegistroMecanica : AppCompatActivity() {
 
     }
 
+    private fun onImageDeleteActualizando() {
+        // Crea un objeto AlertDialog66
+        val builder = AlertDialog.Builder(this)
+
+
+        // Configura el título y el mensaje del cuadro de diálogo
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Deseas eliminar esta imagen?")
+
+        // Configura el botón positivo (sí)
+        builder.setPositiveButton("Sí") { dialog, which ->
+
+            siNo=true
+
+        }
+
+        // Configura el botón negativo (no)
+        builder.setNegativeButton("No") { dialog, which ->
+            siNo=false
+
+        }
+
+        // Muestra el cuadro de diálogo
+        builder.show()
+
+    }
 
     private fun openImageChooser() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -158,7 +187,7 @@ class RegistroMecanica : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (editar){
+        if (editar) {
 
             val listaRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
 
@@ -167,7 +196,7 @@ class RegistroMecanica : AppCompatActivity() {
                     val count = dataSnapshot.childrenCount.toInt()
                     // 'count' ahora contiene el número de elementos en tu lista
 
-                    for (i in 1..count ){
+                    for (i in 1..count) {
                         imageList.add(dataSnapshot.toString())
 
                     }
@@ -202,7 +231,6 @@ class RegistroMecanica : AppCompatActivity() {
     companion object {
         const val PICK_IMAGES_REQUEST = 1
     }
-
 
 
     private fun InitComponent() {
@@ -242,18 +270,20 @@ class RegistroMecanica : AppCompatActivity() {
             cargarObraSeleccionada(reporteSelecionado)
 
 
-
             // Obtener referencia a la imagen en Firebase Storage
             val storage = FirebaseStorage.getInstance()
-            val storageRef = storage.reference
+            val storageRef = storage.reference.child(llave)
 
 
             val imageRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
+            Toast.makeText(this, storageRef.toString(), Toast.LENGTH_SHORT).show()
 
 // Suponiendo que tienes una lista de rutas de imágenes llamada imagePaths
             imageRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val tempList = mutableListOf<String>()
+                    val ListaDeImagenes = mutableListOf<ClaseImagenes>()
+
 
                     for (elementoSnapshot in dataSnapshot.children) {
                         val elemento = elementoSnapshot.getValue(String::class.java)
@@ -261,15 +291,44 @@ class RegistroMecanica : AppCompatActivity() {
 
                         elemento?.let {
                             tempList.add(it)
+                            ListaDeImagenes.add(ClaseImagenes(it, elementoSnapshot.key.toString()))
                         }
                     }
 
                     imageList.clear()
                     imageList.addAll(tempList)
 
+
                     // Configuramos el adaptador y notificamos los cambios
                     imageAdapter = ImageAdapter(imageList) { position ->
                         // Manejar eventos, si es necesario
+//                        onImageDeleteActualizando(ListaDeImagenes[position].NombreArchivo)
+//                        onImageDeleteActualizando(ListaDeImagenes,position)
+
+//                        onImageDeleteActualizando()
+//                        if (siNo){
+//
+//                        }
+                        imageRef.child(ListaDeImagenes[position].NombreArchivo).removeValue()
+//                        storageRef.child(ListaDeImagenes[position].NombreArchivo).delete()
+
+
+//                            .addOnSuccessListener {
+//                                // Éxito al eliminar el archivo en Storage
+//                                println("Archivo eliminado exitosamente en Storage")
+//
+//                                // Actualizar la lista y notificar los cambios en el adaptador
+//                                imageList.removeAt(position)
+//                                imageAdapter.notifyDataSetChanged()
+//                            }.addOnFailureListener {
+//                            // Error al eliminar el archivo en Storage
+//                                println("Error al eliminar el archivo en Storage: ${it.message}")
+//                                println( storageRef
+//                                    .child("image%3A189402.jpg"))
+//                                println( storageRef.toString())
+//                        }
+
+
                         imageList.removeAt(position)
                         imageAdapter.notifyDataSetChanged()
                     }
@@ -283,11 +342,7 @@ class RegistroMecanica : AppCompatActivity() {
             })
 
 
-
-
-
         }
-
 
 
     }
@@ -344,7 +399,7 @@ class RegistroMecanica : AppCompatActivity() {
                 id: Long
             ) {
 
-                    cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
+                cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
 
 
             }
@@ -466,7 +521,6 @@ class RegistroMecanica : AppCompatActivity() {
         }
 
 
-
         // Configura el botón negativo (no)
         builder.setNegativeButton("No") { dialog, which ->
             return@setNegativeButton
@@ -575,8 +629,9 @@ class RegistroMecanica : AppCompatActivity() {
 
         if (accion) {
             // Código para el caso de acción verdadera
-            llave=reporteSelecionadoMuestroMaterial.llave
-            val downloadUrls = mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
+            llave = reporteSelecionadoMuestroMaterial.llave
+            val downloadUrls =
+                mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
 
 //            dataReference.child("ImagenesMecanicas").child(personal).child(llave).removeValue()
 
@@ -588,7 +643,7 @@ class RegistroMecanica : AppCompatActivity() {
                     for (childSnapshot in dataSnapshot.children) {
                         val value = childSnapshot.getValue(String::class.java)
                         value?.let {
-                            downloadUrls.add(ClaseImagenes(value,childSnapshot.key.toString()))
+                            downloadUrls.add(ClaseImagenes(value, childSnapshot.key.toString()))
                         }
                     }
 
@@ -622,7 +677,7 @@ class RegistroMecanica : AppCompatActivity() {
                         val downloadUrl = uri.toString()
 
                         // Agregar la URL a la lista
-                        downloadUrls.add(ClaseImagenes(downloadUrl,fileName))
+                        downloadUrls.add(ClaseImagenes(downloadUrl, fileName))
 
                         // Si has subido todas las imágenes, puedes hacer algo con la lista de URLs
                         if (downloadUrls.size == imageList.size) {
@@ -635,14 +690,19 @@ class RegistroMecanica : AppCompatActivity() {
 
                 }.addOnFailureListener {
                     // Manejar el fallo de la subida
-                    Toast.makeText(this, "Error al subir la imagen en editar $index", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Error al subir la imagen en editar $index",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
         } else {
             // Código para el caso de acción falsa
 
-            val downloadUrls = mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
+            val downloadUrls =
+                mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
 
             for ((index, imageUri) in imageList.withIndex()) {
 //                val llaveImagen=dataReference.push().key
@@ -659,9 +719,9 @@ class RegistroMecanica : AppCompatActivity() {
                         // Aquí obtienes la URL de descarga
                         val downloadUrl = uri.toString()
 
-                        val nombreImagen=File(uri.toString())
+                        val nombreImagen = File(uri.toString())
                         // Agregar la URL a la lista
-                        downloadUrls.add(ClaseImagenes(downloadUrl,fileName))
+                        downloadUrls.add(ClaseImagenes(downloadUrl, fileName))
 
                         // Si has subido todas las imágenes, puedes hacer algo con la lista de URLs
                         if (downloadUrls.size == imageList.size) {
@@ -674,27 +734,27 @@ class RegistroMecanica : AppCompatActivity() {
                     }
                 }.addOnFailureListener {
                     // Manejar el fallo de la subida
-                    Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
 
 
-
-
-
-
     }
+
     private fun obtenerNombreArchivoDesdeRuta(rutaCompleta: String): String {
         val file = File(rutaCompleta)
         return file.name
     }
+
     // Función para subir la lista de URLs a Firebase Database (puedes adaptarla según tus necesidades)
     private fun subirUrlsAFirebaseDatabase(downloadUrls: List<ClaseImagenes>) {
         // Subir la lista de URLs a Firebase Database
         // Puedes adaptar esto según tu estructura de datos y lógica de la base de datos
         val database = FirebaseDatabase.getInstance()
-        val databaseReference = database.reference.child("ImagenesMecanicas").child(personal).child(llave)
+        val databaseReference =
+            database.reference.child("ImagenesMecanicas").child(personal).child(llave)
 
         // Limpiar la base de datos antes de agregar nuevas URLs (si es necesario)
         databaseReference.removeValue()
@@ -720,7 +780,7 @@ class RegistroMecanica : AppCompatActivity() {
         llave: String,
         tipoMuestreo: String,
         estudioMuestreo: String,
-        listaImagenes:List<String>
+        listaImagenes: List<String>
 
 
     ) {
@@ -1048,6 +1108,6 @@ class RegistroMecanica : AppCompatActivity() {
         var tipoMuestreo: String,
         var estudioMuestreo: String,
         val listaEstratos: List<ClaseEstratos>,
-        val listaImagenes:List<String>
+        val listaImagenes: List<String>
     )
 }
