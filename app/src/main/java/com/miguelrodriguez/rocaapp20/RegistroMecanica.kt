@@ -270,6 +270,8 @@ class RegistroMecanica : AppCompatActivity() {
                     // Configuramos el adaptador y notificamos los cambios
                     imageAdapter = ImageAdapter(imageList) { position ->
                         // Manejar eventos, si es necesario
+                        imageList.removeAt(position)
+                        imageAdapter.notifyDataSetChanged()
                     }
                     rvImagenesMecanica.adapter = imageAdapter
                     imageAdapter.notifyDataSetChanged()
@@ -576,6 +578,7 @@ class RegistroMecanica : AppCompatActivity() {
             llave=reporteSelecionadoMuestroMaterial.llave
             val downloadUrls = mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
 
+            dataReference.child("ImagenesMecanicas").child(personal).child(llave).removeValue()
 
             val listaRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
 
@@ -628,11 +631,11 @@ class RegistroMecanica : AppCompatActivity() {
                             subirUrlsAFirebaseDatabase(downloadUrls)
                         }
                     }
-                    Toast.makeText(this,downloadUrls[0].NombreArchivo , Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this,downloadUrls[0].NombreArchivo , Toast.LENGTH_SHORT).show()
 
                 }.addOnFailureListener {
                     // Manejar el fallo de la subida
-//                    Toast.makeText(this, "Error al subir la imagen en editar $index", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error al subir la imagen en editar $index", Toast.LENGTH_SHORT).show()
                 }
             }
 
