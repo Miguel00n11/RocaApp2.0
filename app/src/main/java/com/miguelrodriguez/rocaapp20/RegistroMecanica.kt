@@ -136,7 +136,6 @@ class RegistroMecanica : AppCompatActivity() {
             updateTask()
 
 
-
         }
 
         // Configura el botón negativo (no)
@@ -150,25 +149,33 @@ class RegistroMecanica : AppCompatActivity() {
 
     }
 
-    private fun onImageDeleteActualizando() {
+    private fun onImageDeleteActualizando(imageRef: DatabaseReference,position: Int,storageRef:StorageReference) {
         // Crea un objeto AlertDialog66
         val builder = AlertDialog.Builder(this)
 
 
         // Configura el título y el mensaje del cuadro de diálogo
         builder.setTitle("Confirmación")
-        builder.setMessage("¿Deseas eliminar esta imagen?")
+        builder.setMessage("¿Deseas eliminar esta imagen actulizacion?")
 
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
 
-            siNo=true
+//            siNo = true
+            imageRef.removeValue()
+            storageRef.delete()
+            imageList.removeAt(position)
+            imageAdapter.notifyDataSetChanged()
+
+            recreate()
+
 
         }
 
         // Configura el botón negativo (no)
         builder.setNegativeButton("No") { dialog, which ->
-            siNo=false
+//            siNo = false
+            return@setNegativeButton
 
         }
 
@@ -309,7 +316,11 @@ class RegistroMecanica : AppCompatActivity() {
 //                        if (siNo){
 //
 //                        }
-                        imageRef.child(ListaDeImagenes[position].NombreArchivo).removeValue()
+                        onImageDeleteActualizando(imageRef.child(ListaDeImagenes[position].NombreArchivo),position,storageRef.child(ListaDeImagenes[position].NombreArchivo+".jpg"))
+
+//                        imageRef.child(ListaDeImagenes[position].NombreArchivo).removeValue()
+
+
 //                        storageRef.child(ListaDeImagenes[position].NombreArchivo).delete()
 
 
@@ -329,8 +340,6 @@ class RegistroMecanica : AppCompatActivity() {
 //                        }
 
 
-                        imageList.removeAt(position)
-                        imageAdapter.notifyDataSetChanged()
                     }
                     rvImagenesMecanica.adapter = imageAdapter
                     imageAdapter.notifyDataSetChanged()
