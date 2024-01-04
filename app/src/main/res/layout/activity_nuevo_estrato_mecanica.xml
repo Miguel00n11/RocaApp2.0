@@ -39,7 +39,6 @@
         android:hint="Espesor estrato [m]"
         android:inputType="number|numberDecimal"
         android:selectAllOnFocus="true"
-        android:text="20"
         android:textColorHint="@color/white" />
 
 

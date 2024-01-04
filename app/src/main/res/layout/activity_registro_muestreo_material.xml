@@ -229,7 +229,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Procedencia:"
-                    android:inputType="number|numberDecimal"
+                    android:inputType="text"
                     android:selectAllOnFocus="true" />
 
 
@@ -254,7 +254,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Lugar de muestreo:"
-                    android:inputType="number|numberDecimal"
+                    android:inputType="text"
                     android:selectAllOnFocus="true" />
 
 
@@ -279,7 +279,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Estación:"
-                    android:inputType="number|numberDecimal"
+                    android:inputType="text"
                     android:selectAllOnFocus="true" />
 
 
@@ -338,7 +338,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Agregar imagenes..." />
+                    android:text="Agregar imágenes..." />
                 <Button
                     android:id="@+id/btnGuardadUbicacion"
                     android:layout_width="wrap_content"
