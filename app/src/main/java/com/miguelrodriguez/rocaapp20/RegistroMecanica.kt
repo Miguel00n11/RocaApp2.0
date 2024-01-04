@@ -47,6 +47,13 @@ import kotlin.math.roundToInt
 
 import java.util.UUID
 
+import android.content.pm.PackageManager
+import android.location.Location
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+
 class RegistroMecanica : AppCompatActivity() {
     private lateinit var dataReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
@@ -65,6 +72,10 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var fbNuevoEstrato: FloatingActionButton
     private lateinit var btnGuardarRegistroMuestreoMecanica: Button
     private lateinit var btnCancelarRegistroMuestreoMecanica: Button
+    private lateinit var tvLatitud: TextView
+    private lateinit var tvLongitud: TextView
+    private var latitud:String=""
+    private var longitud:String=""
 
     private lateinit var llave: String
     private lateinit var tvNumeroReporteMuestreoMecanica: TextView
@@ -91,6 +102,9 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var storageReference: StorageReference
     private val imagePaths = mutableListOf<String>()
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1001
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,11 +127,150 @@ class RegistroMecanica : AppCompatActivity() {
             openImageChooser()
         }
 
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        val btnGuardarUbicacion: Button = findViewById(R.id.btnGuardadUbicacion)
+        btnGuardarUbicacion.setOnClickListener {
+            if (checkLocationPermission()) {
+                obtenerUbicacionActual()
+            } else {
+                solicitarPermisoUbicacion()
+            }
+        }
+
+
         InitComponent()
         InitUI()
 
 
     }
+
+    private fun checkLocationPermission(): Boolean {
+        val fineLocationPermission = ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        val coarseLocationPermission = ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+        return fineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                coarseLocationPermission == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun solicitarPermisoUbicacion() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
+    }
+
+    private fun obtenerUbicacionActual() {
+        if (checkLocationPermission()) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    location?.let {
+                        // Aquí puedes utilizar la ubicación actual (location)
+                        val latitud = it.latitude
+                        val longitud = it.longitude
+
+                        tvLatitud.setText(latitud.toString())
+                        tvLongitud.setText(longitud.toString())
+
+                        this.latitud=latitud.toString()
+                        this.longitud=longitud.toString()
+
+                        // Guardar la ubicación en Firebase Realtime Database
+
+//                        guardarUbicacionEnFirebase(latitud, longitud)
+
+//                        // Crear una URI para la ubicación
+//                        val uri = "geo:$latitud,$longitud?q=$latitud,$longitud"
+//                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+//
+//                        // Verificar si hay aplicaciones que pueden manejar la intención
+//                        if (intent.resolveActivity(packageManager) != null) {
+//                            startActivity(intent)
+//                        } else {
+//                            Toast.makeText(
+//                                this,
+//                                "No se encontró ninguna aplicación para manejar la ubicación",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+                    } ?: run {
+                        Toast.makeText(
+                            this,
+                            "No se pudo obtener la ubicación actual",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        } else {
+            solicitarPermisoUbicacion()
+        }
+    }
+
+    private fun guardarUbicacionEnFirebase(latitud: Double, longitud: Double) {
+        // Obtiene la referencia al nodo "ubicaciones" (puedes cambiar el nombre según tus necesidades)
+        val ubicacionesRef = FirebaseDatabase.getInstance().getReference("ReportesMecanicas")
+
+        // Obtiene el ID del usuario actual (puedes personalizar según tu aplicación)
+//        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        // Crea un nuevo nodo bajo "ubicaciones" usando el ID del usuario
+        val usuarioUbicacionRef = ubicacionesRef.child(personal).child(llave).child("ubicaciones")
+
+        // Guarda las coordenadas de la ubicación en el nodo del usuario
+        usuarioUbicacionRef.setValue(LocationData(latitud, longitud))
+            .addOnSuccessListener {
+                Toast.makeText(
+                    this,
+                    "Ubicación guardada en Firebase",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    this,
+                    "Error al guardar la ubicación en Firebase",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    // Clase para representar los datos de ubicación
+    data class LocationData(val latitud: Double, val longitud: Double)
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                grantResults[1] == PackageManager.PERMISSION_GRANTED
+            ) {
+                obtenerUbicacionActual()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Permiso de ubicación denegado",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
 
     private fun onImageDelete(position: Int) {
         // Crea un objeto AlertDialog66
@@ -149,7 +302,11 @@ class RegistroMecanica : AppCompatActivity() {
 
     }
 
-    private fun onImageDeleteActualizando(imageRef: DatabaseReference,position: Int,storageRef:StorageReference) {
+    private fun onImageDeleteActualizando(
+        imageRef: DatabaseReference,
+        position: Int,
+        storageRef: StorageReference
+    ) {
         // Crea un objeto AlertDialog66
         val builder = AlertDialog.Builder(this)
 
@@ -207,7 +364,7 @@ class RegistroMecanica : AppCompatActivity() {
                         imageList.add(dataSnapshot.toString())
 
                     }
-//                    println("Número de elementos en la lista: $count")
+
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -261,6 +418,8 @@ class RegistroMecanica : AppCompatActivity() {
         btnGuardarRegistroMuestreoMecanica = findViewById(R.id.btnGuardarRegistroMuestreoMecanica)
         btnCancelarRegistroMuestreoMecanica = findViewById(R.id.btnCancelarRegistroMuestreoMecanica)
         tvNumeroReporteMuestreoMecanica = findViewById(R.id.tvNumeroReporteMuestreoMecanica)
+        tvLatitud = findViewById(R.id.tvLatitud)
+        tvLongitud = findViewById(R.id.tvLongitud)
 
         personal = MainActivity.NombreUsuarioCompanion
         editar = ReportesMuestreoMaterial.editarMuestreoMaterial
@@ -270,12 +429,10 @@ class RegistroMecanica : AppCompatActivity() {
         reporteSelecionadoMuestroMaterial =
             ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
 
-
         cargarItemsMuestreo()
 
         if (editar == true) {
             cargarObraSeleccionada(reporteSelecionado)
-
 
             // Obtener referencia a la imagen en Firebase Storage
             val storage = FirebaseStorage.getInstance()
@@ -305,40 +462,14 @@ class RegistroMecanica : AppCompatActivity() {
                     imageList.clear()
                     imageList.addAll(tempList)
 
-
                     // Configuramos el adaptador y notificamos los cambios
                     imageAdapter = ImageAdapter(imageList) { position ->
-                        // Manejar eventos, si es necesario
-//                        onImageDeleteActualizando(ListaDeImagenes[position].NombreArchivo)
-//                        onImageDeleteActualizando(ListaDeImagenes,position)
 
-//                        onImageDeleteActualizando()
-//                        if (siNo){
-//
-//                        }
-                        onImageDeleteActualizando(imageRef.child(ListaDeImagenes[position].NombreArchivo),position,storageRef.child(ListaDeImagenes[position].NombreArchivo+".jpg"))
-
-//                        imageRef.child(ListaDeImagenes[position].NombreArchivo).removeValue()
-
-
-//                        storageRef.child(ListaDeImagenes[position].NombreArchivo).delete()
-
-
-//                            .addOnSuccessListener {
-//                                // Éxito al eliminar el archivo en Storage
-//                                println("Archivo eliminado exitosamente en Storage")
-//
-//                                // Actualizar la lista y notificar los cambios en el adaptador
-//                                imageList.removeAt(position)
-//                                imageAdapter.notifyDataSetChanged()
-//                            }.addOnFailureListener {
-//                            // Error al eliminar el archivo en Storage
-//                                println("Error al eliminar el archivo en Storage: ${it.message}")
-//                                println( storageRef
-//                                    .child("image%3A189402.jpg"))
-//                                println( storageRef.toString())
-//                        }
-
+                        onImageDeleteActualizando(
+                            imageRef.child(ListaDeImagenes[position].NombreArchivo),
+                            position,
+                            storageRef.child(ListaDeImagenes[position].NombreArchivo + ".jpg")
+                        )
 
                     }
                     rvImagenesMecanica.adapter = imageAdapter
@@ -350,9 +481,7 @@ class RegistroMecanica : AppCompatActivity() {
                 }
             })
 
-
         }
-
 
     }
 
@@ -409,7 +538,6 @@ class RegistroMecanica : AppCompatActivity() {
             ) {
 
                 cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
-
 
             }
 
@@ -474,7 +602,6 @@ class RegistroMecanica : AppCompatActivity() {
 
             try {
 
-
                 val obra: String = etObraMuestreoMecanica.text.toString()
                 val fecha: String = etFechaMuestreoMecanica.text.toString()
                 val numeroReporte: Int = tvNumeroReporteMuestreoMecanica.text.toString().toInt()
@@ -486,6 +613,8 @@ class RegistroMecanica : AppCompatActivity() {
                 val estacion: String = etEstacionMuestreoMecanica.text.toString()
                 val tipoMuestreo: String = spnMuestreo.selectedItem.toString()
                 val estudioMuestreo: String = spnEstudioMuestreo.selectedItem.toString()
+//                var latitud: String = tvLatitud.toString()
+//                var longitud: String = tvLongitud.toString()
                 var llave = reporteSelecionadoMuestroMaterial.llave
 
 
@@ -505,6 +634,7 @@ class RegistroMecanica : AppCompatActivity() {
                     llave,
                     tipoMuestreo,
                     estudioMuestreo,
+                    latitud,longitud,
                     imageList
                 )
 
@@ -514,11 +644,10 @@ class RegistroMecanica : AppCompatActivity() {
                 // Sincronizar los datos cuando hay conexión a Internet
                 syncDataWithFirebase(numeroReporte, listaEstratosmutableListOf, editar)
 
-//                ConsultarUltimoRegistro()
                 listaEstratosmutableListOf.clear()
-//                llave = dataReference.push().key.toString()
-
                 updateTask()
+//                guardarUbicacionEnFirebase(latitud, longitud)
+
 
 
                 Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
@@ -605,16 +734,9 @@ class RegistroMecanica : AppCompatActivity() {
 
                 override fun onCancelled(error: DatabaseError) {
 
-
                 }
             })
 
-
-            // Guardar el registro en Firebase Realtime Database
-//            dataReference.child("Reportes").child(nuevaClave!!).setValue(registro)
-
-
-            // Eliminar el registro local después de la sincronización
             registrosLocales.remove(registro)
         }
 
@@ -714,7 +836,6 @@ class RegistroMecanica : AppCompatActivity() {
                 mutableListOf<ClaseImagenes>() // Lista para almacenar las URLs de descarga
 
             for ((index, imageUri) in imageList.withIndex()) {
-//                val llaveImagen=dataReference.push().key
                 val fileName = obtenerNombreArchivoDesdeRuta(imageUri)
                 val imageFileName = "$fileName.jpg"
                 val imageRef = storageReference.child("$llave/$imageFileName")
@@ -789,6 +910,8 @@ class RegistroMecanica : AppCompatActivity() {
         llave: String,
         tipoMuestreo: String,
         estudioMuestreo: String,
+        latitud: String,
+        longitud: String,
         listaImagenes: List<String>
 
 
@@ -811,6 +934,7 @@ class RegistroMecanica : AppCompatActivity() {
             llave,
             tipoMuestreo,
             estudioMuestreo,
+            latitud,longitud,
             listaEstratos,
             listaImagenes
         )
@@ -850,8 +974,6 @@ class RegistroMecanica : AppCompatActivity() {
                 )
                 listaEstratosmutableListOf.add(estratoNuevo)
 
-//                llave=dataReference.push().key.toString()
-
                 updateTask()
 
                 dialog.hide()
@@ -875,7 +997,6 @@ class RegistroMecanica : AppCompatActivity() {
         showDialog(listaEstratosmutableListOf[position], position)
 
     }
-
     private fun showDialog(estratoSelecionado: ClaseEstratos, indice: Int) {
 
 
@@ -905,7 +1026,6 @@ class RegistroMecanica : AppCompatActivity() {
                 val nombre = etNombreEstrato.text.toString()
                 val espesor = etEspesorEstrato.text.toString().toDouble()
 
-
                 estratoNuevo = ClaseEstratos(
                     indice,
                     nombre,
@@ -931,20 +1051,6 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     private fun onItemDelete(position: Int) {
-//        if (isNetworkAvailable()) {
-//            val reportKey = listaEstratosmutableListOf[position].llave // Utiliza la clave única del informe
-//
-//            // Elimina el informe de la base de datos Firebase
-//            deleteReport(reportKey)
-//
-//            // Elimina el informe de la lista local
-//            listaEstratosmutableListOf.removeAt(position)
-//
-//            // Notifica al adaptador que los datos han cambiado
-//            updateTask()
-//        } else {
-//            Toast.makeText(this, "No hay conexión a Internet", Toast.LENGTH_SHORT).show()
-//        }
     }
 
     private fun isNetworkAvailable(): Boolean {
@@ -956,22 +1062,6 @@ class RegistroMecanica : AppCompatActivity() {
             ?: false
     }
 
-
-    //    private fun deleteReport(reportKey: String) {
-//        val reportReference = dataReference.child(reportKey)
-//
-//        reportReference.removeValue()
-//            .addOnSuccessListener {
-//                Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
-//            }
-//            .addOnFailureListener { e ->
-//                Toast.makeText(
-//                    this,
-//                    "Error al eliminar el informe: ${e.message}",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//    }
     private fun updateTask() {
         EstratosAdapter.notifyDataSetChanged()
         imageAdapter.notifyDataSetChanged()
@@ -1116,6 +1206,8 @@ class RegistroMecanica : AppCompatActivity() {
         var llave: String,
         var tipoMuestreo: String,
         var estudioMuestreo: String,
+        val latitud: String,
+        val longitud: String,
         val listaEstratos: List<ClaseEstratos>,
         val listaImagenes: List<String>
     )
