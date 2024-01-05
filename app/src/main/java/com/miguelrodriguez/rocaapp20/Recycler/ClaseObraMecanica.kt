@@ -13,6 +13,8 @@ data class ClaseObraMecanica(val id:Int,
                              var llave:String,
                              var tipoMuestreo:String,
                              var estudioMuestreo:String,
+                             var latitud:String,
+                             var longitud:String,
                              val listaEstratos:MutableList<ClaseEstratos>,
                              val listaImagenes:MutableList<String>
 

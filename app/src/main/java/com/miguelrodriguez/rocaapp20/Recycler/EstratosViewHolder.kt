@@ -34,29 +34,33 @@ class EstratosViewHolder(view:View):RecyclerView.ViewHolder(view) {
         btnEliminarEstrato.setOnClickListener {
             onItemDelete(adapterPosition)
         }
-        itemView.findViewById<FloatingActionButton>(R.id.btnEliminarEstrato)
-            .setOnClickListener {
-                showDeleteConfirmationDialog(itemView.context) {
-                    // Llama a onItemDelete solo si el usuario hace clic en "Sí"
-                    if (it) {
-                        onItemDelete(position)
-                    }
-                }
-
-            }
+//        itemView.findViewById<FloatingActionButton>(R.id.btnEliminarEstrato)
+//            .setOnClickListener {
+//                showDeleteConfirmationDialog(itemView.context) {
+//                    // Llama a onItemDelete solo si el usuario hace clic en "Sí"
+//                    if (it) {
+//                        onItemDelete(position)
+//                    }
+//                }
+//
+//            }
     }
-    private fun showDeleteConfirmationDialog(context: Context, onConfirmation: (Boolean) -> Unit) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Confirmar Eliminación")
-            .setMessage("¿Estás seguro de que deseas eliminar este elemento?")
-            .setPositiveButton("Sí") { _, _ ->
-                // Llama al manejador con true cuando el usuario hace clic en "Sí"
-                onConfirmation(true)
-            }
-            .setNegativeButton("No") { _, _ ->
-                // Llama al manejador con false cuando el usuario hace clic en "No"
-                onConfirmation(false)
-            }
-            .show()
-    }
+//    private fun showDeleteConfirmationDialog(context: Context, onConfirmation: (Boolean) -> Unit) {
+//        val builder = AlertDialog.Builder(context)
+//        builder.setTitle("Confirmar Eliminación")
+//            .setMessage("¿Estás seguro de que deseas eliminar este elemento?")
+//            .setPositiveButton("Sí") { _, _ ->
+//                // Llama al manejador con true cuando el usuario hace clic en "Sí"
+//                onConfirmation(true)
+//            }
+//            .setNegativeButton("No") { _, _ ->
+//                // Llama al manejador con false cuando el usuario hace clic en "No"
+//                onConfirmation(false)
+//            }
+//            .show()
+//
+//
+//
+//
+//    }
 }

@@ -74,8 +74,8 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var btnCancelarRegistroMuestreoMecanica: Button
     private lateinit var tvLatitud: TextView
     private lateinit var tvLongitud: TextView
-    private var latitud:String=""
-    private var longitud:String=""
+//    private var latitud:String=""
+//    private var longitud:String=""
 
     private lateinit var llave: String
     private lateinit var tvNumeroReporteMuestreoMecanica: TextView
@@ -177,14 +177,14 @@ class RegistroMecanica : AppCompatActivity() {
                 .addOnSuccessListener { location: Location? ->
                     location?.let {
                         // Aquí puedes utilizar la ubicación actual (location)
-                        val latitud = it.latitude
-                        val longitud = it.longitude
+                        var latitud = it.latitude
+                        var longitud = it.longitude
 
                         tvLatitud.setText(latitud.toString())
                         tvLongitud.setText(longitud.toString())
 
-                        this.latitud=latitud.toString()
-                        this.longitud=longitud.toString()
+//                        this.latitud=latitud.toString()
+//                        this.longitud=longitud.toString()
 
                         // Guardar la ubicación en Firebase Realtime Database
 
@@ -246,7 +246,7 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     // Clase para representar los datos de ubicación
-    data class LocationData(val latitud: Double, val longitud: Double)
+    data class LocationData(var latitud: Double, var longitud: Double)
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -494,7 +494,10 @@ class RegistroMecanica : AppCompatActivity() {
         etTramoMuestreoMecanica.setText(reporteSelecionado.tramo)
         etSubTramoMuestreoMecanica.setText(reporteSelecionado.subtramo)
         etProcedenciaMuestreoMecanica.setText(reporteSelecionado.procedencia)
+        etLugarMuestreoMecanica.setText(reporteSelecionado.lugarMuestreo)
         etEstacionMuestreoMecanica.setText(reporteSelecionado.estacion)
+        tvLatitud.setText(reporteSelecionado.latitud)
+        tvLongitud.setText(reporteSelecionado.longitud)
         llave = reporteSelecionado.llave
 
         val textoASeleccionar = reporteSelecionado.tipoMuestreo
@@ -613,8 +616,8 @@ class RegistroMecanica : AppCompatActivity() {
                 val estacion: String = etEstacionMuestreoMecanica.text.toString()
                 val tipoMuestreo: String = spnMuestreo.selectedItem.toString()
                 val estudioMuestreo: String = spnEstudioMuestreo.selectedItem.toString()
-//                var latitud: String = tvLatitud.toString()
-//                var longitud: String = tvLongitud.toString()
+                var latitud: String = tvLatitud.text.toString()
+                var longitud: String = tvLongitud.text.toString()
                 var llave = reporteSelecionadoMuestroMaterial.llave
 
 
@@ -1051,6 +1054,38 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     private fun onItemDelete(position: Int) {
+
+        // Crea un objeto AlertDialog66
+        val builder = AlertDialog.Builder(this)
+
+        // Configura el título y el mensaje del cuadro de diálogo
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Deseas eliminar este estrato?")
+
+        // Configura el botón positivo (sí)
+        builder.setPositiveButton("Sí") { dialog, which ->
+
+            listaEstratosmutableListOf.removeAt(position)
+            listaEstratosmutableListOf.forEachIndexed { index, elemento ->
+                // Puedes realizar alguna lógica para determinar la nueva numeración
+                val nuevaNumeracion = index  // Sumar 1 para empezar desde 1, si es necesario
+
+                // Reemplazar la numeración en cada objeto
+                elemento.idEstrato = nuevaNumeracion
+            }
+            EstratosAdapter.notifyDataSetChanged()
+
+
+        }
+
+        // Configura el botón negativo (no)
+        builder.setNegativeButton("No") { dialog, which ->
+            return@setNegativeButton
+            // Código a ejecutar si el usuario hace clic en No
+        }
+
+        // Muestra el cuadro de diálogo
+        builder.show()
     }
 
     private fun isNetworkAvailable(): Boolean {
@@ -1206,8 +1241,8 @@ class RegistroMecanica : AppCompatActivity() {
         var llave: String,
         var tipoMuestreo: String,
         var estudioMuestreo: String,
-        val latitud: String,
-        val longitud: String,
+        var latitud: String,
+        var longitud: String,
         val listaEstratos: List<ClaseEstratos>,
         val listaImagenes: List<String>
     )

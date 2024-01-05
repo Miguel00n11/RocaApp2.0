@@ -89,7 +89,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         reporteSelecionadoMuestroMaterial = ClaseObraMecanica(
             1, "estacion", "1", "1", "1",
             "1", "1", "1", "1", "1", "ho111la",
-            "tipo", "estudio", listaEstratossmutableListOf, listaImagenesmutableListOf
+            "tipo", "estudio","latitud","longitud", listaEstratossmutableListOf, listaImagenesmutableListOf
         )
 
 //        listaEstratossmutableListOf = mutableListOf(ClaseEstratos(1, "h", 1.0))
@@ -197,6 +197,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                     val subTramo = snapshot.child("subTramo").getValue(String::class.java)
                     val tramo = snapshot.child("tramo").getValue(String::class.java)
                     val lugarMuestreo = snapshot.child("lugarMuestreo").getValue(String::class.java)
+                    val latitud = snapshot.child("latitud").getValue(String::class.java)
+                    val longitud = snapshot.child("longitud").getValue(String::class.java)
 
                     // Verifica si el personal coincide con el personal deseado
                     if (personal1 == personal) {
@@ -215,6 +217,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                             llave.toString(),
                             tipoMuestreo.toString(),
                             estudioMuestreo.toString(),
+                            latitud.toString(),
+                            longitud.toString(),
                             listaEstratos,
                             listaImagenes
 
