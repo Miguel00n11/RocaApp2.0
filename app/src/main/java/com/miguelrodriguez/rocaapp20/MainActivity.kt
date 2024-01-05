@@ -48,18 +48,20 @@ class MainActivity : AppCompatActivity() {
         val indiceArroba = correo.indexOf('@')
         return if (indiceArroba != -1) {
             val nombreUsuario = correo.substring(0, indiceArroba)
-            NombreUsuarioCompanion = nombreUsuario // Asigna el nombre de usuario a la variable global
+            NombreUsuarioCompanion =
+                nombreUsuario // Asigna el nombre de usuario a la variable global
             nombreUsuario
         } else {
             correo // Devuelve el correo completo si no se encuentra el símbolo "@"
         }
     }
+
     private fun initUI() {
 
         btnAcceder.setOnClickListener {
             obtenerNombreUsuarioDesdeCorreo(NombreUsuario.text.toString())
 
-            acceder1(
+            acceder(
                 NombreUsuario.text.toString(),
                 Password.text.toString()
             )
@@ -88,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun acceder1(email: String, password: String) {
+    private fun acceder(email: String, password: String) {
         if (isNetworkAvailable()) {
             try {
                 auth.signInWithEmailAndPassword(email, password)
@@ -122,8 +124,10 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
     private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
