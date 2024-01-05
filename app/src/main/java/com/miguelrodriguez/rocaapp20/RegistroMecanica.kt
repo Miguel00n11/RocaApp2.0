@@ -313,7 +313,7 @@ class RegistroMecanica : AppCompatActivity() {
 
         // Configura el título y el mensaje del cuadro de diálogo
         builder.setTitle("Confirmación")
-        builder.setMessage("¿Deseas eliminar esta imagen actulizacion?")
+        builder.setMessage("¿Deseas eliminar esta imagen de la base de datos?")
 
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
@@ -440,7 +440,7 @@ class RegistroMecanica : AppCompatActivity() {
 
 
             val imageRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
-            Toast.makeText(this, storageRef.toString(), Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, storageRef.toString(), Toast.LENGTH_SHORT).show()
 
 // Suponiendo que tienes una lista de rutas de imágenes llamada imagePaths
             imageRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -824,11 +824,11 @@ class RegistroMecanica : AppCompatActivity() {
 
                 }.addOnFailureListener {
                     // Manejar el fallo de la subida
-                    Toast.makeText(
-                        this,
-                        "Error al subir la imagen en editar $index",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        this,
+//                        "Error al subir la imagen en editar $index",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
                 }
             }
 
@@ -860,15 +860,15 @@ class RegistroMecanica : AppCompatActivity() {
                         if (downloadUrls.size == imageList.size) {
                             // Aquí puedes trabajar con la lista completa de URLs
                             // Por ejemplo, subir la lista a otra ubicación en Firebase Database
-                            Toast.makeText(this, imageFileName, Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this, imageFileName, Toast.LENGTH_SHORT).show()
 
                             subirUrlsAFirebaseDatabase(downloadUrls)
                         }
                     }
                 }.addOnFailureListener {
                     // Manejar el fallo de la subida
-                    Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT)
-                        .show()
+//                    Toast.makeText(this, "Error al subir la imagen $index", Toast.LENGTH_SHORT)
+//                        .show()
                 }
             }
         }
