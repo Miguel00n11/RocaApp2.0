@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Obra"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:selectAllOnFocus="true" />
 
 
@@ -105,6 +105,8 @@
                 android:layout_height="wrap_content"
                 android:text="Datos de la prueba"
                 android:textSize="24sp" />
+
+
             <Spinner
                 android:id="@+id/spnTipoMuestreoCilindros"
                 android:layout_width="match_parent"
@@ -138,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Elemento colado"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:selectAllOnFocus="true" />
 
 
@@ -163,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Ubicación"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:selectAllOnFocus="true" />
 
 
@@ -188,7 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="f'c [kg/cm²]"
-                    android:inputType="text"
+                    android:inputType="number|numberDecimal"
                     android:selectAllOnFocus="true" />
 
 
@@ -218,6 +220,7 @@
 
 
             </LinearLayout>
+
             <Spinner
                 android:id="@+id/spnTipoConcretoCilindros"
                 android:layout_width="match_parent"
@@ -231,6 +234,7 @@
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
                 android:textSize="16sp" />
+
             <LinearLayout
 
 
@@ -250,7 +254,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Edad Diseño [d]:"
-                    android:inputType="number|numberDecimal"
+                    android:inputType="number"
                     android:selectAllOnFocus="true" />
 
 
@@ -280,6 +284,7 @@
 
 
             </LinearLayout>
+
             <LinearLayout
 
 
@@ -299,11 +304,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Concretera"
-                    android:inputType="number|numberDecimal"
+                    android:inputType="textCapCharacters"
                     android:selectAllOnFocus="true" />
 
 
             </LinearLayout>
+
             <LinearLayout
 
 
@@ -323,19 +329,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="cemento:arena:grava"
-                    android:inputType="number|numberDecimal"
+                    android:inputType=""
                     android:selectAllOnFocus="true" />
 
 
             </LinearLayout>
+
             <LinearLayout
-
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="12dp"
                 android:orientation="horizontal">
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -349,8 +353,25 @@
                     android:hint="Aditivo"
                     android:inputType="number|numberDecimal"
                     android:selectAllOnFocus="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="12dp"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Remisión:" />
 
+                <EditText
+                    android:id="@+id/etRemisionCilindros"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Remisión"
+                    android:inputType="number|numberDecimal"
+                    android:selectAllOnFocus="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -361,38 +382,265 @@
                 android:layout_margin="12dp"
                 android:orientation="vertical">
 
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Muestra:" />
+
+                    <TextView
+                        android:id="@+id/etMuestraCilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Muestra"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rev. Diseño [cm]:" />
+
+                    <EditText
+                        android:id="@+id/etRevenimientoProyCilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Rev. Diseño [cm]"
+                        android:inputType="textPersonName"
+                        android:selectAllOnFocus="true" />
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rev. obtenido [cm]:" />
+
+                    <EditText
+                        android:id="@+id/etReveniminetoObt1Cilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="R1 [cm]"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+                    <EditText
+                        android:id="@+id/etReveniminetoObt2Cilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="R2 [cm]"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Temperatura [°C]:" />
+
+                    <EditText
+                        android:id="@+id/etTemperaturaCilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="[°C]"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Registro de calas"
-                    android:textSize="24sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCalasCompactaciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="24dp"
-                android:gravity="end"
-                android:orientation="horizontal">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fbNuevaCalaCompactacion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/Background_Resultados"
-                    android:src="@drawable/plus_large_svgrepo_com"
-                    app:maxImageSize="40dp" />
+                    android:layout_gravity="center"
+                    android:text="No. Moldes:" />
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+
+                    <EditText
+                        android:id="@+id/etMolde1Cilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Molde 1"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+                    <Spinner
+                        android:id="@+id/spnMolde1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/btn_Background_Acceder"
+                        android:backgroundTintMode="add"
+                        android:spinnerMode="dialog"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+
+                    <EditText
+                        android:id="@+id/etMolde2Cilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Molde 2"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+                    <Spinner
+                        android:id="@+id/spnMolde2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/btn_Background_Acceder"
+                        android:backgroundTintMode="add"
+                        android:spinnerMode="dialog"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+
+                    <EditText
+                        android:id="@+id/etMolde3Cilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Molde 3"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+                    <Spinner
+                        android:id="@+id/spnMolde3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/btn_Background_Acceder"
+                        android:backgroundTintMode="add"
+                        android:spinnerMode="dialog"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+
+                    <EditText
+                        android:id="@+id/etMolde4Cilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Molde 4"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+                    <Spinner
+                        android:id="@+id/spnMolde4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/btn_Background_Acceder"
+                        android:backgroundTintMode="add"
+                        android:spinnerMode="dialog"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Horarios" />
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="12dp"
+                    android:orientation="horizontal">
+
+
+                    <EditText
+                        android:id="@+id/etHoraSalidaCilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="H. Salida de planta"
+                        android:inputType="time"
+                        android:selectAllOnFocus="true" />
+
+                    <EditText
+                        android:id="@+id/etHorallegadaCilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="H. llegada a obra"
+                        android:inputType="number|numberDecimal"
+                        android:selectAllOnFocus="true" />
+
+                </LinearLayout>
 
             </LinearLayout>
+
 
             <LinearLayout
 
@@ -405,7 +653,7 @@
 
 
                 <Button
-                    android:id="@+id/btnCancelarRegistroCompactacion"
+                    android:id="@+id/btnCancelarRegistroCilindros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="6dp"
@@ -414,7 +662,7 @@
                     android:text="Cancelar" />
 
                 <Button
-                    android:id="@+id/btnGuardarRegistroCompactacion"
+                    android:id="@+id/btnGuardarRegistroCilindros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"

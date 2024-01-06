@@ -175,7 +175,6 @@ class ReportesCompactaciones : AppCompatActivity() {
                         listaObrasmutableListOf.add(obra)
                     }
                 }
-
                 // Notifica al adaptador que los datos han cambiado
                 ObraAdapter.notifyDataSetChanged()
             }
@@ -183,10 +182,7 @@ class ReportesCompactaciones : AppCompatActivity() {
             override fun onCancelled(databaseError: DatabaseError) {
                 // Manejar error de base de datos, si es necesario
             }
-
         })
-
-
     }
 
     private fun onItemDelete(position: Int) {

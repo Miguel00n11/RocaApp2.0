@@ -33,6 +33,7 @@
                 android:textStyle="bold"
                 android:layout_height="match_parent"/>
             <Button
+                android:id="@+id/btnIrReportesCilindros"
                 android:layout_width="match_parent"
                 android:text="Concretos"
                 android:padding="24sp"
