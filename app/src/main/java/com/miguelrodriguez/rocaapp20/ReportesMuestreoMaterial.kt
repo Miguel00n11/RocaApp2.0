@@ -7,6 +7,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseEstratos
@@ -28,6 +30,8 @@ import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.ObraAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.ObraMecanicaAdapter
 import java.util.Calendar
+import kotlin.math.log
+import com.google.firebase.storage.StorageReference
 
 class ReportesMuestreoMaterial : AppCompatActivity() {
     private lateinit var dataReference: DatabaseReference
@@ -37,6 +41,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     private lateinit var listaEstratossmutableListOf: MutableList<ClaseEstratos>
     private lateinit var listaImagenesmutableListOf: MutableList<String>
 
+    private lateinit var storage:FirebaseStorage
     private lateinit var personal: String
     private lateinit var reporteSelecionado: ClaseObraMecanica
 
@@ -137,6 +142,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         rvObrasCompactacion.adapter = ObraAdapter
 
 
+        storage= FirebaseStorage.getInstance()
         dataReference =
             FirebaseDatabase.getInstance().reference.child("ReportesMecanicas").child(personal)
 
@@ -285,7 +291,19 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     private fun deleteReport(reportKey: String) {
         val reportReference = dataReference.child(reportKey)
 
-        reportReference.removeValue()
+//        val storage = FirebaseStorage.getInstance()
+//        val storage = FirebaseStorage.getInstance().reference.child(reportKey)
+
+        val storageRef: StorageReference = storage.reference.child(reportKey)
+
+
+        println(reportReference.toString())
+        println(storageRef.toString())
+
+
+
+        storageRef.delete()
+
             .addOnSuccessListener {
                 Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
             }
@@ -296,6 +314,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        reportReference.removeValue()
     }
 
     private fun updateTask() {

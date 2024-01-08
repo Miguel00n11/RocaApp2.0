@@ -648,8 +648,13 @@ class RegistroMecanica : AppCompatActivity() {
                 syncDataWithFirebase(numeroReporte, listaEstratosmutableListOf, editar)
 
                 listaEstratosmutableListOf.clear()
+//                this.llave = dataReference.push().key.toString()
                 updateTask()
 //                guardarUbicacionEnFirebase(latitud, longitud)
+
+//                imageList.clear()
+                tvLatitud.setText(null)
+                tvLongitud.setText(null)
 
 
 
@@ -758,9 +763,6 @@ class RegistroMecanica : AppCompatActivity() {
 
         val registrosLocales = getLocalRecords()
 
-
-
-
         if (accion) {
             // Código para el caso de acción verdadera
             llave = reporteSelecionadoMuestroMaterial.llave
@@ -841,7 +843,9 @@ class RegistroMecanica : AppCompatActivity() {
             for ((index, imageUri) in imageList.withIndex()) {
                 val fileName = obtenerNombreArchivoDesdeRuta(imageUri)
                 val imageFileName = "$fileName.jpg"
-                val imageRef = storageReference.child("$llave/$imageFileName")
+//                val imageRef = storageReference.child("$llave/$imageFileName")
+                val imageRef = storageReference.child(llave).child("$imageFileName")
+                println(imageRef)
 
                 val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
 
@@ -863,6 +867,9 @@ class RegistroMecanica : AppCompatActivity() {
 //                            Toast.makeText(this, imageFileName, Toast.LENGTH_SHORT).show()
 
                             subirUrlsAFirebaseDatabase(downloadUrls)
+
+                            imageList.clear()
+                            imageAdapter.notifyDataSetChanged()
                         }
                     }
                 }.addOnFailureListener {
@@ -895,6 +902,7 @@ class RegistroMecanica : AppCompatActivity() {
         // Agregar las URLs a la base de datos
         for ((index, url) in downloadUrls.withIndex()) {
             databaseReference.child(url.NombreArchivo).setValue(url.ImagenUrl)
+
         }
     }
 
