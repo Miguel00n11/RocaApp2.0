@@ -302,19 +302,24 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
 
 
-        storageRef.delete()
-
-            .addOnSuccessListener {
-                Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(
-                    this,
-                    "Error al eliminar el informe: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        reportReference.removeValue()
+//        storageRef.delete()
+//
+//            .addOnSuccessListener {
+//                Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
+//            }
+//            .addOnFailureListener { e ->
+//                Toast.makeText(
+//                    this,
+//                    "Error al eliminar el informe: ${e.message}",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+        reportReference.removeValue().addOnSuccessListener {
+            Toast.makeText(
+                this,
+                "Reporte eliminado existosamente.",
+                Toast.LENGTH_SHORT
+            ).show() }
     }
 
     private fun updateTask() {
