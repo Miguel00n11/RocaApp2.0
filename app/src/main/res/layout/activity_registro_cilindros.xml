@@ -56,7 +56,7 @@
                     android:text="Obra:" />
 
                 <EditText
-                    android:id="@+id/etObraCompactacion"
+                    android:id="@+id/etObraCilindros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Obra"
@@ -114,7 +114,7 @@
 
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginVertical="3dp"
-                android:backgroundTint="@color/btn_Background_Acceder"
+                android:backgroundTint="@color/background_Registro_Cala"
 
                 android:backgroundTintMode="add"
                 android:spinnerMode="dialog"
@@ -186,7 +186,7 @@
                     android:text="f'c [kg/cm²]:" />
 
                 <EditText
-                    android:id="@+id/etSubTramo"
+                    android:id="@+id/etFCCilindros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="f'c [kg/cm²]"
@@ -211,7 +211,7 @@
                     android:text="Volumen total [m³]:" />
 
                 <EditText
-                    android:id="@+id/etcompactacionProyecto"
+                    android:id="@+id/etVolumenCilindros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Volumen total [m³]:"
@@ -228,8 +228,7 @@
 
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginVertical="3dp"
-                android:backgroundTint="@color/btn_Background_Acceder"
-
+                android:backgroundTint="@color/background_Registro_Cala"
                 android:backgroundTintMode="add"
                 android:spinnerMode="dialog"
                 android:textAlignment="center"
@@ -329,7 +328,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="cemento:arena:grava"
-                    android:inputType=""
+                    android:inputType="text"
                     android:selectAllOnFocus="true" />
 
 
@@ -354,6 +353,7 @@
                     android:inputType="number|numberDecimal"
                     android:selectAllOnFocus="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -379,30 +379,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="12dp"
                 android:orientation="vertical">
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="12dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Muestra:" />
-
-                    <TextView
-                        android:id="@+id/etMuestraCilindros"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Muestra"
-                        android:inputType="number|numberDecimal"
-                        android:selectAllOnFocus="true" />
-
-                </LinearLayout>
 
                 <LinearLayout
 
@@ -606,11 +583,13 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Horarios" />
+
                 <LinearLayout
 
                     android:layout_width="match_parent"
@@ -624,7 +603,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="H. Salida de planta"
+                        android:hint="H. Salida planta"
                         android:inputType="time"
                         android:selectAllOnFocus="true" />
 
@@ -633,11 +612,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="H. llegada a obra"
-                        android:inputType="number|numberDecimal"
+                        android:hint="H. llegada"
+                        android:inputType="time"
+                        android:selectAllOnFocus="true" />
+                    <EditText
+                        android:id="@+id/etHoraMuestreoCilindros"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="H. Muestreo"
+                        android:inputType="time"
                         android:selectAllOnFocus="true" />
 
                 </LinearLayout>
+
 
             </LinearLayout>
 

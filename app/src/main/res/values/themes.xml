@@ -25,6 +25,7 @@
 
 
     </style>
+
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Otros atributos del tema -->
 

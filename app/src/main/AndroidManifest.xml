@@ -22,13 +22,16 @@
             android:exported="false" />
         <activity
             android:name=".cilindros.ReporteCilindros"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".RegistroMecanica"
             android:exported="false" />
         <activity
             android:name=".ReportesMuestreoMaterial"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Seleccionar_actividad"
             android:exported="false"

@@ -53,6 +53,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class RegistroMecanica : AppCompatActivity() {
     private lateinit var dataReference: DatabaseReference
@@ -522,6 +524,7 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     private fun InitUI() {
+        FechaDeHoy()
 
         btnCancelarRegistroMuestreoMecanica.setOnClickListener {
 
@@ -1233,6 +1236,11 @@ class RegistroMecanica : AppCompatActivity() {
                 // Default case or handle other options
             }
         }
+    }
+    private fun FechaDeHoy() {
+        val calendario = Calendar.getInstance()
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        etFechaMuestreoMecanica.setText(formatoFecha.format(calendario.time))
     }
 
     data class Registro(
