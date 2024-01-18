@@ -713,28 +713,28 @@ class RegistroMecanica : AppCompatActivity() {
 
                     if (accion == true) {
                         // Guardar el registro en Firebase Realtime Database
-                        dataReference.child("ReportesMecanicas").child(personal)
+                        dataReference.child("Mecanicas").child("ReportesMecanicas").child(personal)
                             .child(reporteSelecionadoMuestroMaterial.llave)
                             .setValue(registro)
                         onBackPressed()
                     } else {
                         // Guardar el registro en Firebase Realtime Database
                         registro.llave = llave
-                        dataReference.child("ReportesMecanicas").child(personal)
+                        dataReference.child("Mecanicas").child("ReportesMecanicas").child(personal)
                             .child(llave)
                             .setValue(registro)
 
                     }
                     if (accion == true) {
                         // Guardar el registro en Firebase Realtime Database
-                        dataReference.child("RespaldoMecanicas").child(personal)
+                        dataReference.child("Mecanicas").child("RespaldoMecanicas").child(personal)
                             .child(reporteSelecionadoMuestroMaterial.llave)
                             .setValue(registro)
                         onBackPressed()
                     } else {
                         // Guardar el registro en Firebase Realtime Database
                         registro.llave = llave
-                        dataReference.child("RespaldoMecanicas").child(personal)
+                        dataReference.child("Mecanicas").child("RespaldoMecanicas").child(personal)
                             .child(llave)
                             .setValue(registro)
 

@@ -144,7 +144,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
         storage= FirebaseStorage.getInstance()
         dataReference =
-            FirebaseDatabase.getInstance().reference.child("ReportesMecanicas").child(personal)
+            FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal)
 
         dataReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
