@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".RegistroCompactaciones">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,262 +42,309 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Obra:" />
-
-                <EditText
-                    android:id="@+id/etObraCompactacion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Obra"
-                    android:inputType="text"
-                    android:selectAllOnFocus="true" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fecha:" />
-
-                <EditText
-                    android:id="@+id/etFechaCompactacion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Fecha"
-                    android:inputType="date" />
-
-                <Button
-                    android:id="@+id/btnVerCalendarioCompactaciones"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:backgroundTint="@color/btn_Background_Acceder"
-                    android:imeOptions="actionNext"
-                    android:onClick="mostrarCalendario"
-                    android:text="..." />
-
-
-            </LinearLayout>
-
-            <TextView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Datos de la prueba"
-                android:textSize="24sp" />
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#DCDCDC"
+                app:cardCornerRadius="12dp">
 
-
-            <LinearLayout
-
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Capa:" />
-
-                <EditText
-                    android:id="@+id/etCapaCompactacion"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Capa"
-                    android:inputType="text"
-                    android:selectAllOnFocus="true" />
+                    android:orientation="vertical">
+
+                    <LinearLayout
 
 
-            </LinearLayout>
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:orientation="horizontal">
 
-            <LinearLayout
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Obra:" />
+
+                        <EditText
+                            android:id="@+id/etObraCompactacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Obra"
+                            android:inputType="text"
+                            android:selectAllOnFocus="true" />
 
 
+                    </LinearLayout>
+
+                    <LinearLayout
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fecha:" />
+
+                        <EditText
+                            android:id="@+id/etFechaCompactacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Fecha"
+                            android:inputType="date" />
+
+                        <Button
+                            android:id="@+id/btnVerCalendarioCompactaciones"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:backgroundTint="@color/btn_Background_Acceder"
+                            android:imeOptions="actionNext"
+                            android:onClick="mostrarCalendario"
+                            android:text="..." />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#DCDCDC"
+                app:cardCornerRadius="12dp">
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tramo:" />
-
-                <EditText
-                    android:id="@+id/etTramoCompactacion"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tramo"
-                    android:inputType="text"
-                    android:selectAllOnFocus="true" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Datos de la prueba"
+                        android:textSize="24sp" />
 
 
-            </LinearLayout>
-
-            <LinearLayout
+                    <LinearLayout
 
 
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Capa:" />
+
+                        <EditText
+                            android:id="@+id/etCapaCompactacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Capa"
+                            android:inputType="text"
+                            android:selectAllOnFocus="true" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tramo:" />
+
+                        <EditText
+                            android:id="@+id/etTramoCompactacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Tramo"
+                            android:inputType="text"
+                            android:selectAllOnFocus="true" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Subtramo:" />
+
+                        <EditText
+                            android:id="@+id/etSubTramo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Subtramo"
+                            android:inputType="text"
+                            android:selectAllOnFocus="true" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Compactación Proy. [%]:" />
+
+                        <EditText
+                            android:id="@+id/etcompactacionProyecto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Compactación"
+                            android:inputType="number|numberDecimal"
+                            android:selectAllOnFocus="true" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="M.V.S.M. [kg/m³]:" />
+
+                        <EditText
+                            android:id="@+id/etMVSM"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="M.V.S.M. [kg/m³]"
+                            android:inputType="number|numberDecimal"
+                            android:selectAllOnFocus="true" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Humedad Op. [%]:" />
+
+                        <EditText
+                            android:id="@+id/etHumedad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint=" [%]"
+                            android:inputType="number|numberDecimal"
+                            android:selectAllOnFocus="true" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#DCDCDC"
+                app:cardCornerRadius="12dp">
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Subtramo:" />
-
-                <EditText
-                    android:id="@+id/etSubTramo"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Subtramo"
-                    android:inputType="text"
-                    android:selectAllOnFocus="true" />
+                    android:orientation="vertical">
+
+                    <LinearLayout
 
 
-            </LinearLayout>
-
-            <LinearLayout
-
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="12dp"
+                        android:orientation="vertical">
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Compactación Proy. [%]:" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Registro de calas"
+                            android:textSize="24sp" />
 
-                <EditText
-                    android:id="@+id/etcompactacionProyecto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Compactación"
-                    android:inputType="number|numberDecimal"
-                    android:selectAllOnFocus="true" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvCalasCompactaciones"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
-
-            </LinearLayout>
-
-            <LinearLayout
+                    </LinearLayout>
+                    <LinearLayout
 
 
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="24dp"
+                        android:gravity="end"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/fbNuevaCalaCompactacion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/Background_Resultados"
+                            android:src="@drawable/plus_large_svgrepo_com"
+                            app:maxImageSize="40dp" />
+
+                    </LinearLayout>
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="M.V.S.M. [kg/m³]:" />
-
-                <EditText
-                    android:id="@+id/etMVSM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="M.V.S.M. [kg/m³]"
-                    android:inputType="number|numberDecimal"
-                    android:selectAllOnFocus="true" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
-            </LinearLayout>
 
-            <LinearLayout
-
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Humedad Op. [%]:" />
-
-                <EditText
-                    android:id="@+id/etHumedad"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint=" [%]"
-                    android:inputType="number|numberDecimal"
-                    android:selectAllOnFocus="true" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="12dp"
-                android:orientation="vertical">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Registro de calas"
-                    android:textSize="24sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCalasCompactaciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="24dp"
-                android:gravity="end"
-                android:orientation="horizontal">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fbNuevaCalaCompactacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/Background_Resultados"
-                    android:src="@drawable/plus_large_svgrepo_com"
-                    app:maxImageSize="40dp" />
-
-            </LinearLayout>
 
             <LinearLayout
 
