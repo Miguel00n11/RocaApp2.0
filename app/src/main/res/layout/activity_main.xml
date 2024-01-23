@@ -15,30 +15,41 @@
         android:layout_height="100dp"
         android:src="@drawable/logoroca" />
 
-    <EditText
-        android:id="@+id/etEmail"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="e-mail"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="email"
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+        app:startIconDrawable="@drawable/baseline_person_24"
+        app:startIconTint="#494949"
+        app:helperTextTextColor="#D81B60"
+        app:endIconMode="clear_text"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:inputType="textEmailAddress"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:gravity="center"
         android:hint="Contraseña"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+        app:startIconDrawable="@drawable/baseline_lock_24"
+        app:startIconTint="#494949"
+        app:helperTextTextColor="#D81B60"
+        app:endIconMode="password_toggle"
+
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:inputType="textPassword"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnAcceder"
