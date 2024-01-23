@@ -53,6 +53,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.textfield.TextInputLayout
+import com.miguelrodriguez.rocaapp20.cilindros.RegistroCilindros
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -76,6 +78,7 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var btnCancelarRegistroMuestreoMecanica: Button
     private lateinit var tvLatitud: TextView
     private lateinit var tvLongitud: TextView
+    private lateinit var binding: TextInputLayout
 //    private var latitud:String=""
 //    private var longitud:String=""
 
@@ -400,6 +403,8 @@ class RegistroMecanica : AppCompatActivity() {
 
 
     private fun InitComponent() {
+        binding=findViewById(R.id.tilFechaMuestreoMecanica)
+
         listaEstratosOriginal.clear()
         reporteSelecionado = ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
         editar = ReportesMuestreoMaterial.editarMuestreoMaterial
@@ -526,6 +531,10 @@ class RegistroMecanica : AppCompatActivity() {
     private fun InitUI() {
         FechaDeHoy()
 
+        binding.setEndIconOnClickListener {
+            mostrarCalendarioMuestreoMecanica(findViewById(R.id.tilFechaMuestreoMecanica))
+
+        }
         btnCancelarRegistroMuestreoMecanica.setOnClickListener {
 
             restaurarDatosOriginales()
