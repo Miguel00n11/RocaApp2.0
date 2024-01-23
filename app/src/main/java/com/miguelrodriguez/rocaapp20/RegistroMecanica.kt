@@ -529,7 +529,7 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     private fun InitUI() {
-        FechaDeHoy()
+        if (!editar) {FechaDeHoy()}
 
         binding.setEndIconOnClickListener {
             mostrarCalendarioMuestreoMecanica(findViewById(R.id.tilFechaMuestreoMecanica))
