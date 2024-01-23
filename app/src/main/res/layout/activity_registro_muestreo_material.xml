@@ -64,7 +64,6 @@
 
                             android:hint="Obra"
                             app:endIconMode="clear_text"
-                            app:helperText="Requerido*"
                             app:helperTextTextColor="#D81B60"
                             app:startIconTint="#494949">
 

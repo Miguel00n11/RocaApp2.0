@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import java.util.Calendar
@@ -44,6 +45,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     private lateinit var etObra: EditText
     private lateinit var etFecha: EditText
+    private lateinit var binding: TextInputLayout
 
     private lateinit var etCapa: EditText
     private lateinit var etTramo: EditText
@@ -559,8 +561,14 @@ class RegistroCompactaciones : AppCompatActivity() {
         //REPORTE DE COMPACTACION
         etObra = findViewById(R.id.etObraCompactacion)
         etFecha = findViewById(R.id.etFechaCompactacion)
+        binding=findViewById(R.id.tilFechaMuestreoCompactaciones)
 
-        FechaDeHoy()
+        if (!editar) {FechaDeHoy()}
+
+        binding.setEndIconOnClickListener {
+            mostrarCalendario(findViewById(R.id.tilFechaMuestreoCompactaciones))
+
+        }
 
         //DATOS DE LA PRUEBA
         etCapa = findViewById(R.id.etCapaCompactacion)
@@ -578,7 +586,6 @@ class RegistroCompactaciones : AppCompatActivity() {
         //BOTONES
         btnCancelar = findViewById(R.id.btnCancelarRegistroCompactacion)
         btnGuardar = findViewById(R.id.btnGuardarRegistroCompactacion)
-        btnVerCalendarioCompactaciones = findViewById(R.id.btnVerCalendarioCompactaciones)
         fbNuevaCalaCompactacion = findViewById(R.id.fbNuevaCalaCompactacion)
 
 

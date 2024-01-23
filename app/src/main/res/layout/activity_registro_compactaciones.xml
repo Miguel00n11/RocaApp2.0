@@ -54,64 +54,48 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
-
-
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
 
+                        android:hint="Obra"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:startIconTint="#494949">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Obra:" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etObraCompactacion"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Obra"
-                            android:inputType="text"
-                            android:selectAllOnFocus="true" />
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-
-                    </LinearLayout>
-
-                    <LinearLayout
-
-
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilFechaMuestreoCompactaciones"
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+
+
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
+                        android:layout_weight="1"
+                        android:hint="Fecha"
+                        android:onClick="mostrarCalendarioMuestreoMecanica"
+                        app:endIconDrawable="@drawable/baseline_calendar_month_24"
+                        app:endIconMode="custom"
+                        app:helperTextTextColor="#D81B60"
 
+                        app:startIconTint="#494949">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Fecha:" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etFechaCompactacion"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="Fecha"
                             android:inputType="date" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <Button
-                            android:id="@+id/btnVerCalendarioCompactaciones"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:backgroundTint="@color/btn_Background_Acceder"
-                            android:imeOptions="actionNext"
-                            android:onClick="mostrarCalendario"
-                            android:text="..." />
-
-
-                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -210,80 +194,67 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-
-
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
 
+                        android:hint="Compactación de proyecto"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:suffixText="%"
+                        app:startIconTint="#494949">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Compactación Proy. [%]:" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etcompactacionProyecto"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Compactación"
-                            android:inputType="number|numberDecimal"
-                            android:selectAllOnFocus="true" />
+                            android:inputType="number|numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-
-                    </LinearLayout>
-
-                    <LinearLayout
-
-
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
 
+                        android:hint="M.V.S.M."
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:suffixText="kg/m³"
+                        app:startIconTint="#494949">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="M.V.S.M. [kg/m³]:" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etMVSM"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="M.V.S.M. [kg/m³]"
-                            android:inputType="number|numberDecimal"
-                            android:selectAllOnFocus="true" />
+                            android:inputType="number|numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-                    </LinearLayout>
-
-                    <LinearLayout
-
-
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
 
+                        android:hint="Humedad Op."
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:suffixTextAppearance="@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked"
+                        app:suffixText="%"
+                        app:startIconTint="#494949">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Humedad Op. [%]:" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etHumedad"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint=" [%]"
-                            android:inputType="number|numberDecimal"
-                            android:selectAllOnFocus="true" />
+                            android:inputType="number|numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-                    </LinearLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -320,6 +291,7 @@
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>
+
                     <LinearLayout
 
 
@@ -343,8 +315,6 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-
 
 
             <LinearLayout
