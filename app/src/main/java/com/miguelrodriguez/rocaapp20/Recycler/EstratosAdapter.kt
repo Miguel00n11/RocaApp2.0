@@ -24,6 +24,7 @@ class EstratosAdapter(
 
     override fun getItemCount(): Int {
         return ListaEstratos.size
+
     }
 
 

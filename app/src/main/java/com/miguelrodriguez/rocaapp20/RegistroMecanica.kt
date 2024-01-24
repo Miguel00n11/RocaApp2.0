@@ -120,7 +120,7 @@ class RegistroMecanica : AppCompatActivity() {
         rvImagenesMecanica = findViewById(R.id.rvImagenesMecanica)
         imageAdapter = ImageAdapter(imageList,
             onImageDelete = { position -> onImageDelete(position) })
-        rvImagenesMecanica.layoutManager = LinearLayoutManager(this)
+        rvImagenesMecanica.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         rvImagenesMecanica.adapter = imageAdapter
 
 
@@ -523,7 +523,7 @@ class RegistroMecanica : AppCompatActivity() {
             EstratosAdapter(reporteSelecionado.listaEstratos,
                 onEstratoSelected = { position -> onEstratoSelected(position) },
                 onItemDelete = { position -> onItemDelete(position) })
-        rvMuestreoEstratos.layoutManager = LinearLayoutManager(this)
+        rvMuestreoEstratos.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         rvMuestreoEstratos.adapter = EstratosAdapter
 
     }
@@ -569,7 +569,7 @@ class RegistroMecanica : AppCompatActivity() {
         EstratosAdapter = EstratosAdapter(listaEstratosmutableListOf,
             onEstratoSelected = { position -> onEstratoSelected(position) },
             onItemDelete = { position -> onItemDelete(position) })
-        rvMuestreoEstratos.layoutManager = LinearLayoutManager(this)
+        rvMuestreoEstratos.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         rvMuestreoEstratos.adapter = EstratosAdapter
 
         llave = dataReference.push().key.toString()
