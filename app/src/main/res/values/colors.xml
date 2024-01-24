@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#959597</color>
 
     <!--    Resultados Compactacion-->
     <color name="btn_Background_Seleccionar_Actividad">#2C384A</color>

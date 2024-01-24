@@ -52,6 +52,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="12dp"
+
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -59,11 +61,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
+                        app:hintTextColor="@color/grey"
+                        android:textColorHint="@color/grey"
 
                         android:hint="Obra"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
-                        app:startIconTint="#494949">
+                        app:startIconTint="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etObraCompactacion"
@@ -86,6 +90,8 @@
                         app:endIconDrawable="@drawable/baseline_calendar_month_24"
                         app:endIconMode="custom"
                         app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        android:textColorHint="@color/grey"
 
                         app:startIconTint="#494949">
 
@@ -110,101 +116,93 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="12dp"
+
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Datos de la prueba"
+                        android:layout_marginHorizontal="12dp"
+
                         android:textSize="24sp" />
-
-
-                    <LinearLayout
-
-
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Capa:" />
-
-                        <EditText
-                            android:id="@+id/etCapaCompactacion"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Capa"
-                            android:inputType="text"
-                            android:selectAllOnFocus="true" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-
-
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tramo:" />
-
-                        <EditText
-                            android:id="@+id/etTramoCompactacion"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Tramo"
-                            android:inputType="text"
-                            android:selectAllOnFocus="true" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-
-
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Subtramo:" />
-
-                        <EditText
-                            android:id="@+id/etSubTramo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Subtramo"
-                            android:inputType="text"
-                            android:selectAllOnFocus="true" />
-
-
-                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
+                        app:hintTextColor="@color/grey"
+                        android:textColorHint="@color/grey"
+                        android:hint="Capa"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:startIconTint="#494949"
+                        app:suffixText="%">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCapaCompactacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        app:hintTextColor="@color/grey"
+                        android:textColorHint="@color/grey"
+                        android:hint="Tramo"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:startIconTint="#494949"
+                        app:suffixText="%">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTramoCompactacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        app:hintTextColor="@color/grey"
+                        android:textColorHint="@color/grey"
+                        android:hint="Subtramo"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:startIconTint="#494949"
+                        app:suffixText="%">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etSubTramo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        app:hintTextColor="@color/grey"
+                        android:textColorHint="@color/grey"
                         android:hint="Compactación de proyecto"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
-                        app:suffixText="%"
-                        app:startIconTint="#494949">
+                        app:startIconTint="#494949"
+                        app:suffixText="%">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etcompactacionProyecto"
@@ -218,12 +216,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-
+                        app:hintTextColor="@color/grey"
+                        android:textColorHint="@color/grey"
                         android:hint="M.V.S.M."
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
-                        app:suffixText="kg/m³"
-                        app:startIconTint="#494949">
+                        app:startIconTint="#494949"
+                        app:suffixText="kg/m³">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etMVSM"
@@ -238,13 +237,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-
+                        app:hintTextColor="@color/grey"
+                        android:textColorHint="@color/grey"
                         android:hint="Humedad Op."
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
-                        app:suffixTextAppearance="@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked"
+                        app:startIconTint="#494949"
                         app:suffixText="%"
-                        app:startIconTint="#494949">
+                        app:suffixTextAppearance="@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etHumedad"
@@ -254,20 +254,19 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="12dp"
                 android:backgroundTint="#DCDCDC"
                 app:cardCornerRadius="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -288,7 +287,10 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvCalasCompactaciones"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+
+                            android:layout_height="match_parent"
+                            android:clipChildren="true"
+                            android:clipToPadding="true" />
 
                     </LinearLayout>
 
@@ -296,7 +298,7 @@
 
 
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="24dp"
                         android:gravity="end"
                         android:orientation="horizontal">
@@ -306,6 +308,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="8dp"
+                            android:outlineSpotShadowColor="@color/white"
                             android:backgroundTint="@color/Background_Resultados"
                             android:src="@drawable/plus_large_svgrepo_com"
                             app:maxImageSize="40dp" />
