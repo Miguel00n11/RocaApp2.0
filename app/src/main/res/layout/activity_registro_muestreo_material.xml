@@ -419,7 +419,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginVertical="16dp"
                         android:backgroundTint="@color/grey"
                         app:cardCornerRadius="12dp">
 
@@ -434,15 +434,17 @@
 
                     <Button
                         android:id="@+id/btnSelectImages"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Agregar imágenes..." />
 
                     <Button
                         android:id="@+id/btnGuardadUbicacion"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/baseline_pin_drop_24"
+                        android:drawableTint="@color/white"
                         android:gravity="center"
                         android:text="Ubicación..." />
 
@@ -457,6 +459,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:hint="Latitud" />
 
                         <TextView
@@ -464,6 +467,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:hint="Longitud" />
 
                     </LinearLayout>
