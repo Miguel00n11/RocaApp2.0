@@ -11,8 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="6dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -23,29 +23,44 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvItemObrasMecanica"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Obras"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tvItemReporteMecanica"
+                    <TextView
+                        android:id="@+id/tvItemObrasMecanica"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Obras"
+                        android:textAllCaps="true"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+
+
+
+                    <TextView
+                        android:id="@+id/tvItemReporteMecanica"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:hint="reporte"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <View
+                    android:id="@+id/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:gravity="right"
-                    android:hint="reporte"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
+                    android:layout_marginVertical="6dp"
+                    android:background="#ffffff"
+                    android:layout_height="2dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,25 +74,23 @@
                     android:layout_weight="1"
                     android:hint="capa"
                     android:textColor="#FFFFFF"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:textStyle="normal" />
 
                 <TextView
                     android:id="@+id/tvItemFechaMecanica"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1.8"
-                    android:gravity="right"
+                    android:gravity="right|bottom"
                     android:hint="fecha"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/grey"
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
 
-
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -89,11 +102,11 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:backgroundTint="#E64A19"
-                android:src="@drawable/baseline_delete_forever_24"
-                app:maxImageSize="40dp"
                 android:scaleType="center"
                 android:scaleX=".6"
                 android:scaleY=".6"
+                android:src="@drawable/baseline_delete_forever_24"
+                app:maxImageSize="40dp"
                 app:tint="@color/white" />
         </LinearLayout>
     </LinearLayout>

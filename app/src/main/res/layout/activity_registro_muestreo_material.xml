@@ -11,12 +11,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#535353"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/material_motion_duration_long_1"
+            android:textColor="@color/white"
             android:text="Reporte de Muestreo de Material"
             android:textSize="20sp" />
 
@@ -25,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/material_motion_duration_long_1"
+            android:textColor="@color/white"
             android:gravity="end"
             android:text="1"
             android:textSize="24sp" />
@@ -96,8 +99,6 @@
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
-
                         android:layout_marginHorizontal="12dp"
                         android:layout_weight="1"
                         android:hint="Fecha"
@@ -105,7 +106,7 @@
                         app:endIconDrawable="@drawable/baseline_calendar_month_24"
                         app:endIconMode="custom"
                         app:helperTextTextColor="#D81B60"
-
+                        app:endIconTint="#7E57C2"
                         app:startIconTint="#494949">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -409,7 +410,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="8dp"
                             android:gravity="center"
-                            android:text="Registro de estratos."
+                            android:text="Imágenes."
                             android:textSize="16sp"
                             android:textStyle="bold" />
 

@@ -52,21 +52,39 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="12dp"
+                    android:orientation="vertical"
 
-                    android:orientation="vertical">
+                    android:paddingVertical="12dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/grey"
+
+                        app:cardCornerRadius="12dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:gravity="center"
+                            android:text="Datos Generales."
+
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        app:hintTextColor="@color/grey"
+                        android:hint="Obra"
                         android:textColorHint="@color/grey"
 
-                        android:hint="Obra"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
                         app:startIconTint="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -87,12 +105,12 @@
                         android:layout_weight="1"
                         android:hint="Fecha"
                         android:onClick="mostrarCalendarioMuestreoMecanica"
+                        android:textColorHint="@color/grey"
                         app:endIconDrawable="@drawable/baseline_calendar_month_24"
                         app:endIconMode="custom"
                         app:helperTextTextColor="#D81B60"
                         app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
-
+                        app:endIconTint="#7E57C2"
                         app:startIconTint="#494949">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -116,30 +134,40 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="12dp"
+                    android:orientation="vertical"
 
-                    android:orientation="vertical">
+                    android:paddingBottom="12dp">
 
-                    <TextView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Datos de la prueba"
-                        android:layout_marginHorizontal="12dp"
+                        android:backgroundTint="@color/grey"
 
-                        android:textSize="24sp" />
+                        app:cardCornerRadius="12dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_margin="8dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:gravity="center"
+                            android:text="Datos de la prueba."
+
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
                         android:hint="Capa"
+                        android:textColorHint="@color/grey"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
-                        app:startIconTint="#494949"
-                        app:suffixText="%">
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="#494949">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCapaCompactacion"
@@ -154,13 +182,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
                         android:hint="Tramo"
+                        android:textColorHint="@color/grey"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
-                        app:startIconTint="#494949"
-                        app:suffixText="%">
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="#494949">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTramoCompactacion"
@@ -175,13 +202,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
                         android:hint="Subtramo"
+                        android:textColorHint="@color/grey"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
-                        app:startIconTint="#494949"
-                        app:suffixText="%">
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="#494949">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etSubTramo"
@@ -196,11 +222,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
                         android:hint="Compactación de proyecto"
+                        android:textColorHint="@color/grey"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
                         app:startIconTint="#494949"
                         app:suffixText="%">
 
@@ -216,11 +242,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
                         android:hint="M.V.S.M."
+                        android:textColorHint="@color/grey"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
                         app:startIconTint="#494949"
                         app:suffixText="kg/m³">
 
@@ -237,11 +263,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        app:hintTextColor="@color/grey"
-                        android:textColorHint="@color/grey"
                         android:hint="Humedad Op."
+                        android:textColorHint="@color/grey"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
                         app:startIconTint="#494949"
                         app:suffixText="%"
                         app:suffixTextAppearance="@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked">
@@ -274,23 +300,43 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="12dp"
+                        android:layout_marginBottom="12dp"
                         android:orientation="vertical">
 
-
-                        <TextView
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Registro de calas"
-                            android:textSize="24sp" />
+                            android:backgroundTint="@color/grey"
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvCalasCompactaciones"
+                            app:cardCornerRadius="12dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:layout_marginHorizontal="12dp"
+                                android:gravity="center"
+                                android:text="Registro de calas"
+                                android:textSize="16sp" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="16dp"
+                            android:backgroundTint="@color/grey"
+                            app:cardCornerRadius="12dp">
 
-                            android:layout_height="match_parent"
-                            android:clipChildren="true"
-                            android:clipToPadding="true" />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvCalasCompactaciones"
+                                android:layout_width="match_parent"
+                                android:layout_height="180dp"
+                                android:layout_margin="10dp"
+                                android:clipChildren="true"
+                                android:clipToPadding="true" />
+                        </androidx.cardview.widget.CardView>
+
 
                     </LinearLayout>
 
@@ -299,19 +345,20 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="24dp"
-                        android:gravity="end"
+                        android:gravity="center|fill_vertical"
                         android:orientation="horizontal">
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/fbNuevaCalaCompactacion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:backgroundTint="#7E57C2"
                             android:outlineSpotShadowColor="@color/white"
-                            android:backgroundTint="@color/Background_Resultados"
                             android:src="@drawable/plus_large_svgrepo_com"
-                            app:maxImageSize="40dp" />
+                            app:maxImageSize="40dp"
+
+                            app:tint="@color/white" />
 
                     </LinearLayout>
 
