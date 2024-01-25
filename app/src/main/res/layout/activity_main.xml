@@ -17,6 +17,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
         android:hint="email"
         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
         app:startIconDrawable="@drawable/baseline_person_24"
@@ -53,6 +54,7 @@
 
     <Button
         android:id="@+id/btnAcceder"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/btn_Background_Acceder"
