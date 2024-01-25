@@ -28,6 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="#E53935"
+            android:scaleX=".7"
+            android:scaleY=".7"
             android:src="@drawable/baseline_clear_24" />
     </LinearLayout>
 
