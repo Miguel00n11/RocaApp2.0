@@ -118,6 +118,13 @@ class RegistroCompactaciones : AppCompatActivity() {
         CalasAdapter.notifyDataSetChanged()
     }
 
+    private fun getLocalRecords(): MutableList<Registro> {
+        val registrosJson = sharedPreferences.getString("registros", "[]")
+        return Gson().fromJson(registrosJson, object : TypeToken<MutableList<Registro>>() {}.type)
+            ?: mutableListOf()
+    }
+
+
     private fun saveLocally(
         obra: String,
         fecha: String,
@@ -156,13 +163,6 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         // Guardar la lista actualizada localmente
         saveLocalRecords(registrosLocales)
-    }
-
-
-    private fun getLocalRecords(): MutableList<Registro> {
-        val registrosJson = sharedPreferences.getString("registros", "[]")
-        return Gson().fromJson(registrosJson, object : TypeToken<MutableList<Registro>>() {}.type)
-            ?: mutableListOf()
     }
 
     private fun saveLocalRecords(registros: List<Registro>) {
