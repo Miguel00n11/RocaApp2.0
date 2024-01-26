@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
 
-                    android:paddingVertical="12dp">
+                    android:layout_marginBottom="12dp">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -99,8 +99,6 @@
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
-
                         android:layout_marginHorizontal="12dp"
                         android:layout_weight="1"
                         android:hint="Fecha"
