@@ -174,14 +174,11 @@
                     </androidx.cardview.widget.CardView>
 
 
-
-
                     <Spinner
                         android:id="@+id/spnTipoMuestreoCilindros"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-
                         android:layout_marginHorizontal="40dp"
                         android:layout_marginVertical="3dp"
                         android:backgroundTint="@color/background_Registro_Cala"
@@ -210,6 +207,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
@@ -233,51 +231,52 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="12dp"
-                        android:hint="f'c"
-                        android:layout_weight="1"
-                        app:suffixText="kg/cm²"
-                        android:textColorHint="@color/grey"
+                        android:orientation="horizontal">
 
-                        app:endIconMode="clear_text"
-                        app:helperTextTextColor="#D81B60"
-                        app:hintTextColor="@color/grey"
-                        app:startIconTint="@color/grey">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etFCCilindros"
-                            android:layout_width="match_parent"
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="number|numberDecimal" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="12dp"
-                        android:hint="Volumen total"
-                        android:layout_weight="1"
-                        app:suffixText="m³"
-                        android:textColorHint="@color/grey"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_weight="1"
+                            android:hint="f'c"
+                            android:textColorHint="@color/grey"
+                            app:endIconMode="clear_text"
 
-                        app:endIconMode="clear_text"
-                        app:helperTextTextColor="#D81B60"
-                        app:hintTextColor="@color/grey"
-                        app:startIconTint="@color/grey">
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey"
+                            app:suffixText="kg/cm²">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etVolumenCilindros"
-                            android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etFCCilindros"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:inputType="number|numberDecimal" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_weight="1"
+                            android:hint="Volumen total"
+                            android:textColorHint="@color/grey"
+                            app:endIconMode="clear_text"
+
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey"
+                            app:suffixText="m³">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etVolumenCilindros"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
 
                     </LinearLayout>
@@ -285,8 +284,8 @@
                     <Spinner
                         android:id="@+id/spnTipoConcretoCilindros"
                         android:layout_width="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
 
                         android:layout_marginHorizontal="40dp"
                         android:layout_marginVertical="3dp"
@@ -307,8 +306,8 @@
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
                         app:hintTextColor="@color/grey"
-                        app:suffixText="d"
-                        app:startIconTint="@color/grey">
+                        app:startIconTint="@color/grey"
+                        app:suffixText="d">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etEdadCilindros"
@@ -317,122 +316,109 @@
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-
-
-                    <LinearLayout
-
-
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
+                        android:hint="T.M.A."
+                        android:textColorHint="@color/grey"
+                        app:endIconMode="clear_text"
 
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey"
+                        app:suffixText="mm">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="T.M.A. [mm]:" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTMACilindros"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="T.M.A. [mm]"
-                            android:inputType="number|numberDecimal"
-                            android:selectAllOnFocus="true" />
+                            android:inputType="number|numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-
-                    </LinearLayout>
-
-                    <LinearLayout
-
-
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
+                        android:hint="Concretera"
+                        android:textColorHint="@color/grey"
+                        app:endIconMode="clear_text"
 
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Concretera:" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etConcreteraCilindros"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Concretera"
-                            android:inputType="textCapCharacters"
-                            android:selectAllOnFocus="true" />
+                            android:inputType="textCapCharacters" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-
-                    </LinearLayout>
-
-                    <LinearLayout
-
-
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
+                        android:hint="C:A:G"
 
+                        app:expandedHintEnabled="false"
+                        android:textColorHint="@color/grey"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="H.O. Prop (C:A:G):" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etHOPropCilindros"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="cemento:arena:grava"
-                            android:inputType="text"
-                            android:selectAllOnFocus="true" />
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
+                        android:hint="Aditivo"
+                        android:textColorHint="@color/grey"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Aditivo:" />
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etAditivoCilindros"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Aditivo"
-                            android:inputType="number|numberDecimal"
-                            android:selectAllOnFocus="true" />
-                    </LinearLayout>
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
+                        android:hint="Remisión"
+                        android:textColorHint="@color/grey"
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Remisión:" />
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etRemisionCilindros"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Remisión"
-                            android:inputType="number|numberDecimal"
-                            android:selectAllOnFocus="true" />
-                    </LinearLayout>
+                            android:inputType="number|numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -458,86 +444,112 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <LinearLayout
-
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginHorizontal="12dp"
-                            android:orientation="horizontal">
+                            android:hint="Rev. Diseño"
+                            android:textColorHint="@color/grey"
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rev. Diseño [cm]:" />
+                            app:endIconMode="clear_text"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey"
+                            app:suffixText="cm">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etRevenimientoProyCilindros"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Rev. Diseño [cm]"
-                                android:inputType="textPersonName"
-                                android:selectAllOnFocus="true" />
-
-                        </LinearLayout>
+                                android:gravity="center"
+                                android:inputType="textCapCharacters" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <LinearLayout
-
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginHorizontal="12dp"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rev. obtenido [cm]:" />
-
-                            <EditText
-                                android:id="@+id/etReveniminetoObt1Cilindros"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="12dp"
                                 android:layout_weight="1"
-                                android:hint="R1 [cm]"
-                                android:inputType="number|numberDecimal"
-                                android:selectAllOnFocus="true" />
+                                android:hint="R1"
 
-                            <EditText
-                                android:id="@+id/etReveniminetoObt2Cilindros"
+                                android:textColorHint="@color/grey"
+                                app:endIconMode="clear_text"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="cm">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etReveniminetoObt1Cilindros"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+
+                                    android:inputType="number|numberDecimal" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="12dp"
                                 android:layout_weight="1"
-                                android:hint="R2 [cm]"
-                                android:inputType="number|numberDecimal"
-                                android:selectAllOnFocus="true" />
+                                android:hint="R2"
+                                android:textColorHint="@color/grey"
+                                app:endIconMode="clear_text"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="cm">
 
-
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etReveniminetoObt2Cilindros"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:inputType="number|numberDecimal" />
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
-                        <LinearLayout
-
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginHorizontal="12dp"
-                            android:orientation="horizontal">
+                            android:layout_weight="1"
+                            android:hint="Temperatura"
+                            android:textColorHint="@color/grey"
+                            app:endIconMode="clear_text"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey"
+                            app:suffixText="°C">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Temperatura [°C]:" />
-
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etTemperaturaCilindros"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="[°C]"
-                                android:inputType="number|numberDecimal"
-                                android:selectAllOnFocus="true" />
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:inputType="number|numberDecimal" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        </LinearLayout>
+
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
                             android:layout_gravity="center"
                             android:text="No. Moldes:" />
 
@@ -674,33 +686,78 @@
                             android:layout_marginHorizontal="12dp"
                             android:orientation="horizontal">
 
-
-                            <EditText
-                                android:id="@+id/etHoraSalidaCilindros"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="4dp"
                                 android:layout_weight="1"
-                                android:hint="H. Salida planta"
-                                android:inputType="time"
-                                android:selectAllOnFocus="true" />
+                                android:hint="Salida planta"
+                                android:textColorHint="@color/grey"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="h">
 
-                            <EditText
-                                android:id="@+id/etHorallegadaCilindros"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etHoraSalidaCilindros"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:maxLength="5"
+                                    android:gravity="center"
+                                    android:inputType="time" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="4dp"
                                 android:layout_weight="1"
-                                android:hint="H. llegada"
-                                android:inputType="time"
-                                android:selectAllOnFocus="true" />
+                                android:hint="llegada"
+                                android:textColorHint="@color/grey"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="h">
 
-                            <EditText
-                                android:id="@+id/etHoraMuestreoCilindros"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etHorallegadaCilindros"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:maxLength="5"
+                                    android:gravity="center"
+                                    android:inputType="time" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="4dp"
                                 android:layout_weight="1"
                                 android:hint="H. Muestreo"
-                                android:inputType="time"
-                                android:selectAllOnFocus="true" />
+                                android:textColorHint="@color/grey"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="h">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etHoraMuestreoCilindros"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:maxLength="5"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:inputType="time" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
