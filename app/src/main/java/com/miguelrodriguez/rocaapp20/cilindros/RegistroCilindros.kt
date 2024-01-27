@@ -85,6 +85,7 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var etHoraMuestreoCilindros: EditText
 
     private lateinit var btnGuardarRegistroCilindros: Button
+    private lateinit var btnCancelarRegistroCilindros: Button
 
     private lateinit var reporteSelecionado: ClaseObraCilindros
 
@@ -145,6 +146,7 @@ class RegistroCilindros : AppCompatActivity() {
         etHoraMuestreoCilindros = findViewById(R.id.etHoraMuestreoCilindros)
 
         btnGuardarRegistroCilindros = findViewById(R.id.btnGuardarRegistroCilindros)
+        btnCancelarRegistroCilindros = findViewById(R.id.btnCancelarRegistroCilindros)
 
         reporteSelecionado = ReporteCilindros.reporteSelecionado
 
@@ -355,6 +357,7 @@ class RegistroCilindros : AppCompatActivity() {
         btnGuardarRegistroCilindros.setOnClickListener {
             mostrarDialogo()
         }
+        btnCancelarRegistroCilindros.setOnClickListener { onBackPressed() }
     }
 
     private fun mostrarDialogo() {
