@@ -27,6 +27,7 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:text="Lista de Reportes de Cilindros"/>
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,6 +41,8 @@
             android:id="@+id/rvObrasCilindros"
             android:layout_width="match_parent"
             android:layout_weight="1"
+            android:layout_margin="8dp"
+
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints" />
         </androidx.cardview.widget.CardView>

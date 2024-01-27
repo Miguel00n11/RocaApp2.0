@@ -14,19 +14,27 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
+import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
+import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
+import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ClaseImagenes
+import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ImageAdapter
 import com.miguelrodriguez.rocaapp20.RegistroCompactaciones
 import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
+import com.miguelrodriguez.rocaapp20.ReportesMuestreoMaterial
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -37,7 +45,7 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var personal: String
     private lateinit var llave: String
-
+    private lateinit var binding: TextInputLayout
 
 
     private lateinit var spnMolde1: Spinner
@@ -63,8 +71,8 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var etAditivoCilindros: EditText
     private lateinit var etRemisionCilindros: EditText
     private lateinit var etRevenimientoProyCilindros: EditText
-    private lateinit var etReveniminetoObt1Cilindros: EditText
-    private lateinit var etReveniminetoObt2Cilindros: EditText
+    private lateinit var etRevenimientoObt1Cilindros: EditText
+    private lateinit var etRevenimientoObt2Cilindros: EditText
     private lateinit var etTemperaturaCilindros: EditText
 
     private lateinit var etMolde1Cilindros: EditText
@@ -96,6 +104,8 @@ class RegistroCilindros : AppCompatActivity() {
         dataReference = FirebaseDatabase.getInstance().reference
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
+        binding=findViewById(R.id.tilFechaMuestreoCompactaciones)
+
 
         tvNumeroReporteCilindros = findViewById(R.id.tvNumeroReporteCilindros)
         personal = MainActivity.NombreUsuarioCompanion
@@ -122,8 +132,8 @@ class RegistroCilindros : AppCompatActivity() {
         etAditivoCilindros = findViewById(R.id.etAditivoCilindros)
         etRemisionCilindros = findViewById(R.id.etRemisionCilindros)
         etRevenimientoProyCilindros = findViewById(R.id.etRevenimientoProyCilindros)
-        etReveniminetoObt1Cilindros = findViewById(R.id.etReveniminetoObt1Cilindros)
-        etReveniminetoObt2Cilindros = findViewById(R.id.etReveniminetoObt2Cilindros)
+        etRevenimientoObt1Cilindros = findViewById(R.id.etReveniminetoObt1Cilindros)
+        etRevenimientoObt2Cilindros = findViewById(R.id.etReveniminetoObt2Cilindros)
         etTemperaturaCilindros = findViewById(R.id.etTemperaturaCilindros)
         etMolde1Cilindros = findViewById(R.id.etMolde1Cilindros)
         etMolde2Cilindros = findViewById(R.id.etMolde2Cilindros)
@@ -139,15 +149,177 @@ class RegistroCilindros : AppCompatActivity() {
         reporteSelecionado = ReporteCilindros.reporteSelecionado
 
 
+        if (editar == true) {
+            cargarObraSeleccionada(reporteSelecionado)
 
+            // Obtener referencia a la imagen en Firebase Storage
+            val storage = FirebaseStorage.getInstance()
+            val storageRef = storage.reference.child(llave)
+
+
+            val imageRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
+//            Toast.makeText(this, storageRef.toString(), Toast.LENGTH_SHORT).show()
+
+// Suponiendo que tienes una lista de rutas de imágenes llamada imagePaths
+            imageRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val tempList = mutableListOf<String>()
+                    val ListaDeImagenes = mutableListOf<ClaseImagenes>()
+
+
+                    for (elementoSnapshot in dataSnapshot.children) {
+                        val elemento = elementoSnapshot.getValue(String::class.java)
+                        println("Elemento: $elemento")
+
+                        elemento?.let {
+                            tempList.add(it)
+                            ListaDeImagenes.add(ClaseImagenes(it, elementoSnapshot.key.toString()))
+                        }
+                    }
+
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    println("Error al obtener la lista de elementos: ${databaseError.message}")
+                }
+            })
+
+        }
 
 
         FechaDeHoy()
+        if (!editar)
+        {
+            cargarItemsEstadosCilindros()
+            cargarTipoDeMuestreo()
+        }
+
+    }
+    private fun cargarObraSeleccionada(reporteSelecionado: ClaseObraCilindros) {
+
+        tvNumeroReporteCilindros.setText(reporteSelecionado.id.toString())
+        etObraCilindros.setText(reporteSelecionado.Obra)
+        etFechaCompactacion.setText(reporteSelecionado.fecha)
+
+        etElementoColadoCilindros.setText(reporteSelecionado.elementoColado)
+        etUbicacionCilindros.setText(reporteSelecionado.ubicacion)
+        etFCCilindros.setText(reporteSelecionado.fc.toString())
+        etVolumenCilindros.setText(reporteSelecionado.volumenTotal.toString())
+        etEdadCilindros.setText(reporteSelecionado.edad.toString())
+        etTMACilindros.setText(reporteSelecionado.tma.toString())
+        etConcreteraCilindros.setText(reporteSelecionado.concretera)
+        etHOPropCilindros.setText(reporteSelecionado.proporciones)
+        etAditivoCilindros.setText(reporteSelecionado.aditivo)
+        etRemisionCilindros.setText(reporteSelecionado.remision)
+
+        etRevenimientoProyCilindros.setText(reporteSelecionado.revenimientoDis.toString())
+        etRevenimientoObt1Cilindros.setText(reporteSelecionado.revenimientoR1.toString())
+        etRevenimientoObt2Cilindros.setText(reporteSelecionado.revenimientoR2.toString())
+        etTemperaturaCilindros.setText(reporteSelecionado.temperatura.toString())
+        etMolde1Cilindros.setText(reporteSelecionado.Molde1.toString())
+        etMolde2Cilindros.setText(reporteSelecionado.Molde2.toString())
+        etMolde3Cilindros.setText(reporteSelecionado.Molde3.toString())
+        etMolde4Cilindros.setText(reporteSelecionado.Molde4.toString())
+        etHoraSalidaCilindros.setText(reporteSelecionado.horaSalida)
+        etHorallegadaCilindros.setText(reporteSelecionado.horaLLegada)
+        etHoraMuestreoCilindros.setText(reporteSelecionado.horaMuestreo)
+
+
+
+        spnTipoConcretoCilindros.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+
+                    cargarItemsTipoDeMuestreo(spnTipoConcretoCilindros.selectedItem.toString())
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // No se utiliza en este ejemplo
+                }
+            }
+
         cargarItemsEstadosCilindros()
         cargarTipoDeMuestreo()
+
+
+
+
+        llave = reporteSelecionado.llave
+
+
+        val tipoMuestreo1 = reporteSelecionado.tipoMuestreo
+        val adapter1 = spnTipoMuestreoCilindros.adapter
+
+        for (i in 0 until adapter1.count) {
+            if (adapter1.getItem(i).toString() == tipoMuestreo1) {
+                spnTipoMuestreoCilindros.setSelection(i)
+                break
+            }
+        }
+        val tipoResistencia = reporteSelecionado.tipoResistencia
+        val adapter2 = spnTipoConcretoCilindros.adapter
+
+        for (i in 0 until adapter2.count) {
+            if (adapter2.getItem(i).toString() == tipoResistencia) {
+                spnTipoConcretoCilindros.setSelection(i)
+                break
+            }
+        }
+
+        val estadoMolde1 = reporteSelecionado.estadoMolde1
+        val adapterestadoMolde1 = spnMolde1.adapter
+
+        for (i in 0 until adapterestadoMolde1.count) {
+            if (adapterestadoMolde1.getItem(i).toString() == estadoMolde1) {
+                spnMolde1.setSelection(i)
+                break
+            }
+        }
+        val estadoMolde2 = reporteSelecionado.estadoMolde2
+        val adapterestadoMolde2 = spnMolde2.adapter
+
+        for (i in 0 until adapterestadoMolde2.count) {
+            if (adapterestadoMolde2.getItem(i).toString() == estadoMolde2) {
+                spnMolde2.setSelection(i)
+                break
+            }
+        }
+
+        val estadoMolde3 = reporteSelecionado.estadoMolde3
+        val adapterestadoMolde3 = spnMolde3.adapter
+
+        for (i in 0 until adapterestadoMolde3.count) {
+            if (adapterestadoMolde3.getItem(i).toString() == estadoMolde3) {
+                spnMolde3.setSelection(i)
+                break
+            }
+        }
+        val estadoMolde4 = reporteSelecionado.estadoMolde4
+        val adapterestadoMolde4 = spnMolde4.adapter
+
+        for (i in 0 until adapterestadoMolde4.count) {
+            if (adapterestadoMolde4.getItem(i).toString() == estadoMolde4) {
+                spnMolde4.setSelection(i)
+                break
+            }
+        }
+
+
+
+
     }
 
     private fun InitUI() {
+        binding.setEndIconOnClickListener {
+            mostrarCalendario(findViewById(R.id.spnMolde1))
+
+        }
         spnMolde1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -155,6 +327,7 @@ class RegistroCilindros : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
+
 
             }
 
@@ -199,7 +372,7 @@ class RegistroCilindros : AppCompatActivity() {
 
 
                 val obra: String = etObraCilindros.text.toString()
-                val fecha: String = etFCCilindros.text.toString()
+                val fecha: String = etFechaCompactacion.text.toString()
                 val numeroReporte: Int = tvNumeroReporteCilindros.text.toString().toInt()
                 val tipoMuestreo:String=spnTipoMuestreoCilindros.selectedItem.toString()
 
@@ -215,9 +388,9 @@ class RegistroCilindros : AppCompatActivity() {
                 val aditivo = etAditivoCilindros.text.toString()
                 val remision = etRemisionCilindros.text.toString()
 
-                val reveniminetoDis = etRevenimientoProyCilindros.text.toString().toDouble()
-                val reveniminetoR1 = etReveniminetoObt1Cilindros.text.toString().toDouble()
-                val reveniminetoR2 = etReveniminetoObt2Cilindros.text.toString().toDouble()
+                val revenimientoDis = etRevenimientoProyCilindros.text.toString().toDouble()
+                val revenimientoR1 = etRevenimientoObt1Cilindros.text.toString().toDouble()
+                val revenimientoR2 = etRevenimientoObt2Cilindros.text.toString().toDouble()
                 val temperatura = etTemperaturaCilindros.text.toString().toDouble()
                 val molde1 = etMolde1Cilindros.text.toString().toInt()
                 val molde2 = etMolde2Cilindros.text.toString().toInt()
@@ -252,9 +425,9 @@ class RegistroCilindros : AppCompatActivity() {
                     proporciones,
                     aditivo,
                     remision,
-                    reveniminetoDis,
-                    reveniminetoR1,
-                    reveniminetoR2,
+                    revenimientoDis,
+                    revenimientoR1,
+                    revenimientoR2,
                     temperatura,
                     molde1,
                     molde2,
@@ -393,9 +566,9 @@ class RegistroCilindros : AppCompatActivity() {
         aditivo: String,
         remision: String,
 
-        reveniminetoDis: Double,
-        reveniminetoR1: Double,
-        reveniminetoR2: Double,
+        revenimientoDis: Double,
+        revenimientoR1: Double,
+        revenimientoR2: Double,
         temperatura: Double,
         molde1: Int,
         molde2: Int,
@@ -420,6 +593,8 @@ class RegistroCilindros : AppCompatActivity() {
             fecha,
             personal,
             numeroReporte,
+            tipoMuestreo,
+
             elementoColado,
             ubicacion,
             fc,
@@ -432,9 +607,9 @@ class RegistroCilindros : AppCompatActivity() {
             aditivo,
             remision,
 
-            reveniminetoDis,
-            reveniminetoR1,
-            reveniminetoR2,
+            revenimientoDis,
+            revenimientoR1,
+            revenimientoR2,
             temperatura,
             molde1,
             molde2,
@@ -460,6 +635,7 @@ class RegistroCilindros : AppCompatActivity() {
         val fecha: String,
         val personal: String,
         val numeroReporte: Int,
+        val tipoMuestreo: String,
 
         val elementoColado: String,
         val ubicacion: String,
@@ -473,9 +649,9 @@ class RegistroCilindros : AppCompatActivity() {
         val aditivo: String,
         val remision: String,
 
-        val reveniminetoDis: Double,
-        val reveniminetoR1: Double,
-        val reveniminetoR2: Double,
+        val revenimientoDis: Double,
+        val revenimientoR1: Double,
+        val revenimientoR2: Double,
         val temperatura: Double,
         val molde1: Int,
         val molde2: Int,
@@ -569,4 +745,14 @@ class RegistroCilindros : AppCompatActivity() {
 
         datePickerDialog.show()
     }
+    override fun onBackPressed() {
+        // Aquí puedes realizar acciones específicas cuando se presiona el botón de retroceso
+        // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación o realizar alguna operación antes de cerrar la actividad
+        // Puedes agregar tu lógica aquí o llamar al método super.onBackPressed() para cerrar la actividad sin ninguna acción adicional.
+        if (editar == true) {
+        }
+        ReporteCilindros.editar = false
+        super.onBackPressed()
+    }
+
 }

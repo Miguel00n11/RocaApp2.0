@@ -20,6 +20,7 @@ import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
+import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
 import com.miguelrodriguez.rocaapp20.Recycler.ObraAdapter
 import com.miguelrodriguez.rocaapp20.RegistroCompactaciones
 import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
@@ -38,7 +39,7 @@ class ReporteCilindros : AppCompatActivity() {
 
 
     private lateinit var btnRegistroCilindros: Button
-    private lateinit var rvObrasCompactacion: RecyclerView
+    private lateinit var rvObrasCilindros: RecyclerView
     private lateinit var ObraAdapter: ObraAdapterCilindros
     private lateinit var claseObra: ClaseObra
     private lateinit var listaObrasmutableListOf: MutableList<ClaseObraCilindros>
@@ -51,6 +52,7 @@ class ReporteCilindros : AppCompatActivity() {
     }
 
     private fun initComponent() {
+        rvObrasCilindros = findViewById(R.id.rvObrasCilindros)
 
         reporteSelecionado = ClaseObraCilindros(
             1, "estacion", "1", "1", 1,
@@ -85,8 +87,8 @@ class ReporteCilindros : AppCompatActivity() {
             onObraSelected = { position -> onItemSelected(position) },
             onItemDelete = { position -> onItemDelete(position) })
 
-        rvObrasCompactacion.layoutManager = LinearLayoutManager(this)
-        rvObrasCompactacion.adapter = ObraAdapter
+        rvObrasCilindros.layoutManager = LinearLayoutManager(this)
+        rvObrasCilindros.adapter = ObraAdapter
 
         dataReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -101,67 +103,91 @@ class ReporteCilindros : AppCompatActivity() {
 
                     // Accede a los datos específicos de cada informe
                     val obra1 = snapshot.child("obra").getValue(String::class.java)
-                    val capa = snapshot.child("capa").getValue(String::class.java)
-                    val compactacion = snapshot.child("compactacion").getValue(Int::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
-                    val humedad = snapshot.child("humedad").getValue(Int::class.java)
-                    var llave = snapshot.child("llave").getValue(String::class.java)
-//                    val listaCalas = snapshot.child("listaCalas").getValue(MutableList<ClaseCala>::class.java)
-
-                    val listaCalasSnapshot = snapshot.child("listaCalas")
-                    val listaCalas: MutableList<ClaseCala> = mutableListOf()
-
-                    for (calaSnapshot in listaCalasSnapshot.children) {
-                        // Asegúrate de ajustar los nombres de los campos según tu modelo ClaseCala
-                        val estacion = calaSnapshot.child("estacion").getValue(String::class.java)
-                        val humedad = calaSnapshot.child("humedad").getValue(Double::class.java)
-                        val cala = calaSnapshot.child("cala").getValue(Int::class.java)
-                        val mvsl = calaSnapshot.child("mvsl").getValue(Double::class.java)
-                        val porcentaje =
-                            calaSnapshot.child("porcentaje").getValue(Double::class.java)
-                        val prof =
-                            calaSnapshot.child("prof").getValue(Double::class.java)
-                        // Crea un objeto ClaseCala y agrégalo a la lista
-                        val cala1 = ClaseCala(
-                            cala!!,
-                            estacion!!,
-                            prof!!,
-                            mvsl!!,
-                            humedad!!,
-                            porcentaje!!
-                        )
-                        listaCalas.add(cala1)
-                    }
-
-
-                    val mvsm = snapshot.child("mvsm").getValue(Int::class.java)
-                    val numReporte = snapshot.child("numeroReporte").getValue(Int::class.java)
                     val personal1 = snapshot.child("personal").getValue(String::class.java)
-                    val subTramo = snapshot.child("subTramo").getValue(String::class.java)
-                    val tramo = snapshot.child("tramo").getValue(String::class.java)
+                    val numReporte = snapshot.child("numeroReporte").getValue(Int::class.java)
+
+                    val tipoMuestreo = snapshot.child("tipoMuestreo").getValue(String::class.java)
+                    val elementoColado = snapshot.child("elementoColado").getValue(String::class.java)
+                    val ubicacion = snapshot.child("ubicacion").getValue(String::class.java)
+                    val fc = snapshot.child("fc").getValue(Double::class.java)
+                    val volumenTotal = snapshot.child("volumenTotal").getValue(Double::class.java)
+                    val tipoResistencia = snapshot.child("tipoResistencia").getValue(String::class.java)
+                    val edad = snapshot.child("edad").getValue(Int::class.java)
+                    val tma = snapshot.child("tma").getValue(Double::class.java)
+                    val concretera = snapshot.child("concretera").getValue(String::class.java)
+                    val proporciones = snapshot.child("proporciones").getValue(String::class.java)
+                    val aditivo = snapshot.child("aditivo").getValue(String::class.java)
+                    val remision = snapshot.child("remision").getValue(String::class.java)
+
+                    val revenimientoDis = snapshot.child("revenimientoDis").getValue(Double::class.java)
+                    val revenimientoR1 = snapshot.child("revenimientoR1").getValue(Double::class.java)
+                    val revenimientoR2 = snapshot.child("revenimientoR2").getValue(Double::class.java)
+                    val temperatura = snapshot.child("temperatura").getValue(Double::class.java)
+                    val molde1 = snapshot.child("molde1").getValue(Int::class.java)
+                    val molde2 = snapshot.child("molde2").getValue(Int::class.java)
+                    val molde3 = snapshot.child("molde3").getValue(Int::class.java)
+                    val molde4 = snapshot.child("molde4").getValue(Int::class.java)
+                    val estadoMolde1 = snapshot.child("estadoMolde1").getValue(String::class.java)
+                    val estadoMolde2 = snapshot.child("estadoMolde2").getValue(String::class.java)
+                    val estadoMolde3 = snapshot.child("estadoMolde3").getValue(String::class.java)
+                    val estadoMolde4 = snapshot.child("estadoMolde4").getValue(String::class.java)
+                    val horaSalida = snapshot.child("horaSalida").getValue(String::class.java)
+                    val horaLLegada = snapshot.child("horaLLegada").getValue(String::class.java)
+                    val horaMuestreo = snapshot.child("horaMuestreo").getValue(String::class.java)
+
+                    var llave = snapshot.child("llave").getValue(String::class.java)
+
 
                     // Verifica si el personal coincide con el personal deseado
                     if (personal1 == personal) {
                         // Crea un objeto ClaseObra y agrégalo a la lista solo si el personal coincide
-                        val obra = ClaseObra(
+                        val obra = ClaseObraCilindros(
+
                             numReporte!!,
                             obra1.toString(),
-                            numReporte.toString(),
-                            capa.toString(),
                             fecha.toString(),
-                            tramo.toString(),
-                            subTramo.toString(),
-                            compactacion.toString(),
-                            mvsm.toString(),
-                            humedad.toString(),
-                            llave.toString(),
+                            personal1.toString(),
+                            numReporte.toInt(),
+                            tipoMuestreo.toString(),
 
-                            listaCalas
+                            elementoColado.toString(),
+                            ubicacion.toString(),
+                            fc!!,
+                            volumenTotal!!,
+                            tipoResistencia.toString(),
+                            edad!!,
+                            tma!!,
+                            concretera.toString(),
+                            proporciones.toString(),
+                            aditivo.toString(),
+                            remision.toString(),
+
+                            revenimientoDis!!,
+                            revenimientoR1!!,
+                            revenimientoR2!!,
+                            temperatura!!,
+                            molde1!!,
+                            molde2!!,
+                            molde3!!,
+                            molde4!!,
+                            estadoMolde1.toString(),
+                            estadoMolde2.toString(),
+                            estadoMolde3.toString(),
+                            estadoMolde4.toString(),
+                            horaSalida.toString(),
+                            horaLLegada.toString(),
+                            horaMuestreo.toString(),
+                            llave.toString()
+
+
 
 
                         ) // Asegúrate de ajustar los parámetros según tu clase
                         listaObrasmutableListOf.add(obra)
                     }
+
+
                 }
 
                 // Notifica al adaptador que los datos han cambiado

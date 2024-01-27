@@ -120,7 +120,6 @@
                             android:layout_marginHorizontal="12dp"
                             android:layout_weight="1"
                             android:hint="Fecha"
-                            android:onClick="mostrarCalendarioMuestreoMecanica"
                             android:textColorHint="@color/grey"
                             app:endIconDrawable="@drawable/baseline_calendar_month_24"
                             app:endIconMode="custom"
