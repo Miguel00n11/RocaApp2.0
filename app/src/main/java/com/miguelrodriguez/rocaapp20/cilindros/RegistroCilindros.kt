@@ -69,6 +69,7 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var etConcreteraCilindros: EditText
     private lateinit var etHOPropCilindros: EditText
     private lateinit var etAditivoCilindros: EditText
+    private lateinit var etMuestraCilindros: EditText
     private lateinit var etRemisionCilindros: EditText
     private lateinit var etRevenimientoProyCilindros: EditText
     private lateinit var etRevenimientoObt1Cilindros: EditText
@@ -134,6 +135,7 @@ class RegistroCilindros : AppCompatActivity() {
         etHOPropCilindros = findViewById(R.id.etHOPropCilindros)
         etAditivoCilindros = findViewById(R.id.etAditivoCilindros)
         etRemisionCilindros = findViewById(R.id.etRemisionCilindros)
+        etMuestraCilindros = findViewById(R.id.etMuestraCilindros)
         etRevenimientoProyCilindros = findViewById(R.id.etRevenimientoProyCilindros)
         etRevenimientoObt1Cilindros = findViewById(R.id.etReveniminetoObt1Cilindros)
         etRevenimientoObt2Cilindros = findViewById(R.id.etReveniminetoObt2Cilindros)
@@ -218,6 +220,7 @@ class RegistroCilindros : AppCompatActivity() {
         etAditivoCilindros.setText(reporteSelecionado.aditivo)
         etRemisionCilindros.setText(reporteSelecionado.remision)
 
+        etMuestraCilindros.setText(reporteSelecionado.muestra.toString())
         etRevenimientoProyCilindros.setText(reporteSelecionado.revenimientoDis.toString())
         etRevenimientoObt1Cilindros.setText(reporteSelecionado.revenimientoR1.toString())
         etRevenimientoObt2Cilindros.setText(reporteSelecionado.revenimientoR2.toString())
@@ -396,6 +399,7 @@ class RegistroCilindros : AppCompatActivity() {
                 val aditivo = etAditivoCilindros.text.toString()
                 val remision = etRemisionCilindros.text.toString()
 
+                val muestra = etMuestraCilindros.text.toString().toInt()
                 val revenimientoDis = etRevenimientoProyCilindros.text.toString().toDouble()
                 val revenimientoR1 = etRevenimientoObt1Cilindros.text.toString().toDouble()
                 val revenimientoR2 = etRevenimientoObt2Cilindros.text.toString().toDouble()
@@ -434,6 +438,7 @@ class RegistroCilindros : AppCompatActivity() {
                     proporciones,
                     aditivo,
                     remision,
+                    muestra,
                     revenimientoDis,
                     revenimientoR1,
                     revenimientoR2,
@@ -576,6 +581,7 @@ class RegistroCilindros : AppCompatActivity() {
         aditivo: String,
         remision: String,
 
+        muestra:Int,
         revenimientoDis: Double,
         revenimientoR1: Double,
         revenimientoR2: Double,
@@ -618,6 +624,7 @@ class RegistroCilindros : AppCompatActivity() {
             aditivo,
             remision,
 
+            muestra,
             revenimientoDis,
             revenimientoR1,
             revenimientoR2,
@@ -661,6 +668,7 @@ class RegistroCilindros : AppCompatActivity() {
         val aditivo: String,
         val remision: String,
 
+        val muestra: Int,
         val revenimientoDis: Double,
         val revenimientoR1: Double,
         val revenimientoR2: Double,

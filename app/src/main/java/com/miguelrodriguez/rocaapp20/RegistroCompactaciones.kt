@@ -191,7 +191,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
 
-            val reportesReferencia = dataReference.child("Reportes").child(personal)
+            val reportesReferencia = dataReference.child("Compactaciones").child("Reportes").child(personal)
 
             reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -202,28 +202,28 @@ class RegistroCompactaciones : AppCompatActivity() {
 
                     if (accion == true) {
                         // Guardar el registro en Firebase Realtime Database
-                        dataReference.child("Reportes").child(personal)
+                        dataReference.child("Compactaciones").child("Reportes").child(personal)
                             .child(reporteSelecionado.llave)
                             .setValue(registro)
                         onBackPressed()
                     } else {
                         // Guardar el registro en Firebase Realtime Database
                         registro.llave=llave
-                        dataReference.child("Reportes").child(personal)
+                        dataReference.child("Compactaciones").child("Reportes").child(personal)
                             .child(llave)
                             .setValue(registro)
 
                     }
                     if (accion == true) {
                         // Guardar el registro en Firebase Realtime Database
-                        dataReference.child("Respaldo").child(personal)
+                        dataReference.child("Compactaciones").child("Respaldo").child(personal)
                             .child(reporteSelecionado.llave)
                             .setValue(registro)
                         onBackPressed()
                     } else {
                         // Guardar el registro en Firebase Realtime Database
                         registro.llave=llave
-                        dataReference.child("Respaldo").child(personal)
+                        dataReference.child("Compactaciones").child("Respaldo").child(personal)
                             .child(llave)
                             .setValue(registro)
 

@@ -453,6 +453,28 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="12dp"
+                            android:hint="Muestra"
+                            android:textColorHint="@color/grey"
+
+                            app:endIconMode="clear_text"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etMuestraCilindros"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLength="2"
+                                android:gravity="center"
+                                android:inputType="number|numberDecimal" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
                             android:hint="Rev. Diseño"
                             android:textColorHint="@color/grey"
 

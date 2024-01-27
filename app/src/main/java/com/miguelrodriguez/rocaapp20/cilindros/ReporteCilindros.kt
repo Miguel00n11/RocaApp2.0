@@ -57,7 +57,7 @@ class ReporteCilindros : AppCompatActivity() {
         reporteSelecionado = ClaseObraCilindros(
             1, "estacion", "1", "1", 1,
             "1", "1", "1", 1.1, 1.1,"hola",1,1.1,"a","1",
-            "1","1",1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
+            "1","1",1,1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
             "1","1","1:1","1:1","1:1","a","a"
         )
         btnRegistroCilindros=findViewById(R.id.btnRegistroCilindros)
@@ -120,6 +120,7 @@ class ReporteCilindros : AppCompatActivity() {
                     val aditivo = snapshot.child("aditivo").getValue(String::class.java)
                     val remision = snapshot.child("remision").getValue(String::class.java)
 
+                    val muestra = snapshot.child("muestra").getValue(Int::class.java)
                     val revenimientoDis = snapshot.child("revenimientoDis").getValue(Double::class.java)
                     val revenimientoR1 = snapshot.child("revenimientoR1").getValue(Double::class.java)
                     val revenimientoR2 = snapshot.child("revenimientoR2").getValue(Double::class.java)
@@ -164,6 +165,7 @@ class ReporteCilindros : AppCompatActivity() {
                             aditivo.toString(),
                             remision.toString(),
 
+                            muestra!!,
                             revenimientoDis!!,
                             revenimientoR1!!,
                             revenimientoR2!!,

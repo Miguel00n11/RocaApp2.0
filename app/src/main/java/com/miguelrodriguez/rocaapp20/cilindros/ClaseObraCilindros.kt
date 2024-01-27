@@ -22,6 +22,7 @@ data class ClaseObraCilindros(
     val aditivo: String,
     val remision: String,
 
+    val muestra: Int,
     val revenimientoDis: Double,
     val revenimientoR1: Double,
     val revenimientoR2: Double,
