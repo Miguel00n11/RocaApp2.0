@@ -131,6 +131,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etFechaCompactacion"
                                 android:layout_width="match_parent"
+                                android:maxLength="10"
                                 android:layout_height="wrap_content"
                                 android:inputType="date" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -251,6 +252,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etFCCilindros"
                                 android:layout_width="match_parent"
+                                android:maxLength="5"
                                 android:layout_height="wrap_content"
                                 android:inputType="number|numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -273,6 +275,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etVolumenCilindros"
                                 android:layout_width="match_parent"
+                                android:maxLength="5"
                                 android:layout_height="wrap_content"
                                 android:inputType="number|numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -311,6 +314,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etEdadCilindros"
                             android:layout_width="match_parent"
+                            android:maxLength="2"
                             android:layout_height="wrap_content"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -332,6 +336,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTMACilindros"
                             android:layout_width="match_parent"
+                            android:maxLength="4"
                             android:layout_height="wrap_content"
                             android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -461,6 +466,7 @@
                                 android:id="@+id/etRevenimientoProyCilindros"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:maxLength="4"
                                 android:gravity="center"
                                 android:inputType="number|numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -490,6 +496,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
+                                    android:maxLength="4"
 
                                     android:inputType="number|numberDecimal" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -514,6 +521,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:maxLength="4"
                                     android:gravity="center"
                                     android:inputType="number|numberDecimal" />
                             </com.google.android.material.textfield.TextInputLayout>
@@ -539,6 +547,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:maxLength="4"
                                 android:gravity="center"
                                 android:inputType="number|numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -566,6 +575,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:hint="Molde 1"
+                                android:maxLength="3"
                                 android:inputType="number|numberDecimal"
                                 android:selectAllOnFocus="true" />
 
@@ -595,6 +605,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:maxLength="3"
                                 android:hint="Molde 2"
                                 android:inputType="number|numberDecimal"
                                 android:selectAllOnFocus="true" />
@@ -625,6 +636,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:maxLength="3"
                                 android:hint="Molde 3"
                                 android:inputType="number|numberDecimal"
                                 android:selectAllOnFocus="true" />
@@ -655,6 +667,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:maxLength="3"
                                 android:hint="Molde 4"
                                 android:inputType="number|numberDecimal"
                                 android:selectAllOnFocus="true" />

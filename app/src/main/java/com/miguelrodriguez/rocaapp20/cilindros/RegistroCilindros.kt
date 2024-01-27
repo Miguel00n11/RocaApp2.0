@@ -390,7 +390,7 @@ class RegistroCilindros : AppCompatActivity() {
                 val volumenTotal: Double = etVolumenCilindros.text.toString().toDouble()
                 val tipoResistencia: String = spnTipoConcretoCilindros.selectedItem.toString()
                 val edad: Int = etEdadCilindros.text.toString().toInt()
-                val tma: Double = etEdadCilindros.text.toString().toDouble()
+                val tma: Double = etTMACilindros.text.toString().toDouble()
                 val concretera = etConcreteraCilindros.text.toString()
                 val proporciones = etHOPropCilindros.text.toString()
                 val aditivo = etAditivoCilindros.text.toString()
