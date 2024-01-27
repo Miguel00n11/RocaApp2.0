@@ -83,6 +83,8 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var etHoraSalidaCilindros: EditText
     private lateinit var etHorallegadaCilindros: EditText
     private lateinit var etHoraMuestreoCilindros: EditText
+    private lateinit var etObservacionesCilindros: EditText
+
 
     private lateinit var btnGuardarRegistroCilindros: Button
     private lateinit var btnCancelarRegistroCilindros: Button
@@ -144,6 +146,7 @@ class RegistroCilindros : AppCompatActivity() {
         etHoraSalidaCilindros = findViewById(R.id.etHoraSalidaCilindros)
         etHorallegadaCilindros = findViewById(R.id.etHorallegadaCilindros)
         etHoraMuestreoCilindros = findViewById(R.id.etHoraMuestreoCilindros)
+        etObservacionesCilindros = findViewById(R.id.etObservacionesCilindros)
 
         btnGuardarRegistroCilindros = findViewById(R.id.btnGuardarRegistroCilindros)
         btnCancelarRegistroCilindros = findViewById(R.id.btnCancelarRegistroCilindros)
@@ -189,9 +192,10 @@ class RegistroCilindros : AppCompatActivity() {
         }
 
 
-        FechaDeHoy()
         if (!editar)
         {
+            FechaDeHoy()
+
             cargarItemsEstadosCilindros()
             cargarTipoDeMuestreo()
         }
@@ -225,6 +229,7 @@ class RegistroCilindros : AppCompatActivity() {
         etHoraSalidaCilindros.setText(reporteSelecionado.horaSalida)
         etHorallegadaCilindros.setText(reporteSelecionado.horaLLegada)
         etHoraMuestreoCilindros.setText(reporteSelecionado.horaMuestreo)
+        etObservacionesCilindros.setText(reporteSelecionado.observaciones)
 
 
 
@@ -406,6 +411,7 @@ class RegistroCilindros : AppCompatActivity() {
                 val horaSalida = etHoraSalidaCilindros.text.toString()
                 val horaLLegada = etHorallegadaCilindros.text.toString()
                 val horaMuestreo = etHoraMuestreoCilindros.text.toString()
+                val observaciones = etObservacionesCilindros.text.toString()
 
                 var llave = reporteSelecionado.llave
 
@@ -443,6 +449,7 @@ class RegistroCilindros : AppCompatActivity() {
                     horaSalida,
                     horaLLegada,
                     horaMuestreo,
+                    observaciones,
                     llave
                 )
 
@@ -584,6 +591,7 @@ class RegistroCilindros : AppCompatActivity() {
         horaSalida: String,
         horaLLegada: String,
         horaMuestreo: String,
+        observaciones:String,
 
         llave: String
     ) {
@@ -625,6 +633,7 @@ class RegistroCilindros : AppCompatActivity() {
             horaSalida,
             horaLLegada,
             horaMuestreo,
+            observaciones,
             llave
         )
         registrosLocales.add(nuevoRegistro)
@@ -667,6 +676,7 @@ class RegistroCilindros : AppCompatActivity() {
         val horaSalida: String,
         val horaLLegada: String,
         val horaMuestreo: String,
+        val observaciones: String,
 
         var llave: String
     )

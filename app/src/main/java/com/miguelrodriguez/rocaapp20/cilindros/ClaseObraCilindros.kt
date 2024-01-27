@@ -37,6 +37,7 @@ data class ClaseObraCilindros(
     val horaSalida: String,
     val horaLLegada: String,
     val horaMuestreo: String,
+    val observaciones: String,
     var llave: String
 
 )

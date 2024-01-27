@@ -58,7 +58,7 @@ class ReporteCilindros : AppCompatActivity() {
             1, "estacion", "1", "1", 1,
             "1", "1", "1", 1.1, 1.1,"hola",1,1.1,"a","1",
             "1","1",1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
-            "1","1","1:1","1:1","1:1","a"
+            "1","1","1:1","1:1","1:1","a","a"
         )
         btnRegistroCilindros=findViewById(R.id.btnRegistroCilindros)
 
@@ -135,6 +135,7 @@ class ReporteCilindros : AppCompatActivity() {
                     val horaSalida = snapshot.child("horaSalida").getValue(String::class.java)
                     val horaLLegada = snapshot.child("horaLLegada").getValue(String::class.java)
                     val horaMuestreo = snapshot.child("horaMuestreo").getValue(String::class.java)
+                    val observaciones = snapshot.child("observaciones").getValue(String::class.java)
 
                     var llave = snapshot.child("llave").getValue(String::class.java)
 
@@ -178,6 +179,7 @@ class ReporteCilindros : AppCompatActivity() {
                             horaSalida.toString(),
                             horaLLegada.toString(),
                             horaMuestreo.toString(),
+                            observaciones.toString(),
                             llave.toString()
 
 
