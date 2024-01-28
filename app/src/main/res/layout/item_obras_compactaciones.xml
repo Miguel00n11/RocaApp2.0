@@ -68,7 +68,7 @@
                 <TextView
                     android:id="@+id/tvCapaCompactacion"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="capa"
                     android:textColor="#FFFFFF"
@@ -80,6 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.8"
                     android:gravity="right|bottom"
+                    android:layout_gravity="bottom"
                     android:hint="fecha"
                     android:textColor="@color/grey"
                     android:textStyle="normal" />
