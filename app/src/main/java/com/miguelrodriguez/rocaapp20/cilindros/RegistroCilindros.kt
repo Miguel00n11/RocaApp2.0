@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -40,6 +42,9 @@ import java.util.Calendar
 import java.util.Locale
 
 class RegistroCilindros : AppCompatActivity() {
+//    private val usuariosRef: DatabaseReference
+
+    private val databaseInventario: FirebaseDatabase = FirebaseDatabase.getInstance()
 
     private lateinit var dataReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
@@ -113,18 +118,22 @@ class RegistroCilindros : AppCompatActivity() {
 
     }
 
+
     private fun InitComponent() {
+
+
         dataReference = FirebaseDatabase.getInstance().reference
+
+
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
-        binding=findViewById(R.id.tilFechaMuestreoCompactaciones)
+        binding = findViewById(R.id.tilFechaMuestreoCompactaciones)
 
 
         tvNumeroReporteCilindros = findViewById(R.id.tvNumeroReporteCilindros)
         personal = MainActivity.NombreUsuarioCompanion
-        llave=dataReference.push().key.toString()
+        llave = dataReference.push().key.toString()
         editar = ReporteCilindros.editar
-
         spnMolde1 = findViewById(R.id.spnMolde1)
         spnMolde2 = findViewById(R.id.spnMolde2)
         spnMolde3 = findViewById(R.id.spnMolde3)
@@ -221,15 +230,17 @@ class RegistroCilindros : AppCompatActivity() {
         }
 
 
-        if (!editar)
-        {
+        if (!editar) {
             FechaDeHoy()
 
             cargarItemsEstadosCilindros()
             cargarTipoDeMuestreo()
+            consultarValores()
+
         }
 
     }
+
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObraCilindros) {
 
         tvNumeroReporteCilindros.setText(reporteSelecionado.id.toString())
@@ -356,8 +367,6 @@ class RegistroCilindros : AppCompatActivity() {
         }
 
 
-
-
     }
 
     private fun InitUI() {
@@ -399,17 +408,59 @@ class RegistroCilindros : AppCompatActivity() {
             }
         btnGuardarRegistroCilindros.setOnClickListener {
             mostrarDialogo()
+
         }
         btnCancelarRegistroCilindros.setOnClickListener {
-            val sharedPreferences1=getSharedPreferences("carretilla",Context.MODE_PRIVATE)
-            val editor =sharedPreferences1.edit()
-            editor.putString("",etCarretillaCilindros.text.toString())
-
-            val storedText = sharedPreferences.getString("editTextValue", "")
 
 
-            Toast.makeText(this,storedText , Toast.LENGTH_SHORT).show()
-            onBackPressed() }
+            onBackPressed()
+        }
+    }
+
+
+    private fun consultarValores() {
+        val inventarioRef: DatabaseReference =
+            databaseInventario.getReference("personal").child("inventario").child(personal)
+        // Agrega un listener para manejar el resultado de la consulta en el nodo "personal"
+        inventarioRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                etCarretillaCilindros.setText(
+                    dataSnapshot.child("carretilla").getValue(Int::class.java).toString()
+                )
+                etConoCilindros.setText(
+                    dataSnapshot.child("cono").getValue(Int::class.java).toString()
+                )
+                etVarillaCilindros.setText(
+                    dataSnapshot.child("varilla").getValue(Int::class.java).toString()
+                )
+                etMazoCilindros.setText(
+                    dataSnapshot.child("mazo").getValue(Int::class.java).toString()
+                )
+                etTermometroCilindros.setText(
+                    dataSnapshot.child("termometro").getValue(Int::class.java).toString()
+                )
+                etCucharonCilindros.setText(
+                    dataSnapshot.child("cucharon").getValue(Int::class.java).toString()
+                )
+                etPlacaCilindros.setText(
+                    dataSnapshot.child("placa").getValue(Int::class.java).toString()
+                )
+                etFlexometroCilindros.setText(
+                    dataSnapshot.child("flexometro").getValue(Int::class.java).toString()
+                )
+                etEnrasadorCilindros.setText(
+                    dataSnapshot.child("enrasador").getValue(Int::class.java).toString()
+                )
+
+
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Maneja errores
+                Log.w("TAG", "Error al leer datos en el nodo 'personal'.", error.toException())
+            }
+        })
     }
 
     private fun mostrarDialogo() {
@@ -429,7 +480,7 @@ class RegistroCilindros : AppCompatActivity() {
                 val obra: String = etObraCilindros.text.toString()
                 val fecha: String = etFechaCompactacion.text.toString()
                 val numeroReporte: Int = tvNumeroReporteCilindros.text.toString().toInt()
-                val tipoMuestreo:String=spnTipoMuestreoCilindros.selectedItem.toString()
+                val tipoMuestreo: String = spnTipoMuestreoCilindros.selectedItem.toString()
 
                 val elementoColado: String = etElementoColadoCilindros.text.toString()
                 val ubicacion: String = etUbicacionCilindros.text.toString()
@@ -461,15 +512,15 @@ class RegistroCilindros : AppCompatActivity() {
                 val horaMuestreo = etHoraMuestreoCilindros.text.toString()
                 val observaciones = etObservacionesCilindros.text.toString()
 
-                val carretilla=etCarretillaCilindros.text.toString()
-                val cono=etConoCilindros.text.toString()
-                val varilla=etVarillaCilindros.text.toString()
-                val mazo=etMazoCilindros.text.toString()
-                val termometro=etTermometroCilindros.text.toString()
-                val cucharon=etCucharonCilindros.text.toString()
-                val placa=etPlacaCilindros.text.toString()
-                val flexometro=etFlexometroCilindros.text.toString()
-                val enrasador=etEnrasadorCilindros.text.toString()
+                val carretilla = etCarretillaCilindros.text.toString()
+                val cono = etConoCilindros.text.toString()
+                val varilla = etVarillaCilindros.text.toString()
+                val mazo = etMazoCilindros.text.toString()
+                val termometro = etTermometroCilindros.text.toString()
+                val cucharon = etCucharonCilindros.text.toString()
+                val placa = etPlacaCilindros.text.toString()
+                val flexometro = etFlexometroCilindros.text.toString()
+                val enrasador = etEnrasadorCilindros.text.toString()
 
                 var llave = reporteSelecionado.llave
 
@@ -523,7 +574,7 @@ class RegistroCilindros : AppCompatActivity() {
 
 
                 // Sincronizar los datos cuando hay conexión a Internet
-                syncDataWithFirebase(numeroReporte,  editar)
+                syncDataWithFirebase(numeroReporte, editar)
 
 //                ConsultarUltimoRegistro()
 
@@ -563,8 +614,8 @@ class RegistroCilindros : AppCompatActivity() {
 //            llave=nuevaClave!!
 
 
-
             val reportesReferencia = dataReference.child("Reportes").child(personal)
+            val invetarioReferencia = dataReference.child("Reportes").child(personal)
 
             reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -578,6 +629,28 @@ class RegistroCilindros : AppCompatActivity() {
                         dataReference.child("Cilindros").child("Reportes").child(personal)
                             .child(reporteSelecionado.llave)
                             .setValue(registro)
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("cono").setValue(etConoCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("carretilla")
+                            .setValue(etCarretillaCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("varilla").setValue(etVarillaCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("mazo").setValue(etMazoCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("termometro")
+                            .setValue(etTermometroCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("cucharon").setValue(etCucharonCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("placa").setValue(etPlacaCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("flexometro")
+                            .setValue(etFlexometroCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("enrasador")
+                            .setValue(etEnrasadorCilindros.text.toString().toInt())
                         onBackPressed()
                     } else {
                         // Guardar el registro en Firebase Realtime Database
@@ -585,6 +658,29 @@ class RegistroCilindros : AppCompatActivity() {
                         dataReference.child("Cilindros").child("Reportes").child(personal)
                             .child(llave)
                             .setValue(registro)
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("cono").setValue(etConoCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("carretilla")
+                            .setValue(etCarretillaCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("varilla").setValue(etVarillaCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("mazo").setValue(etMazoCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("termometro")
+                            .setValue(etTermometroCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("cucharon").setValue(etCucharonCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("placa").setValue(etPlacaCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("flexometro")
+                            .setValue(etFlexometroCilindros.text.toString().toInt())
+                        dataReference.child("personal").child("inventario").child(personal)
+                            .child("enrasador")
+                            .setValue(etEnrasadorCilindros.text.toString().toInt())
+
 
                     }
                     if (accion == true) {
@@ -612,7 +708,6 @@ class RegistroCilindros : AppCompatActivity() {
             })
 
 
-
             // Guardar el registro en Firebase Realtime Database
 //            dataReference.child("Reportes").child(nuevaClave!!).setValue(registro)
 
@@ -630,7 +725,7 @@ class RegistroCilindros : AppCompatActivity() {
         fecha: String,
         personal: String,
         numeroReporte: Int,
-        tipoMuestreo:String,
+        tipoMuestreo: String,
 
         elementoColado: String,
         ubicacion: String,
@@ -644,7 +739,7 @@ class RegistroCilindros : AppCompatActivity() {
         aditivo: String,
         remision: String,
 
-        muestra:Int,
+        muestra: Int,
         revenimientoDis: Double,
         revenimientoR1: Double,
         revenimientoR2: Double,
@@ -660,17 +755,17 @@ class RegistroCilindros : AppCompatActivity() {
         horaSalida: String,
         horaLLegada: String,
         horaMuestreo: String,
-        observaciones:String,
+        observaciones: String,
 
-        carretilla:String,
-        cono:String,
-        varilla:String,
-        mazo:String,
-        termometro:String,
-        cucharon:String,
-        placa:String,
-        flexometro:String,
-        enrasador:String,
+        carretilla: String,
+        cono: String,
+        varilla: String,
+        mazo: String,
+        termometro: String,
+        cucharon: String,
+        placa: String,
+        flexometro: String,
+        enrasador: String,
 
         llave: String
     ) {
@@ -858,6 +953,7 @@ class RegistroCilindros : AppCompatActivity() {
 
         datePickerDialog.show()
     }
+
     override fun onBackPressed() {
         // Aquí puedes realizar acciones específicas cuando se presiona el botón de retroceso
         // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación o realizar alguna operación antes de cerrar la actividad
