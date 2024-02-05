@@ -58,7 +58,9 @@ class ReporteCilindros : AppCompatActivity() {
             1, "estacion", "1", "1", 1,
             "1", "1", "1", 1.1, 1.1,"hola",1,1.1,"a","1",
             "1","1",1,1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
-            "1","1","1:1","1:1","1:1","a","a"
+            "1","1","1:1","1:1","1:1","a",
+            "1","1","1","1","1","1","1","1","1"
+            ,"a"
         )
         btnRegistroCilindros=findViewById(R.id.btnRegistroCilindros)
 
@@ -138,6 +140,16 @@ class ReporteCilindros : AppCompatActivity() {
                     val horaMuestreo = snapshot.child("horaMuestreo").getValue(String::class.java)
                     val observaciones = snapshot.child("observaciones").getValue(String::class.java)
 
+                    val carretilla=snapshot.child("carretilla").getValue(String::class.java)
+                    val cono=snapshot.child("cono").getValue(String::class.java)
+                    val varilla=snapshot.child("varilla").getValue(String::class.java)
+                    val mazo=snapshot.child("mazo").getValue(String::class.java)
+                    val termometro=snapshot.child("termometro").getValue(String::class.java)
+                    val cucharon=snapshot.child("cucharon").getValue(String::class.java)
+                    val placa=snapshot.child("placa").getValue(String::class.java)
+                    val flexometro=snapshot.child("flexometro").getValue(String::class.java)
+                    val enrasador=snapshot.child("enrasador").getValue(String::class.java)
+
                     var llave = snapshot.child("llave").getValue(String::class.java)
 
 
@@ -182,6 +194,17 @@ class ReporteCilindros : AppCompatActivity() {
                             horaLLegada.toString(),
                             horaMuestreo.toString(),
                             observaciones.toString(),
+
+                            carretilla.toString(),
+                            cono.toString(),
+                            varilla.toString(),
+                            mazo.toString(),
+                            termometro.toString(),
+                            cucharon.toString(),
+                            placa.toString(),
+                            flexometro.toString(),
+                            enrasador.toString(),
+
                             llave.toString()
 
 

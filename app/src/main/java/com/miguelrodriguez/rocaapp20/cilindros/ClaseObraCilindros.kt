@@ -39,6 +39,17 @@ data class ClaseObraCilindros(
     val horaLLegada: String,
     val horaMuestreo: String,
     val observaciones: String,
+
+    val carretilla: String,
+    val cono: String,
+    val varilla: String,
+    val mazo: String,
+    val termometro: String,
+    val cucharon: String,
+    val placa: String,
+    val flexometro: String,
+    val enrasador: String,
+
     var llave: String
 
 )

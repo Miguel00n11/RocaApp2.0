@@ -68,6 +68,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/btn_Background_Cancelar"
         android:ems="10"
+        android:visibility="visible"
         android:text="Modo Invitado" />
 
 

@@ -86,6 +86,15 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var etHoraMuestreoCilindros: EditText
     private lateinit var etObservacionesCilindros: EditText
 
+    private lateinit var etCarretillaCilindros: EditText
+    private lateinit var etConoCilindros: EditText
+    private lateinit var etVarillaCilindros: EditText
+    private lateinit var etMazoCilindros: EditText
+    private lateinit var etTermometroCilindros: EditText
+    private lateinit var etCucharonCilindros: EditText
+    private lateinit var etPlacaCilindros: EditText
+    private lateinit var etFlexometroCilindros: EditText
+    private lateinit var etEnrasadorCilindros: EditText
 
     private lateinit var btnGuardarRegistroCilindros: Button
     private lateinit var btnCancelarRegistroCilindros: Button
@@ -150,10 +159,28 @@ class RegistroCilindros : AppCompatActivity() {
         etHoraMuestreoCilindros = findViewById(R.id.etHoraMuestreoCilindros)
         etObservacionesCilindros = findViewById(R.id.etObservacionesCilindros)
 
+        etCarretillaCilindros = findViewById(R.id.etCarretillaCilindros)
+        etConoCilindros = findViewById(R.id.etConoCilindros)
+        etVarillaCilindros = findViewById(R.id.etVarillaCilindros)
+        etMazoCilindros = findViewById(R.id.etMazoCilindros)
+        etTermometroCilindros = findViewById(R.id.etTermometroCilindros)
+        etCucharonCilindros = findViewById(R.id.etCucharonCilindros)
+        etPlacaCilindros = findViewById(R.id.etPlacaCilindros)
+        etFlexometroCilindros = findViewById(R.id.etFlexometroCilindros)
+        etEnrasadorCilindros = findViewById(R.id.etEnrasadorCilindros)
+
         btnGuardarRegistroCilindros = findViewById(R.id.btnGuardarRegistroCilindros)
         btnCancelarRegistroCilindros = findViewById(R.id.btnCancelarRegistroCilindros)
 
         reporteSelecionado = ReporteCilindros.reporteSelecionado
+
+
+        val sharedPreferences1 = getSharedPreferences("carretilla", Context.MODE_PRIVATE)
+
+// Obtener el nombre guardado
+        val nombreGuardado = sharedPreferences1.getString("nombre", "")
+
+        etCarretillaCilindros.setText(nombreGuardado)
 
 
         if (editar == true) {
@@ -234,7 +261,15 @@ class RegistroCilindros : AppCompatActivity() {
         etHoraMuestreoCilindros.setText(reporteSelecionado.horaMuestreo)
         etObservacionesCilindros.setText(reporteSelecionado.observaciones)
 
-
+        etCarretillaCilindros.setText(reporteSelecionado.carretilla)
+        etConoCilindros.setText(reporteSelecionado.cono)
+        etVarillaCilindros.setText(reporteSelecionado.varilla)
+        etMazoCilindros.setText(reporteSelecionado.mazo)
+        etTermometroCilindros.setText(reporteSelecionado.termometro)
+        etCucharonCilindros.setText(reporteSelecionado.cucharon)
+        etPlacaCilindros.setText(reporteSelecionado.placa)
+        etFlexometroCilindros.setText(reporteSelecionado.flexometro)
+        etEnrasadorCilindros.setText(reporteSelecionado.enrasador)
 
         spnTipoConcretoCilindros.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -365,7 +400,16 @@ class RegistroCilindros : AppCompatActivity() {
         btnGuardarRegistroCilindros.setOnClickListener {
             mostrarDialogo()
         }
-        btnCancelarRegistroCilindros.setOnClickListener { onBackPressed() }
+        btnCancelarRegistroCilindros.setOnClickListener {
+            val sharedPreferences1=getSharedPreferences("carretilla",Context.MODE_PRIVATE)
+            val editor =sharedPreferences1.edit()
+            editor.putString("",etCarretillaCilindros.text.toString())
+
+            val storedText = sharedPreferences.getString("editTextValue", "")
+
+
+            Toast.makeText(this,storedText , Toast.LENGTH_SHORT).show()
+            onBackPressed() }
     }
 
     private fun mostrarDialogo() {
@@ -417,6 +461,16 @@ class RegistroCilindros : AppCompatActivity() {
                 val horaMuestreo = etHoraMuestreoCilindros.text.toString()
                 val observaciones = etObservacionesCilindros.text.toString()
 
+                val carretilla=etCarretillaCilindros.text.toString()
+                val cono=etConoCilindros.text.toString()
+                val varilla=etVarillaCilindros.text.toString()
+                val mazo=etMazoCilindros.text.toString()
+                val termometro=etTermometroCilindros.text.toString()
+                val cucharon=etCucharonCilindros.text.toString()
+                val placa=etPlacaCilindros.text.toString()
+                val flexometro=etFlexometroCilindros.text.toString()
+                val enrasador=etEnrasadorCilindros.text.toString()
+
                 var llave = reporteSelecionado.llave
 
 
@@ -455,6 +509,15 @@ class RegistroCilindros : AppCompatActivity() {
                     horaLLegada,
                     horaMuestreo,
                     observaciones,
+                    carretilla,
+                    cono,
+                    varilla,
+                    mazo,
+                    termometro,
+                    cucharon,
+                    placa,
+                    flexometro,
+                    enrasador,
                     llave
                 )
 
@@ -599,6 +662,16 @@ class RegistroCilindros : AppCompatActivity() {
         horaMuestreo: String,
         observaciones:String,
 
+        carretilla:String,
+        cono:String,
+        varilla:String,
+        mazo:String,
+        termometro:String,
+        cucharon:String,
+        placa:String,
+        flexometro:String,
+        enrasador:String,
+
         llave: String
     ) {
         // Obtener una lista existente de registros locales o crear una nueva
@@ -641,6 +714,15 @@ class RegistroCilindros : AppCompatActivity() {
             horaLLegada,
             horaMuestreo,
             observaciones,
+            carretilla,
+            cono,
+            varilla,
+            mazo,
+            termometro,
+            cucharon,
+            placa,
+            flexometro,
+            enrasador,
             llave
         )
         registrosLocales.add(nuevoRegistro)
@@ -685,6 +767,16 @@ class RegistroCilindros : AppCompatActivity() {
         val horaLLegada: String,
         val horaMuestreo: String,
         val observaciones: String,
+
+        val carretilla: String,
+        val cono: String,
+        val varilla: String,
+        val mazo: String,
+        val termometro: String,
+        val cucharon: String,
+        val placa: String,
+        val flexometro: String,
+        val enrasador: String,
 
         var llave: String
     )
