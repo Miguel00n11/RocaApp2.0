@@ -1002,9 +1002,12 @@ class RegistroMecanica : AppCompatActivity() {
                 dialog.hide()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado("llenar correctamente los campos")
                 return@setOnClickListener
             } catch (e: IllegalArgumentException) {
                 Toast.makeText(this, "La MVSM debe ser diferente a 0.", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado("La MVSM debe ser diferente a 0.")
+
                 return@setOnClickListener
             }
 
@@ -1012,6 +1015,17 @@ class RegistroMecanica : AppCompatActivity() {
 
         dialog.show()
 
+    }
+    private fun mostrarAlertaArchivoNoGuardado(texto:String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage(texto)
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            // Aquí puedes realizar acciones adicionales al aceptar la alerta, si es necesario
+        }
+
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
     }
 
 

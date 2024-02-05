@@ -581,7 +581,9 @@ class RegistroCilindros : AppCompatActivity() {
                 llave = dataReference.push().key.toString()
                 Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
             } catch (e: NumberFormatException) {
-                Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "ERROR. llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado()
+
                 return@setPositiveButton
             }
         }
@@ -595,6 +597,18 @@ class RegistroCilindros : AppCompatActivity() {
         // Muestra el cuadro de diálogo
         builder.show()
     }
+    private fun mostrarAlertaArchivoNoGuardado() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage("Llenar correctamente los campos.")
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            // Aquí puedes realizar acciones adicionales al aceptar la alerta, si es necesario
+        }
+
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+    }
+
 
     private fun syncDataWithFirebase(
         numeroReporte: Int,

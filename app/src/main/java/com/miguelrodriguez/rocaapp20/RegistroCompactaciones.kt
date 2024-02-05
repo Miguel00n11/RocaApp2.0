@@ -402,6 +402,7 @@ class RegistroCompactaciones : AppCompatActivity() {
             }
         }catch (e: NumberFormatException) {
             Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+            mostrarAlertaArchivoNoGuardado("llenar correctamente los campos")
             return
         }
 
@@ -437,16 +438,31 @@ class RegistroCompactaciones : AppCompatActivity() {
                 dialog.hide()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado("llenar correctamente los campos")
+
                 return@setOnClickListener
             }
             catch (e: IllegalArgumentException) {
                 Toast.makeText(this, "La MVSM debe ser diferente a 0.", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado("La MVSM debe ser diferente a 0.")
+
                 return@setOnClickListener
             }
         }
 
         dialog.show()
 
+    }
+    private fun mostrarAlertaArchivoNoGuardado(texto:String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage(texto)
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            // Aquí puedes realizar acciones adicionales al aceptar la alerta, si es necesario
+        }
+
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
     }
 
     private fun showDialog() {
@@ -466,10 +482,14 @@ class RegistroCompactaciones : AppCompatActivity() {
         try {
             if (etMVSM.text.toString().toDouble()<=0||etMVSM.text.toString().isEmpty()){
                 Toast.makeText(this, "La MVSM debe ser maayor que 0. ", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado("La MVSM debe ser maayor que 0. ")
+
                 return
             }
         }catch (e: NumberFormatException) {
             Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+            mostrarAlertaArchivoNoGuardado("llenar correctamente los campos")
+
             return
         }
 
@@ -504,10 +524,14 @@ class RegistroCompactaciones : AppCompatActivity() {
                 dialog.hide()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado("llenar correctamente los campos")
+
                 return@setOnClickListener
             }
             catch (e: IllegalArgumentException) {
                 Toast.makeText(this, "La MVSM debe ser diferente a 0.", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado("La MVSM debe ser diferente a 0.")
+
                 return@setOnClickListener
             }
 
@@ -649,8 +673,11 @@ class RegistroCompactaciones : AppCompatActivity() {
                 updateTask()
                 llave=dataReference.push().key.toString()
                 Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
+
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+                mostrarAlertaArchivoNoGuardado("llenar correctamente los campos")
+
                 return@setPositiveButton
             }
         }
