@@ -5,6 +5,7 @@ import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 data class ClaseObraCilindros(
     val id: Int,
     val Obra: String,
+    val Cliente:String,
     var fecha: String,
     val personal: String,
     val numeroReporte: Int,
@@ -49,6 +50,7 @@ data class ClaseObraCilindros(
     val placa: String,
     val flexometro: String,
     val enrasador: String,
+    val validado: Boolean,
 
     var llave: String
 

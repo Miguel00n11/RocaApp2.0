@@ -47,7 +47,15 @@ class MainActivity : AppCompatActivity() {
     private fun obtenerNombreUsuarioDesdeCorreo(correo: String): String {
         val indiceArroba = correo.indexOf('@')
         return if (indiceArroba != -1) {
-            val nombreUsuario = correo.substring(0, indiceArroba)
+            var nombreUsuario = correo.substring(0, indiceArroba)
+
+            when(nombreUsuario){
+                "adrian"->nombreUsuario="José Adrían Cortés Martínez"
+                "carlos"->nombreUsuario="Carlos Alfonso Torres Cervantes"
+                "calixto"->nombreUsuario="José Luis Calixto Ramírez"
+                "miguel"->nombreUsuario="Jesús Miguel Rodríguez Ortega"
+            }
+//            when (adrian||Adrian)
             NombreUsuarioCompanion =
                 nombreUsuario // Asigna el nombre de usuario a la variable global
             nombreUsuario
@@ -59,10 +67,11 @@ class MainActivity : AppCompatActivity() {
     private fun initUI() {
 
         btnAcceder.setOnClickListener {
-            obtenerNombreUsuarioDesdeCorreo(NombreUsuario.text.toString())
+            obtenerNombreUsuarioDesdeCorreo(NombreUsuario.text.toString().lowercase())
+
 
             acceder(
-                NombreUsuario.text.toString(),
+                NombreUsuario.text.toString().lowercase(),
                 Password.text.toString()
             )
         }

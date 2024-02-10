@@ -26,6 +26,7 @@ import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 class ReportesCompactaciones : AppCompatActivity() {
 
     private lateinit var dataReference: DatabaseReference
+    private lateinit var dataReferenceCampo: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var personal: String
     private lateinit var cala1: MutableList<ClaseCala>
@@ -67,7 +68,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
 
         reporteSelecionado = ClaseObra(
-            1, "estacion", "1", "1", "1",
+            1, false,"estacion","a" ,"1", "1", "1",
             "1", "1", "1", "1", "1","hola", listacalasmutableListOf
         )
 
@@ -85,6 +86,7 @@ class ReportesCompactaciones : AppCompatActivity() {
     private fun initUI() {
         // Referencia a la base de datos de Firebase
         dataReference = FirebaseDatabase.getInstance().reference.child("Compactaciones").child("Reportes").child(personal)
+        dataReferenceCampo = FirebaseDatabase.getInstance().reference.child("Compactaciones").child("Respaldo").child(personal)
 
         btnRegistroCompactacion.setOnClickListener {
             val intent = Intent(this, RegistroCompactaciones::class.java)
@@ -109,10 +111,17 @@ class ReportesCompactaciones : AppCompatActivity() {
                     "miguel" // Reemplaza con el nombre del personal que deseas filtrar
 
                 for (snapshot in dataSnapshot.children) {
+
+                    val validado=snapshot.child("validado").getValue(Boolean::class.java)
+                    if (validado==true){
+                        continue
+                    }
+
                     val numeroReporteKey = snapshot.key // Obtiene el número de informe (1, 2, 3, 4)
 
                     // Accede a los datos específicos de cada informe
                     val obra1 = snapshot.child("obra").getValue(String::class.java)
+                    val cliente = snapshot.child("cliente").getValue(String::class.java)
                     val capa = snapshot.child("capa").getValue(String::class.java)
                     val compactacion = snapshot.child("compactacion").getValue(Int::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
@@ -124,6 +133,7 @@ class ReportesCompactaciones : AppCompatActivity() {
                     val listaCalas: MutableList<ClaseCala> = mutableListOf()
 
                     for (calaSnapshot in listaCalasSnapshot.children) {
+
                         // Asegúrate de ajustar los nombres de los campos según tu modelo ClaseCala
                         val estacion = calaSnapshot.child("estacion").getValue(String::class.java)
                         val humedad = calaSnapshot.child("humedad").getValue(Double::class.java)
@@ -157,7 +167,9 @@ class ReportesCompactaciones : AppCompatActivity() {
                         // Crea un objeto ClaseObra y agrégalo a la lista solo si el personal coincide
                         val obra = ClaseObra(
                             numReporte!!,
+                            validado!!,
                             obra1.toString(),
+                            cliente.toString(),
                             numReporte.toString(),
                             capa.toString(),
                             fecha.toString(),
@@ -188,9 +200,11 @@ class ReportesCompactaciones : AppCompatActivity() {
     private fun onItemDelete(position: Int) {
         if (isNetworkAvailable()) {
             val reportKey = listaObrasmutableListOf[position].llave // Utiliza la clave única del informe
+            val reportReferenceCampo = listaObrasmutableListOf[position].llave // Utiliza la clave única del informe
 
             // Elimina el informe de la base de datos Firebase
             deleteReport(reportKey)
+            deleteReport(reportReferenceCampo)
 
             // Elimina el informe de la lista local
             listaObrasmutableListOf.removeAt(position)

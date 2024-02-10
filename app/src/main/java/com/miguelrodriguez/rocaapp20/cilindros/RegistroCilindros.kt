@@ -2,6 +2,7 @@ package com.miguelrodriguez.rocaapp20.cilindros
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -62,6 +63,7 @@ class RegistroCilindros : AppCompatActivity() {
 
     private lateinit var tvNumeroReporteCilindros: TextView
     private lateinit var etObraCilindros: EditText
+    private lateinit var etClienteCilindros: EditText
     private lateinit var etFechaCompactacion: EditText
 
     private lateinit var etElementoColadoCilindros: EditText
@@ -144,6 +146,7 @@ class RegistroCilindros : AppCompatActivity() {
         etEdadCilindros = findViewById(R.id.etEdadCilindros)
 
         etObraCilindros = findViewById(R.id.etObraCilindros)
+        etClienteCilindros = findViewById(R.id.etClienteCilindros)
         etElementoColadoCilindros = findViewById(R.id.etElementoColadoCilindros)
         etUbicacionCilindros = findViewById(R.id.etUbicacionCilindros)
         etFCCilindros = findViewById(R.id.etFCCilindros)
@@ -245,6 +248,7 @@ class RegistroCilindros : AppCompatActivity() {
 
         tvNumeroReporteCilindros.setText(reporteSelecionado.id.toString())
         etObraCilindros.setText(reporteSelecionado.Obra)
+        etClienteCilindros.setText(reporteSelecionado.Cliente)
         etFechaCompactacion.setText(reporteSelecionado.fecha)
 
         etElementoColadoCilindros.setText(reporteSelecionado.elementoColado)
@@ -406,6 +410,71 @@ class RegistroCilindros : AppCompatActivity() {
                     // No se utiliza en este ejemplo
                 }
             }
+
+        etHoraSalidaCilindros.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val hora = calendar.get(Calendar.HOUR_OF_DAY)
+            val minuto = calendar.get(Calendar.MINUTE)
+
+            // Crea un TimePickerDialog con la hora actual como predeterminada
+            val timePickerDialog = TimePickerDialog(
+                this,
+                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    // Actualiza el texto del EditText con la hora seleccionada por el usuario
+                    val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
+                    etHoraSalidaCilindros.setText(horaSeleccionada)
+                },
+                hora,
+                minuto,
+                true
+            )
+
+            // Muestra el dialogo de selección de hora
+            timePickerDialog.show()
+        }
+        etHorallegadaCilindros.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val hora = calendar.get(Calendar.HOUR_OF_DAY)
+            val minuto = calendar.get(Calendar.MINUTE)
+
+            // Crea un TimePickerDialog con la hora actual como predeterminada
+            val timePickerDialog = TimePickerDialog(
+                this,
+                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    // Actualiza el texto del EditText con la hora seleccionada por el usuario
+                    val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
+                    etHorallegadaCilindros.setText(horaSeleccionada)
+                },
+                hora,
+                minuto,
+                true
+            )
+
+            // Muestra el dialogo de selección de hora
+            timePickerDialog.show()
+        }
+        etHoraMuestreoCilindros.setOnClickListener {
+
+            val calendar = Calendar.getInstance()
+            val hora = calendar.get(Calendar.HOUR_OF_DAY)
+            val minuto = calendar.get(Calendar.MINUTE)
+
+            // Crea un TimePickerDialog con la hora actual como predeterminada
+            val timePickerDialog = TimePickerDialog(
+                this,
+                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    // Actualiza el texto del EditText con la hora seleccionada por el usuario
+                    val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
+                    etHoraMuestreoCilindros.setText(horaSeleccionada)
+                },
+                hora,
+                minuto,
+                true
+            )
+
+            // Muestra el dialogo de selección de hora
+            timePickerDialog.show()
+        }
         btnGuardarRegistroCilindros.setOnClickListener {
             mostrarDialogo()
 
@@ -453,7 +522,6 @@ class RegistroCilindros : AppCompatActivity() {
                 )
 
 
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -478,6 +546,7 @@ class RegistroCilindros : AppCompatActivity() {
 
 
                 val obra: String = etObraCilindros.text.toString()
+                val cliente: String = etClienteCilindros.text.toString()
                 val fecha: String = etFechaCompactacion.text.toString()
                 val numeroReporte: Int = tvNumeroReporteCilindros.text.toString().toInt()
                 val tipoMuestreo: String = spnTipoMuestreoCilindros.selectedItem.toString()
@@ -521,6 +590,7 @@ class RegistroCilindros : AppCompatActivity() {
                 val placa = etPlacaCilindros.text.toString()
                 val flexometro = etFlexometroCilindros.text.toString()
                 val enrasador = etEnrasadorCilindros.text.toString()
+                val validado: Boolean = false
 
                 var llave = reporteSelecionado.llave
 
@@ -528,6 +598,7 @@ class RegistroCilindros : AppCompatActivity() {
                 // Agregar un nuevo registro localmente
                 saveLocally(
                     obra,
+                    cliente,
                     fecha,
                     personal,
                     numeroReporte,
@@ -569,6 +640,8 @@ class RegistroCilindros : AppCompatActivity() {
                     placa,
                     flexometro,
                     enrasador,
+                    validado,
+
                     llave
                 )
 
@@ -581,7 +654,8 @@ class RegistroCilindros : AppCompatActivity() {
                 llave = dataReference.push().key.toString()
                 Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
             } catch (e: NumberFormatException) {
-                Toast.makeText(this, "ERROR. llenar correctamente los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "ERROR. llenar correctamente los campos", Toast.LENGTH_SHORT)
+                    .show()
                 mostrarAlertaArchivoNoGuardado()
 
                 return@setPositiveButton
@@ -597,6 +671,7 @@ class RegistroCilindros : AppCompatActivity() {
         // Muestra el cuadro de diálogo
         builder.show()
     }
+
     private fun mostrarAlertaArchivoNoGuardado() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
@@ -631,6 +706,7 @@ class RegistroCilindros : AppCompatActivity() {
             val reportesReferencia = dataReference.child("Reportes").child(personal)
             val invetarioReferencia = dataReference.child("Reportes").child(personal)
 
+
             reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -638,78 +714,93 @@ class RegistroCilindros : AppCompatActivity() {
 //                    val nuevoNumeroReporte = snapshot.childrenCount.toInt()
 //                    val totalReportes = tvNumeroReporteCompactacion.text
 
-                    if (accion == true) {
-                        // Guardar el registro en Firebase Realtime Database
-                        dataReference.child("Cilindros").child("Reportes").child(personal)
-                            .child(reporteSelecionado.llave)
-                            .setValue(registro)
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("cono").setValue(etConoCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("carretilla")
-                            .setValue(etCarretillaCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("varilla").setValue(etVarillaCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("mazo").setValue(etMazoCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("termometro")
-                            .setValue(etTermometroCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("cucharon").setValue(etCucharonCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("placa").setValue(etPlacaCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("flexometro")
-                            .setValue(etFlexometroCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("enrasador")
-                            .setValue(etEnrasadorCilindros.text.toString().toInt())
-                        onBackPressed()
-                    } else {
-                        // Guardar el registro en Firebase Realtime Database
-                        registro.llave = llave
-                        dataReference.child("Cilindros").child("Reportes").child(personal)
-                            .child(llave)
-                            .setValue(registro)
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("cono").setValue(etConoCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("carretilla")
-                            .setValue(etCarretillaCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("varilla").setValue(etVarillaCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("mazo").setValue(etMazoCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("termometro")
-                            .setValue(etTermometroCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("cucharon").setValue(etCucharonCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("placa").setValue(etPlacaCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("flexometro")
-                            .setValue(etFlexometroCilindros.text.toString().toInt())
-                        dataReference.child("personal").child("inventario").child(personal)
-                            .child("enrasador")
-                            .setValue(etEnrasadorCilindros.text.toString().toInt())
+                    try {
 
 
-                    }
-                    if (accion == true) {
-                        // Guardar el registro en Firebase Realtime Database
-                        dataReference.child("Cilindros").child("Respaldo").child(personal)
-                            .child(reporteSelecionado.llave)
-                            .setValue(registro)
-                        onBackPressed()
-                    } else {
-                        // Guardar el registro en Firebase Realtime Database
-                        registro.llave = llave
-                        dataReference.child("Cilindros").child("Respaldo").child(personal)
-                            .child(llave)
-                            .setValue(registro)
+                        if (accion == true) {
+                            // Guardar el registro en Firebase Realtime Database
+                            dataReference.child("Cilindros").child("Reportes").child(personal)
+                                .child(reporteSelecionado.llave)
+                                .setValue(registro)
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("cono").setValue(etConoCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("carretilla")
+                                .setValue(etCarretillaCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("varilla")
+                                .setValue(etVarillaCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("mazo").setValue(etMazoCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("termometro")
+                                .setValue(etTermometroCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("cucharon")
+                                .setValue(etCucharonCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("placa").setValue(etPlacaCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("flexometro")
+                                .setValue(etFlexometroCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("enrasador")
+                                .setValue(etEnrasadorCilindros.text.toString().toInt())
+                            onBackPressed()
+                        } else {
+                            // Guardar el registro en Firebase Realtime Database
+                            registro.llave = llave
+                            dataReference.child("Cilindros").child("Reportes").child(personal)
+                                .child(llave)
+                                .setValue(registro)
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("cono").setValue(etConoCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("carretilla")
+                                .setValue(etCarretillaCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("varilla")
+                                .setValue(etVarillaCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("mazo").setValue(etMazoCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("termometro")
+                                .setValue(etTermometroCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("cucharon")
+                                .setValue(etCucharonCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("placa").setValue(etPlacaCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("flexometro")
+                                .setValue(etFlexometroCilindros.text.toString().toInt())
+                            dataReference.child("personal").child("inventario").child(personal)
+                                .child("enrasador")
+                                .setValue(etEnrasadorCilindros.text.toString().toInt())
 
+
+                        }
+                        if (accion == true) {
+                            // Guardar el registro en Firebase Realtime Database
+                            dataReference.child("Cilindros").child("Respaldo").child(personal)
+                                .child(reporteSelecionado.llave)
+                                .setValue(registro)
+                            onBackPressed()
+                        } else {
+                            // Guardar el registro en Firebase Realtime Database
+                            registro.llave = llave
+                            dataReference.child("Cilindros").child("Respaldo").child(personal)
+                                .child(llave)
+                                .setValue(registro)
+
+                        }
+//                        Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
+                    } catch (e: NumberFormatException) {
+//                        Toast.makeText(this, "ERROR. llenar correctamente los campos", Toast.LENGTH_SHORT)
+//                            .show()
+                        mostrarAlertaArchivoNoGuardado()
+
+                        return
                     }
 
 
@@ -722,10 +813,6 @@ class RegistroCilindros : AppCompatActivity() {
             })
 
 
-            // Guardar el registro en Firebase Realtime Database
-//            dataReference.child("Reportes").child(nuevaClave!!).setValue(registro)
-
-
             // Eliminar el registro local después de la sincronización
             registrosLocales.remove(registro)
         }
@@ -736,6 +823,7 @@ class RegistroCilindros : AppCompatActivity() {
 
     private fun saveLocally(
         obra: String,
+        cliente: String,
         fecha: String,
         personal: String,
         numeroReporte: Int,
@@ -780,6 +868,7 @@ class RegistroCilindros : AppCompatActivity() {
         placa: String,
         flexometro: String,
         enrasador: String,
+        validado: Boolean,
 
         llave: String
     ) {
@@ -789,6 +878,7 @@ class RegistroCilindros : AppCompatActivity() {
         // Agregar el nuevo registro a la lista
         val nuevoRegistro = Registro(
             obra,
+            cliente,
             fecha,
             personal,
             numeroReporte,
@@ -832,6 +922,7 @@ class RegistroCilindros : AppCompatActivity() {
             placa,
             flexometro,
             enrasador,
+            validado,
             llave
         )
         registrosLocales.add(nuevoRegistro)
@@ -842,6 +933,7 @@ class RegistroCilindros : AppCompatActivity() {
 
     data class Registro(
         val obra: String,
+        val cliente: String,
         val fecha: String,
         val personal: String,
         val numeroReporte: Int,
@@ -886,6 +978,7 @@ class RegistroCilindros : AppCompatActivity() {
         val placa: String,
         val flexometro: String,
         val enrasador: String,
+        val validado: Boolean,
 
         var llave: String
     )

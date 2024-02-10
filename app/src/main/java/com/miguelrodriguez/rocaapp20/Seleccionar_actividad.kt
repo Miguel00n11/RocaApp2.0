@@ -35,6 +35,9 @@ class Seleccionar_actividad : AppCompatActivity() {
     }
 
     private fun InitComponet() {
+        if (MainActivity.NombreUsuarioCompanion=="NombreUsuario"){
+            onBackPressed()
+        }
         btnIrReportesCompactacion=findViewById(R.id.btnIrReportesCompactacion)
         btnItReportesMecanicas=findViewById(R.id.btnItReportesMecanicas)
         btnIrReportesCilindros=findViewById(R.id.btnIrReportesCilindros)

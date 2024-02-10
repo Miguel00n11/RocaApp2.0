@@ -44,6 +44,7 @@ class RegistroCompactaciones : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var etObra: EditText
+    private lateinit var etClienteCompactacion: EditText
     private lateinit var etFecha: EditText
     private lateinit var binding: TextInputLayout
 
@@ -126,7 +127,9 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
     private fun saveLocally(
+        validado:Boolean,
         obra: String,
+        cliente:String,
         fecha: String,
         personal: String,
         numeroReporte: Int,
@@ -146,7 +149,9 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         // Agregar el nuevo registro a la lista
         val nuevoRegistro = Registro(
+            validado,
             obra,
+            cliente,
             fecha,
             personal,
             numeroReporte,
@@ -253,7 +258,9 @@ class RegistroCompactaciones : AppCompatActivity() {
     }
 
     data class Registro(
+        val validado: Boolean,
         val obra: String,
+        val cliente:String,
         val fecha: String,
         val personal: String,
 
@@ -559,8 +566,8 @@ class RegistroCompactaciones : AppCompatActivity() {
     }
 
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObra) {
-
         etObra.setText(reporteSelecionado.Obra)
+        etClienteCompactacion.setText(reporteSelecionado.Cliente)
         etFecha.setText(reporteSelecionado.fecha)
         etCapa.setText(reporteSelecionado.capa)
         etTramo.setText(reporteSelecionado.tramo)
@@ -584,6 +591,7 @@ class RegistroCompactaciones : AppCompatActivity() {
     private fun initComponet() {
         //REPORTE DE COMPACTACION
         etObra = findViewById(R.id.etObraCompactacion)
+        etClienteCompactacion = findViewById(R.id.etClienteCompactacion)
         etFecha = findViewById(R.id.etFechaCompactacion)
         binding=findViewById(R.id.tilFechaMuestreoCompactaciones)
 
@@ -635,8 +643,9 @@ class RegistroCompactaciones : AppCompatActivity() {
 
             try {
 
-
+                val validado:Boolean=false
                 val obra: String = etObra.text.toString()
+                val cliente: String = etClienteCompactacion.text.toString()
                 val fecha: String = etFecha.text.toString()
                 val numeroReporte: Int = tvNumeroReporteCompactacion.text.toString().toInt()
                 val capa: String = etCapa.text.toString()
@@ -650,7 +659,9 @@ class RegistroCompactaciones : AppCompatActivity() {
 
                 // Agregar un nuevo registro localmente
                 saveLocally(
+                    validado,
                     obra,
+                    cliente,
                     fecha,
                     personal,
                     numeroReporte,

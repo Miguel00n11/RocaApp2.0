@@ -29,6 +29,7 @@ import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
 class ReporteCilindros : AppCompatActivity() {
 
     private lateinit var dataReference: DatabaseReference
+    private lateinit var dataReferenceCampo: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var personal: String
 
@@ -55,12 +56,12 @@ class ReporteCilindros : AppCompatActivity() {
         rvObrasCilindros = findViewById(R.id.rvObrasCilindros)
 
         reporteSelecionado = ClaseObraCilindros(
-            1, "estacion", "1", "1", 1,
+            1, "estacion", "a","1", "1", 1,
             "1", "1", "1", 1.1, 1.1,"hola",1,1.1,"a","1",
             "1","1",1,1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
             "1","1","1:1","1:1","1:1","a",
             "1","1","1","1","1","1","1","1","1"
-            ,"a"
+            ,false,""
         )
         btnRegistroCilindros=findViewById(R.id.btnRegistroCilindros)
 
@@ -78,6 +79,7 @@ class ReporteCilindros : AppCompatActivity() {
     private fun initUI() {
         // Referencia a la base de datos de Firebase
         dataReference =FirebaseDatabase.getInstance().reference.child("Cilindros").child("Reportes").child(personal)
+        dataReferenceCampo =FirebaseDatabase.getInstance().reference.child("Cilindros").child("Respaldo").child(personal)
 
 
         btnRegistroCilindros.setOnClickListener {
@@ -101,10 +103,17 @@ class ReporteCilindros : AppCompatActivity() {
                     "miguel" // Reemplaza con el nombre del personal que deseas filtrar
 
                 for (snapshot in dataSnapshot.children) {
+                    val validado=snapshot.child("validado").getValue(Boolean::class.java)
+                    if (validado==true){
+                        continue
+                    }
+
+
                     val numeroReporteKey = snapshot.key // Obtiene el número de informe (1, 2, 3, 4)
 
                     // Accede a los datos específicos de cada informe
                     val obra1 = snapshot.child("obra").getValue(String::class.java)
+                    val cliente = snapshot.child("cliente").getValue(String::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
                     val personal1 = snapshot.child("personal").getValue(String::class.java)
                     val numReporte = snapshot.child("numeroReporte").getValue(Int::class.java)
@@ -149,6 +158,7 @@ class ReporteCilindros : AppCompatActivity() {
                     val placa=snapshot.child("placa").getValue(String::class.java)
                     val flexometro=snapshot.child("flexometro").getValue(String::class.java)
                     val enrasador=snapshot.child("enrasador").getValue(String::class.java)
+//                    val validado=snapshot.child("validado").getValue(Boolean::class.java)
 
                     var llave = snapshot.child("llave").getValue(String::class.java)
 
@@ -160,6 +170,7 @@ class ReporteCilindros : AppCompatActivity() {
 
                             numReporte!!,
                             obra1.toString(),
+                            cliente.toString(),
                             fecha.toString(),
                             personal1.toString(),
                             numReporte.toInt(),
@@ -204,6 +215,7 @@ class ReporteCilindros : AppCompatActivity() {
                             placa.toString(),
                             flexometro.toString(),
                             enrasador.toString(),
+                            validado!!,
 
                             llave.toString()
 
@@ -247,8 +259,10 @@ class ReporteCilindros : AppCompatActivity() {
     }
     private fun deleteReport(reportKey: String) {
         val reportReference = dataReference.child(reportKey)
+        val reportReferenceCampo = dataReferenceCampo.child(reportKey)
 
         reportReference.removeValue()
+        reportReferenceCampo.removeValue()
             .addOnSuccessListener {
                 Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
             }

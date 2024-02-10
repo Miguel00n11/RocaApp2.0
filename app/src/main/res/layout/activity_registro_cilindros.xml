@@ -73,13 +73,6 @@
                             android:textSize="16sp" />
                     </androidx.cardview.widget.CardView>
 
-                    <LinearLayout
-
-
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="12dp"
-                        android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
@@ -99,17 +92,36 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textCapSentences" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:hint="Cliente"
+                            android:textColorHint="@color/grey"
+
+                            app:endIconMode="clear_text"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etClienteCilindros"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapSentences" />
+
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-                    </LinearLayout>
 
                     <LinearLayout
 
 
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="12dp"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -238,7 +250,8 @@
                             style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="3dp"
                             android:layout_weight="1"
                             android:hint="f'c"
                             android:textColorHint="@color/grey"
@@ -261,7 +274,8 @@
                             style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginLeft="3dp"
                             android:layout_weight="1"
                             android:hint="Volumen total"
                             android:textColorHint="@color/grey"
@@ -739,9 +753,11 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:editable="true"
                                     android:gravity="center"
                                     android:inputType="time"
-                                    android:maxLength="5" />
+                                    android:maxLength="5"
+                                    android:textIsSelectable="false" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -763,6 +779,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:clickable="false"
                                     android:gravity="center"
                                     android:inputType="time"
                                     android:maxLength="5" />
