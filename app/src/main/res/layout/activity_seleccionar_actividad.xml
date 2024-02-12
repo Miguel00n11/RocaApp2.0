@@ -11,47 +11,86 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@color/btn_Background_Cancelar"
         android:orientation="vertical"
-        tools:context=".MainActivity"
-        android:layout_height="match_parent">
+        tools:context=".MainActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/btnIrReportesCompactacion"
                 android:layout_width="match_parent"
-                android:text="Compactaciones"
-                android:padding="24sp"
+                android:layout_height="match_parent"
                 android:backgroundTint="#F4511E"
+                android:padding="24sp"
+                android:text="Compactaciones"
+
+
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_height="match_parent"/>
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                android:layout_marginBottom=""
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#232323"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <!-- Aquí puedes agregar cualquier otro contenido que desees dentro del CardView -->
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:background="#232323"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/imagencala" /> <!-- Establecer la imagen deseada aquí -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textColor="@color/white"
+                        android:text="Compactaciones"/>
+                    <!-- También puedes agregar otros elementos como texto o botones aquí -->
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
             <Button
                 android:id="@+id/btnIrReportesCilindros"
                 android:layout_width="match_parent"
-                android:text="Concretos"
-                android:padding="24sp"
+                android:layout_height="match_parent"
                 android:backgroundTint="#F4511E"
+                android:padding="24sp"
+                android:text="Concretos"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_height="match_parent"/>
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/btnItReportesMecanicas"
                 android:layout_width="match_parent"
-                android:text="Mecánicas de suelos"
-                android:padding="24sp"
+                android:layout_height="match_parent"
                 android:backgroundTint="#F4511E"
+                android:padding="24sp"
+                android:text="Mecánicas de suelos"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_height="match_parent"/>
+                android:textStyle="bold" />
         </LinearLayout>
-
 
 
     </ScrollView>

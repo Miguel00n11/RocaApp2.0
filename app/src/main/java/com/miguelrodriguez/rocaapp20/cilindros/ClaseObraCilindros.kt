@@ -15,6 +15,7 @@ data class ClaseObraCilindros(
     val ubicacion: String,
     val fc: Double,
     val volumenTotal: Double,
+    val volumenMuestra: Double,
     val tipoResistencia: String,
     val edad: Int,
     val tma: Double,
@@ -24,6 +25,7 @@ data class ClaseObraCilindros(
     val remision: String,
 
     val muestra: Int,
+    val olla: String,
     val revenimientoDis: Double,
     val revenimientoR1: Double,
     val revenimientoR2: Double,

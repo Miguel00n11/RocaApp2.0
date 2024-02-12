@@ -70,6 +70,8 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var etUbicacionCilindros: EditText
     private lateinit var etFCCilindros: EditText
     private lateinit var etVolumenCilindros: EditText
+    private lateinit var etVolumenMuestraCilindros: EditText
+
 
     private lateinit var etEdadCilindros: EditText
     private lateinit var etTMACilindros: EditText
@@ -77,6 +79,7 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var etHOPropCilindros: EditText
     private lateinit var etAditivoCilindros: EditText
     private lateinit var etMuestraCilindros: EditText
+    private lateinit var etOllaCilindros: EditText
     private lateinit var etRemisionCilindros: EditText
     private lateinit var etRevenimientoProyCilindros: EditText
     private lateinit var etRevenimientoObt1Cilindros: EditText
@@ -151,12 +154,14 @@ class RegistroCilindros : AppCompatActivity() {
         etUbicacionCilindros = findViewById(R.id.etUbicacionCilindros)
         etFCCilindros = findViewById(R.id.etFCCilindros)
         etVolumenCilindros = findViewById(R.id.etVolumenCilindros)
+        etVolumenMuestraCilindros = findViewById(R.id.etVolumenMuestraCilindros)
         etTMACilindros = findViewById(R.id.etTMACilindros)
         etConcreteraCilindros = findViewById(R.id.etConcreteraCilindros)
         etHOPropCilindros = findViewById(R.id.etHOPropCilindros)
         etAditivoCilindros = findViewById(R.id.etAditivoCilindros)
         etRemisionCilindros = findViewById(R.id.etRemisionCilindros)
         etMuestraCilindros = findViewById(R.id.etMuestraCilindros)
+        etOllaCilindros = findViewById(R.id.etOllaCilindros)
         etRevenimientoProyCilindros = findViewById(R.id.etRevenimientoProyCilindros)
         etRevenimientoObt1Cilindros = findViewById(R.id.etReveniminetoObt1Cilindros)
         etRevenimientoObt2Cilindros = findViewById(R.id.etReveniminetoObt2Cilindros)
@@ -255,6 +260,7 @@ class RegistroCilindros : AppCompatActivity() {
         etUbicacionCilindros.setText(reporteSelecionado.ubicacion)
         etFCCilindros.setText(reporteSelecionado.fc.toString())
         etVolumenCilindros.setText(reporteSelecionado.volumenTotal.toString())
+        etVolumenMuestraCilindros.setText(reporteSelecionado.volumenMuestra.toString())
         etEdadCilindros.setText(reporteSelecionado.edad.toString())
         etTMACilindros.setText(reporteSelecionado.tma.toString())
         etConcreteraCilindros.setText(reporteSelecionado.concretera)
@@ -263,6 +269,7 @@ class RegistroCilindros : AppCompatActivity() {
         etRemisionCilindros.setText(reporteSelecionado.remision)
 
         etMuestraCilindros.setText(reporteSelecionado.muestra.toString())
+        etOllaCilindros.setText(reporteSelecionado.olla.toString())
         etRevenimientoProyCilindros.setText(reporteSelecionado.revenimientoDis.toString())
         etRevenimientoObt1Cilindros.setText(reporteSelecionado.revenimientoR1.toString())
         etRevenimientoObt2Cilindros.setText(reporteSelecionado.revenimientoR2.toString())
@@ -555,6 +562,7 @@ class RegistroCilindros : AppCompatActivity() {
                 val ubicacion: String = etUbicacionCilindros.text.toString()
                 val fc: Double = etFCCilindros.text.toString().toDouble()
                 val volumenTotal: Double = etVolumenCilindros.text.toString().toDouble()
+                val volumenMuestra: Double = etVolumenMuestraCilindros.text.toString().toDouble()
                 val tipoResistencia: String = spnTipoConcretoCilindros.selectedItem.toString()
                 val edad: Int = etEdadCilindros.text.toString().toInt()
                 val tma: Double = etTMACilindros.text.toString().toDouble()
@@ -564,6 +572,7 @@ class RegistroCilindros : AppCompatActivity() {
                 val remision = etRemisionCilindros.text.toString()
 
                 val muestra = etMuestraCilindros.text.toString().toInt()
+                val olla = etOllaCilindros.text.toString()
                 val revenimientoDis = etRevenimientoProyCilindros.text.toString().toDouble()
                 val revenimientoR1 = etRevenimientoObt1Cilindros.text.toString().toDouble()
                 val revenimientoR2 = etRevenimientoObt2Cilindros.text.toString().toDouble()
@@ -607,6 +616,7 @@ class RegistroCilindros : AppCompatActivity() {
                     ubicacion,
                     fc,
                     volumenTotal,
+                    volumenMuestra,
                     tipoResistencia,
                     edad,
                     tma,
@@ -615,6 +625,7 @@ class RegistroCilindros : AppCompatActivity() {
                     aditivo,
                     remision,
                     muestra,
+                    olla,
                     revenimientoDis,
                     revenimientoR1,
                     revenimientoR2,
@@ -792,6 +803,8 @@ class RegistroCilindros : AppCompatActivity() {
                             dataReference.child("Cilindros").child("Respaldo").child(personal)
                                 .child(llave)
                                 .setValue(registro)
+                            // aqui quitamos el pressed back para que no salga del reporte cuando se guarde por primera vez
+                            onBackPressed()
 
                         }
 //                        Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
@@ -833,6 +846,7 @@ class RegistroCilindros : AppCompatActivity() {
         ubicacion: String,
         fc: Double,
         volumenTotal: Double,
+        volumenMuestra: Double,
         tipoResistencia: String,
         edad: Int,
         tma: Double,
@@ -842,6 +856,7 @@ class RegistroCilindros : AppCompatActivity() {
         remision: String,
 
         muestra: Int,
+        olla: String,
         revenimientoDis: Double,
         revenimientoR1: Double,
         revenimientoR2: Double,
@@ -888,6 +903,7 @@ class RegistroCilindros : AppCompatActivity() {
             ubicacion,
             fc,
             volumenTotal,
+            volumenMuestra,
             tipoResistencia,
             edad,
             tma,
@@ -897,6 +913,7 @@ class RegistroCilindros : AppCompatActivity() {
             remision,
 
             muestra,
+            olla,
             revenimientoDis,
             revenimientoR1,
             revenimientoR2,
@@ -943,6 +960,7 @@ class RegistroCilindros : AppCompatActivity() {
         val ubicacion: String,
         val fc: Double,
         val volumenTotal: Double,
+        val volumenMuestra: Double,
         val tipoResistencia: String,
         val edad: Int,
         val tma: Double,
@@ -952,6 +970,7 @@ class RegistroCilindros : AppCompatActivity() {
         val remision: String,
 
         val muestra: Int,
+        val olla: String,
         val revenimientoDis: Double,
         val revenimientoR1: Double,
         val revenimientoR2: Double,

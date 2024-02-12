@@ -220,13 +220,19 @@
                             android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="3dp"
                         android:hint="Ubicación"
                         android:textColorHint="@color/grey"
+                        android:layout_weight="1"
 
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
@@ -239,8 +245,31 @@
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginLeft="3dp"
 
+                        android:hint="Volumen"
+                        android:textColorHint="@color/grey"
+                        android:layout_weight="1"
 
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etVolumenMuestraCilindros"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number|numberDecimal"
+                            android:maxLength="5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -461,14 +490,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="3dp"
+
                             android:hint="Muestra"
                             android:textColorHint="@color/grey"
+                            android:layout_weight="1"
 
                             app:endIconMode="clear_text"
                             app:helperTextTextColor="#D81B60"
@@ -484,7 +521,33 @@
                                 android:maxLength="2"
                                 android:text="1" />
                         </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginLeft="3dp"
+                                android:hint="Olla"
+                                android:layout_weight="1"
+                                android:textColorHint="@color/grey"
 
+                                app:endIconMode="clear_text"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etOllaCilindros"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:inputType="textCapCharacters"
+                                    android:maxLength="5"
+                                    android:text="1" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </LinearLayout>
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                             android:layout_width="match_parent"
@@ -517,7 +580,8 @@
                                 style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="12dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="3dp"
                                 android:layout_weight="1"
                                 android:hint="R1"
 
@@ -543,7 +607,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginHorizontal="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginLeft="3dp"
                                 android:layout_weight="1"
                                 android:hint="R2"
                                 android:textColorHint="@color/grey"

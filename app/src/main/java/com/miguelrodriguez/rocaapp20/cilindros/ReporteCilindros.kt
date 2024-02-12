@@ -57,8 +57,9 @@ class ReporteCilindros : AppCompatActivity() {
 
         reporteSelecionado = ClaseObraCilindros(
             1, "estacion", "a","1", "1", 1,
-            "1", "1", "1", 1.1, 1.1,"hola",1,1.1,"a","1",
-            "1","1",1,1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
+            "1", "1", "1", 1.1, 1.1,1.1,"hola",1,1.1,"a","1",
+            "1","1",1,
+            "a",1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
             "1","1","1:1","1:1","1:1","a",
             "1","1","1","1","1","1","1","1","1"
             ,false,""
@@ -123,6 +124,7 @@ class ReporteCilindros : AppCompatActivity() {
                     val ubicacion = snapshot.child("ubicacion").getValue(String::class.java)
                     val fc = snapshot.child("fc").getValue(Double::class.java)
                     val volumenTotal = snapshot.child("volumenTotal").getValue(Double::class.java)
+                    val volumenMuestra = snapshot.child("volumenMuestra").getValue(Double::class.java)
                     val tipoResistencia = snapshot.child("tipoResistencia").getValue(String::class.java)
                     val edad = snapshot.child("edad").getValue(Int::class.java)
                     val tma = snapshot.child("tma").getValue(Double::class.java)
@@ -132,6 +134,7 @@ class ReporteCilindros : AppCompatActivity() {
                     val remision = snapshot.child("remision").getValue(String::class.java)
 
                     val muestra = snapshot.child("muestra").getValue(Int::class.java)
+                    val olla = snapshot.child("olla").getValue(String::class.java)
                     val revenimientoDis = snapshot.child("revenimientoDis").getValue(Double::class.java)
                     val revenimientoR1 = snapshot.child("revenimientoR1").getValue(Double::class.java)
                     val revenimientoR2 = snapshot.child("revenimientoR2").getValue(Double::class.java)
@@ -180,6 +183,7 @@ class ReporteCilindros : AppCompatActivity() {
                             ubicacion.toString(),
                             fc!!,
                             volumenTotal!!,
+                            volumenMuestra!!,
                             tipoResistencia.toString(),
                             edad!!,
                             tma!!,
@@ -189,6 +193,7 @@ class ReporteCilindros : AppCompatActivity() {
                             remision.toString(),
 
                             muestra!!,
+                            olla.toString(),
                             revenimientoDis!!,
                             revenimientoR1!!,
                             revenimientoR2!!,
