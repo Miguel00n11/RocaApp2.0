@@ -45,10 +45,12 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     private lateinit var etObra: EditText
     private lateinit var etClienteCompactacion: EditText
+    private lateinit var etAtencionCompactacion: EditText
     private lateinit var etFecha: EditText
     private lateinit var binding: TextInputLayout
 
     private lateinit var etCapa: EditText
+    private lateinit var etobservaciones: EditText
     private lateinit var etTramo: EditText
     private lateinit var etSubTramo: EditText
     private lateinit var etcompactacionProyecto: EditText
@@ -130,11 +132,13 @@ class RegistroCompactaciones : AppCompatActivity() {
         validado:Boolean,
         obra: String,
         cliente:String,
+        atencion:String,
         fecha: String,
         personal: String,
         numeroReporte: Int,
         listaCalas: List<ClaseCala>,
         capa: String,
+        observaciones: String,
         Tramo: String,
         subTramo: String,
         compactacion: Double,
@@ -152,10 +156,12 @@ class RegistroCompactaciones : AppCompatActivity() {
             validado,
             obra,
             cliente,
+            atencion,
             fecha,
             personal,
             numeroReporte,
             capa,
+            observaciones,
             Tramo,
             subTramo,
             compactacion,
@@ -261,11 +267,13 @@ class RegistroCompactaciones : AppCompatActivity() {
         val validado: Boolean,
         val obra: String,
         val cliente:String,
+        val atencion: String,
         val fecha: String,
         val personal: String,
 
         val numeroReporte: Int,
         val capa: String,
+        val observaciones: String,
         val Tramo: String,
         val subTramo: String,
         val compactacion: Double,
@@ -568,8 +576,10 @@ class RegistroCompactaciones : AppCompatActivity() {
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObra) {
         etObra.setText(reporteSelecionado.Obra)
         etClienteCompactacion.setText(reporteSelecionado.Cliente)
+        etAtencionCompactacion.setText(reporteSelecionado.atencion)
         etFecha.setText(reporteSelecionado.fecha)
         etCapa.setText(reporteSelecionado.capa)
+        etobservaciones.setText(reporteSelecionado.observaciones)
         etTramo.setText(reporteSelecionado.tramo)
         etSubTramo.setText(reporteSelecionado.subtramo)
         etcompactacionProyecto.setText(reporteSelecionado.compactacion)
@@ -592,6 +602,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         //REPORTE DE COMPACTACION
         etObra = findViewById(R.id.etObraCompactacion)
         etClienteCompactacion = findViewById(R.id.etClienteCompactacion)
+        etAtencionCompactacion = findViewById(R.id.etAtencionCompactacion)
         etFecha = findViewById(R.id.etFechaCompactacion)
         binding=findViewById(R.id.tilFechaMuestreoCompactaciones)
 
@@ -604,6 +615,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         //DATOS DE LA PRUEBA
         etCapa = findViewById(R.id.etCapaCompactacion)
+        etobservaciones = findViewById(R.id.etObservaciones)
         etTramo = findViewById(R.id.etTramoCompactacion)
         etSubTramo = findViewById(R.id.etSubTramo)
         etcompactacionProyecto = findViewById(R.id.etcompactacionProyecto)
@@ -646,9 +658,11 @@ class RegistroCompactaciones : AppCompatActivity() {
                 val validado:Boolean=false
                 val obra: String = etObra.text.toString()
                 val cliente: String = etClienteCompactacion.text.toString()
+                val atencion: String = etAtencionCompactacion.text.toString()
                 val fecha: String = etFecha.text.toString()
                 val numeroReporte: Int = tvNumeroReporteCompactacion.text.toString().toInt()
                 val capa: String = etCapa.text.toString()
+                val observaciones: String = etobservaciones.text.toString()
                 val Tramo: String = etTramo.text.toString()
                 val subTramo: String = etSubTramo.text.toString()
                 val compactacion: Double = etcompactacionProyecto.text.toString().toDouble()
@@ -662,11 +676,13 @@ class RegistroCompactaciones : AppCompatActivity() {
                     validado,
                     obra,
                     cliente,
+                    atencion,
                     fecha,
                     personal,
                     numeroReporte,
                     listaCalasmutableListOf,
                     capa,
+                    observaciones,
                     Tramo,
                     subTramo,
                     compactacion,

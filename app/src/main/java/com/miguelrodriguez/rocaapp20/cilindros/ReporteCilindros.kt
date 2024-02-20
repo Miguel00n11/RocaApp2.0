@@ -56,7 +56,7 @@ class ReporteCilindros : AppCompatActivity() {
         rvObrasCilindros = findViewById(R.id.rvObrasCilindros)
 
         reporteSelecionado = ClaseObraCilindros(
-            1, "estacion", "a","1", "1", 1,
+            1, "estacion", "a","1","1", "1", 0,
             "1", "1", "1", 1.1, 1.1,1.1,"hola",1,1.1,"a","1",
             "1","1",1,
             "a",1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
@@ -115,6 +115,7 @@ class ReporteCilindros : AppCompatActivity() {
                     // Accede a los datos específicos de cada informe
                     val obra1 = snapshot.child("obra").getValue(String::class.java)
                     val cliente = snapshot.child("cliente").getValue(String::class.java)
+                    val localizacion = snapshot.child("localizacion").getValue(String::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
                     val personal1 = snapshot.child("personal").getValue(String::class.java)
                     val numReporte = snapshot.child("numeroReporte").getValue(Int::class.java)
@@ -174,6 +175,7 @@ class ReporteCilindros : AppCompatActivity() {
                             numReporte!!,
                             obra1.toString(),
                             cliente.toString(),
+                            localizacion.toString(),
                             fecha.toString(),
                             personal1.toString(),
                             numReporte.toInt(),

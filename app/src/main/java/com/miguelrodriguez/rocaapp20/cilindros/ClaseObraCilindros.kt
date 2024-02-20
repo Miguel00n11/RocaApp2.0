@@ -6,6 +6,7 @@ data class ClaseObraCilindros(
     val id: Int,
     val Obra: String,
     val Cliente:String,
+    val localizacion:String,
     var fecha: String,
     val personal: String,
     val numeroReporte: Int,

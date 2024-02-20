@@ -68,7 +68,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
 
         reporteSelecionado = ClaseObra(
-            1, false,"estacion","a" ,"1", "1", "1",
+            1, false,"estacion","a" ,"atencion","1", "1","obs", "1",
             "1", "1", "1", "1", "1","hola", listacalasmutableListOf
         )
 
@@ -122,7 +122,9 @@ class ReportesCompactaciones : AppCompatActivity() {
                     // Accede a los datos específicos de cada informe
                     val obra1 = snapshot.child("obra").getValue(String::class.java)
                     val cliente = snapshot.child("cliente").getValue(String::class.java)
+                    val atencion = snapshot.child("atencion").getValue(String::class.java)
                     val capa = snapshot.child("capa").getValue(String::class.java)
+                    val observaciones = snapshot.child("observaciones").getValue(String::class.java)
                     val compactacion = snapshot.child("compactacion").getValue(Int::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
                     val humedad = snapshot.child("humedad").getValue(Int::class.java)
@@ -170,8 +172,10 @@ class ReportesCompactaciones : AppCompatActivity() {
                             validado!!,
                             obra1.toString(),
                             cliente.toString(),
+                            atencion.toString(),
                             numReporte.toString(),
                             capa.toString(),
+                            observaciones.toString(),
                             fecha.toString(),
                             tramo.toString(),
                             subTramo.toString(),

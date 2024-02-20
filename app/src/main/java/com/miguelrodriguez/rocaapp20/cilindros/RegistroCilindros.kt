@@ -64,6 +64,7 @@ class RegistroCilindros : AppCompatActivity() {
     private lateinit var tvNumeroReporteCilindros: TextView
     private lateinit var etObraCilindros: EditText
     private lateinit var etClienteCilindros: EditText
+    private lateinit var etLocalizacionCilindros: EditText
     private lateinit var etFechaCompactacion: EditText
 
     private lateinit var etElementoColadoCilindros: EditText
@@ -150,6 +151,7 @@ class RegistroCilindros : AppCompatActivity() {
 
         etObraCilindros = findViewById(R.id.etObraCilindros)
         etClienteCilindros = findViewById(R.id.etClienteCilindros)
+        etLocalizacionCilindros = findViewById(R.id.etLocalizacionCilindros)
         etElementoColadoCilindros = findViewById(R.id.etElementoColadoCilindros)
         etUbicacionCilindros = findViewById(R.id.etUbicacionCilindros)
         etFCCilindros = findViewById(R.id.etFCCilindros)
@@ -254,6 +256,7 @@ class RegistroCilindros : AppCompatActivity() {
         tvNumeroReporteCilindros.setText(reporteSelecionado.id.toString())
         etObraCilindros.setText(reporteSelecionado.Obra)
         etClienteCilindros.setText(reporteSelecionado.Cliente)
+        etLocalizacionCilindros.setText(reporteSelecionado.localizacion)
         etFechaCompactacion.setText(reporteSelecionado.fecha)
 
         etElementoColadoCilindros.setText(reporteSelecionado.elementoColado)
@@ -554,6 +557,7 @@ class RegistroCilindros : AppCompatActivity() {
 
                 val obra: String = etObraCilindros.text.toString()
                 val cliente: String = etClienteCilindros.text.toString()
+                val localizacion: String = etLocalizacionCilindros.text.toString()
                 val fecha: String = etFechaCompactacion.text.toString()
                 val numeroReporte: Int = tvNumeroReporteCilindros.text.toString().toInt()
                 val tipoMuestreo: String = spnTipoMuestreoCilindros.selectedItem.toString()
@@ -608,6 +612,7 @@ class RegistroCilindros : AppCompatActivity() {
                 saveLocally(
                     obra,
                     cliente,
+                    localizacion,
                     fecha,
                     personal,
                     numeroReporte,
@@ -837,6 +842,7 @@ class RegistroCilindros : AppCompatActivity() {
     private fun saveLocally(
         obra: String,
         cliente: String,
+        localizacion: String,
         fecha: String,
         personal: String,
         numeroReporte: Int,
@@ -894,6 +900,7 @@ class RegistroCilindros : AppCompatActivity() {
         val nuevoRegistro = Registro(
             obra,
             cliente,
+            localizacion,
             fecha,
             personal,
             numeroReporte,
@@ -951,6 +958,7 @@ class RegistroCilindros : AppCompatActivity() {
     data class Registro(
         val obra: String,
         val cliente: String,
+        val localizacion: String,
         val fecha: String,
         val personal: String,
         val numeroReporte: Int,
