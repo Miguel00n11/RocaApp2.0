@@ -45,6 +45,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
     private lateinit var etObra: EditText
     private lateinit var etClienteCompactacion: EditText
+    private lateinit var etLocalizacionCompactacion: EditText
     private lateinit var etAtencionCompactacion: EditText
     private lateinit var etFecha: EditText
     private lateinit var binding: TextInputLayout
@@ -132,6 +133,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         validado:Boolean,
         obra: String,
         cliente:String,
+        localizacion:String,
         atencion:String,
         fecha: String,
         personal: String,
@@ -156,6 +158,7 @@ class RegistroCompactaciones : AppCompatActivity() {
             validado,
             obra,
             cliente,
+            localizacion,
             atencion,
             fecha,
             personal,
@@ -267,6 +270,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         val validado: Boolean,
         val obra: String,
         val cliente:String,
+        val localizacion: String,
         val atencion: String,
         val fecha: String,
         val personal: String,
@@ -576,6 +580,7 @@ class RegistroCompactaciones : AppCompatActivity() {
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObra) {
         etObra.setText(reporteSelecionado.Obra)
         etClienteCompactacion.setText(reporteSelecionado.Cliente)
+        etLocalizacionCompactacion.setText(reporteSelecionado.localizacion)
         etAtencionCompactacion.setText(reporteSelecionado.atencion)
         etFecha.setText(reporteSelecionado.fecha)
         etCapa.setText(reporteSelecionado.capa)
@@ -602,6 +607,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         //REPORTE DE COMPACTACION
         etObra = findViewById(R.id.etObraCompactacion)
         etClienteCompactacion = findViewById(R.id.etClienteCompactacion)
+        etLocalizacionCompactacion = findViewById(R.id.etLocalizacionCompactacion)
         etAtencionCompactacion = findViewById(R.id.etAtencionCompactacion)
         etFecha = findViewById(R.id.etFechaCompactacion)
         binding=findViewById(R.id.tilFechaMuestreoCompactaciones)
@@ -658,6 +664,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                 val validado:Boolean=false
                 val obra: String = etObra.text.toString()
                 val cliente: String = etClienteCompactacion.text.toString()
+                val localizacion: String = etLocalizacionCompactacion.text.toString()
                 val atencion: String = etAtencionCompactacion.text.toString()
                 val fecha: String = etFecha.text.toString()
                 val numeroReporte: Int = tvNumeroReporteCompactacion.text.toString().toInt()
@@ -676,6 +683,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                     validado,
                     obra,
                     cliente,
+                    localizacion,
                     atencion,
                     fecha,
                     personal,

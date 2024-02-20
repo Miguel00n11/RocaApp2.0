@@ -5,6 +5,7 @@ data class ClaseObra(
     val validado:Boolean,
     val Obra:String,
     val Cliente:String,
+    val localizacion:String,
     val atencion:String,
     var reporte:String,
     val capa:String,
