@@ -12,6 +12,7 @@
     <color name="btn_Text_Cancelar">#FFFFFFFF</color>
     <color name="Background_Resultados">#03D9C4</color>
     <color name="Texto_Resultados">#024942</color>
+    <color name="Texto_Registro_Preliminar">#70757575</color>
     <color name="background_Registro_Cala">#FF8F00</color>
 
     <!--    Resultados Compactacion-->

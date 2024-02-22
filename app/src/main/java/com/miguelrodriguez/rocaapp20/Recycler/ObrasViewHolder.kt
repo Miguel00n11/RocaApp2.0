@@ -14,8 +14,8 @@ class ObrasViewHolder(view:View):RecyclerView.ViewHolder(view) {
     private val tvReporteCompactacion:TextView=view.findViewById(R.id.tvReporteCompactacion)
     private val tvCapaCompactacion:TextView=view.findViewById(R.id.tvCapaCompactacion)
     private val tvFechaCompactacion:TextView=view.findViewById(R.id.tvFechaCompactacion)
-    private val btnEliminar: FloatingActionButton =
-        view.findViewById(R.id.btnEliminarReporteCompactacion)
+    private val btnEliminar: FloatingActionButton =view.findViewById(R.id.btnEliminarReporteCompactacion)
+    private val btnVerReporteCompactacion: FloatingActionButton =view.findViewById(R.id.btnVerReporteCompactacion)
     fun render(listaObras: ClaseObra) {
 
         tvItemObrasCompactacion.text=listaObras.Obra
@@ -24,7 +24,7 @@ class ObrasViewHolder(view:View):RecyclerView.ViewHolder(view) {
         tvFechaCompactacion.text=listaObras.fecha
 
     }
-    fun bind(obra: ClaseObra, onCalaSelected: (Int) -> Unit, onItemDelete: (Int) -> Unit) {
+    fun bind(obra: ClaseObra, onCalaSelected: (Int) -> Unit, onItemDelete: (Int) -> Unit,onIntemVerReporteCompactacion: (Int) -> Unit) {
         // Configura los elementos visuales con la información de la ClaseCala
         // ...
 
@@ -34,6 +34,9 @@ class ObrasViewHolder(view:View):RecyclerView.ViewHolder(view) {
         }
         btnEliminar.setOnClickListener {
             onItemDelete(adapterPosition)
+        }
+        btnVerReporteCompactacion.setOnClickListener {
+            onIntemVerReporteCompactacion(adapterPosition)
         }
         itemView.findViewById<FloatingActionButton>(R.id.btnEliminarReporteCompactacion)
             .setOnClickListener {

@@ -8,7 +8,8 @@ import com.miguelrodriguez.rocaapp20.R
 class ObraAdapter(
     private val listaObra: MutableList<ClaseObra>,
     private val onObraSelected: (Int) -> Unit,
-    private val onItemDelete: (Int) -> Unit
+    private val onItemDelete: (Int) -> Unit,
+    private val onVerReporteCompactacion: (Int) -> Unit
 ) : RecyclerView.Adapter<ObrasViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ObrasViewHolder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.item_obras_compactaciones,parent,false)
@@ -19,7 +20,7 @@ class ObraAdapter(
 
         holder.render(listaObra[position])
         holder.itemView.setOnClickListener { onObraSelected(position) }
-        holder.bind(listaObra[position], onObraSelected, onItemDelete)
+        holder.bind(listaObra[position], onObraSelected, onItemDelete,onVerReporteCompactacion)
 
 
     }
