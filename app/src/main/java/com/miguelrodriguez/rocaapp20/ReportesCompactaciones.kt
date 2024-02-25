@@ -98,6 +98,7 @@ class ReportesCompactaciones : AppCompatActivity() {
     private lateinit var listaObrasmutableListOf1: MutableList<ClaseObra>
     private lateinit var listacalasmutableListOf: MutableList<ClaseCala>
     private lateinit var swVerTodosReportesCompactaciones: Switch
+    private lateinit var listaFiltrada: MutableList<ClaseObra>
 
 
 //    private val listaObrasmutableListOf =
@@ -154,7 +155,11 @@ class ReportesCompactaciones : AppCompatActivity() {
         }
 
         rvObrasCompactacion.adapter = ObraAdapter(listaObrasmutableListOf,
-            onObraSelected = { position -> onItemSelected(position) },
+            onObraSelected = { position ->
+                if (svBuscarReportesCompactacion.visibility == View.GONE) {
+                    onItemSelected(position)
+                }
+            },
             onItemDelete = { position -> onItemDelete(position) },
             onVerReporteCompactacion = { position -> onVerReporteCompactacion(position,listaObrasmutableListOf) },
             swVerTodosReportesCompactaciones.isChecked
@@ -162,6 +167,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
         ObraAdapter = rvObrasCompactacion.adapter as ObraAdapter
 
+        listaFiltrada=listaObrasmutableListOf
 
 
         rvObrasCompactacion.layoutManager = LinearLayoutManager(this)
@@ -281,7 +287,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
                 if (searchText.isNotEmpty()) {
 
-                    val listaFiltrada: MutableList<ClaseObra>
+
 
                     listaFiltrada =
                         listaObrasmutableListOf.filter { it.fecha?.contains(searchText) == true } as MutableList<ClaseObra>
@@ -307,18 +313,24 @@ class ReportesCompactaciones : AppCompatActivity() {
                         { position -> },
                         { position -> onVerReporteCompactacion(position,listaFiltrada) },
                         swVerTodosReportesCompactaciones.isChecked
+
                     )
 
                 } else {
 
                     rvObrasCompactacion.adapter = ObraAdapter(
                         listaObrasmutableListOf,
-                        { position -> onItemSelected(position) /* código para manejar la selección de obra en la posición 'position' */ },
-                        { position -> onItemSelected(position) },
+                        onObraSelected = { position ->
+                            if (svBuscarReportesCompactacion.visibility == View.GONE) {
+                                onItemSelected(position)
+                            }
+                        },
+                        { position -> onItemDelete(position) },
                         { position -> onVerReporteCompactacion(position,listaObrasmutableListOf) },
                         swVerTodosReportesCompactaciones.isChecked
 
                     )
+                    ObraAdapter = rvObrasCompactacion.adapter as ObraAdapter
 
 
                 }
@@ -334,8 +346,11 @@ class ReportesCompactaciones : AppCompatActivity() {
 
             if (isChecked) {
                 svBuscarReportesCompactacion.visibility= View.VISIBLE// El switch está activado
+
             } else {
+                svBuscarReportesCompactacion.setQuery("", false)
                 svBuscarReportesCompactacion.visibility= View.GONE
+
                 // El switch está desactivado
             }
             Toast.makeText(this, swVerTodosReportesCompactaciones.isChecked.toString(), Toast.LENGTH_SHORT).show()

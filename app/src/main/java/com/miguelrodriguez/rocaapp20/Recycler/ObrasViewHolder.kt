@@ -62,10 +62,10 @@ class ObrasViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
         if (!mostrarBotones) {
             btnEliminar.visibility = View.VISIBLE
-            btnVerReporteCompactacion.visibility = View.VISIBLE
+//            btnVerReporteCompactacion.visibility = View.VISIBLE
         } else {
             btnEliminar.visibility = View.GONE
-            btnVerReporteCompactacion.visibility = View.GONE
+//            btnVerReporteCompactacion.visibility = View.GONE
 
 
         }

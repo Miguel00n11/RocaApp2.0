@@ -12,7 +12,7 @@ class ObraAdapter(
     private val onObraSelected: (Int) -> Unit,
     private val onItemDelete: (Int) -> Unit,
     private val onVerReporteCompactacion: (Int) -> Unit,
-    private var mostrarBoton: Boolean = true
+    private var mostrarBoton: Boolean
 ) : RecyclerView.Adapter<ObrasViewHolder>() {
     private var listaObraCompleta: MutableList<ClaseObra> = mutableListOf()
 
