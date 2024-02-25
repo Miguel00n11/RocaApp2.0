@@ -37,12 +37,18 @@ import com.itextpdf.layout.element.Paragraph
 import java.io.File
 
 import android.os.Environment
+import android.view.View
+import android.widget.Adapter
+import android.widget.SearchView
+import android.widget.Switch
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.alpha
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.itextpdf.io.font.otf.GlyphLine
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.colors.ColorConstants
@@ -65,6 +71,7 @@ import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor
 import com.itextpdf.kernel.pdf.PdfReader
 import com.itextpdf.kernel.pdf.colorspace.PdfDeviceCs.Rgb
 import com.itextpdf.layout.element.Text
+import java.util.Locale
 
 
 class ReportesCompactaciones : AppCompatActivity() {
@@ -75,18 +82,23 @@ class ReportesCompactaciones : AppCompatActivity() {
     private lateinit var personal: String
     private lateinit var cala1: MutableList<ClaseCala>
 
+
     companion object {
         lateinit var reporteSelecionado: ClaseObra
         var editar: Boolean = false
     }
 
+    private lateinit var svBuscarReportesCompactacion: SearchView
 
     private lateinit var btnRegistroCompactacion: Button
     private lateinit var rvObrasCompactacion: RecyclerView
     private lateinit var ObraAdapter: ObraAdapter
     private lateinit var claseObra: ClaseObra
     private lateinit var listaObrasmutableListOf: MutableList<ClaseObra>
+    private lateinit var listaObrasmutableListOf1: MutableList<ClaseObra>
     private lateinit var listacalasmutableListOf: MutableList<ClaseCala>
+    private lateinit var swVerTodosReportesCompactaciones: Switch
+
 
 //    private val listaObrasmutableListOf =
 //        mutableListOf(ClaseObra(1, "estacion","1","1","1",
@@ -141,16 +153,19 @@ class ReportesCompactaciones : AppCompatActivity() {
             startActivity(intent)
         }
 
-        ObraAdapter = ObraAdapter(listaObrasmutableListOf,
+        rvObrasCompactacion.adapter = ObraAdapter(listaObrasmutableListOf,
             onObraSelected = { position -> onItemSelected(position) },
             onItemDelete = { position -> onItemDelete(position) },
-            onVerReporteCompactacion = { position -> onVerReporteCompactacion(position, this) }
+            onVerReporteCompactacion = { position -> onVerReporteCompactacion(position,listaObrasmutableListOf) },
+            swVerTodosReportesCompactaciones.isChecked
         )
+
+        ObraAdapter = rvObrasCompactacion.adapter as ObraAdapter
 
 
 
         rvObrasCompactacion.layoutManager = LinearLayoutManager(this)
-        rvObrasCompactacion.adapter = ObraAdapter
+//        rvObrasCompactacion.adapter = ObraAdapter
 
         dataReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -251,6 +266,81 @@ class ReportesCompactaciones : AppCompatActivity() {
                 // Manejar error de base de datos, si es necesario
             }
         })
+
+
+
+        svBuscarReportesCompactacion.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(fecha: String?): Boolean {
+
+                val searchText = fecha!!.toLowerCase(Locale.getDefault())
+
+                if (searchText.isNotEmpty()) {
+
+                    val listaFiltrada: MutableList<ClaseObra>
+
+                    listaFiltrada =
+                        listaObrasmutableListOf.filter { it.fecha?.contains(searchText) == true } as MutableList<ClaseObra>
+
+                    var filteredList = mutableListOf<ClaseObra>()
+
+                    // Filtra la lista de obras según el texto de búsqueda
+                    filteredList = listaObrasmutableListOf.filter {
+                        it.fecha?.contains(searchText) == true || it.Obra?.contains(searchText) == true
+                    } as MutableList<ClaseObra>
+
+//                    rvObrasCompactacion.adapter= ObraAdapter(listaFiltrada){}
+//                    rvObrasCompactacion.adapter = ObraAdapter(
+//                        listaFiltrada,
+//                        { position -> /* código para manejar la selección de obra en la posición 'position' */ },
+//                        { position -> /* código para manejar la eliminación de obra en la posición 'position' */ },
+//                        { position -> /* código para manejar la visualización de reporte de compactación en la posición 'position' */ }
+//                    )
+
+                    rvObrasCompactacion.adapter = ObraAdapter(
+                        listaFiltrada,
+                        { position -> /* código para manejar la selección de obra en la posición 'position' */ },
+                        { position -> },
+                        { position -> onVerReporteCompactacion(position,listaFiltrada) },
+                        swVerTodosReportesCompactaciones.isChecked
+                    )
+
+                } else {
+
+                    rvObrasCompactacion.adapter = ObraAdapter(
+                        listaObrasmutableListOf,
+                        { position -> onItemSelected(position) /* código para manejar la selección de obra en la posición 'position' */ },
+                        { position -> onItemSelected(position) },
+                        { position -> onVerReporteCompactacion(position,listaObrasmutableListOf) },
+                        swVerTodosReportesCompactaciones.isChecked
+
+                    )
+
+
+                }
+                return false
+            }
+
+        })
+
+
+
+        swVerTodosReportesCompactaciones.setOnCheckedChangeListener { buttonView, isChecked ->
+            ObraAdapter.setMostrarBoton(swVerTodosReportesCompactaciones.isChecked)
+
+            if (isChecked) {
+                svBuscarReportesCompactacion.visibility= View.VISIBLE// El switch está activado
+            } else {
+                svBuscarReportesCompactacion.visibility= View.GONE
+                // El switch está desactivado
+            }
+            Toast.makeText(this, swVerTodosReportesCompactaciones.isChecked.toString(), Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun onItemDelete(position: Int) {
@@ -274,10 +364,9 @@ class ReportesCompactaciones : AppCompatActivity() {
         }
     }
 
-    private fun onVerReporteCompactacion(position: Int, context: Context) = try {
-        Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+    private fun onVerReporteCompactacion(position: Int,listaReportes:MutableList<ClaseObra>) = try {
 
-        reporteSelecionado = listaObrasmutableListOf[position]
+        reporteSelecionado = listaReportes[position]
 
 
         // Datos de varios registros (solo como ejemplo)
@@ -289,17 +378,20 @@ class ReportesCompactaciones : AppCompatActivity() {
 
 
         // Directorio para guardar el archivo PDF en el almacenamiento externo
-        val directorio = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+        val directorio = this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
         val archivoPDF = File(directorio, "registro_compactacion.pdf")
         val alturaTexto = 8f
 
+
 //            Toast.makeText(this, directorio.toString(), Toast.LENGTH_SHORT).show()
         try {
+
             val outputStream = FileOutputStream(archivoPDF)
             val writer = PdfWriter(outputStream)
             val pdf = PdfDocument(writer)
             pdf.defaultPageSize = PageSize.LETTER
             val document = Document(pdf, PageSize.LETTER, true)
+
 
             //calcular el ancho disponible para la tabla
             val anchoDocumento = PageSize.LETTER.width - 72f * 2
@@ -311,7 +403,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
             // Cargar la imagen desde el directorio drawable
             val drawableId = R.drawable.logoroca // Reemplaza 'logoroca' con el nombre de tu imagen
-            val bitmap = BitmapFactory.decodeResource(context.resources, drawableId)
+            val bitmap = BitmapFactory.decodeResource(this.resources, drawableId)
 
             // Convertir el bitmap en un objeto Image de iText
             val outputStream1 = ByteArrayOutputStream()
@@ -346,7 +438,8 @@ class ReportesCompactaciones : AppCompatActivity() {
 
 
 // Agrega la primera parte del texto con color negro
-            val parte1 = Text("Reporte de campo de compactación de terracería. ").setFontColor(DeviceRgb.BLACK)
+            val parte1 =
+                Text("Reporte de campo de compactación de terracería. ").setFontColor(DeviceRgb.BLACK)
             paragraph.add(parte1)
 
 // Agrega la segunda parte del texto con color rojo
@@ -593,7 +686,7 @@ class ReportesCompactaciones : AppCompatActivity() {
             tableResultados.addCell(columnaLado)
 
 
-            tableResultados.setTextAlignment(TextAlignment.CENTER )
+            tableResultados.setTextAlignment(TextAlignment.CENTER)
 
 //            document.add(tableResultados)
 
@@ -602,7 +695,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
             // Agregar los registros a la tabla
             reporteSelecionado.listaCalas.forEach { cala ->
-                tableResultados.addCell(Cell().add(Paragraph("${cala.cala+1}")))
+                tableResultados.addCell(Cell().add(Paragraph("${cala.cala + 1}")))
                     .setFontSize(alturaTexto)
                 tableResultados.addCell(Cell().add(Paragraph("${cala.Estacion}")))
                     .setFontSize(alturaTexto)
@@ -686,33 +779,33 @@ class ReportesCompactaciones : AppCompatActivity() {
             println("Documento PDF creado correctamente.")
 
             // Abrir el documento PDF
-            abrirPDF(context, archivoPDF)
+//            abrirPDF(context, archivoPDF)
             updateTask()
         } catch (ex: Exception) {
-            Toast.makeText(context, "Error al generar el PDF: ${ex.message}", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Error al generar el PDF: ${ex.message}", Toast.LENGTH_SHORT)
                 .show()
         }
 
         // Abrir el documento PDF
-        abrirPDF(context, archivoPDF)
+        abrirPDF(archivoPDF)
     } catch (ex: Exception) {
-        Toast.makeText(context, "Error al generar el PDF: ${ex.message}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Error al generar el PDF: ${ex.message}", Toast.LENGTH_SHORT).show()
     }
 
-    private fun abrirPDF(context: Context, archivoPDF: File) {
+    private fun abrirPDF(archivoPDF: File) {
         try {
             val uri = FileProvider.getUriForFile(
-                context,
-                context.packageName + ".fileprovider",
+                this,
+                this.packageName + ".fileprovider",
                 archivoPDF
             )
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(uri, "application/pdf")
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            context.startActivity(intent)
+            this.startActivity(intent)
         } catch (ex: Exception) {
-            Toast.makeText(context, "Error al abrir el PDF: ${ex.message}", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Error al abrir el PDF: ${ex.message}", Toast.LENGTH_SHORT)
                 .show()
         }
     }
@@ -760,6 +853,9 @@ class ReportesCompactaciones : AppCompatActivity() {
     private fun initComponent() {
         btnRegistroCompactacion = findViewById(R.id.btnRegistroCompactacion)
         rvObrasCompactacion = findViewById(R.id.rvObrasCompactacion)
+        svBuscarReportesCompactacion = findViewById(R.id.svBuscarReportesCompactacion)
+        swVerTodosReportesCompactaciones = findViewById(R.id.swVerTodosReportesCompactaciones)
+
     }
 
     private fun mostrarDialogo() {

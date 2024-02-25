@@ -4,27 +4,39 @@ import android.app.AlertDialog
 import android.content.Context
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.miguelrodriguez.rocaapp20.R
 
-class ObrasViewHolder(view:View):RecyclerView.ViewHolder(view) {
+class ObrasViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    private val tvItemObrasCompactacion:TextView=view.findViewById(R.id.tvItemObrasCompactacion)
-    private val tvReporteCompactacion:TextView=view.findViewById(R.id.tvReporteCompactacion)
-    private val tvCapaCompactacion:TextView=view.findViewById(R.id.tvCapaCompactacion)
-    private val tvFechaCompactacion:TextView=view.findViewById(R.id.tvFechaCompactacion)
-    private val btnEliminar: FloatingActionButton =view.findViewById(R.id.btnEliminarReporteCompactacion)
-    private val btnVerReporteCompactacion: FloatingActionButton =view.findViewById(R.id.btnVerReporteCompactacion)
+    private val tvItemObrasCompactacion: TextView = view.findViewById(R.id.tvItemObrasCompactacion)
+    private val tvReporteCompactacion: TextView = view.findViewById(R.id.tvReporteCompactacion)
+    private val tvCapaCompactacion: TextView = view.findViewById(R.id.tvCapaCompactacion)
+    private val tvFechaCompactacion: TextView = view.findViewById(R.id.tvFechaCompactacion)
+    private val btnEliminar: FloatingActionButton =
+        view.findViewById(R.id.btnEliminarReporteCompactacion)
+    private val btnVerReporteCompactacion: FloatingActionButton =
+        view.findViewById(R.id.btnVerReporteCompactacion)
+
     fun render(listaObras: ClaseObra) {
 
-        tvItemObrasCompactacion.text=listaObras.Obra
-        tvReporteCompactacion.text=listaObras.reporte
-        tvCapaCompactacion.text=listaObras.capa
-        tvFechaCompactacion.text=listaObras.fecha
+        tvItemObrasCompactacion.text = listaObras.Obra
+        tvReporteCompactacion.text = listaObras.reporte
+        tvCapaCompactacion.text = listaObras.capa
+        tvFechaCompactacion.text = listaObras.fecha
+
 
     }
-    fun bind(obra: ClaseObra, onCalaSelected: (Int) -> Unit, onItemDelete: (Int) -> Unit,onIntemVerReporteCompactacion: (Int) -> Unit) {
+
+    fun bind(
+        obra: ClaseObra,
+        onCalaSelected: (Int) -> Unit,
+        onItemDelete: (Int) -> Unit,
+        onIntemVerReporteCompactacion: (Int) -> Unit,
+        mostrarBotones: Boolean
+    ) {
         // Configura los elementos visuales con la información de la ClaseCala
         // ...
 
@@ -48,7 +60,23 @@ class ObrasViewHolder(view:View):RecyclerView.ViewHolder(view) {
                 }
 
             }
+        if (!mostrarBotones) {
+            btnEliminar.visibility = View.VISIBLE
+            btnVerReporteCompactacion.visibility = View.VISIBLE
+        } else {
+            btnEliminar.visibility = View.GONE
+            btnVerReporteCompactacion.visibility = View.GONE
+
+
+        }
+        println(mostrarBotones.toString())
+//        btnEliminar.visibility = if (mostrarBotones) View.VISIBLE else View.GONE
+//        btnVerReporteCompactacion.visibility = if (mostrarBotones) View.VISIBLE else View.GONE
+
     }
+
+
+
     private fun showDeleteConfirmationDialog(context: Context, onConfirmation: (Boolean) -> Unit) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Confirmar Eliminación")
