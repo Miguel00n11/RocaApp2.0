@@ -31,18 +31,23 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:gravity="right"
             android:layout_height="wrap_content">
+
 
             <SearchView
                 android:id="@+id/svBuscarReportesCompactacion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/white"
-                android:textColorHint="@color/grey"
+
+                android:background="#FFFFFF"
+                android:backgroundTint="#FFFFFF"
+                android:foregroundTint="#FFFFFF"
+
+                app:cardCornerRadius="18dp"
                 android:visibility="gone" />
-
-
 
             <Switch
                 android:id="@+id/swVerTodosReportesCompactaciones"
@@ -51,14 +56,13 @@
                 android:layout_gravity="center"
                 android:buttonTint="@color/background_Registro_Cala"
                 android:checked="false"
+                android:text="Ver todos"
+                android:layout_marginLeft="14dp"
                 android:textColor="@color/white"
                 android:textOff="Todos"
-                android:text="Ver todos"
                 android:textOn="actuales"
                 android:trackTint="@color/grey" />
         </LinearLayout>
-
-
 
 
         <androidx.cardview.widget.CardView
@@ -89,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="32dp"
+            android:layout_margin="24dp"
             android:backgroundTint="#66BB6A"
             android:text="+ Reportes compactaciones"
             android:textSize="18sp" />

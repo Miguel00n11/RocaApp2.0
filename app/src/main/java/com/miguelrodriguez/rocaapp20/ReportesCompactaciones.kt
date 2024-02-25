@@ -154,25 +154,134 @@ class ReportesCompactaciones : AppCompatActivity() {
             startActivity(intent)
         }
 
-        rvObrasCompactacion.adapter = ObraAdapter(listaObrasmutableListOf,
+        rvObrasCompactacion.adapter = ObraAdapter(
+            listaObrasmutableListOf,
             onObraSelected = { position ->
                 if (svBuscarReportesCompactacion.visibility == View.GONE) {
                     onItemSelected(position)
                 }
             },
             onItemDelete = { position -> onItemDelete(position) },
-            onVerReporteCompactacion = { position -> onVerReporteCompactacion(position,listaObrasmutableListOf) },
+            onVerReporteCompactacion = { position ->
+                onVerReporteCompactacion(
+                    position,
+                    listaObrasmutableListOf
+                )
+            },
             swVerTodosReportesCompactaciones.isChecked
         )
 
         ObraAdapter = rvObrasCompactacion.adapter as ObraAdapter
 
-        listaFiltrada=listaObrasmutableListOf
+        listaFiltrada = listaObrasmutableListOf
 
 
         rvObrasCompactacion.layoutManager = LinearLayoutManager(this)
 //        rvObrasCompactacion.adapter = ObraAdapter
 
+        cargarObras(dataReference)
+
+
+
+
+
+        svBuscarReportesCompactacion.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(fecha: String?): Boolean {
+
+                val searchText = fecha!!.toLowerCase(Locale.getDefault())
+
+                if (searchText.isNotEmpty()) {
+
+
+                    listaFiltrada =
+                        listaObrasmutableListOf.filter { it.fecha?.contains(searchText) == true } as MutableList<ClaseObra>
+
+                    var filteredList = mutableListOf<ClaseObra>()
+
+                    // Filtra la lista de obras según el texto de búsqueda
+                    filteredList = listaObrasmutableListOf.filter {
+                        it.fecha?.contains(searchText) == true || it.Obra?.contains(searchText) == true
+                    } as MutableList<ClaseObra>
+
+//                    rvObrasCompactacion.adapter= ObraAdapter(listaFiltrada){}
+//                    rvObrasCompactacion.adapter = ObraAdapter(
+//                        listaFiltrada,
+//                        { position -> /* código para manejar la selección de obra en la posición 'position' */ },
+//                        { position -> /* código para manejar la eliminación de obra en la posición 'position' */ },
+//                        { position -> /* código para manejar la visualización de reporte de compactación en la posición 'position' */ }
+//                    )
+
+                    rvObrasCompactacion.adapter = ObraAdapter(
+                        listaFiltrada,
+                        { position -> /* código para manejar la selección de obra en la posición 'position' */ },
+                        { position -> },
+                        { position -> onVerReporteCompactacion(position, listaFiltrada) },
+                        swVerTodosReportesCompactaciones.isChecked
+
+                    )
+
+                } else {
+
+                    rvObrasCompactacion.adapter = ObraAdapter(
+                        listaObrasmutableListOf,
+                        onObraSelected = { position ->
+                            if (svBuscarReportesCompactacion.visibility == View.GONE) {
+                                onItemSelected(position)
+                            }
+                        },
+                        { position -> onItemDelete(position) },
+                        { position -> onVerReporteCompactacion(position, listaObrasmutableListOf) },
+                        swVerTodosReportesCompactaciones.isChecked
+
+                    )
+                    ObraAdapter = rvObrasCompactacion.adapter as ObraAdapter
+
+
+                }
+                return false
+            }
+
+        })
+
+
+
+        swVerTodosReportesCompactaciones.setOnCheckedChangeListener { buttonView, isChecked ->
+            ObraAdapter.setMostrarBoton(swVerTodosReportesCompactaciones.isChecked)
+
+            if (isChecked) {
+                svBuscarReportesCompactacion.visibility = View.VISIBLE// El switch está activado
+                dataReference =
+                    FirebaseDatabase.getInstance().reference.child("Compactaciones")
+                        .child("Respaldo")
+                        .child(personal)
+                cargarObras(dataReference)
+
+            } else {
+                svBuscarReportesCompactacion.setQuery("", false)
+                svBuscarReportesCompactacion.visibility = View.GONE
+                dataReference =
+                    FirebaseDatabase.getInstance().reference.child("Compactaciones")
+                        .child("Reportes")
+                        .child(personal)
+                cargarObras(dataReference)
+
+                // El switch está desactivado
+            }
+            Toast.makeText(
+                this,
+                swVerTodosReportesCompactaciones.isChecked.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
+
+    private fun cargarObras(dataReference: DatabaseReference) {
         dataReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Limpia la lista actual
@@ -272,90 +381,6 @@ class ReportesCompactaciones : AppCompatActivity() {
                 // Manejar error de base de datos, si es necesario
             }
         })
-
-
-
-        svBuscarReportesCompactacion.setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(fecha: String?): Boolean {
-
-                val searchText = fecha!!.toLowerCase(Locale.getDefault())
-
-                if (searchText.isNotEmpty()) {
-
-
-
-                    listaFiltrada =
-                        listaObrasmutableListOf.filter { it.fecha?.contains(searchText) == true } as MutableList<ClaseObra>
-
-                    var filteredList = mutableListOf<ClaseObra>()
-
-                    // Filtra la lista de obras según el texto de búsqueda
-                    filteredList = listaObrasmutableListOf.filter {
-                        it.fecha?.contains(searchText) == true || it.Obra?.contains(searchText) == true
-                    } as MutableList<ClaseObra>
-
-//                    rvObrasCompactacion.adapter= ObraAdapter(listaFiltrada){}
-//                    rvObrasCompactacion.adapter = ObraAdapter(
-//                        listaFiltrada,
-//                        { position -> /* código para manejar la selección de obra en la posición 'position' */ },
-//                        { position -> /* código para manejar la eliminación de obra en la posición 'position' */ },
-//                        { position -> /* código para manejar la visualización de reporte de compactación en la posición 'position' */ }
-//                    )
-
-                    rvObrasCompactacion.adapter = ObraAdapter(
-                        listaFiltrada,
-                        { position -> /* código para manejar la selección de obra en la posición 'position' */ },
-                        { position -> },
-                        { position -> onVerReporteCompactacion(position,listaFiltrada) },
-                        swVerTodosReportesCompactaciones.isChecked
-
-                    )
-
-                } else {
-
-                    rvObrasCompactacion.adapter = ObraAdapter(
-                        listaObrasmutableListOf,
-                        onObraSelected = { position ->
-                            if (svBuscarReportesCompactacion.visibility == View.GONE) {
-                                onItemSelected(position)
-                            }
-                        },
-                        { position -> onItemDelete(position) },
-                        { position -> onVerReporteCompactacion(position,listaObrasmutableListOf) },
-                        swVerTodosReportesCompactaciones.isChecked
-
-                    )
-                    ObraAdapter = rvObrasCompactacion.adapter as ObraAdapter
-
-
-                }
-                return false
-            }
-
-        })
-
-
-
-        swVerTodosReportesCompactaciones.setOnCheckedChangeListener { buttonView, isChecked ->
-            ObraAdapter.setMostrarBoton(swVerTodosReportesCompactaciones.isChecked)
-
-            if (isChecked) {
-                svBuscarReportesCompactacion.visibility= View.VISIBLE// El switch está activado
-
-            } else {
-                svBuscarReportesCompactacion.setQuery("", false)
-                svBuscarReportesCompactacion.visibility= View.GONE
-
-                // El switch está desactivado
-            }
-            Toast.makeText(this, swVerTodosReportesCompactaciones.isChecked.toString(), Toast.LENGTH_SHORT).show()
-        }
-
     }
 
     private fun onItemDelete(position: Int) {
@@ -379,370 +404,373 @@ class ReportesCompactaciones : AppCompatActivity() {
         }
     }
 
-    private fun onVerReporteCompactacion(position: Int,listaReportes:MutableList<ClaseObra>) = try {
+    private fun onVerReporteCompactacion(position: Int, listaReportes: MutableList<ClaseObra>) =
+        try {
 
-        reporteSelecionado = listaReportes[position]
-
-
-        // Datos de varios registros (solo como ejemplo)
-        val registros = listOf(
-            arrayOf("Cliente:", reporteSelecionado.Cliente),
-            arrayOf("Obra:", reporteSelecionado.Obra),
-            arrayOf("Loc.:", reporteSelecionado.localizacion)
-        )
+            reporteSelecionado = listaReportes[position]
 
 
-        // Directorio para guardar el archivo PDF en el almacenamiento externo
-        val directorio = this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-        val archivoPDF = File(directorio, "registro_compactacion.pdf")
-        val alturaTexto = 8f
+            // Datos de varios registros (solo como ejemplo)
+            val registros = listOf(
+                arrayOf("Cliente:", reporteSelecionado.Cliente),
+                arrayOf("Obra:", reporteSelecionado.Obra),
+                arrayOf("Loc.:", reporteSelecionado.localizacion)
+            )
+
+
+            // Directorio para guardar el archivo PDF en el almacenamiento externo
+            val directorio = this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            val archivoPDF = File(directorio, "registro_compactacion.pdf")
+            val alturaTexto = 8f
 
 
 //            Toast.makeText(this, directorio.toString(), Toast.LENGTH_SHORT).show()
-        try {
+            try {
 
-            val outputStream = FileOutputStream(archivoPDF)
-            val writer = PdfWriter(outputStream)
-            val pdf = PdfDocument(writer)
-            pdf.defaultPageSize = PageSize.LETTER
-            val document = Document(pdf, PageSize.LETTER, true)
-
-
-            //calcular el ancho disponible para la tabla
-            val anchoDocumento = PageSize.LETTER.width - 72f * 2
-            val numeroColumnas = 1
-            val anchoColiumna = anchoDocumento / numeroColumnas
+                val outputStream = FileOutputStream(archivoPDF)
+                val writer = PdfWriter(outputStream)
+                val pdf = PdfDocument(writer)
+                pdf.defaultPageSize = PageSize.LETTER
+                val document = Document(pdf, PageSize.LETTER, true)
 
 
-            val tableTituloDatosDeControl1 = Table(floatArrayOf(anchoDocumento + 72f))
-
-            // Cargar la imagen desde el directorio drawable
-            val drawableId = R.drawable.logoroca // Reemplaza 'logoroca' con el nombre de tu imagen
-            val bitmap = BitmapFactory.decodeResource(this.resources, drawableId)
-
-            // Convertir el bitmap en un objeto Image de iText
-            val outputStream1 = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream1)
-            val imageData = ImageDataFactory.create(outputStream1.toByteArray())
-            val image = Image(imageData)
-            image.scale(.05f, .05f)
-
-            // Agregar celda con imagen
-            val cellImage = Cell(4, 1)
-            cellImage.add(image.setHorizontalAlignment(HorizontalAlignment.CENTER))
+                //calcular el ancho disponible para la tabla
+                val anchoDocumento = PageSize.LETTER.width - 72f * 2
+                val numeroColumnas = 1
+                val anchoColiumna = anchoDocumento / numeroColumnas
 
 
-            // Crear una tabla
-            val table = Table(floatArrayOf(60f, anchoColiumna, 150f, 110f))
+                val tableTituloDatosDeControl1 = Table(floatArrayOf(anchoDocumento + 72f))
 
-            table.addCell(cellImage)
+                // Cargar la imagen desde el directorio drawable
+                val drawableId =
+                    R.drawable.logoroca // Reemplaza 'logoroca' con el nombre de tu imagen
+                val bitmap = BitmapFactory.decodeResource(this.resources, drawableId)
+
+                // Convertir el bitmap en un objeto Image de iText
+                val outputStream1 = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream1)
+                val imageData = ImageDataFactory.create(outputStream1.toByteArray())
+                val image = Image(imageData)
+                image.scale(.05f, .05f)
+
+                // Agregar celda con imagen
+                val cellImage = Cell(4, 1)
+                cellImage.add(image.setHorizontalAlignment(HorizontalAlignment.CENTER))
+
+
+                // Crear una tabla
+                val table = Table(floatArrayOf(60f, anchoColiumna, 150f, 110f))
+
+                table.addCell(cellImage)
 
 //            val tableTituloDatosdeObraDeControl = Table(floatArrayOf(anchoDocumento+72f))
-            // Crear tabla para titulo de datos de obra
-            val tableTituloDatosdeObraDeControl = Cell(1, 3).add(Paragraph("Datos de control"))
+                // Crear tabla para titulo de datos de obra
+                val tableTituloDatosdeObraDeControl = Cell(1, 3).add(Paragraph("Datos de control"))
 
-            tableTituloDatosdeObraDeControl.setTextAlignment(TextAlignment.CENTER)
-            tableTituloDatosdeObraDeControl.setBackgroundColor(DeviceRgb(192, 192, 192))
-
-
-            table.addCell(tableTituloDatosdeObraDeControl)
+                tableTituloDatosdeObraDeControl.setTextAlignment(TextAlignment.CENTER)
+                tableTituloDatosdeObraDeControl.setBackgroundColor(DeviceRgb(192, 192, 192))
 
 
-            val textoNombreRegistro = Cell(2, 1)
-            val paragraph = Paragraph()
+                table.addCell(tableTituloDatosdeObraDeControl)
+
+
+                val textoNombreRegistro = Cell(2, 1)
+                val paragraph = Paragraph()
 
 
 // Agrega la primera parte del texto con color negro
-            val parte1 =
-                Text("Reporte de campo de compactación de terracería. ").setFontColor(DeviceRgb.BLACK)
-            paragraph.add(parte1)
+                val parte1 =
+                    Text("Reporte de campo de compactación de terracería. ").setFontColor(DeviceRgb.BLACK)
+                paragraph.add(parte1)
 
 // Agrega la segunda parte del texto con color rojo
-            val parte2 = Text("PRELIMINAR.").setFontColor(DeviceRgb.RED)
-            paragraph.add(parte2)
+                val parte2 = Text("PRELIMINAR.").setFontColor(DeviceRgb.RED)
+                paragraph.add(parte2)
 
-            textoNombreRegistro.add(paragraph)
-            textoNombreRegistro.setTextAlignment(TextAlignment.CENTER)
-            textoNombreRegistro.setKeepTogether(true)
-            table.addCell(textoNombreRegistro)
-
-
-            var textoFechaRegistro = Cell(1, 1)
-            textoFechaRegistro.add(Paragraph("Fecha:"))
-            textoFechaRegistro.setTextAlignment(TextAlignment.CENTER)
-            textoFechaRegistro.setFontSize(alturaTexto)
-            table.addCell(textoFechaRegistro)
-
-            textoFechaRegistro = Cell(1, 1)
-            textoFechaRegistro.add(Paragraph(reporteSelecionado.fecha))
-            textoFechaRegistro.setTextAlignment(TextAlignment.CENTER)
-            textoFechaRegistro.setFontSize(alturaTexto)
-            table.addCell(textoFechaRegistro)
-
-            var textoNumEnsayeRegistro = Cell(1, 1)
-            textoNumEnsayeRegistro.add(Paragraph("Núm. de Ensaye:"))
-            textoNumEnsayeRegistro.setTextAlignment(TextAlignment.CENTER)
-            textoNumEnsayeRegistro.setFontSize(alturaTexto)
-            table.addCell(textoNumEnsayeRegistro)
-
-            textoNumEnsayeRegistro = Cell(1, 1)
-            textoNumEnsayeRegistro.add(Paragraph(""))
-            textoNumEnsayeRegistro.setTextAlignment(TextAlignment.CENTER)
-            textoNumEnsayeRegistro.setFontSize(alturaTexto)
-            table.addCell(textoNumEnsayeRegistro)
-
-            var textoCodigoRegistro = Cell(1, 1)
-            textoCodigoRegistro.add(Paragraph("Código: FO-L-02"))
-            textoCodigoRegistro.setTextAlignment(TextAlignment.CENTER)
-            textoCodigoRegistro.setFontSize(alturaTexto)
-            table.addCell(textoCodigoRegistro)
+                textoNombreRegistro.add(paragraph)
+                textoNombreRegistro.setTextAlignment(TextAlignment.CENTER)
+                textoNombreRegistro.setKeepTogether(true)
+                table.addCell(textoNombreRegistro)
 
 
-            var textoNumReporteRegistro = Cell(1, 1)
-            textoNumReporteRegistro.add(Paragraph("Núm. de Reporte:"))
-            textoNumReporteRegistro.setTextAlignment(TextAlignment.CENTER)
-            textoNumReporteRegistro.setFontSize(alturaTexto)
-            table.addCell(textoNumReporteRegistro)
+                var textoFechaRegistro = Cell(1, 1)
+                textoFechaRegistro.add(Paragraph("Fecha:"))
+                textoFechaRegistro.setTextAlignment(TextAlignment.CENTER)
+                textoFechaRegistro.setFontSize(alturaTexto)
+                table.addCell(textoFechaRegistro)
 
-            textoNumReporteRegistro = Cell(1, 1)
-            textoNumReporteRegistro.add(Paragraph(""))
-            textoNumReporteRegistro.setTextAlignment(TextAlignment.CENTER)
-            textoNumReporteRegistro.setFontSize(alturaTexto)
-            table.addCell(textoNumReporteRegistro)
+                textoFechaRegistro = Cell(1, 1)
+                textoFechaRegistro.add(Paragraph(reporteSelecionado.fecha))
+                textoFechaRegistro.setTextAlignment(TextAlignment.CENTER)
+                textoFechaRegistro.setFontSize(alturaTexto)
+                table.addCell(textoFechaRegistro)
 
-            document.add(table)
+                var textoNumEnsayeRegistro = Cell(1, 1)
+                textoNumEnsayeRegistro.add(Paragraph("Núm. de Ensaye:"))
+                textoNumEnsayeRegistro.setTextAlignment(TextAlignment.CENTER)
+                textoNumEnsayeRegistro.setFontSize(alturaTexto)
+                table.addCell(textoNumEnsayeRegistro)
 
+                textoNumEnsayeRegistro = Cell(1, 1)
+                textoNumEnsayeRegistro.add(Paragraph(""))
+                textoNumEnsayeRegistro.setTextAlignment(TextAlignment.CENTER)
+                textoNumEnsayeRegistro.setFontSize(alturaTexto)
+                table.addCell(textoNumEnsayeRegistro)
 
-            val tablaDatosDeObra = Table(floatArrayOf(72f, anchoColiumna, 100f, 100f))
-
-
-            val tableTituloDatosdeObra = Cell(1, 4).add(Paragraph("Datos de obra"))
-            tableTituloDatosdeObra.setTextAlignment(TextAlignment.CENTER)
-            tableTituloDatosdeObra.setBackgroundColor(DeviceRgb(192, 192, 192))
-            tablaDatosDeObra.addCell(tableTituloDatosdeObra)
-
-            var tableCliente = Cell(1, 1)
-            tableCliente.add(Paragraph("Cliente:"))
-            tableCliente.setFontSize(alturaTexto)
-            tablaDatosDeObra.addCell(tableCliente)
-
-            tableCliente = Cell(1, 3)
-            tableCliente.setFontSize(alturaTexto)
-            tableCliente.add(Paragraph(reporteSelecionado.Cliente))
-            tablaDatosDeObra.addCell(tableCliente)
-
-            var tablaObra = Cell(1, 1)
-            tablaObra.add(Paragraph("Obra:"))
-            tablaObra.setFontSize(alturaTexto)
-            tablaDatosDeObra.addCell(tablaObra)
-
-            tablaObra = Cell(1, 3)
-            tablaObra.setFontSize(alturaTexto)
-            tablaObra.add(Paragraph(reporteSelecionado.Obra))
-            tablaDatosDeObra.addCell(tablaObra)
-
-            var tablaLocalizacion = Cell(1, 1)
-            tablaLocalizacion.add(Paragraph("Loc.:"))
-            tablaLocalizacion.setFontSize(alturaTexto)
-            tablaDatosDeObra.addCell(tablaLocalizacion)
-
-            tablaLocalizacion = Cell(1, 3)
-            tablaLocalizacion.setFontSize(alturaTexto)
-            tablaLocalizacion.add(Paragraph(reporteSelecionado.localizacion))
-            tablaDatosDeObra.addCell(tablaLocalizacion)
-
-            var tablaAtencion = Cell(1, 1)
-            tablaAtencion.add(Paragraph("At'n:"))
-            tablaAtencion.setFontSize(alturaTexto)
-            tablaDatosDeObra.addCell(tablaAtencion)
-
-            tablaAtencion = Cell(1, 1)
-            tablaAtencion.setFontSize(alturaTexto)
-            tablaAtencion.add(Paragraph(reporteSelecionado.atencion))
-            tablaDatosDeObra.addCell(tablaAtencion)
-
-            var tablaExpediente = Cell(1, 1)
-            tablaExpediente.add(Paragraph("Expediente:"))
-            tablaExpediente.setFontSize(alturaTexto)
-            tablaDatosDeObra.addCell(tablaExpediente)
-
-            tablaExpediente = Cell(1, 1)
-            tablaExpediente.setFontSize(alturaTexto)
-            tablaExpediente.add(Paragraph(""))
-            tablaDatosDeObra.addCell(tablaExpediente)
+                var textoCodigoRegistro = Cell(1, 1)
+                textoCodigoRegistro.add(Paragraph("Código: FO-L-02"))
+                textoCodigoRegistro.setTextAlignment(TextAlignment.CENTER)
+                textoCodigoRegistro.setFontSize(alturaTexto)
+                table.addCell(textoCodigoRegistro)
 
 
-            document.add(tablaDatosDeObra)
+                var textoNumReporteRegistro = Cell(1, 1)
+                textoNumReporteRegistro.add(Paragraph("Núm. de Reporte:"))
+                textoNumReporteRegistro.setTextAlignment(TextAlignment.CENTER)
+                textoNumReporteRegistro.setFontSize(alturaTexto)
+                table.addCell(textoNumReporteRegistro)
+
+                textoNumReporteRegistro = Cell(1, 1)
+                textoNumReporteRegistro.add(Paragraph(""))
+                textoNumReporteRegistro.setTextAlignment(TextAlignment.CENTER)
+                textoNumReporteRegistro.setFontSize(alturaTexto)
+                table.addCell(textoNumReporteRegistro)
+
+                document.add(table)
 
 
-            val tableTituloDatosdePrueba = Table(floatArrayOf(72f, anchoColiumna, 160f, 60f))
+                val tablaDatosDeObra = Table(floatArrayOf(72f, anchoColiumna, 100f, 100f))
 
 
-            val TituloDatosdePrueba = Cell(1, 4).add(Paragraph("Datos de prueba"))
-            TituloDatosdePrueba.setTextAlignment(TextAlignment.CENTER)
-            TituloDatosdePrueba.setBackgroundColor(DeviceRgb(192, 192, 192))
-            tableTituloDatosdePrueba.addCell(TituloDatosdePrueba)
+                val tableTituloDatosdeObra = Cell(1, 4).add(Paragraph("Datos de obra"))
+                tableTituloDatosdeObra.setTextAlignment(TextAlignment.CENTER)
+                tableTituloDatosdeObra.setBackgroundColor(DeviceRgb(192, 192, 192))
+                tablaDatosDeObra.addCell(tableTituloDatosdeObra)
 
-            var tableCapa = Cell(1, 1)
-            tableCapa.add(Paragraph("Capa:"))
-            tableCapa.setFontSize(alturaTexto)
-            tableTituloDatosdePrueba.addCell(tableCapa)
+                var tableCliente = Cell(1, 1)
+                tableCliente.add(Paragraph("Cliente:"))
+                tableCliente.setFontSize(alturaTexto)
+                tablaDatosDeObra.addCell(tableCliente)
 
-            tableCapa = Cell(1, 1)
-            tableCapa.setFontSize(alturaTexto)
-            tableCapa.add(Paragraph(reporteSelecionado.capa))
-            tableTituloDatosdePrueba.addCell(tableCapa)
+                tableCliente = Cell(1, 3)
+                tableCliente.setFontSize(alturaTexto)
+                tableCliente.add(Paragraph(reporteSelecionado.Cliente))
+                tablaDatosDeObra.addCell(tableCliente)
 
-            var tablaCompactacion = Cell(1, 1)
-            tablaCompactacion.add(Paragraph("% De Compactación de Proy.:"))
-            tablaCompactacion.setFontSize(alturaTexto)
-            tableTituloDatosdePrueba.addCell(tablaCompactacion)
+                var tablaObra = Cell(1, 1)
+                tablaObra.add(Paragraph("Obra:"))
+                tablaObra.setFontSize(alturaTexto)
+                tablaDatosDeObra.addCell(tablaObra)
 
-            tablaCompactacion = Cell(1, 1)
-            tablaCompactacion.setFontSize(alturaTexto)
-            tablaCompactacion.add(Paragraph(reporteSelecionado.compactacion))
-            tableTituloDatosdePrueba.addCell(tablaCompactacion)
+                tablaObra = Cell(1, 3)
+                tablaObra.setFontSize(alturaTexto)
+                tablaObra.add(Paragraph(reporteSelecionado.Obra))
+                tablaDatosDeObra.addCell(tablaObra)
 
-            var tablaTramo = Cell(1, 1)
-            tablaTramo.add(Paragraph("Tramo:"))
-            tablaTramo.setFontSize(alturaTexto)
-            tableTituloDatosdePrueba.addCell(tablaTramo)
+                var tablaLocalizacion = Cell(1, 1)
+                tablaLocalizacion.add(Paragraph("Loc.:"))
+                tablaLocalizacion.setFontSize(alturaTexto)
+                tablaDatosDeObra.addCell(tablaLocalizacion)
 
-            tablaTramo = Cell(1, 1)
-            tablaTramo.setFontSize(alturaTexto)
-            tablaTramo.add(Paragraph(reporteSelecionado.tramo))
-            tableTituloDatosdePrueba.addCell(tablaTramo)
+                tablaLocalizacion = Cell(1, 3)
+                tablaLocalizacion.setFontSize(alturaTexto)
+                tablaLocalizacion.add(Paragraph(reporteSelecionado.localizacion))
+                tablaDatosDeObra.addCell(tablaLocalizacion)
 
-            var tablaMVSM = Cell(1, 1)
-            tablaMVSM.add(Paragraph("M.V.S.M (kgf/m³):"))
-            tablaMVSM.setFontSize(alturaTexto)
-            tableTituloDatosdePrueba.addCell(tablaMVSM)
+                var tablaAtencion = Cell(1, 1)
+                tablaAtencion.add(Paragraph("At'n:"))
+                tablaAtencion.setFontSize(alturaTexto)
+                tablaDatosDeObra.addCell(tablaAtencion)
 
-            tablaMVSM = Cell(1, 1)
-            tablaMVSM.setFontSize(alturaTexto)
-            tablaMVSM.add(Paragraph(reporteSelecionado.mvsm))
-            tableTituloDatosdePrueba.addCell(tablaMVSM)
+                tablaAtencion = Cell(1, 1)
+                tablaAtencion.setFontSize(alturaTexto)
+                tablaAtencion.add(Paragraph(reporteSelecionado.atencion))
+                tablaDatosDeObra.addCell(tablaAtencion)
 
-            var tablaSubtramo = Cell(1, 1)
-            tablaSubtramo.add(Paragraph("Subtramo:"))
-            tablaSubtramo.setFontSize(alturaTexto)
-            tableTituloDatosdePrueba.addCell(tablaSubtramo)
+                var tablaExpediente = Cell(1, 1)
+                tablaExpediente.add(Paragraph("Expediente:"))
+                tablaExpediente.setFontSize(alturaTexto)
+                tablaDatosDeObra.addCell(tablaExpediente)
 
-            tablaSubtramo = Cell(1, 1)
-            tablaSubtramo.setFontSize(alturaTexto)
-            tablaSubtramo.add(Paragraph(reporteSelecionado.subtramo))
-            tableTituloDatosdePrueba.addCell(tablaSubtramo)
-
-            var tablaHumedadOptima = Cell(1, 1)
-            tablaHumedadOptima.add(Paragraph("Humedad Óptima (%):"))
-            tablaHumedadOptima.setFontSize(alturaTexto)
-            tableTituloDatosdePrueba.addCell(tablaHumedadOptima)
-
-            tablaHumedadOptima = Cell(1, 1)
-            tablaHumedadOptima.setFontSize(alturaTexto)
-            tablaHumedadOptima.add(Paragraph(reporteSelecionado.humedad))
-            tableTituloDatosdePrueba.addCell(tablaHumedadOptima)
+                tablaExpediente = Cell(1, 1)
+                tablaExpediente.setFontSize(alturaTexto)
+                tablaExpediente.add(Paragraph(""))
+                tablaDatosDeObra.addCell(tablaExpediente)
 
 
-            document.add(tableTituloDatosdePrueba)
+                document.add(tablaDatosDeObra)
 
 
-            val tableResultados = Table(floatArrayOf(90f, 130f, 130f, 130f, 130f, 130f, 130f, 130f))
-
-            val TituloResultados = Cell(1, 8).add(Paragraph("Resultados obtenidos"))
-            TituloResultados.setTextAlignment(TextAlignment.CENTER)
-            TituloResultados.setBackgroundColor(DeviceRgb(192, 192, 192))
-            tableResultados.addCell(TituloResultados)
-
-            var columnaCala = Cell(2, 1)
-            columnaCala.add(Paragraph("Núm de Cala"))
-            columnaCala.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaCala)
-
-            var columnaUbicacion = Cell(1, 2)
-            columnaUbicacion.add(Paragraph("Ubicación"))
-            columnaUbicacion.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaUbicacion)
-
-            var columnaProfundidad = Cell(2, 1)
-            columnaProfundidad.add(Paragraph("Prof. de sondeo (cm)"))
-            columnaProfundidad.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaProfundidad)
-
-            var columnaHumedad = Cell(2, 1)
-            columnaHumedad.add(Paragraph("% de Humedad de Lugar"))
-            columnaHumedad.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaHumedad)
-
-            var columnaMVSM = Cell(2, 1)
-            columnaMVSM.add(Paragraph("M.V.S. de lugar (kgf/m³)"))
-            columnaMVSM.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaMVSM)
-
-            var columnaCompactacion = Cell(2, 1)
-            columnaCompactacion.add(Paragraph("% de Compactación"))
-            columnaCompactacion.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaCompactacion)
-
-            var columnaResultado = Cell(2, 1)
-            columnaResultado.add(Paragraph("Resultado"))
-            columnaResultado.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaResultado)
+                val tableTituloDatosdePrueba = Table(floatArrayOf(72f, anchoColiumna, 160f, 60f))
 
 
-            var columnaEstacion = Cell(1, 1)
-            columnaEstacion.add(Paragraph("Estación"))
-            columnaEstacion.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaEstacion)
+                val TituloDatosdePrueba = Cell(1, 4).add(Paragraph("Datos de prueba"))
+                TituloDatosdePrueba.setTextAlignment(TextAlignment.CENTER)
+                TituloDatosdePrueba.setBackgroundColor(DeviceRgb(192, 192, 192))
+                tableTituloDatosdePrueba.addCell(TituloDatosdePrueba)
 
-            var columnaLado = Cell(1, 1)
-            columnaLado.add(Paragraph("Lado"))
-            columnaLado.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaLado)
+                var tableCapa = Cell(1, 1)
+                tableCapa.add(Paragraph("Capa:"))
+                tableCapa.setFontSize(alturaTexto)
+                tableTituloDatosdePrueba.addCell(tableCapa)
+
+                tableCapa = Cell(1, 1)
+                tableCapa.setFontSize(alturaTexto)
+                tableCapa.add(Paragraph(reporteSelecionado.capa))
+                tableTituloDatosdePrueba.addCell(tableCapa)
+
+                var tablaCompactacion = Cell(1, 1)
+                tablaCompactacion.add(Paragraph("% De Compactación de Proy.:"))
+                tablaCompactacion.setFontSize(alturaTexto)
+                tableTituloDatosdePrueba.addCell(tablaCompactacion)
+
+                tablaCompactacion = Cell(1, 1)
+                tablaCompactacion.setFontSize(alturaTexto)
+                tablaCompactacion.add(Paragraph(reporteSelecionado.compactacion))
+                tableTituloDatosdePrueba.addCell(tablaCompactacion)
+
+                var tablaTramo = Cell(1, 1)
+                tablaTramo.add(Paragraph("Tramo:"))
+                tablaTramo.setFontSize(alturaTexto)
+                tableTituloDatosdePrueba.addCell(tablaTramo)
+
+                tablaTramo = Cell(1, 1)
+                tablaTramo.setFontSize(alturaTexto)
+                tablaTramo.add(Paragraph(reporteSelecionado.tramo))
+                tableTituloDatosdePrueba.addCell(tablaTramo)
+
+                var tablaMVSM = Cell(1, 1)
+                tablaMVSM.add(Paragraph("M.V.S.M (kgf/m³):"))
+                tablaMVSM.setFontSize(alturaTexto)
+                tableTituloDatosdePrueba.addCell(tablaMVSM)
+
+                tablaMVSM = Cell(1, 1)
+                tablaMVSM.setFontSize(alturaTexto)
+                tablaMVSM.add(Paragraph(reporteSelecionado.mvsm))
+                tableTituloDatosdePrueba.addCell(tablaMVSM)
+
+                var tablaSubtramo = Cell(1, 1)
+                tablaSubtramo.add(Paragraph("Subtramo:"))
+                tablaSubtramo.setFontSize(alturaTexto)
+                tableTituloDatosdePrueba.addCell(tablaSubtramo)
+
+                tablaSubtramo = Cell(1, 1)
+                tablaSubtramo.setFontSize(alturaTexto)
+                tablaSubtramo.add(Paragraph(reporteSelecionado.subtramo))
+                tableTituloDatosdePrueba.addCell(tablaSubtramo)
+
+                var tablaHumedadOptima = Cell(1, 1)
+                tablaHumedadOptima.add(Paragraph("Humedad Óptima (%):"))
+                tablaHumedadOptima.setFontSize(alturaTexto)
+                tableTituloDatosdePrueba.addCell(tablaHumedadOptima)
+
+                tablaHumedadOptima = Cell(1, 1)
+                tablaHumedadOptima.setFontSize(alturaTexto)
+                tablaHumedadOptima.add(Paragraph(reporteSelecionado.humedad))
+                tableTituloDatosdePrueba.addCell(tablaHumedadOptima)
 
 
-            tableResultados.setTextAlignment(TextAlignment.CENTER)
+                document.add(tableTituloDatosdePrueba)
+
+
+                val tableResultados =
+                    Table(floatArrayOf(90f, 130f, 130f, 130f, 130f, 130f, 130f, 130f))
+
+                val TituloResultados = Cell(1, 8).add(Paragraph("Resultados obtenidos"))
+                TituloResultados.setTextAlignment(TextAlignment.CENTER)
+                TituloResultados.setBackgroundColor(DeviceRgb(192, 192, 192))
+                tableResultados.addCell(TituloResultados)
+
+                var columnaCala = Cell(2, 1)
+                columnaCala.add(Paragraph("Núm de Cala"))
+                columnaCala.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaCala)
+
+                var columnaUbicacion = Cell(1, 2)
+                columnaUbicacion.add(Paragraph("Ubicación"))
+                columnaUbicacion.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaUbicacion)
+
+                var columnaProfundidad = Cell(2, 1)
+                columnaProfundidad.add(Paragraph("Prof. de sondeo (cm)"))
+                columnaProfundidad.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaProfundidad)
+
+                var columnaHumedad = Cell(2, 1)
+                columnaHumedad.add(Paragraph("% de Humedad de Lugar"))
+                columnaHumedad.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaHumedad)
+
+                var columnaMVSM = Cell(2, 1)
+                columnaMVSM.add(Paragraph("M.V.S. de lugar (kgf/m³)"))
+                columnaMVSM.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaMVSM)
+
+                var columnaCompactacion = Cell(2, 1)
+                columnaCompactacion.add(Paragraph("% de Compactación"))
+                columnaCompactacion.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaCompactacion)
+
+                var columnaResultado = Cell(2, 1)
+                columnaResultado.add(Paragraph("Resultado"))
+                columnaResultado.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaResultado)
+
+
+                var columnaEstacion = Cell(1, 1)
+                columnaEstacion.add(Paragraph("Estación"))
+                columnaEstacion.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaEstacion)
+
+                var columnaLado = Cell(1, 1)
+                columnaLado.add(Paragraph("Lado"))
+                columnaLado.setFontSize(alturaTexto)
+                tableResultados.addCell(columnaLado)
+
+
+                tableResultados.setTextAlignment(TextAlignment.CENTER)
 
 //            document.add(tableResultados)
 
 
 //            val tablaCalas = Table(8)
 
-            // Agregar los registros a la tabla
-            reporteSelecionado.listaCalas.forEach { cala ->
-                tableResultados.addCell(Cell().add(Paragraph("${cala.cala + 1}")))
-                    .setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Paragraph("${cala.Estacion}")))
-                    .setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Cell())).setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Paragraph("${cala.prof}")))
-                    .setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Paragraph("${cala.Humedad}")))
-                    .setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Paragraph("${cala.MVSL}")))
-                    .setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Paragraph("${cala.Porcentaje}")))
-                    .setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Cell())).setFontSize(alturaTexto)
-            }
+                // Agregar los registros a la tabla
+                reporteSelecionado.listaCalas.forEach { cala ->
+                    tableResultados.addCell(Cell().add(Paragraph("${cala.cala + 1}")))
+                        .setFontSize(alturaTexto)
+                    tableResultados.addCell(Cell().add(Paragraph("${cala.Estacion}")))
+                        .setFontSize(alturaTexto)
+                    tableResultados.addCell(Cell().add(Cell())).setFontSize(alturaTexto)
+                    tableResultados.addCell(Cell().add(Paragraph("${cala.prof}")))
+                        .setFontSize(alturaTexto)
+                    tableResultados.addCell(Cell().add(Paragraph("${cala.Humedad}")))
+                        .setFontSize(alturaTexto)
+                    tableResultados.addCell(Cell().add(Paragraph("${cala.MVSL}")))
+                        .setFontSize(alturaTexto)
+                    tableResultados.addCell(Cell().add(Paragraph("${cala.Porcentaje}")))
+                        .setFontSize(alturaTexto)
+                    tableResultados.addCell(Cell().add(Cell())).setFontSize(alturaTexto)
+                }
 
-            document.add(tableResultados)
+                document.add(tableResultados)
 
-            val tableCroquis = Table(floatArrayOf(anchoColiumna, anchoColiumna))
+                val tableCroquis = Table(floatArrayOf(anchoColiumna, anchoColiumna))
 
-            val Croquis = Cell(1, 2).add(Paragraph("Croquis:"))
-            Croquis.setHeight(100f)
-            tableCroquis.addCell(Croquis)
+                val Croquis = Cell(1, 2).add(Paragraph("Croquis:"))
+                Croquis.setHeight(100f)
+                tableCroquis.addCell(Croquis)
 
-            document.add(tableCroquis)
+                document.add(tableCroquis)
 
-            val tableObservaciones = Table(floatArrayOf(60f, anchoColiumna))
+                val tableObservaciones = Table(floatArrayOf(60f, anchoColiumna))
 
-            val observaciones = Cell(1, 1).add(Paragraph("Observaciones:"))
-            tableObservaciones.addCell(observaciones)
-            tableObservaciones.addCell(Cell())
+                val observaciones = Cell(1, 1).add(Paragraph("Observaciones:"))
+                tableObservaciones.addCell(observaciones)
+                tableObservaciones.addCell(Cell())
 //
-            document.add(tableObservaciones)
+                document.add(tableObservaciones)
 
 //            // Agregar marca de agua en cada página
 //            val pageSize = PageSize.A4
@@ -789,23 +817,24 @@ class ReportesCompactaciones : AppCompatActivity() {
 //                canvas.restoreState()
 //            }
 
-            document.close()
+                document.close()
 
-            println("Documento PDF creado correctamente.")
+                println("Documento PDF creado correctamente.")
+
+                // Abrir el documento PDF
+//            abrirPDF(context, archivoPDF)
+                updateTask()
+            } catch (ex: Exception) {
+                Toast.makeText(this, "Error al generar el PDF: ${ex.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
 
             // Abrir el documento PDF
-//            abrirPDF(context, archivoPDF)
-            updateTask()
+            abrirPDF(archivoPDF)
         } catch (ex: Exception) {
             Toast.makeText(this, "Error al generar el PDF: ${ex.message}", Toast.LENGTH_SHORT)
                 .show()
         }
-
-        // Abrir el documento PDF
-        abrirPDF(archivoPDF)
-    } catch (ex: Exception) {
-        Toast.makeText(this, "Error al generar el PDF: ${ex.message}", Toast.LENGTH_SHORT).show()
-    }
 
     private fun abrirPDF(archivoPDF: File) {
         try {
@@ -826,9 +855,16 @@ class ReportesCompactaciones : AppCompatActivity() {
     }
 
     private fun deleteReport(reportKey: String) {
-        val reportReference = dataReference.child(reportKey)
+        dataReference =
+            FirebaseDatabase.getInstance().reference.child("Compactaciones").child("Reportes")
+                .child(personal)
+        cargarObras(dataReference)
+
+        var reportReference = dataReference.child(reportKey)
+
 
         reportReference.removeValue()
+
             .addOnSuccessListener {
                 Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
             }
@@ -839,6 +875,27 @@ class ReportesCompactaciones : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        dataReference =
+            FirebaseDatabase.getInstance().reference.child("Compactaciones").child("Respaldo")
+                .child(personal)
+        cargarObras(dataReference)
+
+        reportReference = dataReference.child(reportKey)
+
+
+        reportReference.removeValue()
+
+            .addOnSuccessListener {
+                Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this,
+                    "Error al eliminar el informe: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
     }
 
     private fun isNetworkAvailable(): Boolean {
