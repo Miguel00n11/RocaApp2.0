@@ -8,23 +8,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.miguelrodriguez.rocaapp20.R
 
-class ObraCilindrosViewHolder(view: View): RecyclerView.ViewHolder(view) {
+class ObraCilindrosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    private val tvItemObrasCompactacion: TextView =view.findViewById(R.id.tvItemObrasCompactacion)
-    private val tvReporteCompactacion: TextView =view.findViewById(R.id.tvReporteCompactacion)
-    private val tvCapaCompactacion: TextView =view.findViewById(R.id.tvCapaCompactacion)
-    private val tvFechaCompactacion: TextView =view.findViewById(R.id.tvFechaCompactacion)
+    private val tvItemObrasCompactacion: TextView = view.findViewById(R.id.tvItemObrasCompactacion)
+    private val tvReporteCompactacion: TextView = view.findViewById(R.id.tvReporteCompactacion)
+    private val tvCapaCompactacion: TextView = view.findViewById(R.id.tvCapaCompactacion)
+    private val tvFechaCompactacion: TextView = view.findViewById(R.id.tvFechaCompactacion)
     private val btnEliminar: FloatingActionButton =
         view.findViewById(R.id.btnEliminarReporteCompactacion)
+    private val btnVerReporteCilindros: FloatingActionButton =
+        view.findViewById(R.id.btnVerReporteCompactacion)
+
     fun render(listaObras: ClaseObraCilindros) {
 
-        tvItemObrasCompactacion.text=listaObras.Obra
-        tvReporteCompactacion.text=listaObras.muestra.toString()
-        tvCapaCompactacion.text=listaObras.elementoColado
-        tvFechaCompactacion.text=listaObras.fecha
+        tvItemObrasCompactacion.text = listaObras.Obra
+        tvReporteCompactacion.text = listaObras.muestra.toString()
+        tvCapaCompactacion.text = listaObras.elementoColado
+        tvFechaCompactacion.text = listaObras.fecha
 
     }
-    fun bind(obra: ClaseObraCilindros, onCilindroSelected: (Int) -> Unit, onItemDelete: (Int) -> Unit) {
+
+    fun bind(
+        obra: ClaseObraCilindros,
+        onCilindroSelected: (Int) -> Unit,
+        onItemDelete: (Int) -> Unit,
+        onIntemVerReporteCilindros: (Int) -> Unit,
+        mostrarBotones: Boolean
+    ) {
         // Configura los elementos visuales con la información de la ClaseCala
         // ...
 
@@ -34,6 +44,9 @@ class ObraCilindrosViewHolder(view: View): RecyclerView.ViewHolder(view) {
         }
         btnEliminar.setOnClickListener {
             onItemDelete(adapterPosition)
+        }
+        btnVerReporteCilindros.setOnClickListener {
+            onIntemVerReporteCilindros(adapterPosition)
         }
         itemView.findViewById<FloatingActionButton>(R.id.btnEliminarReporteCompactacion)
             .setOnClickListener {
@@ -45,7 +58,17 @@ class ObraCilindrosViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 }
 
             }
+        if (!mostrarBotones) {
+            btnEliminar.visibility = View.VISIBLE
+//            btnVerReporteCompactacion.visibility = View.VISIBLE
+        } else {
+            btnEliminar.visibility = View.GONE
+//            btnVerReporteCompactacion.visibility = View.GONE
+
+
+        }
     }
+
     private fun showDeleteConfirmationDialog(context: Context, onConfirmation: (Boolean) -> Unit) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Confirmar Eliminación")

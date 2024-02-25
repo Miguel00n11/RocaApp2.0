@@ -293,9 +293,9 @@ class ReportesCompactaciones : AppCompatActivity() {
                 for (snapshot in dataSnapshot.children) {
 
                     val validado = snapshot.child("validado").getValue(Boolean::class.java)
-                    if (validado == true) {
-                        continue
-                    }
+//                    if (validado == true) {
+//                        continue
+//                    }
 
                     val numeroReporteKey = snapshot.key // Obtiene el número de informe (1, 2, 3, 4)
 

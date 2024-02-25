@@ -27,6 +27,40 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:text="Lista de Reportes de Cilindros"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:gravity="right"
+            android:layout_height="wrap_content">
+
+
+            <SearchView
+                android:id="@+id/svBuscarReportesCilindros"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:background="#FFFFFF"
+                android:backgroundTint="#FFFFFF"
+                android:foregroundTint="#FFFFFF"
+
+                app:cardCornerRadius="18dp"
+                android:visibility="gone" />
+
+            <Switch
+                android:id="@+id/swVerTodosReportesCilindros"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:buttonTint="@color/background_Registro_Cala"
+                android:checked="false"
+                android:text="Ver todos"
+                android:layout_marginLeft="14dp"
+                android:textColor="@color/white"
+                android:textOff="Todos"
+                android:textOn="actuales"
+                android:trackTint="@color/grey" />
+        </LinearLayout>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

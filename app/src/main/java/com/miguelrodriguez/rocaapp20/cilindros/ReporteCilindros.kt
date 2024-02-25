@@ -7,7 +7,10 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.SearchView
+import android.widget.Switch
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +27,7 @@ import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
 import com.miguelrodriguez.rocaapp20.Recycler.ObraAdapter
 import com.miguelrodriguez.rocaapp20.RegistroCompactaciones
 import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
+import java.util.Locale
 
 
 class ReporteCilindros : AppCompatActivity() {
@@ -44,6 +48,12 @@ class ReporteCilindros : AppCompatActivity() {
     private lateinit var ObraAdapter: ObraAdapterCilindros
     private lateinit var claseObra: ClaseObra
     private lateinit var listaObrasmutableListOf: MutableList<ClaseObraCilindros>
+
+
+    private lateinit var swVerTodosReportesCilindros: Switch
+    private lateinit var listaFiltrada: MutableList<ClaseObraCilindros>
+    private lateinit var svBuscarReportesCilindros: SearchView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reporte_cilindros)
@@ -56,15 +66,14 @@ class ReporteCilindros : AppCompatActivity() {
         rvObrasCilindros = findViewById(R.id.rvObrasCilindros)
 
         reporteSelecionado = ClaseObraCilindros(
-            1, "estacion", "a","1","1", "1", 0,
-            "1", "1", "1", 1.1, 1.1,1.1,"hola",1,1.1,"a","1",
-            "1","1",1,
-            "a",1.1,1.1,1.1,1.1,1,1,1,1,"1","1",
-            "1","1","1:1","1:1","1:1","a",
-            "1","1","1","1","1","1","1","1","1"
-            ,false,""
+            1, "estacion", "a", "1", "1", "1", 0,
+            "1", "1", "1", 1.1, 1.1, 1.1, "hola", 1, 1.1, "a", "1",
+            "1", "1", 1,
+            "a", 1.1, 1.1, 1.1, 1.1, 1, 1, 1, 1, "1", "1",
+            "1", "1", "1:1", "1:1", "1:1", "a",
+            "1", "1", "1", "1", "1", "1", "1", "1", "1", false, ""
         )
-        btnRegistroCilindros=findViewById(R.id.btnRegistroCilindros)
+        btnRegistroCilindros = findViewById(R.id.btnRegistroCilindros)
 
 
         listaObrasmutableListOf = mutableListOf(
@@ -73,14 +82,20 @@ class ReporteCilindros : AppCompatActivity() {
         listaObrasmutableListOf.clear()
         personal = MainActivity.NombreUsuarioCompanion
 
+        svBuscarReportesCilindros = findViewById(R.id.svBuscarReportesCilindros)
+        swVerTodosReportesCilindros = findViewById(R.id.swVerTodosReportesCilindros)
 
 
     }
 
     private fun initUI() {
         // Referencia a la base de datos de Firebase
-        dataReference =FirebaseDatabase.getInstance().reference.child("Cilindros").child("Reportes").child(personal)
-        dataReferenceCampo =FirebaseDatabase.getInstance().reference.child("Cilindros").child("Respaldo").child(personal)
+        dataReference =
+            FirebaseDatabase.getInstance().reference.child("Cilindros").child("Reportes")
+                .child(personal)
+        dataReferenceCampo =
+            FirebaseDatabase.getInstance().reference.child("Cilindros").child("Respaldo")
+                .child(personal)
 
 
         btnRegistroCilindros.setOnClickListener {
@@ -88,13 +103,131 @@ class ReporteCilindros : AppCompatActivity() {
             startActivity(intent)
         }
 
-        ObraAdapter = ObraAdapterCilindros(listaObrasmutableListOf,
-            onObraSelected = { position -> onItemSelected(position) },
-            onItemDelete = { position -> onItemDelete(position) })
+
+        rvObrasCilindros.adapter = ObraAdapterCilindros(
+            listaObrasmutableListOf,
+            onObraSelected = { position ->
+                if (svBuscarReportesCilindros.visibility == View.GONE) {
+                    onItemSelected(position)
+                }
+            },
+            onItemDelete = { position -> onItemDelete(position) },
+            onVerReporteCilindros = { position ->
+                onVerReporteCilindros(
+                    position,
+                    listaObrasmutableListOf
+                )
+            },
+            swVerTodosReportesCilindros.isChecked
+        )
+
+//        rvObrasCilindros.adapter = ObraAdapter
+        ObraAdapter = rvObrasCilindros.adapter as ObraAdapterCilindros
+
+        listaFiltrada = listaObrasmutableListOf
 
         rvObrasCilindros.layoutManager = LinearLayoutManager(this)
-        rvObrasCilindros.adapter = ObraAdapter
 
+        cargarObras(dataReference)
+
+
+        svBuscarReportesCilindros.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(fecha: String?): Boolean {
+
+                val searchText = fecha!!.toLowerCase(Locale.getDefault())
+
+                if (searchText.isNotEmpty()) {
+
+
+                    listaFiltrada =
+                        listaObrasmutableListOf.filter { it.fecha?.contains(searchText) == true } as MutableList<ClaseObraCilindros>
+
+                    var filteredList = mutableListOf<ClaseObra>()
+
+                    // Filtra la lista de obras según el texto de búsqueda
+                    filteredList = listaObrasmutableListOf.filter {
+                        it.fecha?.contains(searchText) == true || it.Obra?.contains(searchText) == true
+                    } as MutableList<ClaseObra>
+
+//                    rvObrasCompactacion.adapter= ObraAdapter(listaFiltrada){}
+//                    rvObrasCompactacion.adapter = ObraAdapter(
+//                        listaFiltrada,
+//                        { position -> /* código para manejar la selección de obra en la posición 'position' */ },
+//                        { position -> /* código para manejar la eliminación de obra en la posición 'position' */ },
+//                        { position -> /* código para manejar la visualización de reporte de compactación en la posición 'position' */ }
+//                    )
+
+                    rvObrasCilindros.adapter = ObraAdapterCilindros(
+                        listaFiltrada,
+                        { position -> /* código para manejar la selección de obra en la posición 'position' */ },
+                        { position -> },
+                        { position -> onVerReporteCilindros(position, listaFiltrada) },
+                        swVerTodosReportesCilindros.isChecked
+
+                    )
+
+                } else {
+
+                    rvObrasCilindros.adapter = ObraAdapterCilindros(
+                        listaObrasmutableListOf,
+                        onObraSelected = { position ->
+                            if (svBuscarReportesCilindros.visibility == View.GONE) {
+                                onItemSelected(position)
+                            }
+                        },
+                        { position -> onItemDelete(position) },
+                        { position -> onVerReporteCilindros(position, listaObrasmutableListOf) },
+                        swVerTodosReportesCilindros.isChecked
+
+                    )
+                    ObraAdapter = rvObrasCilindros.adapter as ObraAdapterCilindros
+
+
+                }
+                return false
+            }
+
+        })
+
+
+
+
+
+        swVerTodosReportesCilindros.setOnCheckedChangeListener { buttonView, isChecked ->
+            ObraAdapter.setMostrarBoton(swVerTodosReportesCilindros.isChecked)
+
+            if (isChecked) {
+                svBuscarReportesCilindros.visibility = View.VISIBLE// El switch está activado
+                dataReference =
+                    FirebaseDatabase.getInstance().reference.child("Cilindros")
+                        .child("Respaldo")
+                        .child(personal)
+                cargarObras(dataReference)
+
+            } else {
+                svBuscarReportesCilindros.setQuery("", false)
+                svBuscarReportesCilindros.visibility = View.GONE
+                dataReference =
+                    FirebaseDatabase.getInstance().reference.child("Cilindros")
+                        .child("Reportes")
+                        .child(personal)
+                cargarObras(dataReference)
+
+                // El switch está desactivado
+            }
+            Toast.makeText(
+                this,
+                swVerTodosReportesCilindros.isChecked.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+    private fun cargarObras(dataReference: DatabaseReference){
         dataReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Limpia la lista actual
@@ -104,10 +237,10 @@ class ReporteCilindros : AppCompatActivity() {
                     "miguel" // Reemplaza con el nombre del personal que deseas filtrar
 
                 for (snapshot in dataSnapshot.children) {
-                    val validado=snapshot.child("validado").getValue(Boolean::class.java)
-                    if (validado==true){
-                        continue
-                    }
+                    val validado = snapshot.child("validado").getValue(Boolean::class.java)
+//                    if (validado == true) {
+//                        continue
+//                    }
 
 
                     val numeroReporteKey = snapshot.key // Obtiene el número de informe (1, 2, 3, 4)
@@ -121,12 +254,15 @@ class ReporteCilindros : AppCompatActivity() {
                     val numReporte = snapshot.child("numeroReporte").getValue(Int::class.java)
 
                     val tipoMuestreo = snapshot.child("tipoMuestreo").getValue(String::class.java)
-                    val elementoColado = snapshot.child("elementoColado").getValue(String::class.java)
+                    val elementoColado =
+                        snapshot.child("elementoColado").getValue(String::class.java)
                     val ubicacion = snapshot.child("ubicacion").getValue(String::class.java)
                     val fc = snapshot.child("fc").getValue(Double::class.java)
                     val volumenTotal = snapshot.child("volumenTotal").getValue(Double::class.java)
-                    val volumenMuestra = snapshot.child("volumenMuestra").getValue(Double::class.java)
-                    val tipoResistencia = snapshot.child("tipoResistencia").getValue(String::class.java)
+                    val volumenMuestra =
+                        snapshot.child("volumenMuestra").getValue(Double::class.java)
+                    val tipoResistencia =
+                        snapshot.child("tipoResistencia").getValue(String::class.java)
                     val edad = snapshot.child("edad").getValue(Int::class.java)
                     val tma = snapshot.child("tma").getValue(Double::class.java)
                     val concretera = snapshot.child("concretera").getValue(String::class.java)
@@ -136,9 +272,12 @@ class ReporteCilindros : AppCompatActivity() {
 
                     val muestra = snapshot.child("muestra").getValue(Int::class.java)
                     val olla = snapshot.child("olla").getValue(String::class.java)
-                    val revenimientoDis = snapshot.child("revenimientoDis").getValue(Double::class.java)
-                    val revenimientoR1 = snapshot.child("revenimientoR1").getValue(Double::class.java)
-                    val revenimientoR2 = snapshot.child("revenimientoR2").getValue(Double::class.java)
+                    val revenimientoDis =
+                        snapshot.child("revenimientoDis").getValue(Double::class.java)
+                    val revenimientoR1 =
+                        snapshot.child("revenimientoR1").getValue(Double::class.java)
+                    val revenimientoR2 =
+                        snapshot.child("revenimientoR2").getValue(Double::class.java)
                     val temperatura = snapshot.child("temperatura").getValue(Double::class.java)
                     val molde1 = snapshot.child("molde1").getValue(Int::class.java)
                     val molde2 = snapshot.child("molde2").getValue(Int::class.java)
@@ -153,15 +292,15 @@ class ReporteCilindros : AppCompatActivity() {
                     val horaMuestreo = snapshot.child("horaMuestreo").getValue(String::class.java)
                     val observaciones = snapshot.child("observaciones").getValue(String::class.java)
 
-                    val carretilla=snapshot.child("carretilla").getValue(String::class.java)
-                    val cono=snapshot.child("cono").getValue(String::class.java)
-                    val varilla=snapshot.child("varilla").getValue(String::class.java)
-                    val mazo=snapshot.child("mazo").getValue(String::class.java)
-                    val termometro=snapshot.child("termometro").getValue(String::class.java)
-                    val cucharon=snapshot.child("cucharon").getValue(String::class.java)
-                    val placa=snapshot.child("placa").getValue(String::class.java)
-                    val flexometro=snapshot.child("flexometro").getValue(String::class.java)
-                    val enrasador=snapshot.child("enrasador").getValue(String::class.java)
+                    val carretilla = snapshot.child("carretilla").getValue(String::class.java)
+                    val cono = snapshot.child("cono").getValue(String::class.java)
+                    val varilla = snapshot.child("varilla").getValue(String::class.java)
+                    val mazo = snapshot.child("mazo").getValue(String::class.java)
+                    val termometro = snapshot.child("termometro").getValue(String::class.java)
+                    val cucharon = snapshot.child("cucharon").getValue(String::class.java)
+                    val placa = snapshot.child("placa").getValue(String::class.java)
+                    val flexometro = snapshot.child("flexometro").getValue(String::class.java)
+                    val enrasador = snapshot.child("enrasador").getValue(String::class.java)
 //                    val validado=snapshot.child("validado").getValue(Boolean::class.java)
 
                     var llave = snapshot.child("llave").getValue(String::class.java)
@@ -227,8 +366,6 @@ class ReporteCilindros : AppCompatActivity() {
                             llave.toString()
 
 
-
-
                         ) // Asegúrate de ajustar los parámetros según tu clase
                         listaObrasmutableListOf.add(obra)
                     }
@@ -245,12 +382,22 @@ class ReporteCilindros : AppCompatActivity() {
             }
 
         })
-
-
     }
+
+    private fun onVerReporteCilindros(
+        position: Int,
+        listaReportes: MutableList<ClaseObraCilindros>
+    ) =
+        try {
+        } catch (ex: Exception) {
+            Toast.makeText(this, "Error al generar el PDF: ${ex.message}", Toast.LENGTH_SHORT)
+                .show()
+        }
+
     private fun onItemDelete(position: Int) {
         if (isNetworkAvailable()) {
-            val reportKey = listaObrasmutableListOf[position].llave // Utiliza la clave única del informe
+            val reportKey =
+                listaObrasmutableListOf[position].llave // Utiliza la clave única del informe
 
             // Elimina el informe de la base de datos Firebase
             deleteReport(reportKey)
@@ -264,6 +411,7 @@ class ReporteCilindros : AppCompatActivity() {
             Toast.makeText(this, "No hay conexión a Internet", Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun deleteReport(reportKey: String) {
         val reportReference = dataReference.child(reportKey)
         val reportReferenceCampo = dataReferenceCampo.child(reportKey)
@@ -281,6 +429,7 @@ class ReporteCilindros : AppCompatActivity() {
                 ).show()
             }
     }
+
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -289,6 +438,7 @@ class ReporteCilindros : AppCompatActivity() {
         return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             ?: false
     }
+
     private fun onItemSelected(position: Int) {
 //        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
 
