@@ -264,6 +264,7 @@ class ReportesCompactaciones : AppCompatActivity() {
             ).show()
         }
 
+        Toast.makeText(this, "hola1", Toast.LENGTH_SHORT).show()
     }
 
     private fun cargarObras(dataReference: DatabaseReference) {
@@ -374,6 +375,8 @@ class ReportesCompactaciones : AppCompatActivity() {
 
             // Elimina el informe de la lista local
             listaObrasmutableListOf.removeAt(position)
+
+            dataReference
 
             // Notifica al adaptador que los datos han cambiado
             updateTask()
@@ -903,5 +906,10 @@ class ReportesCompactaciones : AppCompatActivity() {
 
         // Muestra el cuadro de diálogo
         builder.show()
+    }
+    override fun onResume() {
+        super.onResume()
+        // Vuelve a cargar la interfaz
+        cargarObras(dataReference)
     }
 }

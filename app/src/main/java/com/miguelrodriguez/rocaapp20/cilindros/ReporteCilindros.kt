@@ -62,6 +62,7 @@ class ReporteCilindros : AppCompatActivity() {
     companion object {
         lateinit var reporteSelecionado: ClaseObraCilindros
         var editar: Boolean = false
+//        var listaObrasmutableListOf= mutableListOf<ClaseObraCilindros>()
     }
 
 
@@ -152,6 +153,11 @@ class ReporteCilindros : AppCompatActivity() {
         swVerTodosReportesCilindros = findViewById(R.id.swVerTodosReportesCilindros)
 
 
+    }
+    override fun onResume() {
+        super.onResume()
+        // Vuelve a cargar la interfaz
+        cargarObras(dataReference)
     }
 
     private fun initUI() {
@@ -277,6 +283,7 @@ class ReporteCilindros : AppCompatActivity() {
             ).show()
         }
     }
+    public fun asdasd(){}
 
     private fun cargarObras(dataReference: DatabaseReference) {
         dataReference.addValueEventListener(object : ValueEventListener {
