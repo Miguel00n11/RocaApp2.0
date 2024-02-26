@@ -1099,6 +1099,40 @@ class ReporteCilindros : AppCompatActivity() {
             tableDatosMuestreo2.addCell(enrasador)
             tableDatosMuestreo2.addCell(Cell(1,1))
 
+            //
+
+            val elaboradoTxt = Cell(1, 3).add(Paragraph(reporteSelecionado.personal))
+            elaboradoTxt.setTextAlignment(TextAlignment.CENTER)
+            elaboradoTxt.setFontSize(8f)
+            tableDatosMuestreo2.addCell(elaboradoTxt)
+            val pagina = Cell(2, 1).add(Paragraph("PÁG. 1 DE 1"))
+            pagina.setTextAlignment(TextAlignment.CENTER)
+            pagina.setFontSize(8f)
+            pagina.setBold()
+            tableDatosMuestreo2.addCell(pagina)
+
+            val revisadoTxt = Cell(1, 3).add(Paragraph(""))
+            revisadoTxt.setTextAlignment(TextAlignment.CENTER)
+            revisadoTxt.setFontSize(8f)
+            tableDatosMuestreo2.addCell(revisadoTxt)
+
+            //
+
+            val elaborado = Cell(1, 3).add(Paragraph("ELABORADO POR:"))
+            elaborado.setTextAlignment(TextAlignment.CENTER)
+            elaborado.setFontSize(8f)
+            elaborado.setBold()
+            tableDatosMuestreo2.addCell(elaborado)
+
+
+
+
+            val revisado = Cell(1, 3).add(Paragraph("REVISADO Y AUTORIZADO POR:"))
+            revisado.setTextAlignment(TextAlignment.CENTER)
+            revisado.setFontSize(8f)
+            revisado.setBold()
+            tableDatosMuestreo2.addCell(revisado)
+
 
             document.add(tableDatosMuestreo2)
 
