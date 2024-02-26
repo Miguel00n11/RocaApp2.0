@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
@@ -198,7 +199,13 @@ class ReporteCilindros : AppCompatActivity() {
                 if (searchText.isNotEmpty()) {
 
 
-                    listaFiltrada = listaObrasmutableListOf.filter { it.fecha?.contains(searchText) == true } as MutableList<ClaseObraCilindros>
+                    listaFiltrada = listaObrasmutableListOf.filter { it.fecha?.contains(searchText) == true||
+                            it.Obra?.contains(searchText, ignoreCase = true) == true || // Ignorar mayúsculas y minúsculas
+                            it.Obra?.startsWith(searchText, ignoreCase = true) == true // Comienza con la letra buscada
+                            ||
+                            it.Cliente?.contains(searchText, ignoreCase = true) == true || // Ignorar mayúsculas y minúsculas
+                            it.Cliente?.startsWith(searchText, ignoreCase = true) == true // Comienza con la letra buscada
+                    } as MutableList<ClaseObraCilindros>
 //
 //                    var filteredList = mutableListOf<ClaseObra>()
 //
@@ -409,6 +416,7 @@ class ReporteCilindros : AppCompatActivity() {
 
 
                 }
+                listaObrasmutableListOf.sortByDescending { SimpleDateFormat("dd/MM/yyyy").parse(it.fecha) }
 
                 // Notifica al adaptador que los datos han cambiado
                 ObraAdapter.notifyDataSetChanged()
@@ -527,14 +535,14 @@ class ReporteCilindros : AppCompatActivity() {
             cellImage.add(image.setHorizontalAlignment(HorizontalAlignment.CENTER))
 
             // Imagen de ANALISEC
-            val drawableId1 = R.drawable.logoroca // Reemplaza 'logoroca' con el nombre de tu imagen
+            val drawableId1 = R.drawable.logoanalisec // Reemplaza 'logoroca' con el nombre de tu imagen
             val bitmap1 = BitmapFactory.decodeResource(this.resources, drawableId1)
 
             val outputStream11 = ByteArrayOutputStream()
             bitmap1.compress(Bitmap.CompressFormat.PNG, 100, outputStream11)
             val imageData1 = ImageDataFactory.create(outputStream11.toByteArray())
             val image1 = Image(imageData1)
-            image1.scale(.025f, .025f)
+            image1.scale(.15f, .15f)
 
             // Agregar celda con imagen
             val cellImage1 = Cell(2, 1)

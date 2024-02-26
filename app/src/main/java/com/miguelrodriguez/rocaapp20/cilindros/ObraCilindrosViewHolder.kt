@@ -23,7 +23,7 @@ class ObraCilindrosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         tvItemObrasCompactacion.text = listaObras.Obra
         tvReporteCompactacion.text = listaObras.muestra.toString()
-        tvCapaCompactacion.text = listaObras.elementoColado
+        tvCapaCompactacion.text = listaObras.Cliente
         tvFechaCompactacion.text = listaObras.fecha
 
     }

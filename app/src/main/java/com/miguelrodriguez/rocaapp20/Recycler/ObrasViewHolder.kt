@@ -24,7 +24,7 @@ class ObrasViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         tvItemObrasCompactacion.text = listaObras.Obra
         tvReporteCompactacion.text = listaObras.reporte
-        tvCapaCompactacion.text = listaObras.capa
+        tvCapaCompactacion.text = listaObras.Cliente
         tvFechaCompactacion.text = listaObras.fecha
 
 
