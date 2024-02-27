@@ -49,6 +49,7 @@ import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Date
 import java.util.Locale
 
 
@@ -278,12 +279,10 @@ class ReporteCilindros : AppCompatActivity() {
 
                 // El switch está desactivado
             }
-            Toast.makeText(
-                this, swVerTodosReportesCilindros.isChecked.toString(), Toast.LENGTH_SHORT
-            ).show()
+
         }
     }
-    public fun asdasd(){}
+
 
     private fun cargarObras(dataReference: DatabaseReference) {
         dataReference.addValueEventListener(object : ValueEventListener {
@@ -502,11 +501,27 @@ class ReporteCilindros : AppCompatActivity() {
         )
 
 
+        val directorio1 = this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+
+        if (directorio1 != null) {
+            val archivos = directorio1.listFiles()
+
+            if (archivos != null) {
+                for (archivo in archivos) {
+                    archivo.delete()
+                }
+            }
+        }
+
         // Directorio para guardar el archivo PDF en el almacenamiento externo
+        val fechaActual = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+//        val nombreArchivo = "registro_concreto_$fechaActual.pdf"
         val directorio = this.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-        val archivoPDF = File(directorio, "registro_compactacion.pdf")
+
+        val archivoPDF = File(directorio, "registro_concreto_$fechaActual.pdf")
         val alturaTexto = 8f
 
+//        println(directorio)
 
 //            Toast.makeText(this, directorio.toString(), Toast.LENGTH_SHORT).show()
         try {
