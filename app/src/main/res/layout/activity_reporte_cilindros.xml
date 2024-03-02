@@ -41,12 +41,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
 
-                android:background="#FFFFFF"
+                android:background="@drawable/searchview_background"
                 android:backgroundTint="#FFFFFF"
-                android:foregroundTint="#FFFFFF"
 
-                app:cardCornerRadius="18dp"
-                android:visibility="gone" />
+                android:foregroundTint="#6A6868"
+                android:iconifiedByDefault="false"
+
+                android:queryHint="Buscar..."
+                android:visibility="visible"
+                app:cardCornerRadius="18dp"  />
 
             <Switch
                 android:id="@+id/swVerTodosReportesCilindros"

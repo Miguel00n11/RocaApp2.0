@@ -51,7 +51,7 @@
 
                 android:inputType="textCapSentences"
                 android:queryHint="Buscar..."
-                android:visibility="visible"
+                android:visibility="gone"
                 app:cardCornerRadius="18dp" />
 
             <Switch
