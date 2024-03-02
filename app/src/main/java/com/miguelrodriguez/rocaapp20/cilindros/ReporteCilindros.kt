@@ -446,6 +446,9 @@ class ReporteCilindros : AppCompatActivity() {
             // Elimina el informe de la lista local
             listaObrasmutableListOf.removeAt(position)
 
+            dataReference = FirebaseDatabase.getInstance().reference.child("Cilindros").child("Reportes").child(personal)
+            cargarObras(dataReference)
+
             // Notifica al adaptador que los datos han cambiado
             ObraAdapter.notifyDataSetChanged()
         } else {

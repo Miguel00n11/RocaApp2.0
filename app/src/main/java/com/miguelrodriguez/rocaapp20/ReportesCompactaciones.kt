@@ -374,7 +374,11 @@ class ReportesCompactaciones : AppCompatActivity() {
             // Elimina el informe de la lista local
             listaObrasmutableListOf.removeAt(position)
 
-            dataReference
+//            dataReference
+            dataReference = FirebaseDatabase.getInstance().reference.child("Compactaciones").child("Reportes").child(personal)
+
+            cargarObras(dataReference)
+
 
             // Notifica al adaptador que los datos han cambiado
             updateTask()

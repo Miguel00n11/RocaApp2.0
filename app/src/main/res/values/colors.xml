@@ -13,7 +13,7 @@
     <color name="Background_Resultados">#03D9C4</color>
     <color name="Texto_Resultados">#024942</color>
     <color name="Texto_Registro_Preliminar">#70757575</color>
-    <color name="background_Registro_Cala">#FF8F00</color>
+    <color name="background_Registro_Cala">#F57C00</color>
 
     <!--    Resultados Compactacion-->
     <color name="background_Registro_Estrato">#7CB342</color>

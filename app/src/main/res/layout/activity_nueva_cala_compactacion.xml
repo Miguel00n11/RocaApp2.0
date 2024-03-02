@@ -16,74 +16,113 @@
         android:textColorHint="@color/white"
         android:textSize="24sp"
         android:textStyle="bold" />
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="3dp" />
+        android:layout_height="3dp"
+        android:background="@color/white" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:hint="Estación"
-        android:textColorHint="@color/white"
+        android:textColorHint="#880E4F"
         app:endIconMode="custom"
         app:endIconTint="#7E57C2"
-        app:hintTextColor="@color/grey"
+        app:hintTextColor="@color/black"
         app:startIconTint="#494949">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEstacionCalaCompactacion"
             android:layout_width="match_parent"
-            android:selectAllOnFocus="true"
             android:layout_height="wrap_content"
-            android:inputType="textCapSentences"/>
+            android:inputType="textCapSentences"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
-    <EditText
-        android:id="@+id/etProfCalaCompactacion"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:hint="Prof. de cala [cm]"
-        android:inputType="number|numberDecimal"
-        android:selectAllOnFocus="true"
-        android:text="20"
-        android:textColorHint="@color/white" />
+        android:layout_marginTop="4dp"
+        android:hint="Profundidad"
+        android:textColorHint="#880E4F"
+        app:endIconMode="custom"
+        app:endIconTint="#7E57C2"
+        app:hintTextColor="@color/black"
+        app:startIconTint="#494949"
+        app:suffixText="cm"
+        app:suffixTextColor="@color/white">
 
-    <EditText
-        android:id="@+id/etMVSLCalaCompactacion"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etProfCalaCompactacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            android:selectAllOnFocus="true"
+            android:text="20"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:hint="MVSL [kg/m³]"
-        android:inputType="number|numberDecimal"
-        android:selectAllOnFocus="true"
-        android:textColorHint="@color/white" />
+        android:layout_marginTop="4dp"
+        android:hint="MVSL"
+        android:textColorHint="#880E4F"
+        app:endIconMode="custom"
+        app:endIconTint="#7E57C2"
+        app:hintTextColor="@color/black"
+        app:startIconTint="#494949"
+        app:suffixText="kg/m³"
+        app:suffixTextColor="@color/white">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMVSLCalaCompactacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etHumedadLugarCalaCopactacion"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:hint="% Humedad de Lugar"
-        android:inputType="number|numberDecimal"
-        android:selectAllOnFocus="true"
-        android:textColorHint="@color/white" />
+        android:layout_marginVertical="4dp"
+        android:hint="Humedad de Lugar"
+        android:textColorHint="#880E4F"
+        app:endIconMode="custom"
+        app:endIconTint="#7E57C2"
+        app:hintTextColor="@color/black"
+        app:startIconTint="#494949"
+        app:suffixText="%"
+        app:suffixTextColor="@color/white">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etHumedadLugarCalaCopactacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnGuardarCalaCompactacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#FFCA28"
-        android:textColor="@color/black"
-        android:text="Guardar" />
-
-
+        android:text="Guardar"
+        android:textColor="@color/black" />
 
 
 </LinearLayout>
