@@ -160,13 +160,11 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/btnVigas"
+                    android:id="@+id/btnIrReportesVigas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
                     app:cardCornerRadius="8dp"
-                    android:focusable="true"
-                    android:alpha=".5"
                     app:cardElevation="4dp">
 
                     <LinearLayout
@@ -175,9 +173,6 @@
                         android:background="#232323"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:clickable="true"
-                        android:contextClickable="true"
-                        android:allowClickWhenDisabled="true"
                         android:padding="10dp">
 
                         <!-- Aquí puedes agregar cualquier otro contenido que desees dentro del CardView -->

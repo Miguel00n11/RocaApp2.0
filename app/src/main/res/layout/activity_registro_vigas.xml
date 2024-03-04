@@ -1,0 +1,1234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="12dp"
+    android:orientation="vertical"
+    tools:context=".RegistroCompactaciones">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/material_motion_duration_long_1"
+            android:text="Reporte de vigas"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tvNumeroReporteVigas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/material_motion_duration_long_1"
+            android:gravity="end"
+            android:text="0"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#DCDCDC"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/grey"
+
+                        app:cardCornerRadius="12dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:gravity="center"
+                            android:text="Datos Generales."
+
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Obra"
+                        android:textColorHint="@color/grey"
+
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etObraVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Cliente"
+                        android:textColorHint="@color/grey"
+
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etClienteVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Localización"
+                        android:textColorHint="@color/grey"
+
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLocalizacionVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <LinearLayout
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilFechaMuestreoCompactaciones"
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_weight="1"
+                            android:hint="Fecha"
+                            android:textColorHint="@color/grey"
+                            app:endIconDrawable="@drawable/baseline_calendar_month_24"
+                            app:endIconMode="custom"
+                            app:endIconTint="#7E57C2"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="#494949">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etFechaCompactacion"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusableInTouchMode="false"
+                                android:inputType="date"
+                                android:maxLength="10" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#DCDCDC"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/grey"
+
+                        app:cardCornerRadius="12dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:gravity="center"
+                            android:text="Datos de la prueba."
+
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
+
+
+                    <Spinner
+                        android:id="@+id/spnTipoMuestreoVigas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="40dp"
+                        android:layout_marginVertical="3dp"
+                        android:backgroundTint="@color/background_Registro_Cala"
+
+                        android:backgroundTintMode="add"
+                        android:spinnerMode="dialog"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Elemento colado"
+                        android:textColorHint="@color/grey"
+
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etElementoColadoVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="3dp"
+                            android:hint="Ubicación"
+                            android:textColorHint="@color/grey"
+                            android:layout_weight="1"
+
+                            app:endIconMode="clear_text"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etUbicacionVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapSentences" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginLeft="3dp"
+
+                            android:hint="Volumen"
+                            android:textColorHint="@color/grey"
+                            android:layout_weight="1"
+
+                            app:endIconMode="clear_text"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etVolumenMuestraVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="5" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="3dp"
+                            android:layout_weight="1"
+                            android:hint="M. R."
+                            android:textColorHint="@color/grey"
+                            app:endIconMode="clear_text"
+
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey"
+                            app:suffixText="kg/cm²">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etFCVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="5" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginLeft="3dp"
+                            android:layout_weight="1"
+                            android:hint="Volumen total"
+                            android:textColorHint="@color/grey"
+                            app:endIconMode="clear_text"
+
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey"
+                            app:suffixText="m³">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etVolumenVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="5" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <Spinner
+                        android:id="@+id/spnTipoConcretoVigas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+
+                        android:layout_marginHorizontal="40dp"
+                        android:layout_marginVertical="3dp"
+                        android:backgroundTint="@color/background_Registro_Cala"
+                        android:backgroundTintMode="add"
+                        android:spinnerMode="dialog"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Edad Diseño"
+                        android:textColorHint="@color/grey"
+
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey"
+                        app:suffixText="d">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etEdadVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="2" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="T.M.A."
+                        android:textColorHint="@color/grey"
+                        app:endIconMode="clear_text"
+
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey"
+                        app:suffixText="mm">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTMAVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number|numberDecimal"
+                            android:maxLength="4" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Concretera"
+                        android:textColorHint="@color/grey"
+                        app:endIconMode="clear_text"
+
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etConcreteraVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapCharacters" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="C:A:G"
+
+                        android:textColorHint="@color/grey"
+                        app:endIconMode="clear_text"
+                        app:expandedHintEnabled="false"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etHOPropVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="cemento:arena:grava"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Aditivo"
+                        android:textColorHint="@color/grey"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etAditivoVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Remisión"
+                        android:textColorHint="@color/grey"
+
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etRemisionVigas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#DCDCDC"
+                app:cardCornerRadius="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+
+                    android:orientation="vertical">
+
+                    <LinearLayout
+
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="3dp"
+
+                                android:hint="Muestra"
+                                android:textColorHint="@color/grey"
+                                android:layout_weight="1"
+
+                                app:endIconMode="clear_text"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etMuestraVigas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:inputType="number|numberDecimal"
+                                    android:maxLength="2"
+                                    android:text="1" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginLeft="3dp"
+                                android:hint="Olla"
+                                android:layout_weight="1"
+                                android:textColorHint="@color/grey"
+
+                                app:endIconMode="clear_text"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etOllaVigas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:inputType="textCapCharacters"
+                                    android:maxLength="5" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </LinearLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:hint="Rev. Diseño"
+                            android:textColorHint="@color/grey"
+
+                            app:endIconMode="clear_text"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey"
+                            app:suffixText="cm">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etRevenimientoProyVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="4" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="3dp"
+                                android:layout_weight="1"
+                                android:hint="R1"
+
+                                android:textColorHint="@color/grey"
+                                app:endIconMode="clear_text"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="cm">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etReveniminetoObt1Vigas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:inputType="number|numberDecimal"
+
+                                    android:maxLength="4" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginLeft="3dp"
+                                android:layout_weight="1"
+                                android:hint="R2"
+                                android:textColorHint="@color/grey"
+                                app:endIconMode="clear_text"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="cm">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etReveniminetoObt2Vigas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:inputType="number|numberDecimal"
+                                    android:maxLength="4" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_weight="1"
+                            android:hint="Temperatura"
+                            android:textColorHint="@color/grey"
+                            app:endIconMode="clear_text"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey"
+                            app:suffixText="°C">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTemperaturaVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="4" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="14dp"
+                            android:text="No. Moldes:" />
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="12dp"
+                            android:orientation="horizontal">
+
+
+                            <EditText
+                                android:id="@+id/etMolde1Vigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Molde 1"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="3"
+                                android:selectAllOnFocus="true" />
+
+                            <Spinner
+                                android:id="@+id/spnMolde1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/btn_Background_Acceder"
+                                android:backgroundTintMode="add"
+                                android:spinnerMode="dialog"
+                                android:textAlignment="center"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="12dp"
+                            android:orientation="horizontal">
+
+
+                            <EditText
+                                android:id="@+id/etMolde2Vigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Molde 2"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="3"
+                                android:selectAllOnFocus="true" />
+
+                            <Spinner
+                                android:id="@+id/spnMolde2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/btn_Background_Acceder"
+                                android:backgroundTintMode="add"
+                                android:spinnerMode="dialog"
+                                android:textAlignment="center"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="12dp"
+                            android:orientation="horizontal">
+
+
+                            <EditText
+                                android:id="@+id/etMolde3Vigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Molde 3"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="3"
+                                android:selectAllOnFocus="true" />
+
+                            <Spinner
+                                android:id="@+id/spnMolde3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/btn_Background_Acceder"
+                                android:backgroundTintMode="add"
+                                android:spinnerMode="dialog"
+                                android:textAlignment="center"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="12dp"
+                            android:visibility="gone"
+                            android:orientation="horizontal">
+
+
+                            <EditText
+                                android:id="@+id/etMolde4Vigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Molde 4"
+                                android:inputType="number|numberDecimal"
+                                android:maxLength="3"
+                                android:selectAllOnFocus="true" />
+
+                            <Spinner
+                                android:id="@+id/spnMolde4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/btn_Background_Acceder"
+                                android:backgroundTintMode="add"
+                                android:spinnerMode="dialog"
+                                android:textAlignment="center"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Horarios" />
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="12dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_weight="1"
+                                android:hint="Salida planta"
+                                android:textColorHint="@color/grey"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="h">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etHoraSalidaVigas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:editable="true"
+                                    android:gravity="center"
+                                    android:focusableInTouchMode="false"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:textIsSelectable="false" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_weight="1"
+                                android:hint="llegada"
+                                android:textColorHint="@color/grey"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="h">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etHorallegadaVigas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:clickable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:gravity="center"
+                                    android:inputType="time"
+                                    android:maxLength="5" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="4dp"
+                                android:layout_weight="1"
+                                android:hint="H. Muestreo"
+                                android:textColorHint="@color/grey"
+                                app:helperTextTextColor="#D81B60"
+                                app:hintTextColor="@color/grey"
+                                app:startIconTint="@color/grey"
+                                app:suffixText="h">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etHoraMuestreoVigas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:focusableInTouchMode="false"
+                                    android:inputType="time"
+                                    android:maxLength="5" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Observaciones"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etObservacionesVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:inputType="textMultiLine|textCapSentences" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#DCDCDC"
+                app:cardCornerRadius="12dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/grey"
+                        app:cardCornerRadius="12dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:gravity="center"
+                            android:text="Equipo"
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Carretilla"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etCarretillaVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:selectAllOnFocus="true"
+                                android:inputType="number"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:selectAllOnFocus="true"
+                            android:hint="Cono"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etConoVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:selectAllOnFocus="true"
+                                android:inputType="number"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Varilla"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etVarillaVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:selectAllOnFocus="true"
+                                android:inputType="number"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Mazo"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etMazoVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:selectAllOnFocus="true"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Termómetro"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTermometroVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:selectAllOnFocus="true"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Cucharón"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etCucharonVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:selectAllOnFocus="true"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Placa"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPlacaVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:selectAllOnFocus="true"
+                                android:inputType="number"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Flexómetro"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            android:selectAllOnFocus="true"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etFlexometroVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:selectAllOnFocus="true"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="Enrasador"
+                            android:textColorHint="@color/grey"
+                            app:helperTextTextColor="#D81B60"
+                            app:hintTextColor="@color/grey"
+                            app:startIconTint="@color/grey">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etEnrasadorVigas"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:selectAllOnFocus="true"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="2" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/btnCancelarRegistroVigas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/btn_Background_Cancelar"
+                    android:text="Cancelar" />
+
+                <Button
+                    android:id="@+id/btnGuardarRegistroVigas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/btn_Background_Acceder"
+                    android:text="Guardar" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</LinearLayout>
