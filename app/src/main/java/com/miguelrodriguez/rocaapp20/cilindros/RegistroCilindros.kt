@@ -1026,11 +1026,17 @@ class RegistroCilindros : AppCompatActivity() {
     }
 
     private fun cargarItemsTipoDeMuestreo(spnTipoConcretoCilindros: String) {
-        if (spnTipoConcretoCilindros == "Resistencia Normal") {
-            etEdadCilindros.setText("28")
-        } else {
-            etEdadCilindros.setText("7")
+        if (editar){
+            etEdadCilindros.setText(reporteSelecionado.edad.toString())
+        }else{
+            if (spnTipoConcretoCilindros == "Resistencia Normal") {
+                etEdadCilindros.setText("28")
+            } else {
+                etEdadCilindros.setText("7")
+            }
         }
+
+
     }
 
     private fun FechaDeHoy() {

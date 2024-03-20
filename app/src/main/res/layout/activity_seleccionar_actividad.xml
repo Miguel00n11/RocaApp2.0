@@ -124,8 +124,6 @@
                     android:layout_marginRight="6dp"
 
                     android:alpha=".5"
-                    android:clickable="false"
-                    android:focusable="false"
                     app:cardElevation="4dp">
 
                     <LinearLayout

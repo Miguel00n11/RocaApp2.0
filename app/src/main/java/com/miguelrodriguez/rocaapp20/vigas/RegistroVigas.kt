@@ -202,6 +202,7 @@ class RegistroVigas : AppCompatActivity() {
 
 
         if (editar == true) {
+
             cargarObraSeleccionada(reporteSelecionado)
 
             // Obtener referencia a la imagen en Firebase Storage
@@ -1025,11 +1026,17 @@ class RegistroVigas : AppCompatActivity() {
     }
 
     private fun cargarItemsTipoDeMuestreo(spnTipoConcretoVigas: String) {
-        if (spnTipoConcretoVigas == "Resistencia Normal") {
-            etEdadVigas.setText("28")
-        } else {
-            etEdadVigas.setText("7")
+        if (editar){
+            etEdadVigas.setText(reporteSelecionado.edad.toString())
+
+        }else{
+            if (spnTipoConcretoVigas == "Resistencia Normal") {
+                etEdadVigas.setText("28")
+            } else {
+                etEdadVigas.setText("7")
+            }
         }
+
     }
 
     private fun FechaDeHoy() {

@@ -30,8 +30,8 @@ class Seleccionar_actividad : AppCompatActivity() {
 
         }
         btnItReportesMecanicas.setOnClickListener {
-//            val intent=Intent(this,ReportesMuestreoMaterial::class.java)
-//            startActivity(intent)
+            val intent=Intent(this,ReportesMuestreoMaterial::class.java)
+            startActivity(intent)
             Toast.makeText(this, "Aún no disponible", Toast.LENGTH_SHORT).show()
         }
         btnIrReportesCilindros.setOnClickListener {
