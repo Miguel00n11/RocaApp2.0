@@ -552,6 +552,9 @@ class RegistroCilindros : AppCompatActivity() {
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
 
+            if (etObraCilindros.text.toString()==null||etObraCilindros.text.toString()=="")
+            {Toast.makeText(this, "Agregar nombre de obra", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton}
             try {
 
 

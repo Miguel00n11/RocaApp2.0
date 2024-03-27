@@ -343,7 +343,12 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
         }
-        fbNuevaCalaCompactacion.setOnClickListener { showDialog() }
+        fbNuevaCalaCompactacion.setOnClickListener {
+            if (
+                listaCalasmutableListOf.count()<8)
+            showDialog()
+            else Toast.makeText(this, "Máximo de calas alcanzadas. Guarda el reporte para agregar más calas.", Toast.LENGTH_SHORT).show()
+        }
 
         CalasAdapter =
             CalasAdapter(listaCalasmutableListOf,
@@ -659,6 +664,9 @@ class RegistroCompactaciones : AppCompatActivity() {
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
 
+            if (etObra.text.toString()==null||etObra.text.toString()=="")
+            {Toast.makeText(this, "Agregar nombre de obra", Toast.LENGTH_SHORT).show()
+            return@setPositiveButton}
             try {
 
                 val validado:Boolean=false

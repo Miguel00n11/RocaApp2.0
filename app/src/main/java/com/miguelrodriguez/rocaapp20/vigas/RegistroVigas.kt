@@ -551,7 +551,9 @@ class RegistroVigas : AppCompatActivity() {
 
         // Configura el botón positivo (sí)
         builder.setPositiveButton("Sí") { dialog, which ->
-
+            if (etObraVigas.text.toString()==null||etObraVigas.text.toString()=="")
+            {Toast.makeText(this, "Agregar nombre de obra", Toast.LENGTH_SHORT).show()
+                return@setPositiveButton}
             try {
 
 
