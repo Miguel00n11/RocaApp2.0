@@ -811,8 +811,29 @@ class RegistroCilindros : AppCompatActivity() {
                             dataReference.child("Cilindros").child("Respaldo").child(personal)
                                 .child(llave)
                                 .setValue(registro)
+
+
                             // aqui quitamos el pressed back para que no salga del reporte cuando se guarde por primera vez
-                            onBackPressed()
+                            llave = dataReference.push().key.toString()
+                            etRevenimientoObt1Cilindros.text=null
+                            etRevenimientoObt2Cilindros.text=null
+                            etRevenimientoProyCilindros.text=null
+
+                            etHoraMuestreoCilindros.text=null
+                            etHoraSalidaCilindros.text=null
+                            etHorallegadaCilindros.text=null
+                            etObservacionesCilindros.text=null
+
+                            etMolde1Cilindros.text=null
+                            etMolde2Cilindros.text=null
+                            etMolde3Cilindros.text=null
+                            etMolde4Cilindros.text=null
+
+                            etRemisionCilindros.text=null
+                            etMuestraCilindros.setText((etMuestraCilindros.text.toString().toInt()+1).toString())
+                            etOllaCilindros.text = null
+
+//                            onBackPressed()
 
                         }
 //                        Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()

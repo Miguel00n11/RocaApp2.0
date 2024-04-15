@@ -811,13 +811,28 @@ class RegistroVigas : AppCompatActivity() {
                                 .child(llave)
                                 .setValue(registro)
                             // aqui quitamos el pressed back para que no salga del reporte cuando se guarde por primera vez
-                            onBackPressed()
+                            llave = dataReference.push().key.toString()
+                            etRevenimientoObt1Vigas.text=null
+                            etRevenimientoObt2Vigas.text=null
+                            etRevenimientoProyVigas.text=null
+
+                            etHoraMuestreoVigas.text=null
+                            etHoraSalidaVigas.text=null
+                            etHorallegadaVigas.text=null
+                            etObservacionesVigas.text=null
+
+                            etMolde1Vigas.text=null
+                            etMolde2Vigas.text=null
+                            etMolde3Vigas.text=null
+
+                            etRemisionVigas.text=null
+                            etMuestraVigas.setText((etMuestraVigas.text.toString().toInt()+1).toString())
+                            etOllaVigas.text = null
+
+//                            onBackPressed()
 
                         }
-//                        Toast.makeText(this, "Reporte guardado correctamente.", Toast.LENGTH_LONG).show()
                     } catch (e: NumberFormatException) {
-//                        Toast.makeText(this, "ERROR. llenar correctamente los campos", Toast.LENGTH_SHORT)
-//                            .show()
                         mostrarAlertaArchivoNoGuardado()
 
                         return

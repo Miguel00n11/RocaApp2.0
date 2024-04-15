@@ -20,6 +20,8 @@ class CalasAdapter(
         holder.render(listaCala[position])
         holder.itemView.setOnClickListener {onCalaSelected(position) }
         holder.bind(listaCala[position], onCalaSelected, onItemDelete)
+
+
     }
 
     override fun getItemCount(): Int {
@@ -30,4 +32,5 @@ class CalasAdapter(
         notifyItemRemoved(position)
         // Puedes agregar la lógica adicional aquí si es necesario
     }
+
 }
