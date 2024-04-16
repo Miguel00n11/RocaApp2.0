@@ -32,6 +32,7 @@ class ObraCilindrosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         obra: ClaseObraCilindros,
         onCilindroSelected: (Int) -> Unit,
         onItemDelete: (Int) -> Unit,
+        onSeleccionarNuevo: (Int) -> Unit,
         onIntemVerReporteCilindros: (Int) -> Unit,
         mostrarBotones: Boolean
     ) {

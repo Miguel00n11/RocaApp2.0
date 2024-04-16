@@ -177,11 +177,16 @@ class ReporteCilindros : AppCompatActivity() {
             if (svBuscarReportesCilindros.visibility == View.GONE) {
                 onItemSelected(position)
             }
-        }, onItemDelete = { position -> onItemDelete(position) }, onVerReporteCilindros = { position ->
+        }, onItemDelete = { position -> onItemDelete(position)
+                          }, onVerReporteCilindros = { position ->
             onVerReporteCilindros(
                 position, listaObrasmutableListOf
             )
-        }, swVerTodosReportesCilindros.isChecked
+        }, onSeleccionarNuevo = { position ->
+
+            onItemSelected(position,true)
+
+        }, mostrarBoton =  swVerTodosReportesCilindros.isChecked
         )
 
 //        rvObrasCilindros.adapter = ObraAdapter
@@ -229,9 +234,11 @@ class ReporteCilindros : AppCompatActivity() {
 //                        { position -> /* código para manejar la visualización de reporte de compactación en la posición 'position' */ }
 //                    )
 
-                    rvObrasCilindros.adapter = ObraAdapterCilindros(listaFiltrada,
+                    rvObrasCilindros.adapter = ObraAdapterCilindros(
+                        listaFiltrada,
                         { position -> /* código para manejar la selección de obra en la posición 'position' */ },
                         { position -> },
+                        { position ->     onItemSelected(position,true,listaFiltrada) },
                         { position -> onVerReporteCilindros(position, listaFiltrada) },
                         swVerTodosReportesCilindros.isChecked
 
@@ -246,6 +253,9 @@ class ReporteCilindros : AppCompatActivity() {
                             }
                         },
                         { position -> onItemDelete(position) },
+                        { position ->
+                            onItemSelected(position,true)
+                        },
                         { position -> onVerReporteCilindros(position, listaObrasmutableListOf) },
                         swVerTodosReportesCilindros.isChecked
 
@@ -477,14 +487,22 @@ class ReporteCilindros : AppCompatActivity() {
         return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
     }
 
-    private fun onItemSelected(position: Int) {
+    private fun onItemSelected(position: Int,clon:Boolean=false,listaReportes: MutableList<ClaseObraCilindros> = listaObrasmutableListOf) {
 //        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
 
 //        listaCalasmutableListOf[position], position
 
 
         editar = true
-        reporteSelecionado = listaObrasmutableListOf[position]
+        reporteSelecionado = listaReportes[position]
+
+        if (clon)
+        {
+            reporteSelecionado.llave=dataReference.push().key.toString()
+
+
+        }
+
         val intent = Intent(this, RegistroCilindros::class.java)
 //        intent.putExtra("ReporteSeleccionado",listaObrasmutableListOf[position])
         startActivity(intent)

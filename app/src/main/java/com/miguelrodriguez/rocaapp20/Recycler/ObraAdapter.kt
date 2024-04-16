@@ -14,6 +14,7 @@ class ObraAdapter(
     private var listaObra: MutableList<ClaseObra>,
     private val onObraSelected: (Int) -> Unit,
     private val onItemDelete: (Int) -> Unit,
+    private val onSeleccionarNuevo: (Int) -> Unit,
     private val onVerReporteCompactacion: (Int) -> Unit,
     private var mostrarBoton: Boolean
 ) : RecyclerView.Adapter<ObrasViewHolder>() {
@@ -36,10 +37,34 @@ class ObraAdapter(
             listaObra[position],
             onObraSelected,
             onItemDelete,
+            onSeleccionarNuevo,
             onVerReporteCompactacion,
             mostrarBoton // Pasa la variable mostrarBoton al método bind
         )
 
+        // Agregar listener para clics largos
+        holder.itemView.setOnLongClickListener { view ->
+            val popupMenu = PopupMenu(view.context, view)
+            popupMenu.inflate(R.menu.menu_opciones)
+
+            popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                when (item.itemId) {
+                    R.id.opcion_seleccionar_nuevo -> {
+                        val nombre = listaObra[position].Obra
+                        onSeleccionarNuevo(position)
+                        true
+                    }
+//                    R.id.opcion_eliminar -> {
+//                        onItemDelete(position)
+//                        true
+//                    }
+                    else -> false
+                }
+            }
+
+            popupMenu.show()
+            true
+        }
 
     }
 

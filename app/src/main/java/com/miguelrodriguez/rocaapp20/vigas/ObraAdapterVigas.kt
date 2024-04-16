@@ -1,7 +1,9 @@
 package com.miguelrodriguez.rocaapp20.vigas
 
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.miguelrodriguez.rocaapp20.R
 import com.miguelrodriguez.rocaapp20.vigas.ClaseObraVigas
@@ -11,6 +13,7 @@ class ObraAdapterVigas (
     private var listaObra: MutableList<ClaseObraVigas>,
     private val onObraSelected: (Int) -> Unit,
     private val onItemDelete: (Int) -> Unit,
+    private val onSeleccionarNuevo: (Int) -> Unit,
     private val onVerReporteVigas: (Int) -> Unit,
     private var mostrarBoton: Boolean
 ) : RecyclerView.Adapter<ObraVigasViewHolder>() {
@@ -33,10 +36,33 @@ class ObraAdapterVigas (
             listaObra[position],
             onObraSelected,
             onItemDelete,
+            onSeleccionarNuevo,
             onVerReporteVigas,
             mostrarBoton )// Pasa la variable mostrarBoton al método bind)
 
+        // Agregar listener para clics largos
+        holder.itemView.setOnLongClickListener { view ->
+            val popupMenu = PopupMenu(view.context, view)
+            popupMenu.inflate(R.menu.menu_opciones)
 
+            popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+                when (item.itemId) {
+                    R.id.opcion_seleccionar_nuevo -> {
+                        val nombre = listaObra[position].Obra
+                        onSeleccionarNuevo(position)
+                        true
+                    }
+//                    R.id.opcion_eliminar -> {
+//                        onItemDelete(position)
+//                        true
+//                    }
+                    else -> false
+                }
+            }
+
+            popupMenu.show()
+            true
+        }
     }
 
     override fun getItemCount(): Int {

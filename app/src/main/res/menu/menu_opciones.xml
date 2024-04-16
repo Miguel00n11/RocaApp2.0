@@ -1,8 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/opcion_editar"
-        android:title="Editar"/>
-    <item
-        android:id="@+id/opcion_eliminar"
-        android:title="Eliminar"/>
+        android:id="@+id/opcion_seleccionar_nuevo"
+        android:title="Seleccionar nuevo"/>
+<!--    <item-->
+<!--        android:id="@+id/opcion_eliminar"-->
+<!--        android:title="Eliminar"/>-->
 </menu>

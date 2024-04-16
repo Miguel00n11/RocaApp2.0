@@ -38,6 +38,8 @@ import com.itextpdf.layout.properties.HorizontalAlignment
 import com.itextpdf.layout.properties.TextAlignment
 import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
+import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
+import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -171,7 +173,10 @@ class ReportesVigas : AppCompatActivity() {
             onVerReporteVigas(
                 position, listaObrasmutableListOf
             )
-        }, swVerTodosReportesVigas.isChecked
+        }, onSeleccionarNuevo = { position ->
+
+            onItemSelected(position,true)
+        }, mostrarBoton =  swVerTodosReportesVigas.isChecked
         )
 
 //        rvObrasVigas.adapter = ObraAdapter
@@ -222,6 +227,7 @@ class ReportesVigas : AppCompatActivity() {
                     rvObrasVigas.adapter = ObraAdapterVigas(listaFiltrada,
                         { position -> /* código para manejar la selección de obra en la posición 'position' */ },
                         { position -> },
+                        { position ->     onItemSelected(position,true,listaFiltrada) },
                         { position -> onVerReporteVigas(position, listaFiltrada) },
                         swVerTodosReportesVigas.isChecked
 
@@ -236,6 +242,8 @@ class ReportesVigas : AppCompatActivity() {
                             }
                         },
                         { position -> onItemDelete(position) },
+                        { position ->
+                            onItemSelected(position,true)},
                         { position -> onVerReporteVigas(position, listaObrasmutableListOf) },
                         swVerTodosReportesVigas.isChecked
 
@@ -467,14 +475,21 @@ class ReportesVigas : AppCompatActivity() {
         return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
     }
 
-    private fun onItemSelected(position: Int) {
+    private fun onItemSelected(position: Int,clon:Boolean=false,listaReportes: MutableList<ClaseObraVigas> =listaObrasmutableListOf) {
 //        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
 
 //        listaCalasmutableListOf[position], position
 
 
-        ReportesVigas.editar = true
-        ReportesVigas.reporteSelecionado = listaObrasmutableListOf[position]
+        editar = true
+        reporteSelecionado = listaReportes[position]
+
+        if (clon)
+        {
+            reporteSelecionado.llave=dataReference.push().key.toString()
+
+        }
+
         val intent = Intent(this, RegistroVigas::class.java)
 //        intent.putExtra("ReporteSeleccionado",listaObrasmutableListOf[position])
         startActivity(intent)

@@ -33,6 +33,7 @@ class ObraVigasViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         obra: ClaseObraVigas,
         onVigasSelected: (Int) -> Unit,
         onItemDelete: (Int) -> Unit,
+        onSeleccionarNuevo: (Int) -> Unit,
         onIntemVerReporteVigass: (Int) -> Unit,
         mostrarBotones: Boolean
     ) {

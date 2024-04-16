@@ -34,6 +34,7 @@ class ObrasViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         obra: ClaseObra,
         onCalaSelected: (Int) -> Unit,
         onItemDelete: (Int) -> Unit,
+        onSeleccionarNuevo: (Int) -> Unit,
         onIntemVerReporteCompactacion: (Int) -> Unit,
         mostrarBotones: Boolean
     ) {

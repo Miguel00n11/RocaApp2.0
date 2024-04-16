@@ -155,11 +155,16 @@ class ReportesCompactaciones : AppCompatActivity() {
             if (svBuscarReportesCompactacion.visibility == View.GONE) {
                 onItemSelected(position)
             }
-        }, onItemDelete = { position -> onItemDelete(position) }, onVerReporteCompactacion = { position ->
-            onVerReporteCompactacion(
-                position, listaObrasmutableListOf
-            )
-        }, swVerTodosReportesCompactaciones.isChecked
+        }, onItemDelete = { position -> onItemDelete(position) },
+            onVerReporteCompactacion = { position ->
+                onVerReporteCompactacion(
+                    position, listaObrasmutableListOf
+                )
+            }, onSeleccionarNuevo = { position ->
+
+                onItemSelected(position,true)
+
+            }, mostrarBoton = swVerTodosReportesCompactaciones.isChecked
         )
 
         ObraAdapter = rvObrasCompactacion.adapter as ObraAdapter
@@ -212,9 +217,11 @@ class ReportesCompactaciones : AppCompatActivity() {
 //                        { position -> /* código para manejar la visualización de reporte de compactación en la posición 'position' */ }
 //                    )
 
-                    rvObrasCompactacion.adapter = ObraAdapter(listaFiltrada,
+                    rvObrasCompactacion.adapter = ObraAdapter(
+                        listaFiltrada,
                         { position -> /* código para manejar la selección de obra en la posición 'position' */ },
                         { position -> },
+                        { position ->     onItemSelected(position,true,listaFiltrada) },
                         { position -> onVerReporteCompactacion(position, listaFiltrada) },
                         swVerTodosReportesCompactaciones.isChecked
 
@@ -222,13 +229,16 @@ class ReportesCompactaciones : AppCompatActivity() {
 
                 } else {
 
-                    rvObrasCompactacion.adapter = ObraAdapter(listaObrasmutableListOf,
+                    rvObrasCompactacion.adapter = ObraAdapter(
+                        listaObrasmutableListOf,
                         onObraSelected = { position ->
                             if (svBuscarReportesCompactacion.visibility == View.GONE) {
                                 onItemSelected(position)
                             }
                         },
                         { position -> onItemDelete(position) },
+                        { position ->
+                            onItemSelected(position,true)},
                         { position -> onVerReporteCompactacion(position, listaObrasmutableListOf) },
                         swVerTodosReportesCompactaciones.isChecked
 
@@ -419,8 +429,7 @@ class ReportesCompactaciones : AppCompatActivity() {
         val archivoPDF = File(directorio, "registro_compactacion_$fechaActual.pdf")
         val alturaTexto = 8f
 
-
-//            Toast.makeText(this, directorio.toString(), Toast.LENGTH_SHORT).show()
+        //            Toast.makeText(this, directorio.toString(), Toast.LENGTH_SHORT).show()
         try {
 
             val outputStream = FileOutputStream(archivoPDF)
@@ -878,14 +887,21 @@ class ReportesCompactaciones : AppCompatActivity() {
     }
 
 
-    private fun onItemSelected(position: Int) {
+    private fun onItemSelected(position: Int,clon:Boolean=false,listaReportes: MutableList<ClaseObra> =listaObrasmutableListOf) {
 //        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
 
 //        listaCalasmutableListOf[position], position
 
 
         editar = true
-        reporteSelecionado = listaObrasmutableListOf[position]
+        reporteSelecionado = listaReportes[position]
+
+        if (clon)
+        {
+            reporteSelecionado.llave=dataReference.push().key.toString()
+            reporteSelecionado.listaCalas.clear()
+
+        }
         val intent = Intent(this, RegistroCompactaciones::class.java)
 //        intent.putExtra("ReporteSeleccionado",listaObrasmutableListOf[position])
         startActivity(intent)
@@ -923,6 +939,7 @@ class ReportesCompactaciones : AppCompatActivity() {
         // Muestra el cuadro de diálogo
         builder.show()
     }
+
     override fun onResume() {
         super.onResume()
         // Vuelve a cargar la interfaz
