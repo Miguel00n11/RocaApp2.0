@@ -312,15 +312,16 @@ class ReportesCompactaciones : AppCompatActivity() {
 
                         // Asegúrate de ajustar los nombres de los campos según tu modelo ClaseCala
                         val estacion = calaSnapshot.child("estacion").getValue(String::class.java)
-                        val lado = calaSnapshot.child("lado").getValue(String::class.java)
+                        var lado = calaSnapshot.child("lado").getValue(String::class.java)
                         val humedad = calaSnapshot.child("humedad").getValue(Double::class.java)
                         val cala = calaSnapshot.child("cala").getValue(Int::class.java)
                         val mvsl = calaSnapshot.child("mvsl").getValue(Double::class.java)
                         val porcentaje = calaSnapshot.child("porcentaje").getValue(Double::class.java)
                         val prof = calaSnapshot.child("prof").getValue(Double::class.java)
                         // Crea un objeto ClaseCala y agrégalo a la lista
+                        if (lado==null){lado=""}
                         val cala1 = ClaseCala(
-                            cala!!, estacion!!,lado!!, prof!!, mvsl!!, humedad!!, porcentaje!!
+                            cala!!, estacion!!,lado, prof!!, mvsl!!, humedad!!, porcentaje!!
                         )
                         listaCalas.add(cala1)
                     }
