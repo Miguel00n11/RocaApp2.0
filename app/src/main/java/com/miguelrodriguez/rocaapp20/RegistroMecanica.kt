@@ -695,7 +695,7 @@ class RegistroMecanica : AppCompatActivity() {
             ?: mutableListOf()
     }
 
-    private fun syncDataWithFirebase(
+   private fun syncDataWithFirebase(
         numeroReporte: Int,
         listaEstratos: List<ClaseEstratos>,
         accion: Boolean

@@ -10,4 +10,5 @@ class consultar_datos {
         var usuarioApp:String?=null
         var modoInvitado:Boolean=false
 
-    }}
+    }
+}

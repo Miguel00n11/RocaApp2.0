@@ -37,7 +37,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
 
     private var listaCalasmutableListOf =
-        mutableListOf(ClaseCala(1, "estacion", 1.0, 1.0, 1.0, 1.0))
+        mutableListOf(ClaseCala(1, "estacion", "lado1",1.0, 1.0, 1.0, 1.0))
     private var listaCalasOriginal: MutableList<ClaseCala> = mutableListOf()
 
     private lateinit var dataReference: DatabaseReference
@@ -414,6 +414,8 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         val etEstacionCalaCompactacion: EditText =
             dialog.findViewById(R.id.etEstacionCalaCompactacion)
+        val etLadoCalaCompactacion: EditText =
+            dialog.findViewById(R.id.etLadoCalaCompactacion)
         val etProfCalaCompactacion: EditText = dialog.findViewById(R.id.etProfCalaCompactacion)
         val etMVSLCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSLCalaCompactacion)
         val etHumedadLugarCalaCopactacion: EditText =
@@ -431,6 +433,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         }
 
         etEstacionCalaCompactacion.setText(calaSeleccionada.Estacion)
+        etLadoCalaCompactacion.setText(calaSeleccionada.lado)
         etProfCalaCompactacion.setText(calaSeleccionada.prof.toString())
         etMVSLCalaCompactacion.setText(calaSeleccionada.MVSL.toString())
         etHumedadLugarCalaCopactacion.setText(calaSeleccionada.Humedad.toString())
@@ -439,6 +442,7 @@ class RegistroCompactaciones : AppCompatActivity() {
 
             try {
                 val estacion = etEstacionCalaCompactacion.text.toString()
+                val lado = etLadoCalaCompactacion.text.toString()
                 val profundidad = etProfCalaCompactacion.text.toString().toDouble()
                 val MSVL = etMVSLCalaCompactacion.text.toString().toDouble()
                 val humedad = etHumedadLugarCalaCopactacion.text.toString().toDouble()
@@ -449,6 +453,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                 calaNueva = ClaseCala(
                     indice,
                     estacion,
+                    lado,
                     profundidad,
                     MSVL,
                     humedad,
@@ -498,6 +503,8 @@ class RegistroCompactaciones : AppCompatActivity() {
 
         val etEstacionCalaCompactacion: EditText =
             dialog.findViewById(R.id.etEstacionCalaCompactacion)
+        val etLadoCalaCompactacion: EditText =
+            dialog.findViewById(R.id.etLadoCalaCompactacion)
         val etProfCalaCompactacion: EditText = dialog.findViewById(R.id.etProfCalaCompactacion)
         val etMVSLCalaCompactacion: EditText = dialog.findViewById(R.id.etMVSLCalaCompactacion)
         val etHumedadLugarCalaCopactacion: EditText =
@@ -525,6 +532,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 val estacion = etEstacionCalaCompactacion.text.toString()
+                val lado = etLadoCalaCompactacion.text.toString()
                 val profundidad = etProfCalaCompactacion.text.toString().toDouble()
                 val MSVL = etMVSLCalaCompactacion.text.toString().toDouble()
                 val humedad = etHumedadLugarCalaCopactacion.text.toString().toDouble()
@@ -534,6 +542,7 @@ class RegistroCompactaciones : AppCompatActivity() {
                 calaNueva = ClaseCala(
                     listaCalasmutableListOf.count(),
                     estacion,
+                    lado,
                     profundidad,
                     MSVL,
                     humedad,

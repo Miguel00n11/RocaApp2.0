@@ -116,7 +116,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 //        // Opcional: Configura la persistencia si es necesario
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
 
-        listacalasmutableListOf = mutableListOf(ClaseCala(1, "1", 1.1, 1.1, 1.1, 1.1))
+        listacalasmutableListOf = mutableListOf(ClaseCala(1, "1","lado", 1.1, 1.1, 1.1, 1.1))
 
         listaObrasmutableListOf = mutableListOf(
         )
@@ -151,11 +151,11 @@ class ReportesCompactaciones : AppCompatActivity() {
             startActivity(intent)
         }
 
-        rvObrasCompactacion.adapter = ObraAdapter(listaObrasmutableListOf, onObraSelected = { position ->
+        rvObrasCompactacion.adapter = ObraAdapter(listaObrasmutableListOf,
+            onObraSelected = { position ->
             if (svBuscarReportesCompactacion.visibility == View.GONE) {
-                onItemSelected(position)
-            }
-        }, onItemDelete = { position -> onItemDelete(position) },
+                onItemSelected(position)}},
+            onItemDelete = { position -> onItemDelete(position) },
             onVerReporteCompactacion = { position ->
                 onVerReporteCompactacion(
                     position, listaObrasmutableListOf
@@ -312,6 +312,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
                         // Asegúrate de ajustar los nombres de los campos según tu modelo ClaseCala
                         val estacion = calaSnapshot.child("estacion").getValue(String::class.java)
+                        val lado = calaSnapshot.child("lado").getValue(String::class.java)
                         val humedad = calaSnapshot.child("humedad").getValue(Double::class.java)
                         val cala = calaSnapshot.child("cala").getValue(Int::class.java)
                         val mvsl = calaSnapshot.child("mvsl").getValue(Double::class.java)
@@ -319,7 +320,7 @@ class ReportesCompactaciones : AppCompatActivity() {
                         val prof = calaSnapshot.child("prof").getValue(Double::class.java)
                         // Crea un objeto ClaseCala y agrégalo a la lista
                         val cala1 = ClaseCala(
-                            cala!!, estacion!!, prof!!, mvsl!!, humedad!!, porcentaje!!
+                            cala!!, estacion!!,lado!!, prof!!, mvsl!!, humedad!!, porcentaje!!
                         )
                         listaCalas.add(cala1)
                     }
@@ -515,8 +516,14 @@ class ReportesCompactaciones : AppCompatActivity() {
             textoNumEnsayeRegistro.setFontSize(alturaTexto)
             table.addCell(textoNumEnsayeRegistro)
 
+//            textoNumEnsayeRegistro = Cell(1, 1)
+//            textoNumEnsayeRegistro.add(Paragraph(""))
+//            textoNumEnsayeRegistro.setTextAlignment(TextAlignment.CENTER)
+//            textoNumEnsayeRegistro.setFontSize(alturaTexto)
+//            table.addCell(textoNumEnsayeRegistro)
+
             textoNumEnsayeRegistro = Cell(1, 1)
-            textoNumEnsayeRegistro.add(Paragraph(""))
+            textoNumEnsayeRegistro.add(Paragraph("---"))
             textoNumEnsayeRegistro.setTextAlignment(TextAlignment.CENTER)
             textoNumEnsayeRegistro.setFontSize(alturaTexto)
             table.addCell(textoNumEnsayeRegistro)
@@ -535,7 +542,7 @@ class ReportesCompactaciones : AppCompatActivity() {
             table.addCell(textoNumReporteRegistro)
 
             textoNumReporteRegistro = Cell(1, 1)
-            textoNumReporteRegistro.add(Paragraph(""))
+            textoNumReporteRegistro.add(Paragraph("---"))
             textoNumReporteRegistro.setTextAlignment(TextAlignment.CENTER)
             textoNumReporteRegistro.setFontSize(alturaTexto)
             table.addCell(textoNumReporteRegistro)
@@ -597,8 +604,8 @@ class ReportesCompactaciones : AppCompatActivity() {
             tablaDatosDeObra.addCell(tablaExpediente)
 
             tablaExpediente = Cell(1, 1)
-            tablaExpediente.setFontSize(alturaTexto)
-            tablaExpediente.add(Paragraph(""))
+            tablaExpediente.setFontSize(alturaTexto).setTextAlignment(TextAlignment.CENTER)
+            tablaExpediente.add(Paragraph("---"))
             tablaDatosDeObra.addCell(tablaExpediente)
 
 
@@ -709,7 +716,7 @@ class ReportesCompactaciones : AppCompatActivity() {
             columnaMVSM.setFontSize(alturaTexto)
             tableResultados.addCell(columnaMVSM)
 
-            var columnaCompactacion = Cell(2, 1)
+            var columnaCompactacion = Cell(2, 2)
             columnaCompactacion.add(Paragraph("% de Compactación"))
             columnaCompactacion.setFontSize(alturaTexto)
             tableResultados.addCell(columnaCompactacion)
@@ -717,7 +724,7 @@ class ReportesCompactaciones : AppCompatActivity() {
             var columnaResultado = Cell(2, 1)
             columnaResultado.add(Paragraph("Resultado"))
             columnaResultado.setFontSize(alturaTexto)
-            tableResultados.addCell(columnaResultado)
+//            tableResultados.addCell(columnaResultado)
 
 
             var columnaEstacion = Cell(1, 1)
@@ -742,23 +749,30 @@ class ReportesCompactaciones : AppCompatActivity() {
             reporteSelecionado.listaCalas.forEach { cala ->
                 tableResultados.addCell(Cell().add(Paragraph("${cala.cala + 1}"))).setFontSize(alturaTexto)
                 tableResultados.addCell(Cell().add(Paragraph("${cala.Estacion}"))).setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Cell())).setFontSize(alturaTexto)
+                tableResultados.addCell(Cell().add(Paragraph("${cala.lado}"))).setFontSize(alturaTexto)
                 tableResultados.addCell(Cell().add(Paragraph("${cala.prof}"))).setFontSize(alturaTexto)
                 tableResultados.addCell(Cell().add(Paragraph("${cala.Humedad}"))).setFontSize(alturaTexto)
                 tableResultados.addCell(Cell().add(Paragraph("${cala.MVSL}"))).setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Paragraph("${cala.Porcentaje}"))).setFontSize(alturaTexto)
-                tableResultados.addCell(Cell().add(Cell())).setFontSize(alturaTexto)
+                tableResultados.addCell(Cell(1,2).add(Paragraph("${cala.Porcentaje}"))).setFontSize(alturaTexto)
+//                tableResultados.addCell(Cell().add(Cell())).setFontSize(alturaTexto)
             }
 
             document.add(tableResultados)
 
+
+
+
+
+
+
+            //  ESTA PROGRAMADO EL CROQUIS Y LAS OBSERVACIONES, SIN EMBARGO LAS QUITE POR QUE CAUSABA CONFLICTO CON LOS CLIENTES EN EL REPORTE
             val tableCroquis = Table(floatArrayOf(anchoColiumna, anchoColiumna))
 
             val Croquis = Cell(1, 2).add(Paragraph("Croquis:"))
             Croquis.setHeight(100f)
             tableCroquis.addCell(Croquis)
 
-            document.add(tableCroquis)
+//            document.add(tableCroquis)
 
             val tableObservaciones = Table(floatArrayOf(60f, anchoColiumna))
 
@@ -766,7 +780,17 @@ class ReportesCompactaciones : AppCompatActivity() {
             tableObservaciones.addCell(observaciones)
             tableObservaciones.addCell(Cell())
 //
-            document.add(tableObservaciones)
+//            document.add(tableObservaciones)
+
+
+
+
+
+
+
+
+
+
 
 //            // Agregar marca de agua en cada página
 //            val pageSize = PageSize.A4

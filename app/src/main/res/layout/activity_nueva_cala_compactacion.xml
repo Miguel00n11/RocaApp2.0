@@ -44,6 +44,26 @@
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:hint="Lado"
+        android:textColorHint="#880E4F"
+        app:endIconMode="custom"
+        app:endIconTint="#7E57C2"
+        app:hintTextColor="@color/black"
+        app:startIconTint="#494949">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLadoCalaCompactacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
