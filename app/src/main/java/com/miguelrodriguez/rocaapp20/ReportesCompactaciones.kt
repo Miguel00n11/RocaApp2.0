@@ -209,6 +209,7 @@ class ReportesCompactaciones : AppCompatActivity() {
                         it.fecha?.contains(searchText) == true || it.Obra?.contains(searchText) == true
                     } as MutableList<ClaseObra>
 
+
 //                    rvObrasCompactacion.adapter= ObraAdapter(listaFiltrada){}
 //                    rvObrasCompactacion.adapter = ObraAdapter(
 //                        listaFiltrada,
@@ -301,7 +302,7 @@ class ReportesCompactaciones : AppCompatActivity() {
                     val observaciones = snapshot.child("observaciones").getValue(String::class.java)
                     val compactacion = snapshot.child("compactacion").getValue(Int::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
-                    val humedad = snapshot.child("humedad").getValue(Int::class.java)
+                    val humedad = snapshot.child("humedad").getValue(Double::class.java)
                     var llave = snapshot.child("llave").getValue(String::class.java)
 //                    val listaCalas = snapshot.child("listaCalas").getValue(MutableList<ClaseCala>::class.java)
 
@@ -317,16 +318,23 @@ class ReportesCompactaciones : AppCompatActivity() {
                         val cala = calaSnapshot.child("cala").getValue(Int::class.java)
                         val mvsl = calaSnapshot.child("mvsl").getValue(Double::class.java)
                         val porcentaje = calaSnapshot.child("porcentaje").getValue(Double::class.java)
-                        val prof = calaSnapshot.child("prof").getValue(Double::class.java)
+                        val prof =
+                            calaSnapshot.child("prof").getValue(Double::class.java)
                         // Crea un objeto ClaseCala y agrégalo a la lista
-                        if (lado==null){lado=""}
+                        if (lado == null) {
+                            lado = ""
+                        }
                         val cala1 = ClaseCala(
-                            cala!!, estacion!!,lado, prof!!, mvsl!!, humedad!!, porcentaje!!
+                            cala!!,
+                            estacion!!,
+                            lado,
+                            prof!!,
+                            mvsl!!,
+                            humedad!!,
+                            porcentaje!!
                         )
                         listaCalas.add(cala1)
                     }
-
-
                     val mvsm = snapshot.child("mvsm").getValue(Int::class.java)
                     val numReporte = snapshot.child("numeroReporte").getValue(Int::class.java)
                     val personal1 = snapshot.child("personal").getValue(String::class.java)
@@ -403,6 +411,7 @@ class ReportesCompactaciones : AppCompatActivity() {
 
         reporteSelecionado = listaReportes[position]
 
+        Toast.makeText(this, reporteSelecionado.humedad, Toast.LENGTH_LONG).show()
 
         // Datos de varios registros (solo como ejemplo)
         val registros = listOf(

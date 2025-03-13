@@ -603,7 +603,7 @@ class RegistroCompactaciones : AppCompatActivity() {
         etSubTramo.setText(reporteSelecionado.subtramo)
         etcompactacionProyecto.setText(reporteSelecionado.compactacion)
         etMVSM.setText(reporteSelecionado.mvsm)
-        etHumedad.setText(reporteSelecionado.humedad)
+        etHumedad.setText(reporteSelecionado.humedad.toString())
         llave=reporteSelecionado.llave
 
         listaCalasmutableListOf = reporteSelecionado.listaCalas
