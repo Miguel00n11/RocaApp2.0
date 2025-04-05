@@ -411,9 +411,9 @@ class ReportesCompactaciones : AppCompatActivity() {
 
         reporteSelecionado = listaReportes[position]
 
-        Toast.makeText(this, reporteSelecionado.humedad, Toast.LENGTH_LONG).show()
 
         // Datos de varios registros (solo como ejemplo)
+
         val registros = listOf(
             arrayOf("Cliente:", reporteSelecionado.Cliente),
             arrayOf("Obra:", reporteSelecionado.Obra),

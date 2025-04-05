@@ -7,12 +7,13 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.miguelrodriguez.rocaapp20.cilindros.ReporteCilindros
+import com.miguelrodriguez.rocaapp20.morteros.ReportesMorteros
 import com.miguelrodriguez.rocaapp20.vigas.ReportesVigas
 
 class Seleccionar_actividad : AppCompatActivity() {
 
     private lateinit var btnIrReportesCompactacion:CardView
-    private lateinit var btnItReportesMecanicas:CardView
+    private lateinit var btnItReportesMorteros:CardView
     private lateinit var btnIrReportesCilindros: CardView
     private lateinit var btnIrReportesVigas: CardView
     private lateinit var btnBorrar1: CardView
@@ -29,8 +30,8 @@ class Seleccionar_actividad : AppCompatActivity() {
             startActivity(intent)
 
         }
-        btnItReportesMecanicas.setOnClickListener {
-            val intent=Intent(this,ReportesMuestreoMaterial::class.java)
+        btnItReportesMorteros.setOnClickListener {
+            val intent=Intent(this,ReportesMorteros::class.java)
             startActivity(intent)
             Toast.makeText(this, "Aún no disponible", Toast.LENGTH_SHORT).show()
         }
@@ -43,6 +44,7 @@ class Seleccionar_actividad : AppCompatActivity() {
 
             startActivity(intent)
         }
+
 //        btnBorrar1.setOnClickListener { Toast.makeText(this, "hola mundo", Toast.LENGTH_SHORT).show() }
     }
 
@@ -51,7 +53,7 @@ class Seleccionar_actividad : AppCompatActivity() {
             onBackPressed()
         }
         btnIrReportesCompactacion=findViewById(R.id.btnIrReportesCompactacion)
-        btnItReportesMecanicas=findViewById(R.id.btnItReportesMecanicas)
+        btnItReportesMorteros=findViewById(R.id.btnItReportesMorteros)
         btnIrReportesCilindros=findViewById(R.id.btnIrReportesCilindros)
         btnIrReportesVigas=findViewById(R.id.btnIrReportesVigas)
 //        btnBorrar1=findViewById(R.id.prueba1)
