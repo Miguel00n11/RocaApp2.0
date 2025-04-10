@@ -102,7 +102,7 @@ class ReportesMorteros : AppCompatActivity()
             1.1,
             "hola",
             1,
-            1.1,
+//            1.1,
             "a",
             "1",
             "1",
@@ -314,7 +314,7 @@ class ReportesMorteros : AppCompatActivity()
                     val volumenMuestra = snapshot.child("volumenMuestra").getValue(Double::class.java)
                     val tipoResistencia = snapshot.child("tipoResistencia").getValue(String::class.java)
                     val edad = snapshot.child("edad").getValue(Int::class.java)
-                    val tma = snapshot.child("tma").getValue(Double::class.java)
+//                    val tma = snapshot.child("tma").getValue(Double::class.java)
                     val concretera = snapshot.child("concretera").getValue(String::class.java)
                     val proporciones = snapshot.child("proporciones").getValue(String::class.java)
                     val aditivo = snapshot.child("aditivo").getValue(String::class.java)
@@ -374,7 +374,7 @@ class ReportesMorteros : AppCompatActivity()
                             volumenMuestra!!,
                             tipoResistencia.toString(),
                             edad!!,
-                            tma!!,
+//                            tma!!,
                             concretera.toString(),
                             proporciones.toString(),
                             aditivo.toString(),
@@ -580,15 +580,15 @@ class ReportesMorteros : AppCompatActivity()
             val table = Table(floatArrayOf(30f, anchoDocumento, 30f))
             table.addCell(cellImage)
 
-            // Nombre del Formato de muestreo de concreto
-            val nombreNormaMuestreoConcreto = Cell(1, 1).add(Paragraph("F1-PR14 Rev.:02; MUESTREO DE CONCRETO FRESCO"))
-            nombreNormaMuestreoConcreto.setTextAlignment(TextAlignment.CENTER)
-            nombreNormaMuestreoConcreto.setFontSize(8f)
-            table.addCell(nombreNormaMuestreoConcreto)
+            // Nombre del Formato de muestreo de mortero
+            val nombreNormaMuestreoMortero = Cell(1, 1).add(Paragraph("F1-PR14 Rev.:02; MUESTREO DE MORTERO FRESCO"))
+            nombreNormaMuestreoMortero.setTextAlignment(TextAlignment.CENTER)
+            nombreNormaMuestreoMortero.setFontSize(8f)
+            table.addCell(nombreNormaMuestreoMortero)
 
             table.addCell(cellImage1)
 
-            val textoTituloNorma = Cell(1, 1).add(Paragraph("NORMAS DE REFERENCIA NMX-C-ONNCCE-161,156,159"))
+            val textoTituloNorma = Cell(1, 1).add(Paragraph("NORMAS DE REFERENCIA NMX-C-ONNCCE-161,486"))
             textoTituloNorma.setTextAlignment(TextAlignment.CENTER)
             textoTituloNorma.setFontSize(8f)
             table.addCell(textoTituloNorma)
@@ -707,7 +707,7 @@ class ReportesMorteros : AppCompatActivity()
             val tableDatosGenerales = Table(floatArrayOf(130f,anchoDocumento, 100f,100f))
             tableDatosGenerales.setFontSize(8f)
 
-            val datosGenerales = Cell(1, 4).add(Paragraph("DATOS GENERALES"))
+            val datosGenerales = Cell(1, 4).add(Paragraph("Datos generales"))
             datosGenerales.setTextAlignment(TextAlignment.CENTER)
             datosGenerales.setBold()
             tableDatosGenerales.addCell(datosGenerales)
@@ -779,7 +779,7 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val elemetoColado = Cell(1, 1).add(Paragraph("Elemento colado:"))
+            val elemetoColado = Cell(1, 1).add(Paragraph("Elemento:"))
             elemetoColado.setTextAlignment(TextAlignment.CENTER)
             elemetoColado.setFontSize(8f)
             tableDatosMuestreo.addCell(elemetoColado)
@@ -802,41 +802,78 @@ class ReportesMorteros : AppCompatActivity()
             tableDatosMuestreo.addCell(ubicacionTxt)
 
             //
+            val fc = Cell(1, 1).add(Paragraph("f'c (kgf/cm²):"))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setFontSize(8f)
+            tableDatosMuestreo.addCell(fc)
 
-            val fcTxt = Cell(1, 4).add(Paragraph("f'c (kg/cm²):    "+ReportesMorteros.reporteSelecionado.fc +"                                       M.R. (kg/cm²):     ---                                            Volumen total (m³):    "+
-                    ReportesMorteros.reporteSelecionado.volumenTotal ))
-            fcTxt.setTextAlignment(TextAlignment.CENTER)
-            fcTxt.setFontSize(8f)
+            val fcTxt = Cell(1, 1).add(Paragraph(ReportesMorteros.reporteSelecionado.fc.toString()))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setFontSize(8f)
             tableDatosMuestreo.addCell(fcTxt)
 
+           //
+            val volumenTotal = Cell(1, 1).add(Paragraph("Volumen total (m³):"))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setFontSize(8f)
+            tableDatosMuestreo.addCell(volumenTotal)
+
+            val volumenTotalTxt = Cell(1, 1).add(Paragraph(ReportesMorteros.reporteSelecionado.volumenTotal.toString()))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setFontSize(8f)
+            tableDatosMuestreo.addCell(volumenTotalTxt)
             //
 
-            var textoTipoConcretoNormal=""
-            var textoTipoConcretoRapido="/"
+
+            var textoTipoMorteroNormal=""
+            var textoTipoMorteroRapido="/"
             if (ReportesMorteros.reporteSelecionado.tipoResistencia=="Resistencia Normal"){
-                textoTipoConcretoNormal="/"
-                textoTipoConcretoRapido=""
+                textoTipoMorteroNormal="/"
+                textoTipoMorteroRapido=""
             }
-            val tipoConcretoTxt = Cell(1, 6).add(Paragraph("TIPO DE CONCRETO: NORMAL      "+textoTipoConcretoNormal+"             Resistencia rápida:        "+textoTipoConcretoRapido+ "           EDAD RESIST. DISEÑO (d):    "+ ReportesMorteros.reporteSelecionado.edad))
-            tipoConcretoTxt.setTextAlignment(TextAlignment.CENTER)
-            tipoConcretoTxt.setFontSize(8f)
-            tableDatosMuestreo.addCell(tipoConcretoTxt)
+            val tipoMortero = Cell(1, 1).add(Paragraph("Tipo de mortero:" ))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setFontSize(8f)
+            tableDatosMuestreo.addCell(tipoMortero)
+
+            //
+            val tipoNormalTxt = Cell(1, 3).add(Paragraph("Normal:     "+textoTipoMorteroNormal+"                          " +
+                    "Resistencia rápida:      "+textoTipoMorteroRapido))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setFontSize(8f)
+//            .setBorder(Border.NO_BORDER)
+
+            tableDatosMuestreo.addCell(tipoNormalTxt)
+
+            //
+//            val tipoRapidalTxt = Cell(1, 1).add(Paragraph("Resistencia rápida: "+textoTipoMorteroRapido))
+//                .setTextAlignment(TextAlignment.CENTER)
+//                .setFontSize(8f)
+//                .setBorder(Border.NO_BORDER)
+//            tableDatosMuestreo.addCell(tipoRapidalTxt)
+
+            //
+            val tipoEdadResistenciaTxt = Cell(1, 2).add(Paragraph("Edad resistencia de diseño (d): "+ ReportesMorteros.reporteSelecionado.edad))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setFontSize(8f)
+            tableDatosMuestreo.addCell(tipoEdadResistenciaTxt)
 
             //
 
-            val tma = Cell(1, 1).add(Paragraph("T.M.A. (mm):"))
-            tma.setTextAlignment(TextAlignment.CENTER)
-            tma.setFontSize(8f)
-            tableDatosMuestreo.addCell(tma)
 
-            val tmaTxt = Cell(1, 1).add(Paragraph(ReportesMorteros.reporteSelecionado.tma.toString()))
-            tmaTxt.setTextAlignment(TextAlignment.CENTER)
-            tmaTxt.setFontSize(8f)
-            tableDatosMuestreo.addCell(tmaTxt)
+//            val tma = Cell(1, 1).add(Paragraph("T.M.A. (mm):"))
+//            tma.setTextAlignment(TextAlignment.CENTER)
+//            tma.setFontSize(8f)
+//            tableDatosMuestreo.addCell(tma)
+//
+//            val tmaTxt = Cell(1, 1).add(Paragraph(""))
+//            tmaTxt.setTextAlignment(TextAlignment.CENTER)
+//            tmaTxt.setFontSize(8f)
+//            tableDatosMuestreo.addCell(tmaTxt)
 
             //
 
-            val concretera = Cell(1, 1).add(Paragraph("CÍA CONCRETERA:"))
+            val concretera = Cell(1, 1).add(Paragraph("CÍA Concretera:"))
             concretera.setTextAlignment(TextAlignment.CENTER)
             concretera.setFontSize(8f)
             tableDatosMuestreo.addCell(concretera)
@@ -850,7 +887,7 @@ class ReportesMorteros : AppCompatActivity()
             //
 
             val proporcionesTxt = Cell(1, 4).
-            add(Paragraph("H.O. PROP. (cemento:arena:grava):             "+ ReportesMorteros.reporteSelecionado.proporciones+"                                     ADITIVO:                  "+ ReportesMorteros.reporteSelecionado.aditivo))
+            add(Paragraph("H.O. PROP. (cemento:arena:grava):             "+ ReportesMorteros.reporteSelecionado.proporciones+"                                     Aditivo:                  "+ ReportesMorteros.reporteSelecionado.aditivo))
             proporcionesTxt.setTextAlignment(TextAlignment.CENTER)
             proporcionesTxt.setFontSize(8f)
             tableDatosMuestreo.addCell(proporcionesTxt)
@@ -865,23 +902,28 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val muestraNumero = Cell(1, 1).add(Paragraph("MUESTRA No."))
-            muestraNumero.setTextAlignment(TextAlignment.CENTER)
-            muestraNumero.setBold()
-            muestraNumero.setFontSize(8f)
+            val muestraNumero = Cell(1, 1).add(Paragraph("Muestra No."))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBold()
+                .setFontSize(8f)
+                .setVerticalAlignment(VerticalAlignment.MIDDLE)
+
             tableDatosMuestreo2.addCell(muestraNumero)
 
             //
 
-            val olla = Cell(1, 1).add(Paragraph("OLLA"))
-            olla.setTextAlignment(TextAlignment.CENTER)
-            olla.setBold()
-            olla.setFontSize(8f)
+            val olla = Cell(1, 1).add(Paragraph("Olla"))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBold()
+                .setFontSize(8f)
+                .setVerticalAlignment(VerticalAlignment.MIDDLE)
+
+
             tableDatosMuestreo2.addCell(olla)
 
             //
 
-            val revenimiento = Cell(1, 1).add(Paragraph("REVENIMIENTO (cm)"))
+            val revenimiento = Cell(1, 1).add(Paragraph("Revenimiento (cm)"))
             revenimiento.setTextAlignment(TextAlignment.CENTER)
             revenimiento.setBold()
             revenimiento.setFontSize(8f)
@@ -889,7 +931,7 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val temperatura = Cell(1, 1).add(Paragraph("TEMP. AMB. (°C)"))
+            val temperatura = Cell(1, 1).add(Paragraph("Temp. Amb. (°C)"))
             temperatura.setTextAlignment(TextAlignment.CENTER)
             temperatura.setBold()
             temperatura.setFontSize(8f)
@@ -897,7 +939,7 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val molde = Cell(1, 1).add(Paragraph("No. MOLDE"))
+            val molde = Cell(1, 1).add(Paragraph("No. Molde"))
             molde.setTextAlignment(TextAlignment.CENTER)
             molde.setBold()
             molde.setFontSize(8f)
@@ -905,7 +947,7 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val identificacion = Cell(1, 1).add(Paragraph("IDENTIFICACIÓN ESPECÍMEN"))
+            val identificacion = Cell(1, 1).add(Paragraph("Identificación especímen"))
             identificacion.setTextAlignment(TextAlignment.CENTER)
             identificacion.setBold()
             identificacion.setFontSize(8f)
@@ -913,7 +955,7 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val reporte = Cell(1, 1).add(Paragraph("No. DE REPORTE"))
+            val reporte = Cell(1, 1).add(Paragraph("No. de reporte"))
             reporte.setTextAlignment(TextAlignment.CENTER)
             reporte.setBold()
             reporte.setFontSize(8f)
@@ -922,21 +964,26 @@ class ReportesMorteros : AppCompatActivity()
             //
 
             val muestraTxt = Cell(4, 1).add(Paragraph(ReportesMorteros.reporteSelecionado.muestra.toString()))
-            muestraTxt.setTextAlignment(TextAlignment.CENTER)
-            muestraTxt.setFontSize(8f)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setFontSize(8f)
+                .setVerticalAlignment(VerticalAlignment.MIDDLE)
+
             tableDatosMuestreo2.addCell(muestraTxt)
 
             //
 
             val ollaTxt = Cell(4, 1).
             add(Paragraph("---"))
-            ollaTxt.setTextAlignment(TextAlignment.CENTER)
-            ollaTxt.setFontSize(8f)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setFontSize(8f)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setVerticalAlignment(VerticalAlignment.MIDDLE)
+
             tableDatosMuestreo2.addCell(ollaTxt)
 
             //
 
-            val diseno = Cell(1, 1).add(Paragraph("DISEÑO"))
+            val diseno = Cell(1, 1).add(Paragraph("Diseño"))
             diseno.setTextAlignment(TextAlignment.CENTER)
             diseno.setFontSize(8f)
             tableDatosMuestreo2.addCell(diseno)
@@ -979,7 +1026,7 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val obtenido = Cell(1, 1).add(Paragraph("OBTENIDO"))
+            val obtenido = Cell(1, 1).add(Paragraph("Obtenido"))
             obtenido.setTextAlignment(TextAlignment.CENTER)
             obtenido.setFontSize(8f)
             tableDatosMuestreo2.addCell(obtenido)
@@ -1012,14 +1059,14 @@ class ReportesMorteros : AppCompatActivity()
             //
 
             val remision = Cell(1, 4).
-            add(Paragraph("REMISIÓN No.:  "+ ReportesMorteros.reporteSelecionado.remision))
+            add(Paragraph("Remisión No.:  "+ ReportesMorteros.reporteSelecionado.remision))
             remision.setTextAlignment(TextAlignment.CENTER)
             remision.setFontSize(8f)
             tableDatosMuestreo2.addCell(remision)
 
             //
 
-            val volumenMuestra = Cell(1, 3).add(Paragraph("VOLÚMEN (m³):  "+ ReportesMorteros.reporteSelecionado.volumenMuestra))
+            val volumenMuestra = Cell(1, 3).add(Paragraph("Volumen (m³):  "+ ReportesMorteros.reporteSelecionado.volumenMuestra))
             volumenMuestra.setTextAlignment(TextAlignment.CENTER)
             volumenMuestra.setFontSize(8f)
             tableDatosMuestreo2.addCell(volumenMuestra)
@@ -1027,14 +1074,14 @@ class ReportesMorteros : AppCompatActivity()
             //
 
             val estadosEspecimenes = Cell(1, 7).
-            add(Paragraph("ESTADO DE LOS ESPECÍMENES: BIEN     /        MAL                  NO. MOLDE DE ESPECÍMEN EN MAL ESTADO:" ))
+            add(Paragraph("Estado de los especímenes: Bien     /        Mal                  No. molde de especímen en mal estado:" ))
             estadosEspecimenes.setTextAlignment(TextAlignment.CENTER)
             estadosEspecimenes.setFontSize(8f)
             tableDatosMuestreo2.addCell(estadosEspecimenes)
 
             //
 
-            val horarios = Cell(1, 1).add(Paragraph("HORARIOS:" ))
+            val horarios = Cell(1, 1).add(Paragraph("Horarios:" ))
             horarios.setTextAlignment(TextAlignment.CENTER)
             horarios.setFontSize(8f)
             horarios.setBold()
@@ -1070,13 +1117,13 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val observaciones = Cell(1, 7).add(Paragraph("OBSERVACIONES: "+ ReportesMorteros.reporteSelecionado.observaciones))
+            val observaciones = Cell(1, 7).add(Paragraph("Observaciones: "+ ReportesMorteros.reporteSelecionado.observaciones))
             observaciones.setFontSize(8f)
             tableDatosMuestreo2.addCell(observaciones)
 
             //
 
-            val identificacionEquipo = Cell(2, 2).add(Paragraph("IDENTIFICACIÓN DE \n EQUIPO"))
+            val identificacionEquipo = Cell(2, 2).add(Paragraph("Identificación de \n equipo"))
             identificacionEquipo.setTextAlignment(TextAlignment.CENTER)
             identificacionEquipo.setFontSize(8f)
             identificacionEquipo.setBold()
@@ -1121,7 +1168,7 @@ class ReportesMorteros : AppCompatActivity()
 
             //
 
-            val cucharon = Cell(1, 1).add(Paragraph("Cucharon:  "+ ReportesMorteros.reporteSelecionado.cucharon))
+            val cucharon = Cell(1, 1).add(Paragraph("Cucharón:  "+ ReportesMorteros.reporteSelecionado.cucharon))
             cucharon.setTextAlignment(TextAlignment.CENTER)
             cucharon.setFontSize(8f)
             tableDatosMuestreo2.addCell(cucharon)

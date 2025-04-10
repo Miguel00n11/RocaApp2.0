@@ -147,7 +147,7 @@ class RegistroMorteros : AppCompatActivity() {
         etFCMorteros = findViewById(R.id.etFCMorteros)
         etVolumenMorteros = findViewById(R.id.etVolumenMorteros)
         etVolumenMuestraMorteros = findViewById(R.id.etVolumenMuestraMorteros)
-        etTMAMorteros = findViewById(R.id.etTMAMorteros)
+//        etTMAMorteros = findViewById(R.id.etTMAMorteros)
         etConcreteraMorteros = findViewById(R.id.etConcreteraMorteros)
         etHOPropMorteros = findViewById(R.id.etHOPropMorteros)
         etAditivoMorteros = findViewById(R.id.etAditivoMorteros)
@@ -256,7 +256,7 @@ class RegistroMorteros : AppCompatActivity() {
         etVolumenMorteros.setText(reporteSelecionado.volumenTotal.toString())
         etVolumenMuestraMorteros.setText(reporteSelecionado.volumenMuestra.toString())
         etEdadMorteros.setText(reporteSelecionado.edad.toString())
-        etTMAMorteros.setText(reporteSelecionado.tma.toString())
+//        etTMAMorteros.setText(reporteSelecionado.tma.toString())
         etConcreteraMorteros.setText(reporteSelecionado.concretera)
         etHOPropMorteros.setText(reporteSelecionado.proporciones)
         etAditivoMorteros.setText(reporteSelecionado.aditivo)
@@ -563,7 +563,7 @@ class RegistroMorteros : AppCompatActivity() {
                 val volumenMuestra: Double = etVolumenMuestraMorteros.text.toString().toDouble()
                 val tipoResistencia: String = spnTipoConcretoMorteros.selectedItem.toString()
                 val edad: Int = etEdadMorteros.text.toString().toInt()
-                val tma: Double = etTMAMorteros.text.toString().toDouble()
+//                val tma: Double = etTMAMorteros.text.toString().toDouble()
                 val concretera = etConcreteraMorteros.text.toString()
                 val proporciones = etHOPropMorteros.text.toString()
                 val aditivo = etAditivoMorteros.text.toString()
@@ -618,7 +618,7 @@ class RegistroMorteros : AppCompatActivity() {
                     volumenMuestra,
                     tipoResistencia,
                     edad,
-                    tma,
+//                    tma,
                     concretera,
                     proporciones,
                     aditivo,
@@ -642,12 +642,12 @@ class RegistroMorteros : AppCompatActivity() {
                     horaMuestreo,
                     observaciones,
                     carretilla,
-                    cono,
-                    varilla,
+//                    cono,
+//                    varilla,
                     mazo,
-                    termometro,
+//                    termometro,
                     cucharon,
-                    placa,
+//                    placa,
                     flexometro,
                     enrasador,
                     validado,
@@ -732,24 +732,24 @@ class RegistroMorteros : AppCompatActivity() {
                             dataReference.child("Morteros").child("Reportes").child(personal)
                                 .child(reporteSelecionado.llave)
                                 .setValue(registro)
-                            dataReference.child("personal").child("inventario").child(personal)
-                                .child("cono").setValue(etConoMorteros.text.toString().toInt())
+//                            dataReference.child("personal").child("inventario").child(personal)
+//                                .child("cono").setValue(etConoMorteros.text.toString().toInt())
                             dataReference.child("personal").child("inventario").child(personal)
                                 .child("carretilla")
                                 .setValue(etCarretillaMorteros.text.toString().toInt())
-                            dataReference.child("personal").child("inventario").child(personal)
-                                .child("varilla")
-                                .setValue(etVarillaMorteros.text.toString().toInt())
+//                            dataReference.child("personal").child("inventario").child(personal)
+//                                .child("varilla")
+//                                .setValue(etVarillaMorteros.text.toString().toInt())
                             dataReference.child("personal").child("inventario").child(personal)
                                 .child("mazo").setValue(etMazoMorteros.text.toString().toInt())
-                            dataReference.child("personal").child("inventario").child(personal)
-                                .child("termometro")
-                                .setValue(etTermometroMorteros.text.toString().toInt())
+//                            dataReference.child("personal").child("inventario").child(personal)
+//                                .child("termometro")
+//                                .setValue(etTermometroMorteros.text.toString().toInt())
                             dataReference.child("personal").child("inventario").child(personal)
                                 .child("cucharon")
                                 .setValue(etCucharonMorteros.text.toString().toInt())
-                            dataReference.child("personal").child("inventario").child(personal)
-                                .child("placa").setValue(etPlacaMorteros.text.toString().toInt())
+//                            dataReference.child("personal").child("inventario").child(personal)
+//                                .child("placa").setValue(etPlacaMorteros.text.toString().toInt())
                             dataReference.child("personal").child("inventario").child(personal)
                                 .child("flexometro")
                                 .setValue(etFlexometroMorteros.text.toString().toInt())
@@ -763,24 +763,24 @@ class RegistroMorteros : AppCompatActivity() {
                             dataReference.child("Morteros").child("Reportes").child(personal)
                                 .child(llave)
                                 .setValue(registro)
-                            dataReference.child("personal").child("inventario").child(personal)
-                                .child("cono").setValue(etConoMorteros.text.toString().toInt())
+//                            dataReference.child("personal").child("inventario").child(personal)
+//                                .child("cono").setValue(etConoMorteros.text.toString().toInt())
                             dataReference.child("personal").child("inventario").child(personal)
                                 .child("carretilla")
                                 .setValue(etCarretillaMorteros.text.toString().toInt())
-                            dataReference.child("personal").child("inventario").child(personal)
-                                .child("varilla")
-                                .setValue(etVarillaMorteros.text.toString().toInt())
+//                            dataReference.child("personal").child("inventario").child(personal)
+//                                .child("varilla")
+//                                .setValue(etVarillaMorteros.text.toString().toInt())
                             dataReference.child("personal").child("inventario").child(personal)
                                 .child("mazo").setValue(etMazoMorteros.text.toString().toInt())
-                            dataReference.child("personal").child("inventario").child(personal)
-                                .child("termometro")
-                                .setValue(etTermometroMorteros.text.toString().toInt())
+//                            dataReference.child("personal").child("inventario").child(personal)
+//                                .child("termometro")
+//                                .setValue(etTermometroMorteros.text.toString().toInt())
                             dataReference.child("personal").child("inventario").child(personal)
                                 .child("cucharon")
                                 .setValue(etCucharonMorteros.text.toString().toInt())
-                            dataReference.child("personal").child("inventario").child(personal)
-                                .child("placa").setValue(etPlacaMorteros.text.toString().toInt())
+//                            dataReference.child("personal").child("inventario").child(personal)
+//                                .child("placa").setValue(etPlacaMorteros.text.toString().toInt())
                             dataReference.child("personal").child("inventario").child(personal)
                                 .child("flexometro")
                                 .setValue(etFlexometroMorteros.text.toString().toInt())
@@ -864,7 +864,7 @@ class RegistroMorteros : AppCompatActivity() {
         volumenMuestra: Double,
         tipoResistencia: String,
         edad: Int,
-        tma: Double,
+//        tma: Double,
         concretera: String,
         proporciones: String,
         aditivo: String,
@@ -890,12 +890,12 @@ class RegistroMorteros : AppCompatActivity() {
         observaciones: String,
 
         carretilla: String,
-        cono: String,
-        varilla: String,
+//        cono: String,
+//        varilla: String,
         mazo: String,
-        termometro: String,
+//        termometro: String,
         cucharon: String,
-        placa: String,
+//        placa: String,
         flexometro: String,
         enrasador: String,
         validado: Boolean,
@@ -922,7 +922,7 @@ class RegistroMorteros : AppCompatActivity() {
             volumenMuestra,
             tipoResistencia,
             edad,
-            tma,
+//            tma,
             concretera,
             proporciones,
             aditivo,
@@ -947,12 +947,12 @@ class RegistroMorteros : AppCompatActivity() {
             horaMuestreo,
             observaciones,
             carretilla,
-            cono,
-            varilla,
+//            cono,
+//            varilla,
             mazo,
-            termometro,
+//            termometro,
             cucharon,
-            placa,
+//            placa,
             flexometro,
             enrasador,
             validado,
@@ -980,7 +980,7 @@ class RegistroMorteros : AppCompatActivity() {
         val volumenMuestra: Double,
         val tipoResistencia: String,
         val edad: Int,
-        val tma: Double,
+//        val tma: Double,
         val concretera: String,
         val proporciones: String,
         val aditivo: String,
@@ -1006,12 +1006,12 @@ class RegistroMorteros : AppCompatActivity() {
         val observaciones: String,
 
         val carretilla: String,
-        val cono: String,
-        val varilla: String,
+//        val cono: String,
+//        val varilla: String,
         val mazo: String,
-        val termometro: String,
+//        val termometro: String,
         val cucharon: String,
-        val placa: String,
+//        val placa: String,
         val flexometro: String,
         val enrasador: String,
         val validado: Boolean,

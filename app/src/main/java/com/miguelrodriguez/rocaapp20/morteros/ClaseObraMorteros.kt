@@ -17,7 +17,7 @@ data class ClaseObraMorteros(
     val volumenMuestra: Double,
     val tipoResistencia: String,
     val edad: Int,
-    val tma: Double,
+//    val tma: Double,
     val concretera: String,
     val proporciones: String,
     val aditivo: String,
