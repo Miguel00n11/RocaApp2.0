@@ -1,4 +1,4 @@
-package com.miguelrodriguez.rocaapp20
+package com.miguelrodriguez.rocaapp20.mecanicas
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.media.Image
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -33,19 +32,12 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
-import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseEstratos
-import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
-import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
 import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
 import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ClaseImagenes
 import com.miguelrodriguez.rocaapp20.Recycler.Imagenes.ImageAdapter
 import java.io.File
 import java.util.Calendar
-import kotlin.math.roundToInt
-
-import java.util.UUID
 
 import android.content.pm.PackageManager
 import android.location.Location
@@ -54,7 +46,9 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.textfield.TextInputLayout
-import com.miguelrodriguez.rocaapp20.cilindros.RegistroCilindros
+import com.miguelrodriguez.rocaapp20.MainActivity
+import com.miguelrodriguez.rocaapp20.R
+import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
 import java.text.SimpleDateFormat
 import java.util.Locale
 

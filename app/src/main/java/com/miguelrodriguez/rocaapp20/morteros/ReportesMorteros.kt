@@ -581,7 +581,8 @@ class ReportesMorteros : AppCompatActivity()
             table.addCell(cellImage)
 
             // Nombre del Formato de muestreo de mortero
-            val nombreNormaMuestreoMortero = Cell(1, 1).add(Paragraph("F1-PR14 Rev.:02; MUESTREO DE MORTERO FRESCO"))
+//            val nombreNormaMuestreoMortero = Cell(1, 1).add(Paragraph("F1-PR14 Rev.:02; MUESTREO DE MORTERO FRESCO"))
+            val nombreNormaMuestreoMortero = Cell(1, 1).add(Paragraph("MUESTREO DE MORTERO FRESCO"))
             nombreNormaMuestreoMortero.setTextAlignment(TextAlignment.CENTER)
             nombreNormaMuestreoMortero.setFontSize(8f)
             table.addCell(nombreNormaMuestreoMortero)

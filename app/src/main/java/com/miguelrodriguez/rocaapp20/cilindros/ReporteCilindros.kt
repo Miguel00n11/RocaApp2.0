@@ -25,7 +25,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.itextpdf.io.image.ImageDataFactory
-import com.itextpdf.kernel.colors.DeviceRgb
 import com.itextpdf.kernel.geom.PageSize
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
@@ -35,17 +34,10 @@ import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
-import com.itextpdf.layout.element.Text
 import com.itextpdf.layout.properties.HorizontalAlignment
 import com.itextpdf.layout.properties.TextAlignment
 import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
-import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
-import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
-import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
-import com.miguelrodriguez.rocaapp20.Recycler.ObraAdapter
-import com.miguelrodriguez.rocaapp20.RegistroCompactaciones
-import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream

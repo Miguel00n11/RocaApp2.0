@@ -1,4 +1,4 @@
-package com.miguelrodriguez.rocaapp20.Recycler
+package com.miguelrodriguez.rocaapp20.mecanicas
 
 import android.app.AlertDialog
 import android.content.Context

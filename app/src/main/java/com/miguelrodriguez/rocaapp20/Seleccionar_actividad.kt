@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.miguelrodriguez.rocaapp20.cilindros.ReporteCilindros
+import com.miguelrodriguez.rocaapp20.mecanicas.ReportesMuestreoMaterial
 import com.miguelrodriguez.rocaapp20.morteros.ReportesMorteros
 import com.miguelrodriguez.rocaapp20.vigas.ReportesVigas
 
@@ -16,6 +17,7 @@ class Seleccionar_actividad : AppCompatActivity() {
     private lateinit var btnItReportesMorteros:CardView
     private lateinit var btnIrReportesCilindros: CardView
     private lateinit var btnIrReportesVigas: CardView
+    private lateinit var btnIrReportesMecanicas: CardView
     private lateinit var btnBorrar1: CardView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,12 @@ class Seleccionar_actividad : AppCompatActivity() {
 
             startActivity(intent)
         }
+        btnIrReportesMecanicas.setOnClickListener {
+            val intent=Intent(this,ReportesMuestreoMaterial::class.java)
+
+            startActivity(intent)
+        }
+
 
 //        btnBorrar1.setOnClickListener { Toast.makeText(this, "hola mundo", Toast.LENGTH_SHORT).show() }
     }
@@ -56,6 +64,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         btnItReportesMorteros=findViewById(R.id.btnItReportesMorteros)
         btnIrReportesCilindros=findViewById(R.id.btnIrReportesCilindros)
         btnIrReportesVigas=findViewById(R.id.btnIrReportesVigas)
+        btnIrReportesMecanicas=findViewById(R.id.btnIrReportesMecanicas)
 //        btnBorrar1=findViewById(R.id.prueba1)
 
 

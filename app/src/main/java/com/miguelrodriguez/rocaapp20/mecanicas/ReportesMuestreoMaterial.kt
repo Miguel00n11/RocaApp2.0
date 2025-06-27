@@ -1,14 +1,11 @@
-package com.miguelrodriguez.rocaapp20
+package com.miguelrodriguez.rocaapp20.mecanicas
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -21,17 +18,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.miguelrodriguez.rocaapp20.Recycler.CalasAdapter
-import com.miguelrodriguez.rocaapp20.Recycler.ClaseCala
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseEstratos
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
-import com.miguelrodriguez.rocaapp20.Recycler.ClaseObraMecanica
 import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
-import com.miguelrodriguez.rocaapp20.Recycler.ObraAdapter
-import com.miguelrodriguez.rocaapp20.Recycler.ObraMecanicaAdapter
-import java.util.Calendar
-import kotlin.math.log
 import com.google.firebase.storage.StorageReference
+import com.miguelrodriguez.rocaapp20.MainActivity
+import com.miguelrodriguez.rocaapp20.R
 
 class ReportesMuestreoMaterial : AppCompatActivity() {
     private lateinit var dataReference: DatabaseReference

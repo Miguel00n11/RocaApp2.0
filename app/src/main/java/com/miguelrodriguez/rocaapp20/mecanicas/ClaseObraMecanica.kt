@@ -1,4 +1,6 @@
-package com.miguelrodriguez.rocaapp20.Recycler
+package com.miguelrodriguez.rocaapp20.mecanicas
+
+import com.miguelrodriguez.rocaapp20.Recycler.ClaseEstratos
 
 data class ClaseObraMecanica(val id:Int,
                              val Obra:String,

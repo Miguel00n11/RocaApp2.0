@@ -73,8 +73,6 @@
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </androidx.cardview.widget.CardView>
-
-
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
@@ -94,6 +92,60 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+
+                        android:hint="Cliente"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:startIconTint="#494949">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etClienteMuestreoMecanica"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+
+                        android:hint="Localización"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:startIconTint="#494949">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLocalizacionMuestreoMecanica"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+
+                        android:hint="Atención"
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:startIconTint="#494949">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etAtencionMuestreoMecanica"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilFechaMuestreoMecanica"
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
@@ -115,6 +167,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="date" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
                     <androidx.cardview.widget.CardView
@@ -190,7 +244,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:gravity="center"
-                            android:text="Datos del Muestreo de terracería o producto Asfáltico."
+                            android:text="Datos del sondeo"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </androidx.cardview.widget.CardView>
@@ -200,7 +254,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:hint="Capa"
+                        android:hint="Sondeo Núm."
                         android:textColorHint="@color/grey"
 
                         app:endIconMode="clear_text"
@@ -209,7 +263,7 @@
                         app:startIconTint="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etCapaMuestreoMecanica"
+                            android:id="@+id/etSondeoNumMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
@@ -221,7 +275,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginHorizontal="12dp"
-                        android:hint="Tramo"
+                        android:hint="Ubicación"
                         android:textColorHint="@color/grey"
 
                         app:endIconMode="clear_text"
@@ -230,7 +284,7 @@
                         app:startIconTint="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTramoMuestreoMecanica"
+                            android:id="@+id/etUbicacionMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
@@ -241,7 +295,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:hint="Subtramo"
+                        android:hint="NAF"
                         android:textColorHint="@color/grey"
 
                         app:endIconMode="clear_text"
@@ -250,7 +304,7 @@
                         app:startIconTint="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etSubTramoMuestreoMecanica"
+                            android:id="@+id/etNAFMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
@@ -261,7 +315,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:hint="Procedencia"
+                        android:hint="Profundidad del Sondeo"
                         android:textColorHint="@color/grey"
 
                         app:endIconMode="clear_text"
@@ -270,10 +324,35 @@
                         app:startIconTint="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etProcedenciaMuestreoMecanica"
+                            android:id="@+id/etProfundidadMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_weight="1"
+                        android:hint="Hora de muestreo"
+                        android:textColorHint="@color/grey"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:startIconTint="@color/grey"
+                        app:suffixText="h">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etHoraMuestreoMecanica"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:editable="true"
+                            android:focusableInTouchMode="false"
+                            android:inputType="time"
+                            android:maxLength="5"
+                            android:textIsSelectable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -281,7 +360,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:hint="Lugar de muestreo"
+                        android:hint="Profundidad NAF"
                         android:textColorHint="@color/grey"
 
                         app:endIconMode="clear_text"
@@ -290,31 +369,13 @@
                         app:startIconTint="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etLugarMuestreoMecanica"
+                            android:id="@+id/etProfundidadNAFMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="12dp"
-                        android:hint="Estación"
-                        android:textColorHint="@color/grey"
 
-                        app:endIconMode="clear_text"
-                        app:helperTextTextColor="#D81B60"
-                        app:hintTextColor="@color/grey"
-                        app:startIconTint="@color/grey">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etEstacionMuestreoMecanica"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textCapSentences" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
