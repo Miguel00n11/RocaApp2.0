@@ -3,6 +3,8 @@ package com.miguelrodriguez.rocaapp20.Recycler
 import android.app.AlertDialog
 import android.content.Context
 import android.view.View
+import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -13,14 +15,20 @@ class EstratosViewHolder(view:View):RecyclerView.ViewHolder(view) {
     private val tvIdEstratos: TextView =view.findViewById(R.id.tvIdEstratos)
     private val tvNombreEstrato: TextView =view.findViewById(R.id.tvNombreEstrato)
     private val tvEspesorEstrato: TextView =view.findViewById(R.id.tvEspesorEstrato)
-    private val btnEliminarEstrato: FloatingActionButton =
-        view.findViewById(R.id.btnEliminarEstrato)
+    private val btnEliminarEstrato: FloatingActionButton =view.findViewById(R.id.btnEliminarEstrato)
+
+//    private val spnTipoMuestreoMuestreoMecanica: Spinner =view.findViewById(R.id.spnTipoMuestreoMuestreoMecanica)
+//    private val etProfundidadInicioMuestreoMecanica: EditText =view.findViewById(R.id.etProfundidadInicioMuestreoMecanica)
+//    private val etProfundidadFinMuestreoMecanica: EditText =view.findViewById(R.id.etProfundidadFinalMuestreoMecanica)
+//    private val etProfundidadMuestreoMecanica: EditText =view.findViewById(R.id.etProfundidadMuestreoMecanica)
+//    private val etClasificacionVisualMuestreoMecanica: EditText =view.findViewById(R.id.etClasificacionVisualMuestreoMecanica)
+//    private val etObservacionesMuestreoMecanica: EditText =view.findViewById(R.id.etObservacionesMuestreoMecanica)
 
     fun render(listaEstratos: ClaseEstratos) {
 
         tvIdEstratos.text=listaEstratos.idEstrato.toString()
-        tvNombreEstrato.text=listaEstratos.nombre
-        tvEspesorEstrato.text=listaEstratos.espesor.toString()
+        tvNombreEstrato.text=listaEstratos.clasificacion_visual
+        tvEspesorEstrato.text=listaEstratos.profundidad_inicio.toString()
 
     }
     fun bind(estrato: ClaseEstratos, onEstratosSelected: (Int) -> Unit, onItemDelete: (Int) -> Unit) {

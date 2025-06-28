@@ -60,12 +60,15 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var spnMuestreo: Spinner
     private lateinit var spnEstudioMuestreo: Spinner
     private lateinit var etObraMuestreoMecanica: EditText
+    private lateinit var etClienteMuestreoMecanica: EditText
+    private lateinit var etLocalizacionMuestreoMecanica: EditText
+    private lateinit var etAtencionMuestreoMecanica: EditText
     private lateinit var etFechaMuestreoMecanica: EditText
-    private lateinit var etCapaMuestreoMecanica: EditText
-    private lateinit var etTramoMuestreoMecanica: EditText
-    private lateinit var etSubTramoMuestreoMecanica: EditText
-    private lateinit var etProcedenciaMuestreoMecanica: EditText
-    private lateinit var etLugarMuestreoMecanica: EditText
+    private lateinit var etSondeoNumMuestreoMecanica: EditText
+    private lateinit var etUbicacionMuestreoMecanica: EditText
+    private lateinit var etNAFMuestreoMecanica: EditText
+    private lateinit var etProfundidadMuestreoMecanica: EditText
+    private lateinit var etProfundidadNAFMuestreoMecanica: EditText
     private lateinit var etEstacionMuestreoMecanica: EditText
     private lateinit var fbNuevoEstrato: FloatingActionButton
     private lateinit var btnGuardarRegistroMuestreoMecanica: Button
@@ -407,12 +410,16 @@ class RegistroMecanica : AppCompatActivity() {
         spnEstudioMuestreo = findViewById(R.id.spnEstudioMuestreo)
         etFechaMuestreoMecanica = findViewById(R.id.etFechaMuestreoMecanica)
         etObraMuestreoMecanica = findViewById(R.id.etObraMuestreoMecanica)
-        etCapaMuestreoMecanica = findViewById(R.id.etCapaMuestreoMecanica)
-        etTramoMuestreoMecanica = findViewById(R.id.etTramoMuestreoMecanica)
-        etSubTramoMuestreoMecanica = findViewById(R.id.etSubTramoMuestreoMecanica)
-        etProcedenciaMuestreoMecanica = findViewById(R.id.etProcedenciaMuestreoMecanica)
-        etLugarMuestreoMecanica = findViewById(R.id.etLugarMuestreoMecanica)
-        etEstacionMuestreoMecanica = findViewById(R.id.etEstacionMuestreoMecanica)
+        etClienteMuestreoMecanica = findViewById(R.id.etClienteMuestreoMecanica)
+        etLocalizacionMuestreoMecanica = findViewById(R.id.etLocalizacionMuestreoMecanica)
+        etAtencionMuestreoMecanica = findViewById(R.id.etAtencionMuestreoMecanica)
+//        etFechaMuestreoMecanica = findViewById(R.id.etFechaMuestreoMecanica)
+        etSondeoNumMuestreoMecanica = findViewById(R.id.etSondeoNumMuestreoMecanica)
+        etUbicacionMuestreoMecanica = findViewById(R.id.etUbicacionMuestreoMecanica)
+        etNAFMuestreoMecanica = findViewById(R.id.etNAFMuestreoMecanica)
+        etProfundidadMuestreoMecanica = findViewById(R.id.etProfundidadMuestreoMecanica)
+        etProfundidadNAFMuestreoMecanica = findViewById(R.id.etProfundidadNAFMuestreoMecanica)
+//        etEstacionMuestreoMecanica = findViewById(R.id.etEstacionMuestreoMecanica)
         rvMuestreoEstratos = findViewById(R.id.rvMuestreoEstratos)
         rvImagenesMecanica = findViewById(R.id.rvImagenesMecanica)
         fbNuevoEstrato = findViewById(R.id.fbNuevoEstrato)
@@ -491,25 +498,25 @@ class RegistroMecanica : AppCompatActivity() {
         tvNumeroReporteMuestreoMecanica.setText(reporteSelecionado.id.toString())
         etObraMuestreoMecanica.setText(reporteSelecionado.Obra)
         etFechaMuestreoMecanica.setText(reporteSelecionado.fecha)
-        etCapaMuestreoMecanica.setText(reporteSelecionado.capa)
-        etTramoMuestreoMecanica.setText(reporteSelecionado.tramo)
-        etSubTramoMuestreoMecanica.setText(reporteSelecionado.subtramo)
-        etProcedenciaMuestreoMecanica.setText(reporteSelecionado.procedencia)
-        etLugarMuestreoMecanica.setText(reporteSelecionado.lugarMuestreo)
-        etEstacionMuestreoMecanica.setText(reporteSelecionado.estacion)
+        etSondeoNumMuestreoMecanica.setText(reporteSelecionado.sondeo_num)
+        etUbicacionMuestreoMecanica.setText(reporteSelecionado.ubicacion)
+        etNAFMuestreoMecanica.setText(reporteSelecionado.naf)
+        etProfundidadMuestreoMecanica.setText(reporteSelecionado.profundidad_muestreo)
+        etProfundidadNAFMuestreoMecanica.setText(reporteSelecionado.profundidad_naf)
+//        etEstacionMuestreoMecanica.setText(reporteSelecionado.estacion)
         tvLatitud.setText(reporteSelecionado.latitud)
         tvLongitud.setText(reporteSelecionado.longitud)
         llave = reporteSelecionado.llave
 
-        val textoASeleccionar = reporteSelecionado.tipoMuestreo
-        val adapter = spnMuestreo.adapter
-
-        for (i in 0 until adapter.count) {
-            if (adapter.getItem(i).toString() == textoASeleccionar) {
-                spnMuestreo.setSelection(i)
-                break
-            }
-        }
+//        val textoASeleccionar = reporteSelecionado.tipoMuestreo
+//        val adapter = spnMuestreo.adapter
+//
+//        for (i in 0 until adapter.count) {
+//            if (adapter.getItem(i).toString() == textoASeleccionar) {
+//                spnMuestreo.setSelection(i)
+//                break
+//            }
+//        }
 
         listaEstratosmutableListOf = reporteSelecionado.listaEstratos
 
@@ -612,14 +619,18 @@ class RegistroMecanica : AppCompatActivity() {
             try {
 
                 val obra: String = etObraMuestreoMecanica.text.toString()
+                val cliente: String = etClienteMuestreoMecanica.text.toString()
+                val localizacion: String = etLocalizacionMuestreoMecanica.text.toString()
+                val atencion: String = etAtencionMuestreoMecanica.text.toString()
                 val fecha: String = etFechaMuestreoMecanica.text.toString()
+
                 val numeroReporte: Int = tvNumeroReporteMuestreoMecanica.text.toString().toInt()
-                val capa: String = etCapaMuestreoMecanica.text.toString()
-                val Tramo: String = etTramoMuestreoMecanica.text.toString()
-                val subTramo: String = etSubTramoMuestreoMecanica.text.toString()
-                val procedencia: String = etProcedenciaMuestreoMecanica.text.toString()
-                val lugarMuestreo: String = etLugarMuestreoMecanica.text.toString()
-                val estacion: String = etEstacionMuestreoMecanica.text.toString()
+                val sondeo_num: String = etSondeoNumMuestreoMecanica.text.toString()
+                val ubicacion: String = etUbicacionMuestreoMecanica.text.toString()
+                val naf: String = etNAFMuestreoMecanica.text.toString()
+                val profundidad_muestreo: String = etProfundidadMuestreoMecanica.text.toString()
+                val profundidad_naf: String = etProfundidadNAFMuestreoMecanica.text.toString()
+//                val estacion: String = etEstacionMuestreoMecanica.text.toString()
                 val tipoMuestreo: String = spnMuestreo.selectedItem.toString()
                 val estudioMuestreo: String = spnEstudioMuestreo.selectedItem.toString()
                 var latitud: String = tvLatitud.text.toString()
@@ -630,20 +641,19 @@ class RegistroMecanica : AppCompatActivity() {
                 // Agregar un nuevo registro localmente
                 saveLocally(
                     obra,
+                    cliente,
                     fecha,
                     personal,
-                    numeroReporte,
-                    listaEstratosmutableListOf,
-                    capa,
-                    Tramo,
-                    subTramo,
-                    procedencia,
-                    lugarMuestreo,
-                    estacion,
+                    sondeo_num,
+                    ubicacion,
+                    naf,
+                    profundidad_muestreo,
+                    profundidad_naf,
                     llave,
                     tipoMuestreo,
                     estudioMuestreo,
                     latitud,longitud,
+                    listaEstratosmutableListOf,
                     imageList
                 )
 
@@ -914,22 +924,22 @@ class RegistroMecanica : AppCompatActivity() {
 
     private fun saveLocally(
         obra: String,
+        cliente: String,
+        localizacion: String,
+        atencion: String,
         fecha: String,
-        personal: String,
-        numeroReporte: Int,
-        listaEstratos: List<ClaseEstratos>,
-        capa: String,
-        Tramo: String,
-        subTramo: String,
-        procendecia: String,
-        lugarMuestreo: String,
-        estacion: String,
+        sondeo_num: String,
+        ubicacion: String,
+        naf: String,
+        profundidad_muestreo: String,
+        profundidad_naf: String,
+
         llave: String,
-        tipoMuestreo: String,
-        estudioMuestreo: String,
+        tipo_muestreo: String,
         latitud: String,
         longitud: String,
-        listaImagenes: List<String>
+        listaEstratos: MutableList<ClaseEstratos>,
+        listaImagenes: MutableList<String>
 
 
     ) {
@@ -939,18 +949,17 @@ class RegistroMecanica : AppCompatActivity() {
         // Agregar el nuevo registro a la lista
         val nuevoRegistro = Registro(
             obra,
+            cliente,
+            localizacion,
+            atencion,
             fecha,
-            personal,
-            numeroReporte,
-            capa,
-            Tramo,
-            subTramo,
-            procendecia,
-            lugarMuestreo,
-            estacion,
+            sondeo_num,
+            ubicacion,
+            naf,
+            profundidad_muestreo,
+            profundidad_naf,
             llave,
-            tipoMuestreo,
-            estudioMuestreo,
+            tipo_muestreo,
             latitud,longitud,
             listaEstratos,
             listaImagenes
@@ -968,26 +977,40 @@ class RegistroMecanica : AppCompatActivity() {
         val btnGuardarEstrato: Button =
             dialog.findViewById(R.id.btnGuardarEstrato)
 
-        val etNombreEstrato: EditText =
-            dialog.findViewById(R.id.etNombreEstrato)
-        val etEspesorEstrato: EditText = dialog.findViewById(R.id.etEspesorEstrato)
+        val spnTipoMuestreoMuestreoMecanica: Spinner =dialog.findViewById(R.id.spnTipoMuestreoMuestreoMecanica)
+        val etProfundidadInicioMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfundidadInicioMuestreoMecanica)
+        val etProfundidadFinalMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfundidadFinalMuestreoMecanica)
+        val etProfunididadMuestreoMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfunididadMuestreoMuestreoMecanica)
+        val etClasificacionVisualMuestreoMecanica: EditText = dialog.findViewById(R.id.etClasificacionVisualMuestreoMecanica)
+        val etObservacionesMuestreoMecanica: EditText = dialog.findViewById(R.id.etObservacionesMuestreoMecanica)
 
+
+        val itemMuestreo = arrayOf("Terracería", "Asfalto", "Acero", "Prefabricado")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, itemMuestreo)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spnTipoMuestreoMuestreoMecanica.adapter = adapter
 
 
         btnGuardarEstrato.setOnClickListener {
 
             try {
-                if (etNombreEstrato.text == null || etEspesorEstrato == null) {
-                    return@setOnClickListener
-                }
-                val Nombre = etNombreEstrato.text.toString()
-                val Espesor = etEspesorEstrato.text.toString().toDouble()
+                if (etProfundidadInicioMuestreoMecanica.text == null || etClasificacionVisualMuestreoMecanica.text == null) {return@setOnClickListener}
+                val Tipo_muestreo = spnTipoMuestreoMuestreoMecanica.selectedItem.toString()
+                val Profunidad_inicio = etProfundidadInicioMuestreoMecanica.text.toString().toDouble()
+                val Profunidad_final = etProfundidadFinalMuestreoMecanica.text.toString().toDouble()
+                val Profundidad_muestreo = etProfunididadMuestreoMuestreoMecanica.text.toString().toDouble()
+                val Clasificacion_visual = etClasificacionVisualMuestreoMecanica.text.toString()
+                val Observaciones = etObservacionesMuestreoMecanica.text.toString()
 
 
                 estratoNuevo = ClaseEstratos(
                     listaEstratosmutableListOf.count(),
-                    Nombre,
-                    Espesor
+                    Tipo_muestreo,
+                    Profunidad_inicio,
+                    Profunidad_final,
+                    Profundidad_muestreo,
+                    Clasificacion_visual,
+                    Observaciones
                 )
                 listaEstratosmutableListOf.add(estratoNuevo)
 
@@ -1037,30 +1060,53 @@ class RegistroMecanica : AppCompatActivity() {
         val btnGuardarEstrato: Button =
             dialog.findViewById(R.id.btnGuardarEstrato)
 
-        val etNombreEstrato: EditText =
-            dialog.findViewById(R.id.etNombreEstrato)
-        val etEspesorEstrato: EditText = dialog.findViewById(R.id.etEspesorEstrato)
+        val spnTipoMuestreoMuestreoMecanica: Spinner =dialog.findViewById(R.id.spnTipoMuestreoMuestreoMecanica)
+        val etProfundidadInicioMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfundidadInicioMuestreoMecanica)
+        val etProfundidadFinalMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfundidadFinalMuestreoMecanica)
+        val etProfunididadMuestreoMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfunididadMuestreoMuestreoMecanica)
+        val etClasificacionVisualMuestreoMecanica: EditText = dialog.findViewById(R.id.etClasificacionVisualMuestreoMecanica)
+        val etObservacionesMuestreoMecanica: EditText = dialog.findViewById(R.id.etObservacionesMuestreoMecanica)
+
+
+
+
 
         try {
-
         } catch (e: NumberFormatException) {
             Toast.makeText(this, "llenar correctamente los campos", Toast.LENGTH_SHORT).show()
             return
         }
 
-        etNombreEstrato.setText(estratoSelecionado.nombre)
-        etEspesorEstrato.setText(estratoSelecionado.espesor.toString())
+//        spnTipoMuestreoMuestreoMecanica.setText(estratoSelecionado.nombre)
+
+        spnTipoMuestreoMuestreoMecanica.setSelection(estratoSelecionado.tipo_muestreo.toInt())
+        etProfundidadInicioMuestreoMecanica.setText(estratoSelecionado.profundidad_inicio.toString())
+        etProfundidadFinalMuestreoMecanica.setText(estratoSelecionado.profundidad_final.toString())
+        etProfunididadMuestreoMuestreoMecanica.setText(estratoSelecionado.profundidad_muestreo.toString())
+        etClasificacionVisualMuestreoMecanica.setText(estratoSelecionado.clasificacion_visual)
+        etObservacionesMuestreoMecanica.setText(estratoSelecionado.observaciones)
 
         btnGuardarEstrato.setOnClickListener {
 
             try {
-                val nombre = etNombreEstrato.text.toString()
-                val espesor = etEspesorEstrato.text.toString().toDouble()
+
+                val tipo_muestreo = spnTipoMuestreoMuestreoMecanica.selectedItem.toString()
+                val profundidad_inicio = etProfundidadInicioMuestreoMecanica.text.toString().toDouble()
+                val profundidad_final = etProfundidadFinalMuestreoMecanica.text.toString().toDouble()
+                val profundidad_muestreo = etProfunididadMuestreoMuestreoMecanica.text.toString().toDouble()
+                val clasificacion_visual = etClasificacionVisualMuestreoMecanica.text.toString()
+                val observaciones = etObservacionesMuestreoMecanica.text.toString()
+
+//                val espesor = etEspesorEstrato.text.toString().toDouble()
 
                 estratoNuevo = ClaseEstratos(
                     indice,
-                    nombre,
-                    espesor
+                    tipo_muestreo,
+                    profundidad_inicio,
+                    profundidad_final,
+                    profundidad_muestreo,
+                    clasificacion_visual,
+                    observaciones
                 )
                 listaEstratosmutableListOf.set(indice, estratoNuevo)
 
@@ -1173,14 +1219,14 @@ class RegistroMecanica : AppCompatActivity() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
 
-                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+//                val textoASeleccionar = reporteSelecionado.estudioMuestreo
 
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-                        spnEstudioMuestreo.setSelection(i)
-                        break
-                    }
-                }
+//                for (i in 0 until adapter.count) {
+//                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+//                        spnEstudioMuestreo.setSelection(i)
+//                        break
+//                    }
+//                }
             }
 
             "Asfalto" -> {
@@ -1197,14 +1243,14 @@ class RegistroMecanica : AppCompatActivity() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
 
-                val textoASeleccionar = reporteSelecionado.estudioMuestreo
-
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-                        spnEstudioMuestreo.setSelection(i)
-                        break
-                    }
-                }
+//                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+//
+//                for (i in 0 until adapter.count) {
+//                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+//                        spnEstudioMuestreo.setSelection(i)
+//                        break
+//                    }
+//                }
             }
 
             "Prefabricado" -> {
@@ -1219,14 +1265,14 @@ class RegistroMecanica : AppCompatActivity() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
 
-                val textoASeleccionar = reporteSelecionado.estudioMuestreo
-
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-                        spnEstudioMuestreo.setSelection(i)
-                        break
-                    }
-                }
+//                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+//
+//                for (i in 0 until adapter.count) {
+//                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+//                        spnEstudioMuestreo.setSelection(i)
+//                        break
+//                    }
+//                }
             }
 
             "Acero" -> {
@@ -1239,14 +1285,14 @@ class RegistroMecanica : AppCompatActivity() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnEstudioMuestreo.adapter = adapter
 
-                val textoASeleccionar = reporteSelecionado.estudioMuestreo
-
-                for (i in 0 until adapter.count) {
-                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-                        spnEstudioMuestreo.setSelection(i)
-                        break
-                    }
-                }
+//                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+//
+//                for (i in 0 until adapter.count) {
+//                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+//                        spnEstudioMuestreo.setSelection(i)
+//                        break
+//                    }
+//                }
             }
             // Add cases for other options as needed
             else -> {
@@ -1261,22 +1307,21 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     data class Registro(
-        val obra: String,
-        val fecha: String,
-        val personal: String,
-        val numeroReporte: Int,
-        val capa: String,
-        val Tramo: String,
-        val subTramo: String,
-        val procedencia: String,
-        val LugarMuestreo: String,
-        val estacion: String,
-        var llave: String,
-        var tipoMuestreo: String,
-        var estudioMuestreo: String,
-        var latitud: String,
-        var longitud: String,
-        val listaEstratos: List<ClaseEstratos>,
-        val listaImagenes: List<String>
+        val Obra:String,
+        val cliente:String,
+        val localizacion:String,
+        val atencion:String,
+        val fecha:String,
+        val sondeo_num:String,
+        val ubicacion:String,
+        val naf:String,
+        val profundidad_muestreo:String,
+        val profundidad_naf:String,
+        var llave:String,
+        var tipo_muestreo:String,
+        var latitud:String,
+        var longitud:String,
+        val listaEstratos:MutableList<ClaseEstratos>,
+        val listaImagenes:MutableList<String>
     )
 }

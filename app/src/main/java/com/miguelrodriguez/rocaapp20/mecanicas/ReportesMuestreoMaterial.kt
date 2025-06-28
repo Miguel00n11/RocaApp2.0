@@ -44,32 +44,38 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     }
 
     private lateinit var btnRegistroCompactacion: Button
-    private lateinit var rvObrasCompactacion: RecyclerView
+    private lateinit var rvObrasMecanicas: RecyclerView
     private lateinit var ObraAdapter: ObraMecanicaAdapter
     private lateinit var claseObra: ClaseObra
 
     private lateinit var estratosAdapter: EstratosAdapter
     private lateinit var rvEstratos: RecyclerView
 
+    private lateinit var etCliente: EditText
     private lateinit var etObra: EditText
+    private lateinit var etlocalizacion: EditText
+    private lateinit var etAtencion: EditText
     private lateinit var etFecha: EditText
-    private lateinit var etCapa: EditText
-    private lateinit var etTramo: EditText
-    private lateinit var etSubTramo: EditText
-    private lateinit var procedencia: EditText
-    private lateinit var lugarMuestreo: EditText
-    private lateinit var estacion: EditText
-    private lateinit var tipoMuestreo: Spinner
-    private lateinit var estudioMuestreo: Spinner
+//    private lateinit var tipoMuestreo: Spinner
+
+    private lateinit var etSondeoNumMuestreoMecanica: EditText
+    private lateinit var etUbicacionMuestreoMecanica: EditText
+    private lateinit var etNAFMuestreoMecanica: EditText
+    private lateinit var etProfunMuestreoMecanica: EditText
+    private lateinit var etProfunNAFMuestreoMecanica: EditText
+    private lateinit var etHoraMuestreoMecanica: EditText
+
+
+
+
+
+
+
     private lateinit var llave: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reportes_muestreo_material)
-
-
-
-
 
         InitComponet()
         InitUI()
@@ -77,33 +83,75 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
 
     private fun InitComponet() {
-        listaEstratossmutableListOf = mutableListOf(ClaseEstratos(1, "1", 1.0))
+        listaEstratossmutableListOf = mutableListOf(ClaseEstratos(
+            1,
+            "1",
+            1.0,
+            1.0,
+            1.0,
+            "1.0",
+            "1.0"
+            ))
         listaImagenesmutableListOf = mutableListOf("a1")
         listaObrasmutableListOf = mutableListOf()
         listaObrasmutableListOf.clear()
         personal = MainActivity.NombreUsuarioCompanion
 
         reporteSelecionadoMuestroMaterial = ClaseObraMecanica(
-            1, "estacion", "1", "1", "1",
-            "1", "1", "1", "1", "1", "ho111la",
-            "tipo", "estudio","latitud","longitud", listaEstratossmutableListOf, listaImagenesmutableListOf
+            1,
+            "obra",
+            "cliente",
+            "localizacion",
+            "atencion",
+            "fecha",
+            "sondeo_num",
+            "ubicacion",
+            "naf",
+            "profundidad_muestreo",
+            "profundidad_naf",
+            "llave",
+            "latitud",
+            "longitud",
+            listaEstratossmutableListOf,
+            listaImagenesmutableListOf
         )
+
+//        etObra = findViewById(R.id.etObraMuestreoMecanica)
+//        etCliente = findViewById(R.id.etClienteMuestreoMecanica)
+//        etlocalizacion = findViewById(R.id.etLocalizacionMuestreoMecanica)
+//        etAtencion = findViewById(R.id.etAtencionMuestreoMecanica)
+//        etFecha = findViewById(R.id.etFechaMuestreoMecanica)
+//        etSondeoNumMuestreoMecanica = findViewById(R.id.etSondeoNumMuestreoMecanica)
+//        etUbicacionMuestreoMecanica = findViewById(R.id.etUbicacionMuestreoMecanica)
+//        etNAFMuestreoMecanica = findViewById(R.id.etNAFMuestreoMecanica)
+//        etProfunMuestreoMecanica = findViewById(R.id.etProfundidadMuestreoMecanica)
+//        etProfunNAFMuestreoMecanica = findViewById(R.id.etProfundidadNAFMuestreoMecanica)
+//        rvEstratos = findViewById(R.id.rvMuestreoEstratos)
 
 //        listaEstratossmutableListOf = mutableListOf(ClaseEstratos(1, "h", 1.0))
         btnRegistroMuestreoMaterial = findViewById(R.id.btnRegistroMuestreoMaterial)
-        rvObrasCompactacion = findViewById(R.id.rvObrasMecanicas)
+        rvObrasMecanicas = findViewById(R.id.rvObrasMecanicas)
     }
 
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObraMecanica) {
 
         etObra.setText(reporteSelecionado.Obra)
+        etCliente.setText(reporteSelecionado.cliente)
+        etAtencion.setText(reporteSelecionado.atencion)
+        etlocalizacion.setText(reporteSelecionado.localizacion)
         etFecha.setText(reporteSelecionado.fecha)
-        etCapa.setText(reporteSelecionado.capa)
-        etTramo.setText(reporteSelecionado.tramo)
-        etSubTramo.setText(reporteSelecionado.subtramo)
-        procedencia.setText(reporteSelecionado.procedencia)
-        lugarMuestreo.setText(reporteSelecionado.lugarMuestreo)
-        estacion.setText(reporteSelecionado.estacion)
+        etSondeoNumMuestreoMecanica.setText(reporteSelecionado.sondeo_num)
+        etUbicacionMuestreoMecanica.setText(reporteSelecionado.ubicacion)
+        etNAFMuestreoMecanica.setText(reporteSelecionado.naf)
+        etProfunMuestreoMecanica.setText(reporteSelecionado.profundidad_muestreo)
+        etProfunNAFMuestreoMecanica.setText(reporteSelecionado.profundidad_naf)
+
+
+//
+//        etSubTramo.setText(reporteSelecionado.subtramo)
+//        procedencia.setText(reporteSelecionado.procedencia)
+//        lugarMuestreo.setText(reporteSelecionado.lugarMuestreo)
+//        estacion.setText(reporteSelecionado.estacion)
 //        tipoMuestreo.setSelection(reporteSelecionado.tipoMuestreo)
 //        estudioMuestreo.setSelection(reporteSelecionado.estudioMuestreo)
         llave = reporteSelecionado.llave
@@ -130,33 +178,37 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             onItemDelete = { position -> onItemDelete(position) })
 
 
-        rvObrasCompactacion.layoutManager = LinearLayoutManager(this)
-        rvObrasCompactacion.adapter = ObraAdapter
+        rvObrasMecanicas.layoutManager = LinearLayoutManager(this)
+        rvObrasMecanicas.adapter = ObraAdapter
 
 
         storage= FirebaseStorage.getInstance()
         dataReference =
-            FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal)
+            FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child("miguel00n11")
 
         dataReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Limpia la lista actual
                 listaObrasmutableListOf.clear()
 
-                val personalDeseado =
-                    "miguel" // Reemplaza con el nombre del personal que deseas filtrar
-
                 for (snapshot in dataSnapshot.children) {
                     val numeroReporteKey = snapshot.key // Obtiene el número de informe (1, 2, 3, 4)
 
                     // Accede a los datos específicos de cada informe
                     val obra1 = snapshot.child("obra").getValue(String::class.java)
-                    val capa = snapshot.child("capa").getValue(String::class.java)
-                    val estacion = snapshot.child("estacion").getValue(String::class.java)
+                    val cliente = snapshot.child("cliente").getValue(String::class.java)
+                    val localizacion = snapshot.child("localizacion").getValue(String::class.java)
+                    val atencion = snapshot.child("atencion").getValue(String::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
-                    val estudioMuestreo =
-                        snapshot.child("estudioMuestreo").getValue(String::class.java)
-                    val tipoMuestreo = snapshot.child("tipoMuestreo").getValue(String::class.java)
+//                    val estudioMuestreo =snapshot.child("estudioMuestreo").getValue(String::class.java)
+//                    val tipoMuestreo = snapshot.child("tipoMuestreo").getValue(String::class.java)
+
+                    val sondeo_num = snapshot.child("sondeo_num").getValue(String::class.java)
+                    val ubicacion = snapshot.child("ubicacion").getValue(String::class.java)
+                    val naf = snapshot.child("naf").getValue(String::class.java)
+                    val profundidad_muestreo =snapshot.child("profundidad_muestreo").getValue(String::class.java)
+                    val profundidad_naf =snapshot.child("profundidad_naf").getValue(String::class.java)
+
                     var llave = snapshot.child("llave").getValue(String::class.java)
 //                    val listaCalas = snapshot.child("listaCalas").getValue(MutableList<ClaseCala>::class.java)
 
@@ -167,8 +219,13 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                     for (snapshot in listaEstratosSnapshot.children) {
 
                         val idEstrato = snapshot.child("idEstrato").getValue(Int::class.java)
-                        val espesor = snapshot.child("espesor").getValue(Double::class.java)
-                        val nombre = snapshot.child("nombre").getValue(String::class.java)
+                        val tipo_muestreo = snapshot.child("tipo_muestreo").getValue(String::class.java)
+                        val profundidad_inicio = snapshot.child("profundidad_inicio").getValue(Double::class.java)
+                        val profundidad_final = snapshot.child("profundidad_final").getValue(Double::class.java)
+                        val profundidad_muestreo= snapshot.child("profundidad_muestreo").getValue(Double::class.java)
+                        val clasificacion_visual = snapshot.child("clasificacion_visual").getValue(String::class.java)
+                        val observaciones = snapshot.child("observaciones").getValue(String::class.java)
+//                        val nombre = snapshot.child("nombre").getValue(String::class.java)
 
 //                        // Asegúrate de ajustar los nombres de los campos según tu modelo ClaseCala
 //                        val estacion = calaSnapshot.child("estacion").getValue(String::class.java)
@@ -182,8 +239,12 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                         // Crea un objeto ClaseCala y agrégalo a la lista
                         val Estrato = ClaseEstratos(
                             idEstrato!!,
-                            nombre!!,
-                            espesor!!
+                            tipo_muestreo!!,
+                            profundidad_inicio!!,
+                            profundidad_final!!,
+                            profundidad_muestreo!!,
+                            clasificacion_visual!!,
+                            observaciones!!,
                         )
                         listaEstratos.add(Estrato)
                     }
@@ -204,17 +265,17 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                         val obra = ClaseObraMecanica(
                             numReporte!!,
                             obra1.toString(),
-                            numReporte.toString(),
-                            capa.toString(),
+                            cliente.toString(),
+                            localizacion.toString(),
+                            atencion.toString(),
                             fecha.toString(),
-                            tramo.toString(),
-                            subTramo.toString(),
-                            procedencia.toString(),
-                            lugarMuestreo.toString(),
-                            estacion.toString(),
+                            sondeo_num.toString(),
+                            ubicacion.toString(),
+                            naf.toString(),
+                            profundidad_muestreo.toString(),
+                            profundidad_naf.toString(),
                             llave.toString(),
-                            tipoMuestreo.toString(),
-                            estudioMuestreo.toString(),
+//                            estudioMuestreo.toString(),
                             latitud.toString(),
                             longitud.toString(),
                             listaEstratos,

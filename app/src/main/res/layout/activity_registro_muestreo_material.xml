@@ -408,7 +408,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:gravity="center"
-                            android:text="Registro de estratos."
+                            android:text="Registro de estratos"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </androidx.cardview.widget.CardView>
