@@ -42,9 +42,12 @@ import java.util.Calendar
 
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Environment
+import android.provider.MediaStore
 import android.widget.AutoCompleteTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.textfield.TextInputLayout
@@ -52,15 +55,22 @@ import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
 import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class RegistroMecanica : AppCompatActivity() {
     private lateinit var dataReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
 
+    private val CAMERA_PERMISSION_REQUEST_CODE = 1002
+    private val REQUEST_IMAGE_CAPTURE = 2
+
+    private var isMantenimientoImageSelection = false
+    private val newImagesMantenimientoList = mutableListOf<String>() // Lista solo para imágenes nuevas
+    private val newImagesList = mutableListOf<String>() // Lista solo para imágenes nuevas
 
     private lateinit var spnMuestreo: Spinner
-    private lateinit var spnEstudioMuestreo: Spinner
+//    private lateinit var spnEstudioMuestreo: Spinner
     private lateinit var etObraMuestreoMecanica: EditText
     private lateinit var etClienteMuestreoMecanica: EditText
     private lateinit var etLocalizacionMuestreoMecanica: EditText
@@ -131,6 +141,8 @@ class RegistroMecanica : AppCompatActivity() {
 
         val btnSelectImages: Button = findViewById(R.id.btnSelectImages)
         btnSelectImages.setOnClickListener {
+
+            isMantenimientoImageSelection = true
             openImageChooser()
         }
 
@@ -349,55 +361,137 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     private fun openImageChooser() {
+        val options = arrayOf("Tomar foto", "Seleccionar de la galería")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Elige una opción")
+        builder.setItems(options) { _, which ->
+            when (which) {
+                0 -> checkCameraPermission() // Verifica el permiso antes de abrir la cámara
+                1 -> selectImagesFromGallery()
+            }
+        }
+        builder.show()
+    }
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        } else {
+            openCamera() // Abre la cámara si el permiso ya ha sido otorgado
+        }
+    }
+    private fun selectImagesFromGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(intent, PICK_IMAGES_REQUEST)
     }
 
+    private var photoUri: Uri? = null
+
+    private fun openCamera() {
+        if (imageList.size >= 3) {
+            Toast.makeText(this, "Solo puedes cargar hasta 3 imágenes.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val photoFile = createImageFile() // Crea el archivo temporal
+        photoFile?.let {
+            photoUri = FileProvider.getUriForFile(
+                this,
+                "com.miguelrodriguez.rocaapp20.provider",
+                it
+            )
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        }
+    }
+    private fun createImageFile(): File? {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (editar) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGES_REQUEST) {
+                val targetList = if (isMantenimientoImageSelection) imageList else imageList
+                val targetAdapter = if (isMantenimientoImageSelection) imageAdapter else imageAdapter
 
-            val listaRef = dataReference.child("ImagenesMecanicas").child(personal).child(llave)
+                if (targetList.size >= 3) {
+                    Toast.makeText(this, "Solo puedes cargar hasta 3 imágenes.", Toast.LENGTH_SHORT).show()
+                    return
+                }
 
-            listaRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val count = dataSnapshot.childrenCount.toInt()
-                    // 'count' ahora contiene el número de elementos en tu lista
+                if (data?.clipData != null) {
+                    val clipData = data.clipData
+                    val imagesToAdd = clipData!!.itemCount.coerceAtMost(3 - targetList.size)
+                    for (i in 0 until imagesToAdd) {
+                        val imageUri = clipData.getItemAt(i).uri
+                        targetList.add(imageUri.toString())
+                        if (isMantenimientoImageSelection){newImagesMantenimientoList.add(imageUri.toString())}else{newImagesList.add(imageUri.toString())}
 
-                    for (i in 1..count) {
-                        imageList.add(dataSnapshot.toString())
-
+//                        newImagesList.add(imageUri.toString())
                     }
-
+                } else if (data?.data != null) {
+                    if (targetList.size < 3) {
+                        val imageUri = data.data
+                        targetList.add(imageUri.toString())
+                        if (isMantenimientoImageSelection){newImagesMantenimientoList.add(imageUri.toString())}else{newImagesList.add(imageUri.toString())}
+//                        newImagesList.add(imageUri.toString())
+                    } else {
+                        Toast.makeText(this, "Solo puedes cargar hasta 3 imágenes.", Toast.LENGTH_SHORT).show()
+                    }
                 }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    println("Error al obtener el conteo de elementos: ${databaseError.message}")
-                }
-            })
+                targetAdapter.notifyDataSetChanged()
+            } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                val targetList = if (isMantenimientoImageSelection) imageList else imageList
+                val targetAdapter = if (isMantenimientoImageSelection) imageAdapter else imageAdapter
 
-        }
-        if (requestCode == PICK_IMAGES_REQUEST && resultCode == RESULT_OK) {
-            if (data?.clipData != null) {
-                // Seleccionar varias imágenes
-                val clipData = data.clipData
-                for (i in 0 until clipData!!.itemCount) {
-                    val imageUri = clipData.getItemAt(i).uri
-                    imageList.add(imageUri.toString())
+                if (targetList.size < 3) {
+                    photoUri?.let {
+                        targetList.add(it.toString())
+                        if (isMantenimientoImageSelection){newImagesMantenimientoList.add(it.toString())}else{newImagesList.add(it.toString())}
+
+//                        newImagesList.add(it.toString())
+                        targetAdapter.notifyDataSetChanged()
+                    }
+                } else {
+                    Toast.makeText(this, "Solo puedes cargar hasta 3 imágenes.", Toast.LENGTH_SHORT).show()
                 }
-            } else if (data?.data != null) {
-                // Seleccionar una sola imagen
-                val imageUri = data.data
-                imageList.add(imageUri.toString())
             }
 
-            // Actualizar el RecyclerView
-            imageAdapter.notifyDataSetChanged()
+            isMantenimientoImageSelection = false // Restablecer la bandera después de procesar las imágenes
         }
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            photoUri?.let {
+//                imageList.add(it.toString())
+//                imageAdapter.notifyDataSetChanged()
+//            }
+//        }
+//
+//        if (requestCode == PICK_IMAGES_REQUEST && resultCode == RESULT_OK) {
+//            if (data?.clipData != null) {
+//                val clipData = data.clipData
+//                for (i in 0 until clipData!!.itemCount) {
+//                    val imageUri = clipData.getItemAt(i).uri
+//                    imageList.add(imageUri.toString())
+//                }
+//            } else if (data?.data != null) {
+//                val imageUri = data.data
+//                imageList.add(imageUri.toString())
+//            }
+//            imageAdapter.notifyDataSetChanged()
+//        }
+//    }
+
 
     companion object {
         const val PICK_IMAGES_REQUEST = 1
@@ -657,8 +751,8 @@ class RegistroMecanica : AppCompatActivity() {
                 val profundidad_naf: String = etProfundidadNAFMuestreoMecanica.text.toString()
                 val hora: String = etHoraMuestreoMecanica.text.toString()
 //                val estacion: String = etEstacionMuestreoMecanica.text.toString()
-                val tipoMuestreo: String = spnMuestreo.selectedItem.toString()
-                val estudioMuestreo: String = spnEstudioMuestreo.selectedItem.toString()
+//                val tipoMuestreo: String = spnMuestreo.selectedItem.toString()
+//                val estudioMuestreo: String = spnEstudioMuestreo.selectedItem.toString()
                 var latitud: String = tvLatitud.text.toString()
                 var longitud: String = tvLongitud.text.toString()
                 var llave = reporteSelecionadoMuestroMaterial.llave
@@ -680,7 +774,7 @@ class RegistroMecanica : AppCompatActivity() {
                     profundidad_naf,
                     hora,
                     llave,
-                    tipoMuestreo,
+//                    tipoMuestreo,
                     latitud,longitud,
                     listaEstratosmutableListOf,
                     imageList
@@ -967,7 +1061,7 @@ class RegistroMecanica : AppCompatActivity() {
         hora: String,
 
         llave: String,
-        tipo_muestreo: String,
+//        tipo_muestreo: String,
         latitud: String,
         longitud: String,
         listaEstratos: MutableList<ClaseEstratos>,
@@ -994,7 +1088,7 @@ class RegistroMecanica : AppCompatActivity() {
             profundidad_naf,
             hora,
             llave,
-            tipo_muestreo,
+//            tipo_muestreo,
             latitud,longitud,
             listaEstratos,
             listaImagenes
@@ -1257,105 +1351,105 @@ class RegistroMecanica : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-    private fun cargarItemsEstudioMuestreo(selectedOption: String) {
-        // Handle different options as needed
-        when (selectedOption) {
-            "Terracería" -> {
-                // Load items specific to "Terracería"
-                val items = arrayOf(
-                    "Base Hidráulica",
-                    "Sub Base",
-                    "Sub Rasante",
-                    "Sub Yacente",
-                    "Terraplen",
-                    "Terreno Natural",
-                    "Para Identificación"
-                )
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spnEstudioMuestreo.adapter = adapter
-
-//                val textoASeleccionar = reporteSelecionado.estudioMuestreo
-
-//                for (i in 0 until adapter.count) {
-//                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-//                        spnEstudioMuestreo.setSelection(i)
-//                        break
-//                    }
-//                }
-            }
-
-            "Asfalto" -> {
-                val items = arrayOf(
-                    "Carpeta Asf.",
-                    "Base Negra",
-                    "Peso Vol.",
-                    "Agregados",
-                    "Sello",
-                    "Emulsión",
-                    "Otro"
-                )
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spnEstudioMuestreo.adapter = adapter
-
-//                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+//    private fun cargarItemsEstudioMuestreo(selectedOption: String) {
+//        // Handle different options as needed
+//        when (selectedOption) {
+//            "Terracería" -> {
+//                // Load items specific to "Terracería"
+//                val items = arrayOf(
+//                    "Base Hidráulica",
+//                    "Sub Base",
+//                    "Sub Rasante",
+//                    "Sub Yacente",
+//                    "Terraplen",
+//                    "Terreno Natural",
+//                    "Para Identificación"
+//                )
+////                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+////                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+////                spnEstudioMuestreo.adapter = adapter
 //
-//                for (i in 0 until adapter.count) {
-//                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-//                        spnEstudioMuestreo.setSelection(i)
-//                        break
-//                    }
-//                }
-            }
-
-            "Prefabricado" -> {
-                val items = arrayOf(
-                    "Compresión",
-                    "Densidad",
-                    "Absorción",
-                    "Permeabilidad",
-                    "Otro"
-                )
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spnEstudioMuestreo.adapter = adapter
-
-//                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+////                val textoASeleccionar = reporteSelecionado.estudioMuestreo
 //
-//                for (i in 0 until adapter.count) {
-//                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-//                        spnEstudioMuestreo.setSelection(i)
-//                        break
-//                    }
-//                }
-            }
-
-            "Acero" -> {
-                val items = arrayOf(
-                    "Tensión",
-                    "Doblado",
-                    "Otro"
-                )
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spnEstudioMuestreo.adapter = adapter
-
-//                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+////                for (i in 0 until adapter.count) {
+////                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+////                        spnEstudioMuestreo.setSelection(i)
+////                        break
+////                    }
+////                }
+//            }
 //
-//                for (i in 0 until adapter.count) {
-//                    if (adapter.getItem(i).toString() == textoASeleccionar) {
-//                        spnEstudioMuestreo.setSelection(i)
-//                        break
-//                    }
-//                }
-            }
-            // Add cases for other options as needed
-            else -> {
-                // Default case or handle other options
-            }
-        }
-    }
+//            "Asfalto" -> {
+//                val items = arrayOf(
+//                    "Carpeta Asf.",
+//                    "Base Negra",
+//                    "Peso Vol.",
+//                    "Agregados",
+//                    "Sello",
+//                    "Emulsión",
+//                    "Otro"
+//                )
+////                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+////                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+////                spnEstudioMuestreo.adapter = adapter
+//
+////                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+////
+////                for (i in 0 until adapter.count) {
+////                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+////                        spnEstudioMuestreo.setSelection(i)
+////                        break
+////                    }
+////                }
+//            }
+//
+//            "Prefabricado" -> {
+//                val items = arrayOf(
+//                    "Compresión",
+//                    "Densidad",
+//                    "Absorción",
+//                    "Permeabilidad",
+//                    "Otro"
+//                )
+////                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+////                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+////                spnEstudioMuestreo.adapter = adapter
+//
+////                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+////
+////                for (i in 0 until adapter.count) {
+////                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+////                        spnEstudioMuestreo.setSelection(i)
+////                        break
+////                    }
+////                }
+//            }
+//
+//            "Acero" -> {
+//                val items = arrayOf(
+//                    "Tensión",
+//                    "Doblado",
+//                    "Otro"
+//                )
+////                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+////                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+////                spnEstudioMuestreo.adapter = adapter
+//
+////                val textoASeleccionar = reporteSelecionado.estudioMuestreo
+////
+////                for (i in 0 until adapter.count) {
+////                    if (adapter.getItem(i).toString() == textoASeleccionar) {
+////                        spnEstudioMuestreo.setSelection(i)
+////                        break
+////                    }
+////                }
+//            }
+//            // Add cases for other options as needed
+//            else -> {
+//                // Default case or handle other options
+//            }
+//        }
+//    }
     private fun FechaDeHoy() {
         val calendario = Calendar.getInstance()
         val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -1377,7 +1471,7 @@ class RegistroMecanica : AppCompatActivity() {
         val profundidad_naf:String,
         val hora:String,
         var llave:String,
-        var tipo_muestreo:String,
+//        var tipo_muestreo:String,
         var latitud:String,
         var longitud:String,
         val listaEstratos:MutableList<ClaseEstratos>,
