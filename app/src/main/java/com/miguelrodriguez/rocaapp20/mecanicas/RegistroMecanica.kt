@@ -3,6 +3,7 @@ package com.miguelrodriguez.rocaapp20.mecanicas
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -69,6 +70,9 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var etNAFMuestreoMecanica: EditText
     private lateinit var etProfundidadMuestreoMecanica: EditText
     private lateinit var etProfundidadNAFMuestreoMecanica: EditText
+    private lateinit var etHoraMuestreoMecanica: EditText
+
+
     private lateinit var etEstacionMuestreoMecanica: EditText
     private lateinit var fbNuevoEstrato: FloatingActionButton
     private lateinit var btnGuardarRegistroMuestreoMecanica: Button
@@ -419,6 +423,8 @@ class RegistroMecanica : AppCompatActivity() {
         etNAFMuestreoMecanica = findViewById(R.id.etNAFMuestreoMecanica)
         etProfundidadMuestreoMecanica = findViewById(R.id.etProfundidadMuestreoMecanica)
         etProfundidadNAFMuestreoMecanica = findViewById(R.id.etProfundidadNAFMuestreoMecanica)
+        etHoraMuestreoMecanica = findViewById(R.id.etHoraMuestreoMecanica)
+
 //        etEstacionMuestreoMecanica = findViewById(R.id.etEstacionMuestreoMecanica)
         rvMuestreoEstratos = findViewById(R.id.rvMuestreoEstratos)
         rvImagenesMecanica = findViewById(R.id.rvImagenesMecanica)
@@ -438,7 +444,27 @@ class RegistroMecanica : AppCompatActivity() {
             ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
 
         cargarItemsMuestreo()
+        etHoraMuestreoMecanica.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val hora = calendar.get(Calendar.HOUR_OF_DAY)
+            val minuto = calendar.get(Calendar.MINUTE)
 
+            // Crea un TimePickerDialog con la hora actual como predeterminada
+            val timePickerDialog = TimePickerDialog(
+                this,
+                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                    // Actualiza el texto del EditText con la hora seleccionada por el usuario
+                    val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
+                    etHoraMuestreoMecanica.setText(horaSeleccionada)
+                },
+                hora,
+                minuto,
+                true
+            )
+
+            // Muestra el dialogo de selección de hora
+            timePickerDialog.show()
+        }
         if (editar == true) {
             cargarObraSeleccionada(reporteSelecionado)
 
@@ -497,26 +523,24 @@ class RegistroMecanica : AppCompatActivity() {
 
         tvNumeroReporteMuestreoMecanica.setText(reporteSelecionado.id.toString())
         etObraMuestreoMecanica.setText(reporteSelecionado.Obra)
+        etClienteMuestreoMecanica.setText(reporteSelecionado.cliente)
+        etLocalizacionMuestreoMecanica.setText(reporteSelecionado.localizacion)
+        etAtencionMuestreoMecanica.setText(reporteSelecionado.atencion)
         etFechaMuestreoMecanica.setText(reporteSelecionado.fecha)
         etSondeoNumMuestreoMecanica.setText(reporteSelecionado.sondeo_num)
         etUbicacionMuestreoMecanica.setText(reporteSelecionado.ubicacion)
         etNAFMuestreoMecanica.setText(reporteSelecionado.naf)
         etProfundidadMuestreoMecanica.setText(reporteSelecionado.profundidad_muestreo)
         etProfundidadNAFMuestreoMecanica.setText(reporteSelecionado.profundidad_naf)
+        etHoraMuestreoMecanica.setText(reporteSelecionado.hora)
+
+
+
 //        etEstacionMuestreoMecanica.setText(reporteSelecionado.estacion)
         tvLatitud.setText(reporteSelecionado.latitud)
         tvLongitud.setText(reporteSelecionado.longitud)
         llave = reporteSelecionado.llave
 
-//        val textoASeleccionar = reporteSelecionado.tipoMuestreo
-//        val adapter = spnMuestreo.adapter
-//
-//        for (i in 0 until adapter.count) {
-//            if (adapter.getItem(i).toString() == textoASeleccionar) {
-//                spnMuestreo.setSelection(i)
-//                break
-//            }
-//        }
 
         listaEstratosmutableListOf = reporteSelecionado.listaEstratos
 
@@ -630,6 +654,7 @@ class RegistroMecanica : AppCompatActivity() {
                 val naf: String = etNAFMuestreoMecanica.text.toString()
                 val profundidad_muestreo: String = etProfundidadMuestreoMecanica.text.toString()
                 val profundidad_naf: String = etProfundidadNAFMuestreoMecanica.text.toString()
+                val hora: String = etHoraMuestreoMecanica.text.toString()
 //                val estacion: String = etEstacionMuestreoMecanica.text.toString()
                 val tipoMuestreo: String = spnMuestreo.selectedItem.toString()
                 val estudioMuestreo: String = spnEstudioMuestreo.selectedItem.toString()
@@ -642,16 +667,19 @@ class RegistroMecanica : AppCompatActivity() {
                 saveLocally(
                     obra,
                     cliente,
-                    fecha,
+                    localizacion,
+                    atencion,
                     personal,
+                    numeroReporte,
+                    fecha,
                     sondeo_num,
                     ubicacion,
                     naf,
                     profundidad_muestreo,
                     profundidad_naf,
+                    hora,
                     llave,
                     tipoMuestreo,
-                    estudioMuestreo,
                     latitud,longitud,
                     listaEstratosmutableListOf,
                     imageList
@@ -927,12 +955,15 @@ class RegistroMecanica : AppCompatActivity() {
         cliente: String,
         localizacion: String,
         atencion: String,
+        personal: String,
+        numeroReporte: Int,
         fecha: String,
         sondeo_num: String,
         ubicacion: String,
         naf: String,
         profundidad_muestreo: String,
         profundidad_naf: String,
+        hora: String,
 
         llave: String,
         tipo_muestreo: String,
@@ -952,12 +983,15 @@ class RegistroMecanica : AppCompatActivity() {
             cliente,
             localizacion,
             atencion,
+            personal,
+            numeroReporte,
             fecha,
             sondeo_num,
             ubicacion,
             naf,
             profundidad_muestreo,
             profundidad_naf,
+            hora,
             llave,
             tipo_muestreo,
             latitud,longitud,
@@ -971,6 +1005,8 @@ class RegistroMecanica : AppCompatActivity() {
     }
 
     private fun showDialog() {
+
+
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.activity_nuevo_estrato_mecanica)
 
@@ -989,6 +1025,7 @@ class RegistroMecanica : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, itemMuestreo)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spnTipoMuestreoMuestreoMecanica.adapter = adapter
+
 
 
         btnGuardarEstrato.setOnClickListener {
@@ -1068,6 +1105,23 @@ class RegistroMecanica : AppCompatActivity() {
         val etObservacionesMuestreoMecanica: EditText = dialog.findViewById(R.id.etObservacionesMuestreoMecanica)
 
 
+        val itemMuestreo = arrayOf("Terracería", "Asfalto", "Acero", "Prefabricado")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, itemMuestreo)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spnTipoMuestreoMuestreoMecanica.adapter = adapter
+
+
+
+// Aquí sí puedes acceder a estratoSelecionado
+        val tipoMuestreo = estratoSelecionado.tipo_muestreo
+        val index = itemMuestreo.indexOfFirst { it.equals(tipoMuestreo, ignoreCase = true) }
+
+        if (index >= 0) {
+            spnTipoMuestreoMuestreoMecanica.setSelection(index)
+        } else {
+            Toast.makeText(this, "Tipo de muestreo no encontrado: $tipoMuestreo", Toast.LENGTH_SHORT).show()
+        }
+
 
 
 
@@ -1079,7 +1133,7 @@ class RegistroMecanica : AppCompatActivity() {
 
 //        spnTipoMuestreoMuestreoMecanica.setText(estratoSelecionado.nombre)
 
-        spnTipoMuestreoMuestreoMecanica.setSelection(estratoSelecionado.tipo_muestreo.toInt())
+//        spnTipoMuestreoMuestreoMecanica.setSelection(estratoSelecionado.tipo_muestreo.toString())
         etProfundidadInicioMuestreoMecanica.setText(estratoSelecionado.profundidad_inicio.toString())
         etProfundidadFinalMuestreoMecanica.setText(estratoSelecionado.profundidad_final.toString())
         etProfunididadMuestreoMuestreoMecanica.setText(estratoSelecionado.profundidad_muestreo.toString())
@@ -1311,12 +1365,15 @@ class RegistroMecanica : AppCompatActivity() {
         val cliente:String,
         val localizacion:String,
         val atencion:String,
+        val personal:String,
+        val numeroReporte:Int,
         val fecha:String,
         val sondeo_num:String,
         val ubicacion:String,
         val naf:String,
         val profundidad_muestreo:String,
         val profundidad_naf:String,
+        val hora:String,
         var llave:String,
         var tipo_muestreo:String,
         var latitud:String,

@@ -33,7 +33,7 @@ class Seleccionar_actividad : AppCompatActivity() {
 
         }
         btnItReportesMorteros.setOnClickListener {
-            val intent=Intent(this,ReportesMorteros::class.java)
+            val intent=Intent(this,ReportesMuestreoMaterial::class.java)
             startActivity(intent)
             Toast.makeText(this, "Aún no disponible", Toast.LENGTH_SHORT).show()
         }

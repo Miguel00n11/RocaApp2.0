@@ -109,6 +109,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             "naf",
             "profundidad_muestreo",
             "profundidad_naf",
+            "hora",
             "llave",
             "latitud",
             "longitud",
@@ -184,7 +185,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
         storage= FirebaseStorage.getInstance()
         dataReference =
-            FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child("miguel00n11")
+            FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal)
 
         dataReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -208,6 +209,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                     val naf = snapshot.child("naf").getValue(String::class.java)
                     val profundidad_muestreo =snapshot.child("profundidad_muestreo").getValue(String::class.java)
                     val profundidad_naf =snapshot.child("profundidad_naf").getValue(String::class.java)
+                    val hora = snapshot.child("hora").getValue(String::class.java)
 
                     var llave = snapshot.child("llave").getValue(String::class.java)
 //                    val listaCalas = snapshot.child("listaCalas").getValue(MutableList<ClaseCala>::class.java)
@@ -274,6 +276,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                             naf.toString(),
                             profundidad_muestreo.toString(),
                             profundidad_naf.toString(),
+                            hora.toString(),
                             llave.toString(),
 //                            estudioMuestreo.toString(),
                             latitud.toString(),

@@ -82,6 +82,7 @@
                         android:hint="Obra"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
+                        android:textColorHint="@color/grey"
                         app:startIconTint="#494949">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -101,6 +102,7 @@
                         android:hint="Cliente"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
+                        android:textColorHint="@color/grey"
                         app:startIconTint="#494949">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -121,6 +123,8 @@
                         android:hint="Localización"
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
+                        android:textColorHint="@color/grey"
+
                         app:startIconTint="#494949">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -137,6 +141,7 @@
 
                         android:hint="Atención"
                         app:endIconMode="clear_text"
+                        android:textColorHint="@color/grey"
                         app:helperTextTextColor="#D81B60"
                         app:startIconTint="#494949">
 
@@ -158,6 +163,7 @@
                         app:endIconDrawable="@drawable/baseline_calendar_month_24"
                         app:endIconMode="custom"
                         app:helperTextTextColor="#D81B60"
+                        android:textColorHint="@color/grey"
                         app:endIconTint="#7E57C2"
                         app:startIconTint="#494949">
 
@@ -289,7 +295,26 @@
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:hint="Profundidad del Sondeo [cm]"
+                        android:textColorHint="@color/grey"
 
+                        app:endIconMode="clear_text"
+                        app:helperTextTextColor="#D81B60"
+                        app:hintTextColor="@color/grey"
+                        app:suffixText="cm"
+                        app:startIconTint="@color/grey">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etProfundidadMuestreoMecanica"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences" />
+                    </com.google.android.material.textfield.TextInputLayout>
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
@@ -309,26 +334,27 @@
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
-
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:hint="Profundidad del Sondeo"
+                        android:hint="Profundidad NAF [cm]"
                         android:textColorHint="@color/grey"
 
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
                         app:hintTextColor="@color/grey"
+                        app:suffixText="cm"
                         app:startIconTint="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etProfundidadMuestreoMecanica"
+                            android:id="@+id/etProfundidadNAFMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                         android:layout_width="match_parent"
@@ -353,26 +379,6 @@
                             android:inputType="time"
                             android:maxLength="5"
                             android:textIsSelectable="false" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="12dp"
-                        android:hint="Profundidad NAF"
-                        android:textColorHint="@color/grey"
-
-                        app:endIconMode="clear_text"
-                        app:helperTextTextColor="#D81B60"
-                        app:hintTextColor="@color/grey"
-                        app:startIconTint="@color/grey">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etProfundidadNAFMuestreoMecanica"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textCapSentences" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
