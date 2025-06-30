@@ -42,6 +42,7 @@ import java.util.Calendar
 
 import android.content.pm.PackageManager
 import android.location.Location
+import android.widget.AutoCompleteTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -410,8 +411,8 @@ class RegistroMecanica : AppCompatActivity() {
         reporteSelecionado = ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
         editar = ReportesMuestreoMaterial.editarMuestreoMaterial
 
-        spnMuestreo = findViewById(R.id.spnMuestreo)
-        spnEstudioMuestreo = findViewById(R.id.spnEstudioMuestreo)
+//        spnMuestreo = findViewById(R.id.spnMuestreo)
+//        spnEstudioMuestreo = findViewById(R.id.spnEstudioMuestreo)
         etFechaMuestreoMecanica = findViewById(R.id.etFechaMuestreoMecanica)
         etObraMuestreoMecanica = findViewById(R.id.etObraMuestreoMecanica)
         etClienteMuestreoMecanica = findViewById(R.id.etClienteMuestreoMecanica)
@@ -443,7 +444,7 @@ class RegistroMecanica : AppCompatActivity() {
         reporteSelecionadoMuestroMaterial =
             ReportesMuestreoMaterial.reporteSelecionadoMuestroMaterial
 
-        cargarItemsMuestreo()
+//        cargarItemsMuestreo()
         etHoraMuestreoMecanica.setOnClickListener {
             val calendar = Calendar.getInstance()
             val hora = calendar.get(Calendar.HOUR_OF_DAY)
@@ -569,22 +570,22 @@ class RegistroMecanica : AppCompatActivity() {
             onBackPressed()
 
         }
-        spnMuestreo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-
-                cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // No se utiliza en este ejemplo
-            }
-        }
+//        spnMuestreo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long
+//            ) {
+//
+//                cargarItemsEstudioMuestreo(spnMuestreo.selectedItem.toString())
+//
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//                // No se utiliza en este ejemplo
+//            }
+//        }
         btnGuardarRegistroMuestreoMecanica.setOnClickListener {
             mostrarDialogo()
         }
@@ -1013,7 +1014,7 @@ class RegistroMecanica : AppCompatActivity() {
         val btnGuardarEstrato: Button =
             dialog.findViewById(R.id.btnGuardarEstrato)
 
-        val spnTipoMuestreoMuestreoMecanica: Spinner =dialog.findViewById(R.id.spnTipoMuestreoMuestreoMecanica)
+//        val spnTipoMuestreoMuestreoMecanica: Spinner =dialog.findViewById(R.id.spnTipoMuestreoMuestreoMecanica)
         val etProfundidadInicioMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfundidadInicioMuestreoMecanica)
         val etProfundidadFinalMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfundidadFinalMuestreoMecanica)
         val etProfunididadMuestreoMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfunididadMuestreoMuestreoMecanica)
@@ -1021,10 +1022,10 @@ class RegistroMecanica : AppCompatActivity() {
         val etObservacionesMuestreoMecanica: EditText = dialog.findViewById(R.id.etObservacionesMuestreoMecanica)
 
 
+        val spnTipoMuestreoMuestreoMecanica: AutoCompleteTextView = dialog.findViewById(R.id.actvTipoMuestreoMuestreoMecanica)
         val itemMuestreo = arrayOf("Terracería", "Asfalto", "Acero", "Prefabricado")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, itemMuestreo)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spnTipoMuestreoMuestreoMecanica.adapter = adapter
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, itemMuestreo)
+        spnTipoMuestreoMuestreoMecanica.setAdapter(adapter)
 
 
 
@@ -1032,7 +1033,7 @@ class RegistroMecanica : AppCompatActivity() {
 
             try {
                 if (etProfundidadInicioMuestreoMecanica.text == null || etClasificacionVisualMuestreoMecanica.text == null) {return@setOnClickListener}
-                val Tipo_muestreo = spnTipoMuestreoMuestreoMecanica.selectedItem.toString()
+                val tipo_muestreo = spnTipoMuestreoMuestreoMecanica.text.toString()
                 val Profunidad_inicio = etProfundidadInicioMuestreoMecanica.text.toString().toDouble()
                 val Profunidad_final = etProfundidadFinalMuestreoMecanica.text.toString().toDouble()
                 val Profundidad_muestreo = etProfunididadMuestreoMuestreoMecanica.text.toString().toDouble()
@@ -1042,7 +1043,7 @@ class RegistroMecanica : AppCompatActivity() {
 
                 estratoNuevo = ClaseEstratos(
                     listaEstratosmutableListOf.count(),
-                    Tipo_muestreo,
+                    tipo_muestreo,
                     Profunidad_inicio,
                     Profunidad_final,
                     Profundidad_muestreo,
@@ -1097,7 +1098,7 @@ class RegistroMecanica : AppCompatActivity() {
         val btnGuardarEstrato: Button =
             dialog.findViewById(R.id.btnGuardarEstrato)
 
-        val spnTipoMuestreoMuestreoMecanica: Spinner =dialog.findViewById(R.id.spnTipoMuestreoMuestreoMecanica)
+//        val spnTipoMuestreoMuestreoMecanica: Spinner =dialog.findViewById(R.id.spnTipoMuestreoMuestreoMecanica)
         val etProfundidadInicioMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfundidadInicioMuestreoMecanica)
         val etProfundidadFinalMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfundidadFinalMuestreoMecanica)
         val etProfunididadMuestreoMuestreoMecanica: EditText = dialog.findViewById(R.id.etProfunididadMuestreoMuestreoMecanica)
@@ -1105,10 +1106,11 @@ class RegistroMecanica : AppCompatActivity() {
         val etObservacionesMuestreoMecanica: EditText = dialog.findViewById(R.id.etObservacionesMuestreoMecanica)
 
 
+        val spnTipoMuestreoMuestreoMecanica: AutoCompleteTextView = dialog.findViewById(R.id.actvTipoMuestreoMuestreoMecanica)
         val itemMuestreo = arrayOf("Terracería", "Asfalto", "Acero", "Prefabricado")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, itemMuestreo)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spnTipoMuestreoMuestreoMecanica.adapter = adapter
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, itemMuestreo)
+        spnTipoMuestreoMuestreoMecanica.setAdapter(adapter)
+
 
 
 
@@ -1117,7 +1119,7 @@ class RegistroMecanica : AppCompatActivity() {
         val index = itemMuestreo.indexOfFirst { it.equals(tipoMuestreo, ignoreCase = true) }
 
         if (index >= 0) {
-            spnTipoMuestreoMuestreoMecanica.setSelection(index)
+            spnTipoMuestreoMuestreoMecanica.setText(estratoSelecionado.tipo_muestreo, false)
         } else {
             Toast.makeText(this, "Tipo de muestreo no encontrado: $tipoMuestreo", Toast.LENGTH_SHORT).show()
         }
@@ -1144,7 +1146,7 @@ class RegistroMecanica : AppCompatActivity() {
 
             try {
 
-                val tipo_muestreo = spnTipoMuestreoMuestreoMecanica.selectedItem.toString()
+                val tipo_muestreo = spnTipoMuestreoMuestreoMecanica.text.toString()
                 val profundidad_inicio = etProfundidadInicioMuestreoMecanica.text.toString().toDouble()
                 val profundidad_final = etProfundidadFinalMuestreoMecanica.text.toString().toDouble()
                 val profundidad_muestreo = etProfunididadMuestreoMuestreoMecanica.text.toString().toDouble()
@@ -1231,12 +1233,12 @@ class RegistroMecanica : AppCompatActivity() {
 
     }
 
-    private fun cargarItemsMuestreo() {
-        val itemMuestreo = arrayOf("Terracería", "Asfalto", "Acero", "Prefabricado")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, itemMuestreo)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spnMuestreo.adapter = adapter
-    }
+//    private fun cargarItemsMuestreo() {
+//        val itemMuestreo = arrayOf("Terracería", "Asfalto", "Acero", "Prefabricado")
+//        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, itemMuestreo)
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        spnMuestreo.adapter = adapter
+//    }
 
     fun mostrarCalendarioMuestreoMecanica(view: View) {
         val calendario = Calendar.getInstance()
