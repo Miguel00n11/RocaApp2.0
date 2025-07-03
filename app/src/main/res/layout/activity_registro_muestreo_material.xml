@@ -230,7 +230,7 @@
                             android:id="@+id/etSondeoNumMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapSentences" />
+                            android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -271,35 +271,58 @@
                             android:id="@+id/etProfundidadMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapSentences" />
+                            android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+
+
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
-                        android:hint="NAF"
-                        android:textColorHint="@color/grey"
+                        android:layout_marginTop="12dp"
+                        android:backgroundTint="@color/white"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp">
 
-                        app:endIconMode="clear_text"
-                        app:helperTextTextColor="#D81B60"
-                        app:hintTextColor="@color/grey"
-                        app:startIconTint="@color/grey">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etNAFMuestreoMecanica"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapSentences" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            android:gravity="center_vertical">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="¿Se encontró NAF en el sondeo?"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switchHayNAF"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:checked="false"
+                                android:thumbTint="#66BB6A"
+                                android:trackTint="@color/grey" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+
+
+
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:id="@+id/etProfundidadNAFMuestreoMecanicaLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
                         android:hint="Profundidad NAF [cm]"
                         android:textColorHint="@color/grey"
-
                         app:endIconMode="clear_text"
                         app:helperTextTextColor="#D81B60"
                         app:hintTextColor="@color/grey"
@@ -310,7 +333,7 @@
                             android:id="@+id/etProfundidadNAFMuestreoMecanica"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapSentences" />
+                            android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout

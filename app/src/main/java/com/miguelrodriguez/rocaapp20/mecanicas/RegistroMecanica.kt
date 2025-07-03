@@ -45,14 +45,17 @@ import android.location.Location
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.AutoCompleteTextView
+import android.widget.Switch
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputLayout
 import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
+import com.miguelrodriguez.rocaapp20.R.id.switchHayNAF
 import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -78,10 +81,12 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var etFechaMuestreoMecanica: EditText
     private lateinit var etSondeoNumMuestreoMecanica: EditText
     private lateinit var etUbicacionMuestreoMecanica: EditText
-    private lateinit var etNAFMuestreoMecanica: EditText
+    private lateinit var switchHayNAF: SwitchMaterial
     private lateinit var etProfundidadMuestreoMecanica: EditText
     private lateinit var etProfundidadNAFMuestreoMecanica: EditText
+    private lateinit var etProfundidadNAFMuestreoMecanicaLabel: TextInputLayout
     private lateinit var etHoraMuestreoMecanica: EditText
+
 
 
     private lateinit var etEstacionMuestreoMecanica: EditText
@@ -492,9 +497,16 @@ class RegistroMecanica : AppCompatActivity() {
 //        etFechaMuestreoMecanica = findViewById(R.id.etFechaMuestreoMecanica)
         etSondeoNumMuestreoMecanica = findViewById(R.id.etSondeoNumMuestreoMecanica)
         etUbicacionMuestreoMecanica = findViewById(R.id.etUbicacionMuestreoMecanica)
-        etNAFMuestreoMecanica = findViewById(R.id.etNAFMuestreoMecanica)
+
+
+        switchHayNAF = findViewById(R.id.switchHayNAF)
+
         etProfundidadMuestreoMecanica = findViewById(R.id.etProfundidadMuestreoMecanica)
         etProfundidadNAFMuestreoMecanica = findViewById(R.id.etProfundidadNAFMuestreoMecanica)
+        etProfundidadNAFMuestreoMecanicaLabel = findViewById(R.id.etProfundidadNAFMuestreoMecanicaLabel)
+
+        etProfundidadNAFMuestreoMecanicaLabel.visibility = View.GONE
+
         etHoraMuestreoMecanica = findViewById(R.id.etHoraMuestreoMecanica)
 
 //        etEstacionMuestreoMecanica = findViewById(R.id.etEstacionMuestreoMecanica)
@@ -587,6 +599,8 @@ class RegistroMecanica : AppCompatActivity() {
                 }
             })
 
+            etProfundidadNAFMuestreoMecanicaLabel.visibility =if (switchHayNAF.isChecked) View.VISIBLE else View.GONE
+
         }
 
     }
@@ -601,7 +615,7 @@ class RegistroMecanica : AppCompatActivity() {
         etFechaMuestreoMecanica.setText(reporteSelecionado.fecha)
         etSondeoNumMuestreoMecanica.setText(reporteSelecionado.sondeo_num)
         etUbicacionMuestreoMecanica.setText(reporteSelecionado.ubicacion)
-        etNAFMuestreoMecanica.setText(reporteSelecionado.naf)
+        switchHayNAF.isChecked = reporteSelecionado.naf
         etProfundidadMuestreoMecanica.setText(reporteSelecionado.profundidad_muestreo)
         etProfundidadNAFMuestreoMecanica.setText(reporteSelecionado.profundidad_naf)
         etHoraMuestreoMecanica.setText(reporteSelecionado.hora)
@@ -682,6 +696,15 @@ class RegistroMecanica : AppCompatActivity() {
         }
 
 
+        switchHayNAF.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                etProfundidadNAFMuestreoMecanicaLabel.visibility = View.VISIBLE
+            } else {
+//                etProfundidadNAFMuestreoMecanica.setText("") // Limpia el campo si el usuario apaga el switch
+                etProfundidadNAFMuestreoMecanicaLabel.visibility = View.GONE
+            }
+        }
+
     }
 
     private fun restaurarDatosOriginales() {
@@ -723,9 +746,13 @@ class RegistroMecanica : AppCompatActivity() {
                 val numeroReporte: Int = tvNumeroReporteMuestreoMecanica.text.toString().toInt()
                 val sondeo_num: String = etSondeoNumMuestreoMecanica.text.toString()
                 val ubicacion: String = etUbicacionMuestreoMecanica.text.toString()
-                val naf: String = etNAFMuestreoMecanica.text.toString()
+                val naf: Boolean = switchHayNAF.isChecked
                 val profundidad_muestreo: String = etProfundidadMuestreoMecanica.text.toString()
-                val profundidad_naf: String = etProfundidadNAFMuestreoMecanica.text.toString()
+                var profundidad_naf: String = etProfundidadNAFMuestreoMecanica.text.toString()
+                if (naf==false){
+
+                    profundidad_naf="---"
+                }
                 val hora: String = etHoraMuestreoMecanica.text.toString()
 //                val estacion: String = etEstacionMuestreoMecanica.text.toString()
 //                val tipoMuestreo: String = spnMuestreo.selectedItem.toString()
@@ -1032,7 +1059,7 @@ class RegistroMecanica : AppCompatActivity() {
         fecha: String,
         sondeo_num: String,
         ubicacion: String,
-        naf: String,
+        naf: Boolean,
         profundidad_muestreo: String,
         profundidad_naf: String,
         hora: String,
@@ -1097,6 +1124,7 @@ class RegistroMecanica : AppCompatActivity() {
         val itemMuestreo = arrayOf("Alterado", "Inalterado", "Visual")
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, itemMuestreo)
         spnTipoMuestreoMuestreoMecanica.setAdapter(adapter)
+        spnTipoMuestreoMuestreoMecanica.setText("Alterado", false)
 
 
 
@@ -1178,7 +1206,7 @@ class RegistroMecanica : AppCompatActivity() {
 
 
         val spnTipoMuestreoMuestreoMecanica: AutoCompleteTextView = dialog.findViewById(R.id.actvTipoMuestreoMuestreoMecanica)
-        val itemMuestreo = arrayOf("Terracería", "Asfalto", "Acero", "Prefabricado")
+        val itemMuestreo = arrayOf("Alterado", "Inalterado", "Visual")
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, itemMuestreo)
         spnTipoMuestreoMuestreoMecanica.setAdapter(adapter)
 
@@ -1339,7 +1367,7 @@ class RegistroMecanica : AppCompatActivity() {
         val fecha:String,
         val sondeo_num:String,
         val ubicacion:String,
-        val naf:String,
+        val naf:Boolean,
         val profundidad_muestreo:String,
         val profundidad_naf:String,
         val hora:String,

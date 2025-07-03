@@ -107,7 +107,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             "fecha",
             "sondeo_num",
             "ubicacion",
-            "naf",
+             false,
             "profundidad_muestreo",
             "profundidad_naf",
             "hora",
@@ -144,7 +144,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         etFecha.setText(reporteSelecionado.fecha)
         etSondeoNumMuestreoMecanica.setText(reporteSelecionado.sondeo_num)
         etUbicacionMuestreoMecanica.setText(reporteSelecionado.ubicacion)
-        etNAFMuestreoMecanica.setText(reporteSelecionado.naf)
+        etNAFMuestreoMecanica.setText(reporteSelecionado.naf.toString())
+
         etProfunMuestreoMecanica.setText(reporteSelecionado.profundidad_muestreo)
         etProfunNAFMuestreoMecanica.setText(reporteSelecionado.profundidad_naf)
 
@@ -207,7 +208,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
                     val sondeo_num = snapshot.child("sondeo_num").getValue(String::class.java)
                     val ubicacion = snapshot.child("ubicacion").getValue(String::class.java)
-                    val naf = snapshot.child("naf").getValue(String::class.java)
+                    val naf = snapshot.child("naf").getValue(Boolean::class.java)
                     val profundidad_muestreo =snapshot.child("profundidad_muestreo").getValue(String::class.java)
                     val profundidad_naf =snapshot.child("profundidad_naf").getValue(String::class.java)
                     val hora = snapshot.child("hora").getValue(String::class.java)
@@ -274,7 +275,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                             fecha.toString(),
                             sondeo_num.toString(),
                             ubicacion.toString(),
-                            naf.toString(),
+                            naf!!,
                             profundidad_muestreo.toString(),
                             profundidad_naf.toString(),
                             hora.toString(),
