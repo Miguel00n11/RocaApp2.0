@@ -86,7 +86,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.miguelrodriguez.rocaapp20.provider"
+            android:authorities="com.miguelrodriguez.rocaapp20.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
 
