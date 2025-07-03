@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -345,7 +346,9 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     }
 
     private fun deleteReport(reportKey: String) {
-        val reportReference = dataReference.child(reportKey)
+        val reportReference = FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal).child(reportKey)
+        val reportReference1= FirebaseDatabase.getInstance().reference.child("Mecanicas").child("RespaldoMecanicas").child(personal).child(reportKey)
+        val reportReference2= FirebaseDatabase.getInstance().reference.child("ImagenesMecanicas").child(personal).child(reportKey)
 
 //        val storage = FirebaseStorage.getInstance()
 //        val storage = FirebaseStorage.getInstance().reference.child(reportKey)
@@ -358,24 +361,38 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
 
 
-//        storageRef.delete()
-//
-//            .addOnSuccessListener {
-//                Toast.makeText(this, "Informe eliminado exitosamente", Toast.LENGTH_SHORT).show()
-//            }
-//            .addOnFailureListener { e ->
-//                Toast.makeText(
-//                    this,
-//                    "Error al eliminar el informe: ${e.message}",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+        // Eliminar imágenes asociadas en Firebase Storage
+        val imageRef =
+            storage.reference.child(reportKey) // Suponiendo que las imágenes están en una carpeta con el nombre del `reportKey`
+
+        imageRef.listAll().addOnSuccessListener { listResult ->
+            // Recorre cada archivo en el directorio y elimínalo
+            for (fileRef in listResult.items) {
+                fileRef.delete().addOnSuccessListener {
+                    Log.d("FirebaseStorage", "Imagen eliminada: ${fileRef.name}")
+                }.addOnFailureListener { e ->
+                    Log.e(
+                        "FirebaseStorage",
+                        "Error al eliminar imagen ${fileRef.name}: ${e.message}"
+                    )
+                }
+            }
+        }.addOnFailureListener { e ->
+            Log.e("FirebaseStorage", "Error al listar archivos para eliminar: ${e.message}")
+        }
+
+
         reportReference.removeValue().addOnSuccessListener {
             Toast.makeText(
                 this,
                 "Reporte eliminado existosamente.",
                 Toast.LENGTH_SHORT
             ).show() }
+
+        reportReference1.removeValue().addOnSuccessListener {}
+
+        reportReference2.removeValue().addOnSuccessListener {}
+
     }
 
     private fun updateTask() {
