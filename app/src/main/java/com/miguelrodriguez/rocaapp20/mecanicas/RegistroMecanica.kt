@@ -888,7 +888,7 @@ class RegistroMecanica : AppCompatActivity() {
                 }
             })
 
-            registrosLocales.remove(registro)
+            saveLocalRecords(emptyList()) // o la lista ya depurada
         }
 
         // Limpiar registros locales después de la sincronización
