@@ -402,7 +402,7 @@ class RegistroMecanica : AppCompatActivity() {
         photoFile?.let {
             photoUri = FileProvider.getUriForFile(
                 this,
-                "com.miguelrodriguez.rocaapp20.provider",
+                "com.miguelrodriguez.rocaapp20.fileprovider",
                 it
             )
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
