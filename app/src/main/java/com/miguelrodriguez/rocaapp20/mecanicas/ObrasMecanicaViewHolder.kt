@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.miguelrodriguez.rocaapp20.R
@@ -15,6 +16,8 @@ class ObrasMecanicaViewHolder(view:View):RecyclerView.ViewHolder(view) {
     private val tvFechaCompactacion: TextView =view.findViewById(R.id.tvItemFechaMecanica)
     private val btnEliminar: FloatingActionButton =
         view.findViewById(R.id.btnEliminarReporteMecanica)
+    private val btnVerReporteMecanica: FloatingActionButton =
+        view.findViewById(R.id.btnVerReporteMecanica)
 
     fun render(listaObrasMecancia: ClaseObraMecanica) {
 
@@ -24,7 +27,8 @@ class ObrasMecanicaViewHolder(view:View):RecyclerView.ViewHolder(view) {
         tvFechaCompactacion.text=listaObrasMecancia.fecha
 
     }
-    fun bind(obraMecanica: ClaseObraMecanica, onCalaSelected: (Int) -> Unit, onItemDelete: (Int) -> Unit) {
+    fun bind(obraMecanica: ClaseObraMecanica, onCalaSelected: (Int) -> Unit, onItemDelete: (Int) -> Unit,
+             onIntemVerReporteMecanica: (Int) -> Unit) {
         // Configura los elementos visuales con la información de la ClaseCala
         // ...
 
@@ -45,6 +49,10 @@ class ObrasMecanicaViewHolder(view:View):RecyclerView.ViewHolder(view) {
                 }
 
             }
+        btnVerReporteMecanica.setOnClickListener {
+            onIntemVerReporteMecanica(adapterPosition)
+//            Toast.makeText(this.itemView.context, "Ver reporte", Toast.LENGTH_SHORT).show()
+        }
     }
     private fun showDeleteConfirmationDialog(context: Context, onConfirmation: (Boolean) -> Unit) {
         val builder = AlertDialog.Builder(context)

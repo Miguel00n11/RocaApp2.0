@@ -2,17 +2,24 @@ package com.miguelrodriguez.rocaapp20.mecanicas
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -23,8 +30,29 @@ import com.miguelrodriguez.rocaapp20.Recycler.ClaseEstratos
 import com.miguelrodriguez.rocaapp20.Recycler.ClaseObra
 import com.miguelrodriguez.rocaapp20.Recycler.EstratosAdapter
 import com.google.firebase.storage.StorageReference
+import com.itextpdf.io.image.ImageDataFactory
+import com.itextpdf.kernel.colors.DeviceRgb
+import com.itextpdf.kernel.geom.PageSize
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.layout.Document
+import com.itextpdf.layout.element.Cell
+import com.itextpdf.layout.element.Image
+import com.itextpdf.layout.element.Paragraph
+import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.properties.HorizontalAlignment
+import com.itextpdf.layout.properties.TextAlignment
+import com.itextpdf.layout.properties.VerticalAlignment
 import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.util.Date
+import java.util.Locale
 
 class ReportesMuestreoMaterial : AppCompatActivity() {
     private lateinit var dataReference: DatabaseReference
@@ -81,7 +109,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         InitComponet()
         InitUI()
     }
-
+    private lateinit var listaReporteFallaGA: MutableList<ClaseObraMecanica>
 
     private fun InitComponet() {
         listaEstratossmutableListOf = mutableListOf(ClaseEstratos(
@@ -178,7 +206,13 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
         ObraAdapter = ObraMecanicaAdapter(listaObrasmutableListOf,
             onObraSelected = { position -> onItemSelected(position) },
-            onItemDelete = { position -> onItemDelete(position) })
+            onItemDelete = { position -> onItemDelete(position) },
+            onVerReporteFallaMantenimientoGA = { position ->
+                onVerReporteFallaMantenimientoGA(position, listaObrasmutableListOf)
+//                Toast.makeText(this , "hola", Toast.LENGTH_SHORT).show()
+            }
+
+        )
 
 
         rvObrasMecanicas.layoutManager = LinearLayoutManager(this)
@@ -188,6 +222,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         storage= FirebaseStorage.getInstance()
         dataReference =
             FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal)
+
+//        cargarReportes(dataReference)
 
         dataReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -305,6 +341,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
     }
 
+
     private fun onItemSelected(position: Int) {
 //        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
 
@@ -401,4 +438,508 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     }
 
 
+    private fun onVerReporteFallaMantenimientoGA(
+        position: Int,
+        listaReportes: MutableList<ClaseObraMecanica>
+    ) {
+        val reporteSeleccionado = listaReportes[position]
+
+        Toast.makeText(this, reporteSeleccionado.listaImagenes.toString(), Toast.LENGTH_SHORT).show()
+        // Verificar imágenes
+        if (reporteSeleccionado.listaImagenes.isNotEmpty()) {
+            Log.d("ListaImagenes", "Imágenes del reporte seleccionado: ${reporteSeleccionado.listaImagenes.count()}")
+        } else {
+            Log.d("ListaImagenes", "No hay imágenes asociadas al reporte seleccionado.")
+        }
+
+        // Limpiar PDF anterior
+        val directorio = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+        directorio?.listFiles()?.forEach { it.delete() }
+
+        // Crear y procesar PDF
+        lifecycleScope.launch {
+            val imagenesProcesadas = mutableListOf<Image>()
+            for (url in reporteSeleccionado.listaImagenes) {
+                try {
+                    val imageBytes = descargarImagenConGlide(this@ReportesMuestreoMaterial, url)
+                    if (imageBytes != null) {
+                        val imageData = ImageDataFactory.create(imageBytes)
+                        val image = Image(imageData).apply {
+                            scaleToFit(PageSize.LETTER.width - 100, 200f)
+                            setHorizontalAlignment(HorizontalAlignment.CENTER)
+                        }
+                        imagenesProcesadas.add(image)
+                    } else {
+                        Log.e("PDFImageError", "No se pudo descargar la imagen desde la URL: $url")
+                    }
+                } catch (e: Exception) {
+                    Log.e("PDFImageError", "Error al procesar la imagen: ${e.message}")
+                }
+            }
+
+
+            // Generar el PDF usando las imágenes procesadas
+            generarPDF(reporteSeleccionado, imagenesProcesadas)
+        }
+    }
+    private suspend fun descargarImagenConGlide(context: Context, url: String): ByteArray? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val futureTarget = Glide.with(context)
+                    .asBitmap()
+                    .load(url)
+                    .submit()
+
+                val bitmap = futureTarget.get()
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
+
+                byteArrayOutputStream.toByteArray().also {
+                    Log.d("GlideImageDownload", "Imagen descargada con éxito: $url")
+                }
+            } catch (e: Exception) {
+                Log.e("ImageDownloadError", "Error al descargar imagen con Glide: ${e.message}")
+                null
+            }
+        }
+    }
+    private fun generarPDF(reporte: ClaseObraMecanica, imagenes: List<Image>) {
+        try {
+            val fechaActual = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val directorio = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            val archivoPDF = File(directorio, "reporte_falla_$fechaActual.pdf")
+
+            val outputStream = FileOutputStream(archivoPDF)
+            val writer = PdfWriter(outputStream)
+            val pdf = PdfDocument(writer)
+            val document = Document(pdf, PageSize.LETTER)
+            document.setFontSize(8f)
+
+
+
+
+
+
+
+            //calcular el ancho disponible para la tabla
+            val anchoDocumento = PageSize.LETTER.width - 72f * 2
+            val numeroColumnas = 1
+            val anchoColiumna = anchoDocumento / numeroColumnas
+
+            // Cargar la imagen desde el directorio drawable
+            val drawableId =
+                R.drawable.logoroca // Reemplaza 'logoroca' con el nombre de tu imagen
+            val bitmap = BitmapFactory.decodeResource(this.resources, drawableId)
+
+            // Convertir el bitmap en un objeto Image de iText
+            val outputStream1 = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream1)
+            val imageData = ImageDataFactory.create(outputStream1.toByteArray())
+            val image = Image(imageData)
+            image.scale(.05f, .05f)
+
+            // Crear una tabla
+            val table = Table(floatArrayOf(150f, 150f, 150f, 150f))
+
+            // Agregar celda con imagen
+            val cellImage = Cell(1, 1)
+            cellImage.add(image.setHorizontalAlignment(HorizontalAlignment.CENTER))
+            table.addCell(cellImage)
+
+
+            // Crear tabla para titulo de datos de obra
+
+            var tableTituloDatosdeObraDeControl =
+                Cell(1, 3).add(Paragraph("Reporte de Falla/Mantenimiento"))
+            tableTituloDatosdeObraDeControl.setTextAlignment(TextAlignment.CENTER)
+            tableTituloDatosdeObraDeControl.setBold()
+            tableTituloDatosdeObraDeControl.setFontSize(10f)
+            table.addCell(tableTituloDatosdeObraDeControl)
+
+
+            var etiquetaCliente = Cell(1, 1).add(Paragraph("Cliente"))
+            etiquetaCliente.setTextAlignment(TextAlignment.CENTER)
+            etiquetaCliente.setBold()
+            table.addCell(etiquetaCliente)
+
+            var textoCliente = Cell(1, 3).add(Paragraph("Mazda de México Vehicle Operation"))
+            textoCliente.setTextAlignment(TextAlignment.CENTER)
+            textoCliente.setItalic()
+            textoCliente.setUnderline()
+            table.addCell(textoCliente)
+
+            var etiquetaTitulodelProyecto = Cell(1, 1).add(Paragraph("Título del proyecto"))
+            etiquetaTitulodelProyecto.setTextAlignment(TextAlignment.CENTER)
+            etiquetaTitulodelProyecto.setBold()
+            table.addCell(etiquetaTitulodelProyecto)
+
+            var textoTitulodelProyecto = Cell(1, 3).add(Paragraph("Mantenimiento General"))
+            textoTitulodelProyecto.setTextAlignment(TextAlignment.CENTER)
+            textoTitulodelProyecto.setItalic()
+            textoTitulodelProyecto.setUnderline()
+            table.addCell(textoTitulodelProyecto)
+
+            document.add(table)
+
+
+
+            // Crear una tabla para reporte de falla
+            val tableReporteFalla = Table(floatArrayOf(200f, 200f, 130f, 200f))
+
+
+            var etiquetaReporteFalla = Cell(1, 4).add(Paragraph("Reporte de Falla"))
+            etiquetaReporteFalla.setTextAlignment(TextAlignment.CENTER)
+            etiquetaReporteFalla.setBold()
+            etiquetaReporteFalla.setBackgroundColor(DeviceRgb(192, 192, 192))
+            tableReporteFalla.addCell(etiquetaReporteFalla)
+
+            var etiquetaFechaReporte = Cell(1, 1).add(Paragraph("Fecha de Reporte"))
+            etiquetaFechaReporte.setBold()
+            etiquetaFechaReporte.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaFechaReporte)
+
+            var textoFechaReporte = Cell(1, 1).add(Paragraph(reporte.fecha))
+            textoFechaReporte.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(textoFechaReporte)
+
+            var etiquetaNoReporte = Cell(1, 1).add(Paragraph("Reporte No."))
+            etiquetaNoReporte.setBold()
+            etiquetaNoReporte.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaNoReporte)
+
+            var textoNoReporte = Cell(1, 1).add(Paragraph(reporte.id.toString()))
+            textoNoReporte.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(textoNoReporte)
+
+
+
+            var etiquetaDepartamentoResponsable =
+                Cell(1, 1).add(Paragraph("Departamento responsable"))
+            etiquetaDepartamentoResponsable.setBold()
+            etiquetaDepartamentoResponsable.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaDepartamentoResponsable)
+
+            var textoDepartamentoResponsable = Cell(1, 1).add(Paragraph("General Affairs"))
+            textoDepartamentoResponsable.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(textoDepartamentoResponsable)
+
+            var etiquetaResponsable = Cell(1, 1).add(Paragraph("Responsable"))
+            etiquetaResponsable.setBold()
+            etiquetaResponsable.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaResponsable)
+
+            var textoResponsable = Cell(1, 1).add(Paragraph("Ing. Eduardo Rabia"))
+            textoResponsable.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(textoResponsable)
+
+            var etiquetaUsuario = Cell(1, 1).add(Paragraph("Usuario"))
+            etiquetaUsuario.setBold()
+            etiquetaUsuario.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaUsuario)
+//
+//            var textoUsuario = Cell(1, 1).add(Paragraph(reporte.Usuario))
+//            textoUsuario.setTextAlignment(TextAlignment.CENTER)
+//            tableReporteFalla.addCell(textoUsuario)
+
+            var etiquetaArea = Cell(1, 1).add(Paragraph("Area"))
+            etiquetaArea.setBold()
+            etiquetaArea.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaArea)
+
+//            var textoArea = Cell(1, 1).add(Paragraph(reporte.Area))
+//            textoArea.setTextAlignment(TextAlignment.CENTER)
+//            tableReporteFalla.addCell(textoArea)
+
+            var etiquetaUbicacion = Cell(1, 1).add(Paragraph("Ubicación"))
+            etiquetaUbicacion.setBold()
+            etiquetaUbicacion.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaUbicacion)
+
+//            var textoUbicacion = Cell(1, 1).add(Paragraph(reporte.Ubicacion))
+//            textoUbicacion.setTextAlignment(TextAlignment.CENTER)
+//            tableReporteFalla.addCell(textoUbicacion)
+
+            var etiquetaFalla = Cell(2, 1).add(Paragraph("Falla"))
+            etiquetaFalla.setBold()
+            etiquetaFalla.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaFalla)
+
+//            var textoFalla = Cell(2, 1).add(Paragraph(reporte.Falla))
+//            textoFalla.setTextAlignment(TextAlignment.CENTER)
+//            tableReporteFalla.addCell(textoFalla)
+
+            var etiquetaEquipo = Cell(1, 1).add(Paragraph("Equipo"))
+            etiquetaEquipo.setBold()
+            etiquetaEquipo.setTextAlignment(TextAlignment.CENTER)
+            tableReporteFalla.addCell(etiquetaEquipo)
+
+//            var textoEquipo = Cell(1, 1).add(Paragraph(reporte.Equipo))
+//            textoEquipo.setTextAlignment(TextAlignment.CENTER)
+//            tableReporteFalla.addCell(textoEquipo)
+
+
+
+
+
+            document.add(tableReporteFalla)
+
+
+
+
+
+            // Crear una tabla para las imágenes
+            val tableDeImagenes = Table(floatArrayOf(200f, 200f, 200f)) // Ajusta los tamaños de las columnas según sea necesario
+
+// Título para la sección de imágenes
+            val etiquetaReporteImagenFalla = Cell(1, 3)
+                .add(Paragraph("Imágenes de la falla"))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBold()
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+            tableDeImagenes.addCell(etiquetaReporteImagenFalla)
+
+// Dimensiones máximas de la celda
+            val maxWidth = 150f
+            val maxHeight = 130f
+
+// Agregar imágenes a la tabla
+            if (imagenes.isNotEmpty()) {
+                for (image in imagenes) {
+                    // Ajustar la escala de la imagen para que se ajuste a la celda
+                    val imageWidth = image.imageWidth
+                    val imageHeight = image.imageHeight
+                    val widthScale = maxWidth / imageWidth
+                    val heightScale = maxHeight / imageHeight
+                    val scale = minOf(widthScale, heightScale) // Escoge la escala que mantenga las dimensiones dentro de la celda
+
+                    image.scale(scale, scale) // Aplica el escalado
+                    image.setHorizontalAlignment(HorizontalAlignment.CENTER)
+
+                    // Agregar la imagen dentro de una celda
+                    val cell = Cell().add(image)
+                    cell.setHorizontalAlignment(HorizontalAlignment.CENTER)
+                    cell.setVerticalAlignment(VerticalAlignment.MIDDLE)
+                    cell.setPadding(10f) // Añadir un margen interno
+                    tableDeImagenes.addCell(cell)
+                }
+            } else {
+                val cellNoImages = Cell(1, 3)
+                    .add(Paragraph("No hay imágenes disponibles.").setTextAlignment(TextAlignment.CENTER))
+                tableDeImagenes.addCell(cellNoImages)
+            }
+
+// Agregar la tabla al documento
+            document.add(tableDeImagenes)
+
+
+
+
+
+// Crear una tabla para Reporte de Mantenimiento
+            val tableReporteDeMantenimiento = Table(floatArrayOf(200f, 50f, 200f, 150f,200f))
+
+            var etiquetaReporteDeMantenimiento = Cell(1, 5).add(Paragraph("Reporte de Mantenimiento"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+            tableReporteDeMantenimiento.addCell(etiquetaReporteDeMantenimiento)
+
+            var etiquetaPeriodoActividad = Cell(1, 1).add(Paragraph("Periodo de la actividad"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(etiquetaPeriodoActividad)
+
+            var etiquetaDel = Cell(1, 1).add(Paragraph("del"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(etiquetaDel)
+
+            var textoPeriodoActividad = Cell(1, 1).add(Paragraph(reporte.fecha))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(textoPeriodoActividad)
+
+            var etiquetaAl = Cell(1, 1).add(Paragraph("al"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(etiquetaAl)
+
+//            var textoPeriodoActividadAl = Cell(1, 1).add(Paragraph(reporte.fechaMantenimiento))
+//                .setBold()
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(textoPeriodoActividadAl)
+
+            var etiquetaResponsableGeneralMIP = Cell(1, 1).add(Paragraph("Responsable general MIPGroup"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(etiquetaResponsableGeneralMIP)
+
+            var textoResponsableGeneralMIP = Cell(1, 2).add(Paragraph("Ing. Marco Antonio Perez Marquez"))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(textoResponsableGeneralMIP)
+
+            var etiquetaResponsableSitiolMIP = Cell(1, 1).add(Paragraph("Responsable en sitio MIPGroup"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(etiquetaResponsableSitiolMIP)
+
+            var textoResponsableSitiolMIP = Cell(1, 2).add(Paragraph("Ing. Antonio Jimenez"))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(textoResponsableSitiolMIP)
+
+            var etiquetaTecnicoMIP = Cell(1, 1).add(Paragraph("Tecnico (s) MIPGroup:"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(etiquetaTecnicoMIP)
+
+//            var textoTecnicoMIP = Cell(1, 2).add(Paragraph(reporte.TecnicoMantenimiento))
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(textoTecnicoMIP)
+
+            var etiquetaReporteMantenimietoFalla = Cell(1, 1).add(Paragraph("Falla"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableReporteDeMantenimiento.addCell(etiquetaReporteMantenimietoFalla)
+
+//            var textoReporteMantenimietoFallaP = Cell(1, 2).add(Paragraph(reporte.FallaMantenimiento))
+//            textoReporteMantenimietoFallaP.setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(textoReporteMantenimietoFallaP)
+
+
+            document.add(tableReporteDeMantenimiento)
+
+
+
+            val tableRumenDeLaActividad= Table(floatArrayOf(200f, 50f, 200f, 50f,200f))
+
+            var etiquetaResumenDeLaActividad = Cell(1, 5)
+                .add(Paragraph("Resumen de la actividad"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+            tableRumenDeLaActividad.addCell(etiquetaResumenDeLaActividad)
+
+//            var textoResumenDeLaActividad = Cell(1, 5).add(Paragraph(reporte.resumenActividadMantenimiento))
+//            textoResumenDeLaActividad.setTextAlignment(TextAlignment.CENTER)
+//            tableRumenDeLaActividad.addCell(textoResumenDeLaActividad)
+
+//            document.add(tableRumenDeLaActividad)
+
+
+            var etiquetaMaterialesUtilizados = Cell(1, 1)
+                .setBold()
+                .add(Paragraph("Materiales utilizados:"))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableRumenDeLaActividad.addCell(etiquetaMaterialesUtilizados)
+
+//            var textoMaterialesUtilizados = Cell(1, 4).add(Paragraph(reporte.materialesUtilizadosMantenimiento))
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableRumenDeLaActividad.addCell(textoMaterialesUtilizados)
+
+            var etiquetaObservaciones = Cell(1, 1)
+                .add(Paragraph("Observaciones:"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableRumenDeLaActividad.addCell(etiquetaObservaciones)
+
+//            var textoObservaciones = Cell(1, 4).add(Paragraph(reporte.ObservacionesMantenimiento))
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableRumenDeLaActividad.addCell(textoObservaciones)
+
+            var etiquetaNotas = Cell(1, 1)
+                .add(Paragraph("Notas:"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableRumenDeLaActividad.addCell(etiquetaNotas)
+
+//            var textoNotas = Cell(1, 4).add(Paragraph(reporte.NotasMantenimiento))
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableRumenDeLaActividad.addCell(textoNotas)
+
+
+            document.add(tableRumenDeLaActividad)
+
+
+//            val tableImagenesDeLaActividad= Table(floatArrayOf(200f, 50f, 200f, 50f,200f))
+//            // Imagenes de mantenimiento
+//            var etiquetaImagenDeLaActividad = Cell(1, 5)
+//                .add(Paragraph("Imagen de la Actividad"))
+//                .setTextAlignment(TextAlignment.CENTER)
+//                .setBackgroundColor(DeviceRgb(192, 192, 192))
+//            tableImagenesDeLaActividad.addCell(etiquetaImagenDeLaActividad)
+//
+//            var textoImagenDeLaActividad = Cell(1, 5).add(Paragraph(""))
+//            textoImagenDeLaActividad.setTextAlignment(TextAlignment.CENTER)
+//            tableImagenesDeLaActividad.addCell(textoImagenDeLaActividad)
+//
+//
+//
+//            document.add(tableImagenesDeLaActividad)
+
+            // Crear una tabla para las imágenes
+            val tableDeImagenesMantenimiento = Table(floatArrayOf(200f, 200f, 200f)) // Ajusta los tamaños de las columnas según sea necesario
+
+// Título para la sección de imágenes
+            val etiquetaReporteImagenFallaMantenimiento = Cell(1, 3)
+                .add(Paragraph("Imágenes de la actividad"))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+            tableDeImagenesMantenimiento.addCell(etiquetaReporteImagenFallaMantenimiento)
+
+// Dimensiones máximas de la celda
+            val maxWidthMantenimiento = 150f
+            val maxHeightMantenimiento = 130f
+
+// Agregar imágenes a la tabla
+//            if (imagenesMantenimiento.isNotEmpty()) {
+//                for (image in imagenesMantenimiento) {
+//                    // Ajustar la escala de la imagen para que se ajuste a la celda
+//                    val imageWidth = image.imageWidth
+//                    val imageHeight = image.imageHeight
+//                    val widthScale = maxWidthMantenimiento / imageWidth
+//                    val heightScale = maxHeightMantenimiento / imageHeight
+//                    val scale = minOf(widthScale, heightScale) // Escoge la escala que mantenga las dimensiones dentro de la celda
+//
+//                    image.scale(scale, scale) // Aplica el escalado
+//                    image.setHorizontalAlignment(HorizontalAlignment.CENTER)
+//
+//                    // Agregar la imagen dentro de una celda
+//                    val cell = Cell().add(image)
+//                    cell.setHorizontalAlignment(HorizontalAlignment.CENTER)
+//                    cell.setVerticalAlignment(VerticalAlignment.MIDDLE)
+//                    cell.setPadding(10f) // Añadir un margen interno
+//                    tableDeImagenesMantenimiento.addCell(cell)
+//                }
+//            } else {
+//                val cellNoImages = Cell(1, 3)
+//                    .add(Paragraph("No hay imágenes disponibles.").setTextAlignment(TextAlignment.CENTER))
+//                tableDeImagenesMantenimiento.addCell(cellNoImages)
+//            }
+
+// Agregar la tabla al documento
+            document.add(tableDeImagenesMantenimiento)
+
+
+
+
+
+            document.close()
+            Log.d("PDF", "Documento PDF creado correctamente.")
+            abrirPDF(archivoPDF)
+        } catch (e: Exception) {
+            Log.e("PDFError", "Error al crear el PDF: ${e.message}")
+        }
+    }
+    private fun abrirPDF(archivoPDF: File) {
+//        try {
+        val uri = FileProvider.getUriForFile(this, "com.example.mipapp.provider", archivoPDF)
+
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(uri, "application/pdf")
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        this.startActivity(intent)
+    }
 }

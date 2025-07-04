@@ -87,8 +87,6 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var etProfundidadNAFMuestreoMecanicaLabel: TextInputLayout
     private lateinit var etHoraMuestreoMecanica: EditText
 
-
-
     private lateinit var etEstacionMuestreoMecanica: EditText
     private lateinit var fbNuevoEstrato: FloatingActionButton
     private lateinit var btnGuardarRegistroMuestreoMecanica: Button
@@ -96,8 +94,6 @@ class RegistroMecanica : AppCompatActivity() {
     private lateinit var tvLatitud: TextView
     private lateinit var tvLongitud: TextView
     private lateinit var binding: TextInputLayout
-//    private var latitud:String=""
-//    private var longitud:String=""
 
     private lateinit var llave: String
     private lateinit var tvNumeroReporteMuestreoMecanica: TextView
