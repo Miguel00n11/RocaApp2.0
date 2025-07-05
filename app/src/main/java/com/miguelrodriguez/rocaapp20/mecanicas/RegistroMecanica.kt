@@ -41,6 +41,7 @@ import java.io.File
 import java.util.Calendar
 
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.os.Environment
 import android.provider.MediaStore
@@ -57,6 +58,7 @@ import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
 import com.miguelrodriguez.rocaapp20.R.id.switchHayNAF
 import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -942,7 +944,35 @@ class RegistroMecanica : AppCompatActivity() {
                 val imageFileName = "$fileName.jpg"
                 val imageRef = storageReference.child("$llave/$imageFileName")
 
-                val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
+//                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(imageUri))
+//                val stream = ByteArrayOutputStream()
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream) // 60 = calidad (ajustable)
+
+//                val byteArray = stream.toByteArray()
+
+                val uri = Uri.parse(imageUri)
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+
+// Redimensionar respetando la relación de aspecto, max 1024 px por lado
+                val maxDim = 1024
+                val ratio = bitmap.width.toFloat() / bitmap.height
+                val (newWidth, newHeight) = if (bitmap.width > bitmap.height) {
+                    Pair(maxDim, (maxDim / ratio).toInt())
+                } else {
+                    Pair((maxDim * ratio).toInt(), maxDim)
+                }
+
+                val scaledBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+
+// Comprimir a JPEG (calidad ajustable: 0-100)
+                val stream = ByteArrayOutputStream()
+                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream) // 60% calidad
+                val byteArray = stream.toByteArray()
+
+// Subir como bytes comprimidos a Firebase Storage
+                val uploadTask: UploadTask = imageRef.putBytes(byteArray)
+
+
 
                 uploadTask.addOnSuccessListener { taskSnapshot ->
                     // Imagen subida exitosamente
@@ -986,7 +1016,28 @@ class RegistroMecanica : AppCompatActivity() {
                 val imageRef = storageReference.child(llave).child("$imageFileName")
                 println(imageRef)
 
-                val uploadTask: UploadTask = imageRef.putFile(Uri.parse(imageUri))
+                val uri = Uri.parse(imageUri)
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+
+// Redimensionar respetando la relación de aspecto, max 1024 px por lado
+                val maxDim = 1024
+                val ratio = bitmap.width.toFloat() / bitmap.height
+                val (newWidth, newHeight) = if (bitmap.width > bitmap.height) {
+                    Pair(maxDim, (maxDim / ratio).toInt())
+                } else {
+                    Pair((maxDim * ratio).toInt(), maxDim)
+                }
+
+                val scaledBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+
+// Comprimir a JPEG (calidad ajustable: 0-100)
+                val stream = ByteArrayOutputStream()
+                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream) // 60% calidad
+                val byteArray = stream.toByteArray()
+
+// Subir como bytes comprimidos a Firebase Storage
+                val uploadTask: UploadTask = imageRef.putBytes(byteArray)
+
 
                 uploadTask.addOnSuccessListener { taskSnapshot ->
                     // Imagen subida exitosamente

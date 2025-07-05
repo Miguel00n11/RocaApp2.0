@@ -538,7 +538,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         try {
             val fechaActual = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             val directorio = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-            val archivoPDF = File(directorio, "reporte_falla_$fechaActual.pdf")
+            val archivoPDF = File(directorio, "reporte_mecanica_$fechaActual.pdf")
 
             val outputStream = FileOutputStream(archivoPDF)
             val writer = PdfWriter(outputStream)
@@ -581,7 +581,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             // Crear tabla para titulo de datos de obra
 
             var tableTituloDatosdeObraDeControl =
-                Cell(1, 3).add(Paragraph("Reporte de Falla/Mantenimiento"))
+                Cell(1, 3).add(Paragraph("Datos de control"))
             tableTituloDatosdeObraDeControl.setTextAlignment(TextAlignment.CENTER)
             tableTituloDatosdeObraDeControl.setBold()
             tableTituloDatosdeObraDeControl.setFontSize(10f)
