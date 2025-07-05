@@ -120,7 +120,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             1.0,
             "1.0",
             "1.0"
-            ))
+        ))
         listaImagenesmutableListOf = mutableListOf("a1")
         listaObrasmutableListOf = mutableListOf()
         listaObrasmutableListOf.clear()
@@ -135,7 +135,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             "fecha",
             "sondeo_num",
             "ubicacion",
-             false,
+            false,
             "profundidad_muestreo",
             "profundidad_naf",
             "hora",
@@ -252,9 +252,12 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                     var llave = snapshot.child("llave").getValue(String::class.java)
 //                    val listaCalas = snapshot.child("listaCalas").getValue(MutableList<ClaseCala>::class.java)
 
+
+
                     val listaEstratosSnapshot = snapshot.child("listaEstratos")
                     val listaEstratos: MutableList<ClaseEstratos> = mutableListOf()
                     val listaImagenes: MutableList<String> = mutableListOf()
+
 
                     for (snapshot in listaEstratosSnapshot.children) {
 
@@ -299,33 +302,60 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                     val latitud = snapshot.child("latitud").getValue(String::class.java)
                     val longitud = snapshot.child("longitud").getValue(String::class.java)
 
+
                     // Verifica si el personal coincide con el personal deseado
                     if (personal1 == personal) {
+
                         // Crea un objeto ClaseObra y agrégalo a la lista solo si el personal coincide
-                        val obra = ClaseObraMecanica(
-                            numReporte!!,
-                            obra1.toString(),
-                            cliente.toString(),
-                            localizacion.toString(),
-                            atencion.toString(),
-                            fecha.toString(),
-                            sondeo_num.toString(),
-                            ubicacion.toString(),
-                            naf!!,
-                            profundidad_muestreo.toString(),
-                            profundidad_naf.toString(),
-                            hora.toString(),
-                            llave.toString(),
-//                            estudioMuestreo.toString(),
-                            latitud.toString(),
-                            longitud.toString(),
-                            listaEstratos,
-                            listaImagenes
+//                        val llaveReporte = snapshot.child("llave").getValue(String::class.java).toString()
 
+                        val imagenesRef = FirebaseDatabase.getInstance().reference
+                            .child("ImagenesMecanicas")
+                            .child(personal)
+                            .child(llave.toString())
 
-                        ) // Asegúrate de ajustar los parámetros según tu clase
-                        listaObrasmutableListOf.add(obra)
+                        imagenesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(imagenSnapshot: DataSnapshot) {
+                                val listaImagenes: MutableList<String> = mutableListOf()
+                                for (img in imagenSnapshot.children) {
+                                    val url = img.getValue(String::class.java)
+                                    if (!url.isNullOrBlank()) {
+                                        listaImagenes.add(url)
+                                    }
+                                }
+
+                                // Construye la clase cuando ya tienes las imágenes
+                                val obra = ClaseObraMecanica(
+                                    numReporte!!,
+                                    obra1.toString(),
+                                    cliente.toString(),
+                                    localizacion.toString(),
+                                    atencion.toString(),
+                                    fecha.toString(),
+                                    sondeo_num.toString(),
+                                    ubicacion.toString(),
+                                    naf!!,
+                                    profundidad_muestreo.toString(),
+                                    profundidad_naf.toString(),
+                                    hora.toString(),
+                                    llave.toString(),
+                                    latitud.toString(),
+                                    longitud.toString(),
+                                    listaEstratos,
+                                    listaImagenes
+                                )
+
+                                listaObrasmutableListOf.add(obra)
+                                ObraAdapter.notifyDataSetChanged()
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Log.e("Firebase", "Error al obtener imágenes: ${error.message}")
+                            }
+                        })
+
                     }
+
                 }
 
                 // Notifica al adaptador que los datos han cambiado
@@ -446,6 +476,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
         Toast.makeText(this, reporteSeleccionado.listaImagenes.toString(), Toast.LENGTH_SHORT).show()
         // Verificar imágenes
+        Toast.makeText(this, reporteSeleccionado.listaImagenes.count().toString(), Toast.LENGTH_SHORT).show()
         if (reporteSeleccionado.listaImagenes.isNotEmpty()) {
             Log.d("ListaImagenes", "Imágenes del reporte seleccionado: ${reporteSeleccionado.listaImagenes.count()}")
         } else {
@@ -933,7 +964,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     }
     private fun abrirPDF(archivoPDF: File) {
 //        try {
-        val uri = FileProvider.getUriForFile(this, "com.example.mipapp.provider", archivoPDF)
+        val uri = FileProvider.getUriForFile(this, "com.miguelrodriguez.rocaapp20.fileprovider", archivoPDF)
 
 
         val intent = Intent(Intent.ACTION_VIEW)
