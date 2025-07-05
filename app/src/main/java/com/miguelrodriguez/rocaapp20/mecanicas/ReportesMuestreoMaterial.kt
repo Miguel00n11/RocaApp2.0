@@ -573,7 +573,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             val table = Table(floatArrayOf(150f, 150f, 150f, 150f))
 
             // Agregar celda con imagen
-            val cellImage = Cell(1, 1)
+            val cellImage = Cell(5, 1)
             cellImage.add(image.setHorizontalAlignment(HorizontalAlignment.CENTER))
             table.addCell(cellImage)
 
@@ -584,31 +584,65 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 Cell(1, 3).add(Paragraph("Datos de control"))
             tableTituloDatosdeObraDeControl.setTextAlignment(TextAlignment.CENTER)
             tableTituloDatosdeObraDeControl.setBold()
+            tableTituloDatosdeObraDeControl.setBackgroundColor(DeviceRgb(192, 192, 192))
             tableTituloDatosdeObraDeControl.setFontSize(10f)
             table.addCell(tableTituloDatosdeObraDeControl)
 
 
-            var etiquetaCliente = Cell(1, 1).add(Paragraph("Cliente"))
+            var etiquetaCliente = Cell(1, 3).add(Paragraph("Nombre del formato"))
             etiquetaCliente.setTextAlignment(TextAlignment.CENTER)
             etiquetaCliente.setBold()
+            etiquetaCliente.setBackgroundColor(DeviceRgb(192, 192, 192))
             table.addCell(etiquetaCliente)
 
-            var textoCliente = Cell(1, 3).add(Paragraph("Mazda de México Vehicle Operation"))
+            var textoCliente = Cell(1, 3).add(Paragraph("Reporte de muestreo"))
             textoCliente.setTextAlignment(TextAlignment.CENTER)
             textoCliente.setItalic()
             textoCliente.setUnderline()
             table.addCell(textoCliente)
 
-            var etiquetaTitulodelProyecto = Cell(1, 1).add(Paragraph("Título del proyecto"))
+            var etiquetaTitulodelProyecto = Cell(1, 1).add(Paragraph("Código del formato"))
             etiquetaTitulodelProyecto.setTextAlignment(TextAlignment.CENTER)
             etiquetaTitulodelProyecto.setBold()
+            etiquetaTitulodelProyecto.setBackgroundColor(DeviceRgb(192, 192, 192))
             table.addCell(etiquetaTitulodelProyecto)
 
-            var textoTitulodelProyecto = Cell(1, 3).add(Paragraph("Mantenimiento General"))
+            var textoTitulodelProyecto = Cell(1, 1).add(Paragraph("Procedimiento"))
             textoTitulodelProyecto.setTextAlignment(TextAlignment.CENTER)
             textoTitulodelProyecto.setItalic()
             textoTitulodelProyecto.setUnderline()
+            textoTitulodelProyecto.setBackgroundColor(DeviceRgb(192, 192, 192))
             table.addCell(textoTitulodelProyecto)
+
+            var textoTitulodelProyecto1 = Cell(1, 1).add(Paragraph("Fecha de sondeo"))
+            textoTitulodelProyecto1.setTextAlignment(TextAlignment.CENTER)
+            textoTitulodelProyecto1.setItalic()
+            textoTitulodelProyecto1.setUnderline()
+            textoTitulodelProyecto1.setBackgroundColor(DeviceRgb(192, 192, 192))
+            table.addCell(textoTitulodelProyecto1)
+
+            var textoTitulodelFormato = Cell(1, 1).add(Paragraph("F1-PR21"))
+            textoTitulodelFormato.setTextAlignment(TextAlignment.CENTER)
+            textoTitulodelFormato.setItalic()
+            textoTitulodelFormato.setUnderline()
+            table.addCell(textoTitulodelFormato)
+
+            var textoTitulodelProcedimiento = Cell(1, 1).add(Paragraph("PR21"))
+            textoTitulodelProcedimiento.setTextAlignment(TextAlignment.CENTER)
+            textoTitulodelProcedimiento.setItalic()
+            textoTitulodelProcedimiento.setUnderline()
+            table.addCell(textoTitulodelProcedimiento)
+
+            var textoTitulodelFecha = Cell(1, 1).add(Paragraph(reporte.fecha))
+            textoTitulodelFecha.setTextAlignment(TextAlignment.CENTER)
+            textoTitulodelFecha.setItalic()
+            textoTitulodelFecha.setUnderline()
+            table.addCell(textoTitulodelFecha)
+
+
+
+
+
 
             document.add(table)
 
