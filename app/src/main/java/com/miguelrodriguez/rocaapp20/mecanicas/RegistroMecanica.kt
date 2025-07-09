@@ -911,6 +911,7 @@ class RegistroMecanica : AppCompatActivity() {
 
         val registrosJson = Gson().toJson(registros)
         sharedPreferences.edit().putString("registros", registrosJson).apply()
+
     }
 
     private fun subirImagenesAFirebaseStorage(accion: Boolean) {
