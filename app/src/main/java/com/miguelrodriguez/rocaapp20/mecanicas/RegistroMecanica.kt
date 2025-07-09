@@ -952,6 +952,7 @@ class RegistroMecanica : AppCompatActivity() {
 
                 val uri = Uri.parse(imageUri)
                 val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                
 
 // Redimensionar respetando la relación de aspecto, max 1024 px por lado
                 val maxDim = 1024
