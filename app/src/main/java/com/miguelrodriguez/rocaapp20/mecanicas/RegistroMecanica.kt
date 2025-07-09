@@ -586,11 +586,19 @@ class RegistroMecanica : AppCompatActivity() {
                     // Configuramos el adaptador y notificamos los cambios
                     imageAdapter = ImageAdapter(imageList) { position ->
 
-                        onImageDeleteActualizando(
-                            imageRef.child(ListaDeImagenes[position].NombreArchivo),
-                            position,
-                            storageRef.child(ListaDeImagenes[position].NombreArchivo + "jpg")
-                        )
+                        if (position < ListaDeImagenes.size) {
+                            val nombreArchivo = ListaDeImagenes[position].NombreArchivo
+                            onImageDeleteActualizando(
+                                imageRef.child(nombreArchivo),
+                                position,
+                                storageRef.child("$nombreArchivo.jpg")
+                            )
+                        } else {
+                            // Solo eliminar localmente porque esta imagen no fue subida
+                            imageList.removeAt(position)
+                            imageAdapter.notifyDataSetChanged()
+                        }
+
 
                     }
                     rvImagenesMecanica.adapter = imageAdapter
