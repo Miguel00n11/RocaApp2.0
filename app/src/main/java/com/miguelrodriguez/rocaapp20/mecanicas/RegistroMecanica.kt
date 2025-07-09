@@ -45,6 +45,7 @@ import android.graphics.Bitmap
 import android.location.Location
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.AutoCompleteTextView
 import android.widget.Switch
 import androidx.core.app.ActivityCompat
@@ -69,6 +70,8 @@ class RegistroMecanica : AppCompatActivity() {
 
     private val CAMERA_PERMISSION_REQUEST_CODE = 1002
     private val REQUEST_IMAGE_CAPTURE = 2
+
+    private var debeMostrarDialogoEstratos = true
 
     private var isMantenimientoImageSelection = false
     private val newImagesMantenimientoList = mutableListOf<String>() // Lista solo para imágenes nuevas
@@ -443,12 +446,14 @@ class RegistroMecanica : AppCompatActivity() {
                         targetList.add(imageUri.toString())
                         if (isMantenimientoImageSelection){newImagesMantenimientoList.add(imageUri.toString())}else{newImagesList.add(imageUri.toString())}
 //                        newImagesList.add(imageUri.toString())
+                        targetAdapter.notifyDataSetChanged()
+
                     } else {
                         Toast.makeText(this, "Solo puedes cargar hasta 3 imágenes.", Toast.LENGTH_SHORT).show()
                     }
                 }
-
                 targetAdapter.notifyDataSetChanged()
+
             } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 val targetList = if (isMantenimientoImageSelection) imageList else imageList
                 val targetAdapter = if (isMantenimientoImageSelection) imageAdapter else imageAdapter
@@ -937,7 +942,10 @@ class RegistroMecanica : AppCompatActivity() {
 
 
             for ((index, imageUri) in imageList.withIndex()) {
-//                val llaveImagen=dataReference.push().key
+                if (imageUri.startsWith("http")) {
+                    // Esta imagen ya está subida, la puedes omitir o registrar directamente
+                    continue
+                }
 
                 val fileName = obtenerNombreArchivoDesdeRuta(imageUri)
 
@@ -1377,6 +1385,7 @@ class RegistroMecanica : AppCompatActivity() {
     private fun updateTask() {
         EstratosAdapter.notifyDataSetChanged()
         imageAdapter.notifyDataSetChanged()
+
 
     }
 
