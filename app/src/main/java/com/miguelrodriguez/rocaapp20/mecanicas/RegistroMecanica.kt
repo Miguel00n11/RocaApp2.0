@@ -1397,6 +1397,9 @@ class RegistroMecanica : AppCompatActivity() {
         val calendario = Calendar.getInstance()
         val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         etFechaMuestreoMecanica.setText(formatoFecha.format(calendario.time))
+        //     Si prefieres 12 h con AM/PM usa "hh:mm a"
+        val formatoHora = SimpleDateFormat("HH:mm", Locale.getDefault())
+        etHoraMuestreoMecanica.setText(formatoHora.format(calendario.time))
     }
 
     data class Registro(

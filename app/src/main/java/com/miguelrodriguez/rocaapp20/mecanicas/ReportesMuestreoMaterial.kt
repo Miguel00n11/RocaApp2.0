@@ -1,9 +1,10 @@
 package com.miguelrodriguez.rocaapp20.mecanicas
-
+import com.itextpdf.kernel.pdf.action.PdfAction
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -415,6 +416,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             // Agregar celda con imagen
             val cellImage = Cell(5, 1)
             cellImage.add(image.setHorizontalAlignment(HorizontalAlignment.CENTER))
+                .setTextAlignment(TextAlignment.CENTER)
             table.addCell(cellImage)
 
 
@@ -615,13 +617,18 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosSondeo.addCell(textoProfundidadNAF)
 
-            var etiquetaCoordenadas= Cell(1, 1).add(Paragraph(reporte.latitud + reporte.longitud))
-                .setBackgroundColor(DeviceRgb(192, 192, 192))
-                .setTextAlignment(TextAlignment.CENTER)
-            tableDatosSondeo.addCell(etiquetaCoordenadas)
+//            var etiquetaCoordenadas= Cell(1, 1).add(Paragraph(reporte.latitud + reporte.longitud))
+//                .setBackgroundColor(DeviceRgb(192, 192, 192))
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableDatosSondeo.addCell(etiquetaCoordenadas)
+            // Crear un enlace de Google Maps con latitud y longitud
+            val urlMaps = "https://www.google.com/maps/search/?api=1&query=${reporte.latitud},${reporte.longitud}"
+
+
 
             var etiquetaLatitud= Cell(1, 1).add(Paragraph("Latitud:"))
                 .setTextAlignment(TextAlignment.CENTER)
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
             tableDatosSondeo.addCell(etiquetaLatitud)
 
             var textoLatitud = Cell(1, 1).add(Paragraph(reporte.latitud))
@@ -630,11 +637,26 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var etiquetaLongitud= Cell(1, 1).add(Paragraph("Longitud:"))
                 .setTextAlignment(TextAlignment.CENTER)
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
             tableDatosSondeo.addCell(etiquetaLongitud)
 
             var textoLongitud = Cell(1, 1).add(Paragraph(reporte.longitud))
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosSondeo.addCell(textoLongitud)
+
+            // Crear un párrafo con un enlace
+            val parrafoCoordenadas = Paragraph("Ver coordenadas")
+                .setFontSize(8f)
+                .setFontColor(DeviceRgb(156, 39, 176))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setUnderline()
+                .setAction(PdfAction.createURI(urlMaps))
+
+            val etiquetaCoordenadas = Cell(1, 1)
+                .add(parrafoCoordenadas)
+                .setTextAlignment(TextAlignment.CENTER)
+
+            tableDatosSondeo.addCell(etiquetaCoordenadas)
 
             document.add(tableDatosSondeo)
 
@@ -685,7 +707,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             var etiquetaProfundidadFinal= Cell(1, 1).add(Paragraph("Final"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
                 .setTextAlignment(TextAlignment.CENTER)
-            tableDatosEstratoMuestreo.addCell(etiquetaProfundidadFinal)
+            tableDatosEstratoMuestreo.addCell(etiquetaProfundidadFinal).setTextAlignment(TextAlignment.CENTER)
 
             val alturaTexto = 8f
             reporte.listaEstratos.forEach { muestreo ->
