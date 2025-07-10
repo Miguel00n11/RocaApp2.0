@@ -36,6 +36,7 @@ import com.itextpdf.kernel.geom.PageSize
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
+import com.itextpdf.layout.borders.Border
 import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
@@ -45,6 +46,8 @@ import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.VerticalAlignment
 import com.miguelrodriguez.rocaapp20.MainActivity
 import com.miguelrodriguez.rocaapp20.R
+import com.miguelrodriguez.rocaapp20.ReportesCompactaciones
+import com.miguelrodriguez.rocaapp20.ReportesCompactaciones.Companion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -203,171 +206,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             val intent = Intent(this, RegistroMecanica::class.java)
             startActivity(intent)
         }
-
-        ObraAdapter = ObraMecanicaAdapter(listaObrasmutableListOf,
-            onObraSelected = { position -> onItemSelected(position) },
-            onItemDelete = { position -> onItemDelete(position) },
-            onVerReporteFallaMantenimientoGA = { position ->
-                onVerReporteFallaMantenimientoGA(position, listaObrasmutableListOf)
-//                Toast.makeText(this , "hola", Toast.LENGTH_SHORT).show()
-            }
-
-        )
-
-
-        rvObrasMecanicas.layoutManager = LinearLayoutManager(this)
-        rvObrasMecanicas.adapter = ObraAdapter
-
-
-        storage= FirebaseStorage.getInstance()
-        dataReference =
-            FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal)
-
-//        cargarReportes(dataReference)
-
-        dataReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Limpia la lista actual
-                listaObrasmutableListOf.clear()
-
-                for (snapshot in dataSnapshot.children) {
-                    val numeroReporteKey = snapshot.key // Obtiene el número de informe (1, 2, 3, 4)
-
-                    // Accede a los datos específicos de cada informe
-                    val obra1 = snapshot.child("obra").getValue(String::class.java)
-                    val cliente = snapshot.child("cliente").getValue(String::class.java)
-                    val localizacion = snapshot.child("localizacion").getValue(String::class.java)
-                    val atencion = snapshot.child("atencion").getValue(String::class.java)
-                    val fecha = snapshot.child("fecha").getValue(String::class.java)
-//                    val estudioMuestreo =snapshot.child("estudioMuestreo").getValue(String::class.java)
-//                    val tipoMuestreo = snapshot.child("tipoMuestreo").getValue(String::class.java)
-
-                    val sondeo_num = snapshot.child("sondeo_num").getValue(String::class.java)
-                    val ubicacion = snapshot.child("ubicacion").getValue(String::class.java)
-                    val naf = snapshot.child("naf").getValue(Boolean::class.java)
-                    val profundidad_muestreo =snapshot.child("profundidad_muestreo").getValue(String::class.java)
-                    val profundidad_naf =snapshot.child("profundidad_naf").getValue(String::class.java)
-                    val hora = snapshot.child("hora").getValue(String::class.java)
-
-                    var llave = snapshot.child("llave").getValue(String::class.java)
-//                    val listaCalas = snapshot.child("listaCalas").getValue(MutableList<ClaseCala>::class.java)
-
-
-
-                    val listaEstratosSnapshot = snapshot.child("listaEstratos")
-                    val listaEstratos: MutableList<ClaseEstratos> = mutableListOf()
-                    val listaImagenes: MutableList<String> = mutableListOf()
-
-
-                    for (snapshot in listaEstratosSnapshot.children) {
-
-                        val idEstrato = snapshot.child("idEstrato").getValue(Int::class.java)
-                        val tipo_muestreo = snapshot.child("tipo_muestreo").getValue(String::class.java)
-                        val profundidad_inicio = snapshot.child("profundidad_inicio").getValue(Double::class.java)
-                        val profundidad_final = snapshot.child("profundidad_final").getValue(Double::class.java)
-                        val profundidad_muestreo= snapshot.child("profundidad_muestreo").getValue(Double::class.java)
-                        val clasificacion_visual = snapshot.child("clasificacion_visual").getValue(String::class.java)
-                        val observaciones = snapshot.child("observaciones").getValue(String::class.java)
-//                        val nombre = snapshot.child("nombre").getValue(String::class.java)
-
-//                        // Asegúrate de ajustar los nombres de los campos según tu modelo ClaseCala
-//                        val estacion = calaSnapshot.child("estacion").getValue(String::class.java)
-//                        val humedad = calaSnapshot.child("humedad").getValue(Double::class.java)
-//                        val estrato = calaSnapshot.child("cala").getValue(Int::class.java)
-//                        val mvsl = calaSnapshot.child("mvsl").getValue(Double::class.java)
-//                        val porcentaje =
-//                            calaSnapshot.child("porcentaje").getValue(Double::class.java)
-//                        val prof =
-//                            calaSnapshot.child("prof").getValue(Double::class.java)
-                        // Crea un objeto ClaseCala y agrégalo a la lista
-                        val Estrato = ClaseEstratos(
-                            idEstrato!!,
-                            tipo_muestreo!!,
-                            profundidad_inicio!!,
-                            profundidad_final!!,
-                            profundidad_muestreo!!,
-                            clasificacion_visual!!,
-                            observaciones!!,
-                        )
-                        listaEstratos.add(Estrato)
-                    }
-
-
-                    val procedencia = snapshot.child("procedencia").getValue(String::class.java)
-                    val numReporte = snapshot.child("numeroReporte").getValue(Int::class.java)
-                    val personal1 = snapshot.child("personal").getValue(String::class.java)
-                    val subTramo = snapshot.child("subTramo").getValue(String::class.java)
-                    val tramo = snapshot.child("tramo").getValue(String::class.java)
-                    val lugarMuestreo = snapshot.child("lugarMuestreo").getValue(String::class.java)
-                    val latitud = snapshot.child("latitud").getValue(String::class.java)
-                    val longitud = snapshot.child("longitud").getValue(String::class.java)
-
-
-                    // Verifica si el personal coincide con el personal deseado
-                    if (personal1 == personal) {
-
-                        // Crea un objeto ClaseObra y agrégalo a la lista solo si el personal coincide
-//                        val llaveReporte = snapshot.child("llave").getValue(String::class.java).toString()
-
-                        val imagenesRef = FirebaseDatabase.getInstance().reference
-                            .child("ImagenesMecanicas")
-                            .child(personal)
-                            .child(llave.toString())
-
-                        imagenesRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(imagenSnapshot: DataSnapshot) {
-                                val listaImagenes: MutableList<String> = mutableListOf()
-                                for (img in imagenSnapshot.children) {
-                                    val url = img.getValue(String::class.java)
-                                    if (!url.isNullOrBlank()) {
-                                        listaImagenes.add(url)
-                                    }
-                                }
-
-                                // Construye la clase cuando ya tienes las imágenes
-                                val obra = ClaseObraMecanica(
-                                    numReporte!!,
-                                    obra1.toString(),
-                                    cliente.toString(),
-                                    localizacion.toString(),
-                                    atencion.toString(),
-                                    fecha.toString(),
-                                    sondeo_num.toString(),
-                                    ubicacion.toString(),
-                                    naf!!,
-                                    profundidad_muestreo.toString(),
-                                    profundidad_naf.toString(),
-                                    hora.toString(),
-                                    llave.toString(),
-                                    latitud.toString(),
-                                    longitud.toString(),
-                                    listaEstratos,
-                                    listaImagenes
-                                )
-
-                                listaObrasmutableListOf.add(obra)
-                                ObraAdapter.notifyDataSetChanged()
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                Log.e("Firebase", "Error al obtener imágenes: ${error.message}")
-                            }
-                        })
-
-                    }
-
-                }
-
-                // Notifica al adaptador que los datos han cambiado
-                ObraAdapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar error de base de datos, si es necesario
-            }
-
-        })
-
+        cargarDatosFirebase()
+        cargarObras(dataReference)
 
     }
 
@@ -589,17 +429,17 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             table.addCell(tableTituloDatosdeObraDeControl)
 
 
-            var etiquetaCliente = Cell(1, 3).add(Paragraph("Nombre del formato"))
-            etiquetaCliente.setTextAlignment(TextAlignment.CENTER)
-            etiquetaCliente.setBold()
-            etiquetaCliente.setBackgroundColor(DeviceRgb(192, 192, 192))
-            table.addCell(etiquetaCliente)
+            var etiquetaNombreFormato = Cell(1, 3).add(Paragraph("Nombre del formato"))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setBold()
+            .setBackgroundColor(DeviceRgb(192, 192, 192))
+            table.addCell(etiquetaNombreFormato)
 
-            var textoCliente = Cell(1, 3).add(Paragraph("Reporte de muestreo"))
-            textoCliente.setTextAlignment(TextAlignment.CENTER)
-            textoCliente.setItalic()
-            textoCliente.setUnderline()
-            table.addCell(textoCliente)
+            var textoNombreFormato = Cell(1, 3).add(Paragraph("Reporte de muestreo"))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setItalic()
+            .setUnderline()
+            table.addCell(textoNombreFormato)
 
             var etiquetaTitulodelProyecto = Cell(1, 1).add(Paragraph("Código del formato"))
             etiquetaTitulodelProyecto.setTextAlignment(TextAlignment.CENTER)
@@ -615,10 +455,10 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             table.addCell(textoTitulodelProyecto)
 
             var textoTitulodelProyecto1 = Cell(1, 1).add(Paragraph("Fecha de sondeo"))
-            textoTitulodelProyecto1.setTextAlignment(TextAlignment.CENTER)
-            textoTitulodelProyecto1.setItalic()
-            textoTitulodelProyecto1.setUnderline()
-            textoTitulodelProyecto1.setBackgroundColor(DeviceRgb(192, 192, 192))
+            .setTextAlignment(TextAlignment.CENTER)
+            .setItalic()
+            .setUnderline()
+            .setBackgroundColor(DeviceRgb(192, 192, 192))
             table.addCell(textoTitulodelProyecto1)
 
             var textoTitulodelFormato = Cell(1, 1).add(Paragraph("F1-PR21"))
@@ -649,104 +489,221 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
 
             // Crear una tabla para reporte de falla
-            val tableReporteFalla = Table(floatArrayOf(200f, 200f, 130f, 200f))
+            val tableDatosObra = Table(floatArrayOf(200f, 200f, 200f, 200f,200f))
 
 
-            var etiquetaReporteFalla = Cell(1, 4).add(Paragraph("Reporte de Falla"))
+            var etiquetaReporteFalla = Cell(1, 5).add(Paragraph("Datos de obra"))
             etiquetaReporteFalla.setTextAlignment(TextAlignment.CENTER)
             etiquetaReporteFalla.setBold()
             etiquetaReporteFalla.setBackgroundColor(DeviceRgb(192, 192, 192))
-            tableReporteFalla.addCell(etiquetaReporteFalla)
+            tableDatosObra.addCell(etiquetaReporteFalla)
 
-            var etiquetaFechaReporte = Cell(1, 1).add(Paragraph("Fecha de Reporte"))
-            etiquetaFechaReporte.setBold()
-            etiquetaFechaReporte.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaFechaReporte)
+            var etiquetaCliente = Cell(1, 1).add(Paragraph("Cliente:"))
+            .setBackgroundColor(DeviceRgb(192, 192, 192))
+            .setBold()
+            .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(etiquetaCliente)
 
-            var textoFechaReporte = Cell(1, 1).add(Paragraph(reporte.fecha))
-            textoFechaReporte.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(textoFechaReporte)
+            var textoCliente = Cell(1, 4).add(Paragraph(reporte.cliente))
+            .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(textoCliente)
 
-            var etiquetaNoReporte = Cell(1, 1).add(Paragraph("Reporte No."))
-            etiquetaNoReporte.setBold()
-            etiquetaNoReporte.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaNoReporte)
+            var etiquetaObra = Cell(1, 1).add(Paragraph("Obra:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(etiquetaObra)
 
-            var textoNoReporte = Cell(1, 1).add(Paragraph(reporte.id.toString()))
-            textoNoReporte.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(textoNoReporte)
+            var textoNoObra = Cell(1, 4).add(Paragraph(reporte.Obra))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(textoNoObra)
 
 
+            var etiquetaLocalizacion= Cell(1, 1).add(Paragraph("Localización:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(etiquetaLocalizacion)
 
-            var etiquetaDepartamentoResponsable =
-                Cell(1, 1).add(Paragraph("Departamento responsable"))
-            etiquetaDepartamentoResponsable.setBold()
-            etiquetaDepartamentoResponsable.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaDepartamentoResponsable)
+            var textoLocalizacion = Cell(1, 4).add(Paragraph(reporte.localizacion))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(textoLocalizacion)
 
-            var textoDepartamentoResponsable = Cell(1, 1).add(Paragraph("General Affairs"))
-            textoDepartamentoResponsable.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(textoDepartamentoResponsable)
+            var etiquetaAtencion= Cell(1, 1).add(Paragraph("En atención:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(etiquetaAtencion)
 
-            var etiquetaResponsable = Cell(1, 1).add(Paragraph("Responsable"))
-            etiquetaResponsable.setBold()
-            etiquetaResponsable.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaResponsable)
+            var textoAtencion = Cell(1, 2).add(Paragraph(reporte.atencion))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(textoAtencion)
 
-            var textoResponsable = Cell(1, 1).add(Paragraph("Ing. Eduardo Rabia"))
-            textoResponsable.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(textoResponsable)
+            var etiquetaExpediente= Cell(1, 1).add(Paragraph("Expediente:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(etiquetaExpediente)
 
-            var etiquetaUsuario = Cell(1, 1).add(Paragraph("Usuario"))
-            etiquetaUsuario.setBold()
-            etiquetaUsuario.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaUsuario)
-//
-//            var textoUsuario = Cell(1, 1).add(Paragraph(reporte.Usuario))
-//            textoUsuario.setTextAlignment(TextAlignment.CENTER)
-//            tableReporteFalla.addCell(textoUsuario)
+            var textoExpediente = Cell(1, 1).add(Paragraph(""))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosObra.addCell(textoExpediente)
 
-            var etiquetaArea = Cell(1, 1).add(Paragraph("Area"))
-            etiquetaArea.setBold()
-            etiquetaArea.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaArea)
-
-//            var textoArea = Cell(1, 1).add(Paragraph(reporte.Area))
-//            textoArea.setTextAlignment(TextAlignment.CENTER)
-//            tableReporteFalla.addCell(textoArea)
-
-            var etiquetaUbicacion = Cell(1, 1).add(Paragraph("Ubicación"))
-            etiquetaUbicacion.setBold()
-            etiquetaUbicacion.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaUbicacion)
-
-//            var textoUbicacion = Cell(1, 1).add(Paragraph(reporte.Ubicacion))
-//            textoUbicacion.setTextAlignment(TextAlignment.CENTER)
-//            tableReporteFalla.addCell(textoUbicacion)
-
-            var etiquetaFalla = Cell(2, 1).add(Paragraph("Falla"))
-            etiquetaFalla.setBold()
-            etiquetaFalla.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaFalla)
-
-//            var textoFalla = Cell(2, 1).add(Paragraph(reporte.Falla))
-//            textoFalla.setTextAlignment(TextAlignment.CENTER)
-//            tableReporteFalla.addCell(textoFalla)
-
-            var etiquetaEquipo = Cell(1, 1).add(Paragraph("Equipo"))
-            etiquetaEquipo.setBold()
-            etiquetaEquipo.setTextAlignment(TextAlignment.CENTER)
-            tableReporteFalla.addCell(etiquetaEquipo)
-
-//            var textoEquipo = Cell(1, 1).add(Paragraph(reporte.Equipo))
-//            textoEquipo.setTextAlignment(TextAlignment.CENTER)
-//            tableReporteFalla.addCell(textoEquipo)
+            document.add(tableDatosObra)
 
 
 
+            val tableDatosSondeo = Table(floatArrayOf(200f, 200f, 200f, 200f,200f))
+
+            var etiquetaDatosSondeo = Cell(1, 5).add(Paragraph("Datos del sondeo"))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBold()
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+            tableDatosSondeo.addCell(etiquetaDatosSondeo)
+
+            var etiquetaSondeoNum= Cell(1, 1).add(Paragraph("Sondeo Núm.:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaSondeoNum)
+
+            var textoSondeoNum = Cell(1, 2).add(Paragraph(reporte.sondeo_num))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(textoSondeoNum)
+
+            var etiquetaProfundidadSondeo= Cell(1, 1).add(Paragraph("Profundidad del sondeo [cm]:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaProfundidadSondeo)
+
+            var textoProfundidadSondeo = Cell(1, 1).add(Paragraph(reporte.profundidad_muestreo))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(textoProfundidadSondeo)
+
+            var etiquetaUicacion= Cell(1, 1).add(Paragraph("Ubicación:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaUicacion)
+
+            var textoUbicacion = Cell(1, 2).add(Paragraph(reporte.ubicacion))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(textoUbicacion)
+
+            var etiquetaHora= Cell(1, 1).add(Paragraph("Hora de muestreo:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaHora)
+
+            var textoHora = Cell(1, 1).add(Paragraph(reporte.hora))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(textoHora)
+
+            var etiquetaNAF= Cell(1, 1).add(Paragraph("NAF:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaNAF)
+
+            var textoNAF = Cell(1, 2).add(Paragraph(reporte.naf.toString()))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(textoNAF)
+
+            var etiquetaProfundidadNAF= Cell(1, 1).add(Paragraph("Profundidad NAF [cm]:"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaProfundidadNAF)
+
+            var textoProfundidadNAF = Cell(1, 1).add(Paragraph(reporte.profundidad_naf))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(textoProfundidadNAF)
+
+            var etiquetaCoordenadas= Cell(1, 1).add(Paragraph(reporte.latitud + reporte.longitud))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaCoordenadas)
+
+            var etiquetaLatitud= Cell(1, 1).add(Paragraph("Latitud:"))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaLatitud)
+
+            var textoLatitud = Cell(1, 1).add(Paragraph(reporte.latitud))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(textoLatitud)
+
+            var etiquetaLongitud= Cell(1, 1).add(Paragraph("Longitud:"))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(etiquetaLongitud)
+
+            var textoLongitud = Cell(1, 1).add(Paragraph(reporte.longitud))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosSondeo.addCell(textoLongitud)
+
+            document.add(tableDatosSondeo)
 
 
-            document.add(tableReporteFalla)
+            val tableDatosEstratoMuestreo = Table(floatArrayOf(200f, 200f, 200f, 200f,200f, 200f,200f))
+
+            var etiquetaDatosEstratoMuestreo= Cell(1, 7).add(Paragraph("Datos del estrato muestreado"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaDatosEstratoMuestreo)
+
+            var etiquetaNumEstrato= Cell(2, 1).add(Paragraph("Numero de estrato"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaNumEstrato)
+
+            var etiquetaTipoMuestreo= Cell(2, 1).add(Paragraph("Tipo de muestreo"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaTipoMuestreo)
+
+            var etiquetaProfundidad= Cell(1, 2).add(Paragraph("Profundidad [m]"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaProfundidad)
+
+            var etiquetaProfundidadMuestreo= Cell(2, 1).add(Paragraph("Profundidad del muestreo [cm]"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaProfundidadMuestreo)
+
+            var etiquetaClasificacionVisual= Cell(2, 1).add(Paragraph("Clasificación visual"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaClasificacionVisual)
+
+            var etiquetaObservaciones= Cell(2, 1).add(Paragraph("Clasificación visual"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaObservaciones)
+
+            var etiquetaProfundidadInicio= Cell(1, 1).add(Paragraph("Inicio"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaProfundidadInicio)
+
+            var etiquetaProfundidadFinal= Cell(1, 1).add(Paragraph("Final"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaProfundidadFinal)
+
+            val alturaTexto = 8f
+            reporte.listaEstratos.forEach { muestreo ->
+                tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.idEstrato + 1}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
+                tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.tipo_muestreo}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
+                tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.profundidad_inicio}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
+                tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.profundidad_final}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
+                tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.profundidad_muestreo}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
+                tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.clasificacion_visual}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
+                tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.observaciones}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
+//                tableDatosEstratoMuestreo.addCell(Cell(1,2).add(Paragraph("${muestreo.Porcentaje}"))).setFontSize(alturaTexto)
+            }
+
+            document.add(tableDatosEstratoMuestreo)
+
+
+
+
 
 
 
@@ -796,194 +753,256 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 // Agregar la tabla al documento
             document.add(tableDeImagenes)
 
+            val tableNormaReferencia = Table(floatArrayOf(200f, 200f, 200f, 200f, 200f, 200f))
 
-
-
-
-// Crear una tabla para Reporte de Mantenimiento
-            val tableReporteDeMantenimiento = Table(floatArrayOf(200f, 50f, 200f, 150f,200f))
-
-            var etiquetaReporteDeMantenimiento = Cell(1, 5).add(Paragraph("Reporte de Mantenimiento"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
+            var etiquetaNormaReferencia= Cell(1, 6).add(Paragraph("Norma de referencia: NMX-C-467-ONNCCE-2019, Métodos de muestreo"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
-            tableReporteDeMantenimiento.addCell(etiquetaReporteDeMantenimiento)
-
-            var etiquetaPeriodoActividad = Cell(1, 1).add(Paragraph("Periodo de la actividad"))
                 .setBold()
                 .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(etiquetaPeriodoActividad)
+            tableNormaReferencia.addCell(etiquetaNormaReferencia)
 
-            var etiquetaDel = Cell(1, 1).add(Paragraph("del"))
-                .setBold()
+            var textoMuestreador = Cell(1, 2).add(Paragraph("Muestreador"))
                 .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(etiquetaDel)
+                .setBorderRight(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
 
-            var textoPeriodoActividad = Cell(1, 1).add(Paragraph(reporte.fecha))
-                .setBold()
+            tableNormaReferencia.addCell(textoMuestreador)
+
+            var textoEspacioVacio = Cell(1, 2).add(Paragraph(""))
                 .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(textoPeriodoActividad)
+                .setBorder(Border.NO_BORDER)
+            tableNormaReferencia.addCell(textoEspacioVacio)
 
-            var etiquetaAl = Cell(1, 1).add(Paragraph("al"))
-                .setBold()
+            var textoAutoriza = Cell(1, 2).add(Paragraph("Autoriza:"))
                 .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(etiquetaAl)
+                .setBorderLeft(Border.NO_BORDER)
+            tableNormaReferencia.addCell(textoAutoriza)
 
-//            var textoPeriodoActividadAl = Cell(1, 1).add(Paragraph(reporte.fechaMantenimiento))
+            var etiquetaMuestreador= Cell(1, 2).add(Paragraph("Nombre de muestreador"))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBorderRight(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+            tableNormaReferencia.addCell(etiquetaMuestreador)
+
+
+            tableNormaReferencia.addCell(textoEspacioVacio)
+
+
+            var etiquetaAutoriza= Cell(1, 2).add(Paragraph("Nombre de quien autoriza"))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+
+
+            tableNormaReferencia.addCell(etiquetaAutoriza)
+
+
+            document.add(tableNormaReferencia)
+
+
+
+            val tableNotasAdicionales = Table(floatArrayOf(200f, 200f, 200f, 200f, 200f, 200f))
+
+            var etiquetaNotasAdicionales= Cell(1, 6).add(Paragraph("Se prohibe la reproducción total o parcial de este documento sin la autorización de laboratorio ROCA"))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setItalic()
+            tableNotasAdicionales.addCell(etiquetaNotasAdicionales)
+
+            var etiquetaNotasAdicionales1= Cell(1, 6).add(Paragraph("www.rocalaboratorio.com"))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBorderTop(Border.NO_BORDER)
+                .setItalic()
+            tableNotasAdicionales.addCell(etiquetaNotasAdicionales1)
+
+
+            document.add(tableNotasAdicionales)
+
+
+
+//
+//
+//// Crear una tabla para Reporte de Mantenimiento
+//            val tableReporteDeMantenimiento = Table(floatArrayOf(200f, 50f, 200f, 150f,200f))
+//
+//            var etiquetaReporteDeMantenimiento = Cell(1, 5).add(Paragraph("Reporte de Mantenimiento"))
 //                .setBold()
 //                .setTextAlignment(TextAlignment.CENTER)
-//            tableReporteDeMantenimiento.addCell(textoPeriodoActividadAl)
-
-            var etiquetaResponsableGeneralMIP = Cell(1, 1).add(Paragraph("Responsable general MIPGroup"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(etiquetaResponsableGeneralMIP)
-
-            var textoResponsableGeneralMIP = Cell(1, 2).add(Paragraph("Ing. Marco Antonio Perez Marquez"))
-                .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(textoResponsableGeneralMIP)
-
-            var etiquetaResponsableSitiolMIP = Cell(1, 1).add(Paragraph("Responsable en sitio MIPGroup"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(etiquetaResponsableSitiolMIP)
-
-            var textoResponsableSitiolMIP = Cell(1, 2).add(Paragraph("Ing. Antonio Jimenez"))
-                .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(textoResponsableSitiolMIP)
-
-            var etiquetaTecnicoMIP = Cell(1, 1).add(Paragraph("Tecnico (s) MIPGroup:"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(etiquetaTecnicoMIP)
-
-//            var textoTecnicoMIP = Cell(1, 2).add(Paragraph(reporte.TecnicoMantenimiento))
+//                .setBackgroundColor(DeviceRgb(192, 192, 192))
+//            tableReporteDeMantenimiento.addCell(etiquetaReporteDeMantenimiento)
+//
+//            var etiquetaPeriodoActividad = Cell(1, 1).add(Paragraph("Periodo de la actividad"))
+//                .setBold()
 //                .setTextAlignment(TextAlignment.CENTER)
-//            tableReporteDeMantenimiento.addCell(textoTecnicoMIP)
-
-            var etiquetaReporteMantenimietoFalla = Cell(1, 1).add(Paragraph("Falla"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-            tableReporteDeMantenimiento.addCell(etiquetaReporteMantenimietoFalla)
-
-//            var textoReporteMantenimietoFallaP = Cell(1, 2).add(Paragraph(reporte.FallaMantenimiento))
-//            textoReporteMantenimietoFallaP.setTextAlignment(TextAlignment.CENTER)
-//            tableReporteDeMantenimiento.addCell(textoReporteMantenimietoFallaP)
-
-
-            document.add(tableReporteDeMantenimiento)
-
-
-
-            val tableRumenDeLaActividad= Table(floatArrayOf(200f, 50f, 200f, 50f,200f))
-
-            var etiquetaResumenDeLaActividad = Cell(1, 5)
-                .add(Paragraph("Resumen de la actividad"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-                .setBackgroundColor(DeviceRgb(192, 192, 192))
-            tableRumenDeLaActividad.addCell(etiquetaResumenDeLaActividad)
-
-//            var textoResumenDeLaActividad = Cell(1, 5).add(Paragraph(reporte.resumenActividadMantenimiento))
-//            textoResumenDeLaActividad.setTextAlignment(TextAlignment.CENTER)
-//            tableRumenDeLaActividad.addCell(textoResumenDeLaActividad)
-
-//            document.add(tableRumenDeLaActividad)
-
-
-            var etiquetaMaterialesUtilizados = Cell(1, 1)
-                .setBold()
-                .add(Paragraph("Materiales utilizados:"))
-                .setTextAlignment(TextAlignment.CENTER)
-            tableRumenDeLaActividad.addCell(etiquetaMaterialesUtilizados)
-
-//            var textoMaterialesUtilizados = Cell(1, 4).add(Paragraph(reporte.materialesUtilizadosMantenimiento))
+//            tableReporteDeMantenimiento.addCell(etiquetaPeriodoActividad)
+//
+//            var etiquetaDel = Cell(1, 1).add(Paragraph("del"))
+//                .setBold()
 //                .setTextAlignment(TextAlignment.CENTER)
-//            tableRumenDeLaActividad.addCell(textoMaterialesUtilizados)
-
-            var etiquetaObservaciones = Cell(1, 1)
-                .add(Paragraph("Observaciones:"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-            tableRumenDeLaActividad.addCell(etiquetaObservaciones)
-
-//            var textoObservaciones = Cell(1, 4).add(Paragraph(reporte.ObservacionesMantenimiento))
+//            tableReporteDeMantenimiento.addCell(etiquetaDel)
+//
+//            var textoPeriodoActividad = Cell(1, 1).add(Paragraph(reporte.fecha))
+//                .setBold()
 //                .setTextAlignment(TextAlignment.CENTER)
-//            tableRumenDeLaActividad.addCell(textoObservaciones)
-
-            var etiquetaNotas = Cell(1, 1)
-                .add(Paragraph("Notas:"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-            tableRumenDeLaActividad.addCell(etiquetaNotas)
-
-//            var textoNotas = Cell(1, 4).add(Paragraph(reporte.NotasMantenimiento))
+//            tableReporteDeMantenimiento.addCell(textoPeriodoActividad)
+//
+//            var etiquetaAl = Cell(1, 1).add(Paragraph("al"))
+//                .setBold()
 //                .setTextAlignment(TextAlignment.CENTER)
-//            tableRumenDeLaActividad.addCell(textoNotas)
-
-
-            document.add(tableRumenDeLaActividad)
-
-
-//            val tableImagenesDeLaActividad= Table(floatArrayOf(200f, 50f, 200f, 50f,200f))
-//            // Imagenes de mantenimiento
-//            var etiquetaImagenDeLaActividad = Cell(1, 5)
-//                .add(Paragraph("Imagen de la Actividad"))
+//            tableReporteDeMantenimiento.addCell(etiquetaAl)
+//
+////            var textoPeriodoActividadAl = Cell(1, 1).add(Paragraph(reporte.fechaMantenimiento))
+////                .setBold()
+////                .setTextAlignment(TextAlignment.CENTER)
+////            tableReporteDeMantenimiento.addCell(textoPeriodoActividadAl)
+//
+//            var etiquetaResponsableGeneralMIP = Cell(1, 1).add(Paragraph("Responsable general MIPGroup"))
+//                .setBold()
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(etiquetaResponsableGeneralMIP)
+//
+//            var textoResponsableGeneralMIP = Cell(1, 2).add(Paragraph("Ing. Marco Antonio Perez Marquez"))
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(textoResponsableGeneralMIP)
+//
+//            var etiquetaResponsableSitiolMIP = Cell(1, 1).add(Paragraph("Responsable en sitio MIPGroup"))
+//                .setBold()
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(etiquetaResponsableSitiolMIP)
+//
+//            var textoResponsableSitiolMIP = Cell(1, 2).add(Paragraph("Ing. Antonio Jimenez"))
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(textoResponsableSitiolMIP)
+//
+//            var etiquetaTecnicoMIP = Cell(1, 1).add(Paragraph("Tecnico (s) MIPGroup:"))
+//                .setBold()
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(etiquetaTecnicoMIP)
+//
+////            var textoTecnicoMIP = Cell(1, 2).add(Paragraph(reporte.TecnicoMantenimiento))
+////                .setTextAlignment(TextAlignment.CENTER)
+////            tableReporteDeMantenimiento.addCell(textoTecnicoMIP)
+//
+//            var etiquetaReporteMantenimietoFalla = Cell(1, 1).add(Paragraph("Falla"))
+//                .setBold()
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableReporteDeMantenimiento.addCell(etiquetaReporteMantenimietoFalla)
+//
+////            var textoReporteMantenimietoFallaP = Cell(1, 2).add(Paragraph(reporte.FallaMantenimiento))
+////            textoReporteMantenimietoFallaP.setTextAlignment(TextAlignment.CENTER)
+////            tableReporteDeMantenimiento.addCell(textoReporteMantenimietoFallaP)
+//
+//
+//            document.add(tableReporteDeMantenimiento)
+//
+//
+//
+//            val tableRumenDeLaActividad= Table(floatArrayOf(200f, 50f, 200f, 50f,200f))
+//
+//            var etiquetaResumenDeLaActividad = Cell(1, 5)
+//                .add(Paragraph("Resumen de la actividad"))
+//                .setBold()
 //                .setTextAlignment(TextAlignment.CENTER)
 //                .setBackgroundColor(DeviceRgb(192, 192, 192))
-//            tableImagenesDeLaActividad.addCell(etiquetaImagenDeLaActividad)
+//            tableRumenDeLaActividad.addCell(etiquetaResumenDeLaActividad)
 //
-//            var textoImagenDeLaActividad = Cell(1, 5).add(Paragraph(""))
-//            textoImagenDeLaActividad.setTextAlignment(TextAlignment.CENTER)
-//            tableImagenesDeLaActividad.addCell(textoImagenDeLaActividad)
+////            var textoResumenDeLaActividad = Cell(1, 5).add(Paragraph(reporte.resumenActividadMantenimiento))
+////            textoResumenDeLaActividad.setTextAlignment(TextAlignment.CENTER)
+////            tableRumenDeLaActividad.addCell(textoResumenDeLaActividad)
+//
+////            document.add(tableRumenDeLaActividad)
+//
+//
+//            var etiquetaMaterialesUtilizados = Cell(1, 1)
+//                .setBold()
+//                .add(Paragraph("Materiales utilizados:"))
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableRumenDeLaActividad.addCell(etiquetaMaterialesUtilizados)
+//
+////            var textoMaterialesUtilizados = Cell(1, 4).add(Paragraph(reporte.materialesUtilizadosMantenimiento))
+////                .setTextAlignment(TextAlignment.CENTER)
+////            tableRumenDeLaActividad.addCell(textoMaterialesUtilizados)
 //
 //
 //
-//            document.add(tableImagenesDeLaActividad)
-
-            // Crear una tabla para las imágenes
-            val tableDeImagenesMantenimiento = Table(floatArrayOf(200f, 200f, 200f)) // Ajusta los tamaños de las columnas según sea necesario
-
-// Título para la sección de imágenes
-            val etiquetaReporteImagenFallaMantenimiento = Cell(1, 3)
-                .add(Paragraph("Imágenes de la actividad"))
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-                .setBackgroundColor(DeviceRgb(192, 192, 192))
-            tableDeImagenesMantenimiento.addCell(etiquetaReporteImagenFallaMantenimiento)
-
-// Dimensiones máximas de la celda
-            val maxWidthMantenimiento = 150f
-            val maxHeightMantenimiento = 130f
-
-// Agregar imágenes a la tabla
-//            if (imagenesMantenimiento.isNotEmpty()) {
-//                for (image in imagenesMantenimiento) {
-//                    // Ajustar la escala de la imagen para que se ajuste a la celda
-//                    val imageWidth = image.imageWidth
-//                    val imageHeight = image.imageHeight
-//                    val widthScale = maxWidthMantenimiento / imageWidth
-//                    val heightScale = maxHeightMantenimiento / imageHeight
-//                    val scale = minOf(widthScale, heightScale) // Escoge la escala que mantenga las dimensiones dentro de la celda
+////            var textoObservaciones = Cell(1, 4).add(Paragraph(reporte.ObservacionesMantenimiento))
+////                .setTextAlignment(TextAlignment.CENTER)
+////            tableRumenDeLaActividad.addCell(textoObservaciones)
 //
-//                    image.scale(scale, scale) // Aplica el escalado
-//                    image.setHorizontalAlignment(HorizontalAlignment.CENTER)
+//            var etiquetaNotas = Cell(1, 1)
+//                .add(Paragraph("Notas:"))
+//                .setBold()
+//                .setTextAlignment(TextAlignment.CENTER)
+//            tableRumenDeLaActividad.addCell(etiquetaNotas)
 //
-//                    // Agregar la imagen dentro de una celda
-//                    val cell = Cell().add(image)
-//                    cell.setHorizontalAlignment(HorizontalAlignment.CENTER)
-//                    cell.setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                    cell.setPadding(10f) // Añadir un margen interno
-//                    tableDeImagenesMantenimiento.addCell(cell)
-//                }
-//            } else {
-//                val cellNoImages = Cell(1, 3)
-//                    .add(Paragraph("No hay imágenes disponibles.").setTextAlignment(TextAlignment.CENTER))
-//                tableDeImagenesMantenimiento.addCell(cellNoImages)
-//            }
-
-// Agregar la tabla al documento
-            document.add(tableDeImagenesMantenimiento)
+////            var textoNotas = Cell(1, 4).add(Paragraph(reporte.NotasMantenimiento))
+////                .setTextAlignment(TextAlignment.CENTER)
+////            tableRumenDeLaActividad.addCell(textoNotas)
+//
+//
+//            document.add(tableRumenDeLaActividad)
+//
+//
+////            val tableImagenesDeLaActividad= Table(floatArrayOf(200f, 50f, 200f, 50f,200f))
+////            // Imagenes de mantenimiento
+////            var etiquetaImagenDeLaActividad = Cell(1, 5)
+////                .add(Paragraph("Imagen de la Actividad"))
+////                .setTextAlignment(TextAlignment.CENTER)
+////                .setBackgroundColor(DeviceRgb(192, 192, 192))
+////            tableImagenesDeLaActividad.addCell(etiquetaImagenDeLaActividad)
+////
+////            var textoImagenDeLaActividad = Cell(1, 5).add(Paragraph(""))
+////            textoImagenDeLaActividad.setTextAlignment(TextAlignment.CENTER)
+////            tableImagenesDeLaActividad.addCell(textoImagenDeLaActividad)
+////
+////
+////
+////            document.add(tableImagenesDeLaActividad)
+//
+//            // Crear una tabla para las imágenes
+//            val tableDeImagenesMantenimiento = Table(floatArrayOf(200f, 200f, 200f)) // Ajusta los tamaños de las columnas según sea necesario
+//
+//// Título para la sección de imágenes
+//            val etiquetaReporteImagenFallaMantenimiento = Cell(1, 3)
+//                .add(Paragraph("Imágenes de la actividad"))
+//                .setBold()
+//                .setTextAlignment(TextAlignment.CENTER)
+//                .setBackgroundColor(DeviceRgb(192, 192, 192))
+//            tableDeImagenesMantenimiento.addCell(etiquetaReporteImagenFallaMantenimiento)
+//
+//// Dimensiones máximas de la celda
+//            val maxWidthMantenimiento = 150f
+//            val maxHeightMantenimiento = 130f
+//
+//// Agregar imágenes a la tabla
+////            if (imagenesMantenimiento.isNotEmpty()) {
+////                for (image in imagenesMantenimiento) {
+////                    // Ajustar la escala de la imagen para que se ajuste a la celda
+////                    val imageWidth = image.imageWidth
+////                    val imageHeight = image.imageHeight
+////                    val widthScale = maxWidthMantenimiento / imageWidth
+////                    val heightScale = maxHeightMantenimiento / imageHeight
+////                    val scale = minOf(widthScale, heightScale) // Escoge la escala que mantenga las dimensiones dentro de la celda
+////
+////                    image.scale(scale, scale) // Aplica el escalado
+////                    image.setHorizontalAlignment(HorizontalAlignment.CENTER)
+////
+////                    // Agregar la imagen dentro de una celda
+////                    val cell = Cell().add(image)
+////                    cell.setHorizontalAlignment(HorizontalAlignment.CENTER)
+////                    cell.setVerticalAlignment(VerticalAlignment.MIDDLE)
+////                    cell.setPadding(10f) // Añadir un margen interno
+////                    tableDeImagenesMantenimiento.addCell(cell)
+////                }
+////            } else {
+////                val cellNoImages = Cell(1, 3)
+////                    .add(Paragraph("No hay imágenes disponibles.").setTextAlignment(TextAlignment.CENTER))
+////                tableDeImagenesMantenimiento.addCell(cellNoImages)
+////            }
+//
+//// Agregar la tabla al documento
+//            document.add(tableDeImagenesMantenimiento)
 
 
 
@@ -1006,5 +1025,175 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         this.startActivity(intent)
+    }
+    override fun onResume() {
+        super.onResume()
+    }
+
+
+    private fun cargarObras(dataReference: DatabaseReference){
+        dataReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Limpia la lista actual
+                listaObrasmutableListOf.clear()
+
+                for (snapshot in dataSnapshot.children) {
+                    val numeroReporteKey = snapshot.key // Obtiene el número de informe (1, 2, 3, 4)
+
+                    // Accede a los datos específicos de cada informe
+                    val obra1 = snapshot.child("obra").getValue(String::class.java)
+                    val cliente = snapshot.child("cliente").getValue(String::class.java)
+                    val localizacion = snapshot.child("localizacion").getValue(String::class.java)
+                    val atencion = snapshot.child("atencion").getValue(String::class.java)
+                    val fecha = snapshot.child("fecha").getValue(String::class.java)
+//                    val estudioMuestreo =snapshot.child("estudioMuestreo").getValue(String::class.java)
+//                    val tipoMuestreo = snapshot.child("tipoMuestreo").getValue(String::class.java)
+
+                    val sondeo_num = snapshot.child("sondeo_num").getValue(String::class.java)
+                    val ubicacion = snapshot.child("ubicacion").getValue(String::class.java)
+                    val naf = snapshot.child("naf").getValue(Boolean::class.java)
+                    val profundidad_muestreo =snapshot.child("profundidad_muestreo").getValue(String::class.java)
+                    val profundidad_naf =snapshot.child("profundidad_naf").getValue(String::class.java)
+                    val hora = snapshot.child("hora").getValue(String::class.java)
+
+                    var llave = snapshot.child("llave").getValue(String::class.java)
+//                    val listaCalas = snapshot.child("listaCalas").getValue(MutableList<ClaseCala>::class.java)
+
+
+
+                    val listaEstratosSnapshot = snapshot.child("listaEstratos")
+                    val listaEstratos: MutableList<ClaseEstratos> = mutableListOf()
+                    val listaImagenes: MutableList<String> = mutableListOf()
+
+
+                    for (snapshot in listaEstratosSnapshot.children) {
+
+                        val idEstrato = snapshot.child("idEstrato").getValue(Int::class.java)
+                        val tipo_muestreo = snapshot.child("tipo_muestreo").getValue(String::class.java)
+                        val profundidad_inicio = snapshot.child("profundidad_inicio").getValue(Double::class.java)
+                        val profundidad_final = snapshot.child("profundidad_final").getValue(Double::class.java)
+                        val profundidad_muestreo= snapshot.child("profundidad_muestreo").getValue(Double::class.java)
+                        val clasificacion_visual = snapshot.child("clasificacion_visual").getValue(String::class.java)
+                        val observaciones = snapshot.child("observaciones").getValue(String::class.java)
+//                        val nombre = snapshot.child("nombre").getValue(String::class.java)
+
+//                        // Asegúrate de ajustar los nombres de los campos según tu modelo ClaseCala
+//                        val estacion = calaSnapshot.child("estacion").getValue(String::class.java)
+//                        val humedad = calaSnapshot.child("humedad").getValue(Double::class.java)
+//                        val estrato = calaSnapshot.child("cala").getValue(Int::class.java)
+//                        val mvsl = calaSnapshot.child("mvsl").getValue(Double::class.java)
+//                        val porcentaje =
+//                            calaSnapshot.child("porcentaje").getValue(Double::class.java)
+//                        val prof =
+//                            calaSnapshot.child("prof").getValue(Double::class.java)
+                        // Crea un objeto ClaseCala y agrégalo a la lista
+                        val Estrato = ClaseEstratos(
+                            idEstrato!!,
+                            tipo_muestreo!!,
+                            profundidad_inicio!!,
+                            profundidad_final!!,
+                            profundidad_muestreo!!,
+                            clasificacion_visual!!,
+                            observaciones!!,
+                        )
+                        listaEstratos.add(Estrato)
+                    }
+
+
+                    val procedencia = snapshot.child("procedencia").getValue(String::class.java)
+                    val numReporte = snapshot.child("numeroReporte").getValue(Int::class.java)
+                    val personal1 = snapshot.child("personal").getValue(String::class.java)
+                    val subTramo = snapshot.child("subTramo").getValue(String::class.java)
+                    val tramo = snapshot.child("tramo").getValue(String::class.java)
+                    val lugarMuestreo = snapshot.child("lugarMuestreo").getValue(String::class.java)
+                    val latitud = snapshot.child("latitud").getValue(String::class.java)
+                    val longitud = snapshot.child("longitud").getValue(String::class.java)
+
+
+                    // Verifica si el personal coincide con el personal deseado
+                    if (personal1 == personal) {
+
+                        // Crea un objeto ClaseObra y agrégalo a la lista solo si el personal coincide
+//                        val llaveReporte = snapshot.child("llave").getValue(String::class.java).toString()
+
+                        val imagenesRef = FirebaseDatabase.getInstance().reference
+                            .child("ImagenesMecanicas")
+                            .child(personal)
+                            .child(llave.toString())
+
+                        imagenesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(imagenSnapshot: DataSnapshot) {
+                                val listaImagenes: MutableList<String> = mutableListOf()
+                                for (img in imagenSnapshot.children) {
+                                    val url = img.getValue(String::class.java)
+                                    if (!url.isNullOrBlank()) {
+                                        listaImagenes.add(url)
+                                    }
+                                }
+
+                                // Construye la clase cuando ya tienes las imágenes
+                                val obra = ClaseObraMecanica(
+                                    numReporte!!,
+                                    obra1.toString(),
+                                    cliente.toString(),
+                                    localizacion.toString(),
+                                    atencion.toString(),
+                                    fecha.toString(),
+                                    sondeo_num.toString(),
+                                    ubicacion.toString(),
+                                    naf!!,
+                                    profundidad_muestreo.toString(),
+                                    profundidad_naf.toString(),
+                                    hora.toString(),
+                                    llave.toString(),
+                                    latitud.toString(),
+                                    longitud.toString(),
+                                    listaEstratos,
+                                    listaImagenes
+                                )
+
+                                listaObrasmutableListOf.add(obra)
+
+
+                                listaObrasmutableListOf.sortByDescending { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(it.fecha) }
+                                ObraAdapter.notifyDataSetChanged()
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Log.e("Firebase", "Error al obtener imágenes: ${error.message}")
+                            }
+                        })
+
+                    }
+
+                }
+
+
+
+                // Notifica al adaptador que los datos han cambiado
+                ObraAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Manejar error de base de datos, si es necesario
+            }
+
+        })
+    }
+    private fun cargarDatosFirebase(){
+        ObraAdapter = ObraMecanicaAdapter(listaObrasmutableListOf,
+            onObraSelected = { position -> onItemSelected(position) },
+            onItemDelete = { position -> onItemDelete(position) },
+            onVerReporteFallaMantenimientoGA = { position ->
+                onVerReporteFallaMantenimientoGA(position, listaObrasmutableListOf)
+            }
+        )
+
+        rvObrasMecanicas.layoutManager = LinearLayoutManager(this)
+        rvObrasMecanicas.adapter = ObraAdapter
+
+        storage= FirebaseStorage.getInstance()
+        dataReference =
+            FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal)
     }
 }

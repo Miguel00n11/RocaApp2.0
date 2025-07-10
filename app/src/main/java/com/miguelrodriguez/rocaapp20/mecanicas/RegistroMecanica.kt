@@ -842,65 +842,41 @@ class RegistroMecanica : AppCompatActivity() {
         listaEstratos: List<ClaseEstratos>,
         accion: Boolean
     ) {
-        // Verificar si hay conexión a Internet
-        // Puedes usar una biblioteca como Connectivity Manager para esto
+       val registrosLocales = getLocalRecords()
+       val registrosSubidosConExito = mutableListOf<Registro>()
 
-        // Obtener registros locales
-        val registrosLocales = getLocalRecords()
+       for (registro in registrosLocales) {
+           val reportesReferencia = dataReference.child("Reportes").child(personal)
 
-        // Sincronizar cada registro con Firebase Realtime Database
-        for (registro in registrosLocales) {
+           reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
+               override fun onDataChange(snapshot: DataSnapshot) {
 
-            // Generar una nueva clave única para cada registro
-//            val nuevaClave = dataReference.push().key
-//            llave=nuevaClave!!
+                   val destino = if (accion) reporteSelecionadoMuestroMaterial.llave else llave
+                   val refPrincipal = dataReference.child("Mecanicas").child("ReportesMecanicas").child(personal).child(destino)
+                   val refRespaldo  = dataReference.child("Mecanicas").child("RespaldoMecanicas").child(personal).child(destino)
 
+                   registro.llave = destino // Actualiza llave si es nuevo
 
-            val reportesReferencia = dataReference.child("Reportes").child(personal)
+                   refPrincipal.setValue(registro)
+                   refRespaldo.setValue(registro)
 
-            reportesReferencia.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
+                   // ✅ Añadir a la lista de subidos con éxito
+                   registrosSubidosConExito.add(registro)
 
+                   // ✅ Si ya es el último, depura
+                   if (registrosSubidosConExito.size == registrosLocales.size) {
+                       saveLocalRecords(emptyList())
+                       Log.d("Sync", "Registros locales eliminados tras sincronización exitosa.")
+                   }
 
-                    if (accion == true) {
-                        // Guardar el registro en Firebase Realtime Database
-                        dataReference.child("Mecanicas").child("ReportesMecanicas").child(personal)
-                            .child(reporteSelecionadoMuestroMaterial.llave)
-                            .setValue(registro)
-                        onBackPressed()
-                    } else {
-                        // Guardar el registro en Firebase Realtime Database
-                        registro.llave = llave
-                        dataReference.child("Mecanicas").child("ReportesMecanicas").child(personal)
-                            .child(llave)
-                            .setValue(registro)
+                   if (accion) onBackPressed()
+               }
 
-                    }
-                    if (accion == true) {
-                        // Guardar el registro en Firebase Realtime Database
-                        dataReference.child("Mecanicas").child("RespaldoMecanicas").child(personal)
-                            .child(reporteSelecionadoMuestroMaterial.llave)
-                            .setValue(registro)
-                        onBackPressed()
-                    } else {
-                        // Guardar el registro en Firebase Realtime Database
-                        registro.llave = llave
-                        dataReference.child("Mecanicas").child("RespaldoMecanicas").child(personal)
-                            .child(llave)
-                            .setValue(registro)
-
-                    }
-
-
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            })
-
-            saveLocalRecords(emptyList()) // o la lista ya depurada
-        }
+               override fun onCancelled(error: DatabaseError) {
+                   Toast.makeText(applicationContext, "Error al sincronizar con Firebase", Toast.LENGTH_SHORT).show()
+               }
+           })
+       }
 
         // Limpiar registros locales después de la sincronización
         saveLocalRecords(registrosLocales)

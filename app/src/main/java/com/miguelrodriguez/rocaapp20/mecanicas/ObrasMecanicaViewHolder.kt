@@ -11,7 +11,7 @@ import com.miguelrodriguez.rocaapp20.R
 
 class ObrasMecanicaViewHolder(view:View):RecyclerView.ViewHolder(view) {
     private val tvItemObrasCompactacion: TextView =view.findViewById(R.id.tvItemObrasMecanica)
-    private val tvReporteCompactacion: TextView =view.findViewById(R.id.tvItemReporteMecanica)
+    private val tvItemSondeoMecanica: TextView =view.findViewById(R.id.tvItemSondeoMecanica)
     private val tvItemClienteMecanica: TextView =view.findViewById(R.id.tvItemClienteMecanica)
     private val tvFechaCompactacion: TextView =view.findViewById(R.id.tvItemFechaMecanica)
     private val btnEliminar: FloatingActionButton =
@@ -22,7 +22,7 @@ class ObrasMecanicaViewHolder(view:View):RecyclerView.ViewHolder(view) {
     fun render(listaObrasMecancia: ClaseObraMecanica) {
 
         tvItemObrasCompactacion.text=listaObrasMecancia.Obra
-//        tvReporteCompactacion.text=listaObrasMecancia.reporte
+        tvItemSondeoMecanica.text="Sondeo: "+listaObrasMecancia.sondeo_num
         tvItemClienteMecanica.text=listaObrasMecancia.cliente
         tvFechaCompactacion.text=listaObrasMecancia.fecha
 
