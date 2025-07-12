@@ -48,7 +48,6 @@
         android:hint="Prof. inicio [cm]"
         android:textColorHint="@color/white"
 
-        app:endIconMode="clear_text"
         app:helperTextTextColor="#D81B60"
         app:hintTextColor="@color/white"
         android:enabled="false"
