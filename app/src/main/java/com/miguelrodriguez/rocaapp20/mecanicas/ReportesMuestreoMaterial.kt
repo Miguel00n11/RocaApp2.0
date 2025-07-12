@@ -315,9 +315,9 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     ) {
         val reporteSeleccionado = listaReportes[position]
 
-        Toast.makeText(this, reporteSeleccionado.listaImagenes.toString(), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, reporteSeleccionado.listaImagenes.toString(), Toast.LENGTH_SHORT).show()
         // Verificar imágenes
-        Toast.makeText(this, reporteSeleccionado.listaImagenes.count().toString(), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, reporteSeleccionado.listaImagenes.count().toString(), Toast.LENGTH_SHORT).show()
         if (reporteSeleccionado.listaImagenes.isNotEmpty()) {
             Log.d("ListaImagenes", "Imágenes del reporte seleccionado: ${reporteSeleccionado.listaImagenes.count()}")
         } else {
@@ -417,6 +417,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             val cellImage = Cell(5, 1)
             cellImage.add(image.setHorizontalAlignment(HorizontalAlignment.CENTER))
                 .setTextAlignment(TextAlignment.CENTER)
+                .setVerticalAlignment(VerticalAlignment.MIDDLE)
+
             table.addCell(cellImage)
 
 
@@ -433,26 +435,20 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var etiquetaNombreFormato = Cell(1, 3).add(Paragraph("Nombre del formato"))
             .setTextAlignment(TextAlignment.CENTER)
-            .setBold()
             .setBackgroundColor(DeviceRgb(192, 192, 192))
             table.addCell(etiquetaNombreFormato)
 
             var textoNombreFormato = Cell(1, 3).add(Paragraph("Reporte de muestreo"))
             .setTextAlignment(TextAlignment.CENTER)
-            .setItalic()
-            .setUnderline()
             table.addCell(textoNombreFormato)
 
             var etiquetaTitulodelProyecto = Cell(1, 1).add(Paragraph("Código del formato"))
             etiquetaTitulodelProyecto.setTextAlignment(TextAlignment.CENTER)
-            etiquetaTitulodelProyecto.setBold()
             etiquetaTitulodelProyecto.setBackgroundColor(DeviceRgb(192, 192, 192))
             table.addCell(etiquetaTitulodelProyecto)
 
-            var textoTitulodelProyecto = Cell(1, 1).add(Paragraph("Procedimiento"))
+            var textoTitulodelProyecto = Cell(1, 1).add(Paragraph("Revisión"))
             textoTitulodelProyecto.setTextAlignment(TextAlignment.CENTER)
-            textoTitulodelProyecto.setItalic()
-            textoTitulodelProyecto.setUnderline()
             textoTitulodelProyecto.setBackgroundColor(DeviceRgb(192, 192, 192))
             table.addCell(textoTitulodelProyecto)
 
@@ -465,20 +461,14 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var textoTitulodelFormato = Cell(1, 1).add(Paragraph("F1-PR21"))
             textoTitulodelFormato.setTextAlignment(TextAlignment.CENTER)
-            textoTitulodelFormato.setItalic()
-            textoTitulodelFormato.setUnderline()
             table.addCell(textoTitulodelFormato)
 
-            var textoTitulodelProcedimiento = Cell(1, 1).add(Paragraph("PR21"))
+            var textoTitulodelProcedimiento = Cell(1, 1).add(Paragraph("00"))
             textoTitulodelProcedimiento.setTextAlignment(TextAlignment.CENTER)
-            textoTitulodelProcedimiento.setItalic()
-            textoTitulodelProcedimiento.setUnderline()
             table.addCell(textoTitulodelProcedimiento)
 
             var textoTitulodelFecha = Cell(1, 1).add(Paragraph(reporte.fecha))
             textoTitulodelFecha.setTextAlignment(TextAlignment.CENTER)
-            textoTitulodelFecha.setItalic()
-            textoTitulodelFecha.setUnderline()
             table.addCell(textoTitulodelFecha)
 
 
@@ -502,7 +492,6 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var etiquetaCliente = Cell(1, 1).add(Paragraph("Cliente:"))
             .setBackgroundColor(DeviceRgb(192, 192, 192))
-            .setBold()
             .setTextAlignment(TextAlignment.CENTER)
             tableDatosObra.addCell(etiquetaCliente)
 
@@ -512,7 +501,6 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var etiquetaObra = Cell(1, 1).add(Paragraph("Obra:"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
-                .setBold()
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosObra.addCell(etiquetaObra)
 
@@ -523,7 +511,6 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var etiquetaLocalizacion= Cell(1, 1).add(Paragraph("Localización:"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
-                .setBold()
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosObra.addCell(etiquetaLocalizacion)
 
@@ -533,7 +520,6 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var etiquetaAtencion= Cell(1, 1).add(Paragraph("En atención:"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
-                .setBold()
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosObra.addCell(etiquetaAtencion)
 
@@ -543,7 +529,6 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var etiquetaExpediente= Cell(1, 1).add(Paragraph("Expediente:"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
-                .setBold()
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosObra.addCell(etiquetaExpediente)
 
@@ -645,7 +630,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             tableDatosSondeo.addCell(textoLongitud)
 
             // Crear un párrafo con un enlace
-            val parrafoCoordenadas = Paragraph("Ver coordenadas")
+            val parrafoCoordenadas = Paragraph("Ver ubicación")
                 .setFontSize(8f)
                 .setFontColor(DeviceRgb(156, 39, 176))
                 .setTextAlignment(TextAlignment.CENTER)
@@ -694,7 +679,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosEstratoMuestreo.addCell(etiquetaClasificacionVisual)
 
-            var etiquetaObservaciones= Cell(2, 1).add(Paragraph("Clasificación visual"))
+            var etiquetaObservaciones= Cell(2, 1).add(Paragraph("Observaciones"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosEstratoMuestreo.addCell(etiquetaObservaciones)
