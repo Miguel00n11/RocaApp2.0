@@ -20,7 +20,8 @@ data class ClaseObraMecanica(val id:Int,
                              var latitud:String,
                              var longitud:String,
                              val listaEstratos:MutableList<ClaseEstratos>,
-                             val listaImagenes:MutableList<String>
+                             val listaImagenes:MutableList<String>,
+                             val personal:String,
 
 
 )

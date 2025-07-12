@@ -51,6 +51,7 @@
         app:endIconMode="clear_text"
         app:helperTextTextColor="#D81B60"
         app:hintTextColor="@color/white"
+        android:enabled="false"
         app:suffixText="cm"
         app:startIconTint="@color/white">
 

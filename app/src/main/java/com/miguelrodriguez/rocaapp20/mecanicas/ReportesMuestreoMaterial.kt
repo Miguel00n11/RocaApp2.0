@@ -147,7 +147,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             "latitud",
             "longitud",
             listaEstratossmutableListOf,
-            listaImagenesmutableListOf
+            listaImagenesmutableListOf,
+            "usuario"
         )
 
 //        etObra = findViewById(R.id.etObraMuestreoMecanica)
@@ -454,8 +455,6 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
             var textoTitulodelProyecto1 = Cell(1, 1).add(Paragraph("Fecha de sondeo"))
             .setTextAlignment(TextAlignment.CENTER)
-            .setItalic()
-            .setUnderline()
             .setBackgroundColor(DeviceRgb(192, 192, 192))
             table.addCell(textoTitulodelProyecto1)
 
@@ -635,6 +634,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 .setFontColor(DeviceRgb(156, 39, 176))
                 .setTextAlignment(TextAlignment.CENTER)
                 .setUnderline()
+                .setItalic()
                 .setAction(PdfAction.createURI(urlMaps))
 
             val etiquetaCoordenadas = Cell(1, 1)
@@ -664,7 +664,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosEstratoMuestreo.addCell(etiquetaTipoMuestreo)
 
-            var etiquetaProfundidad= Cell(1, 2).add(Paragraph("Profundidad [m]"))
+            var etiquetaProfundidad= Cell(1, 2).add(Paragraph("Profundidad [cm]"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosEstratoMuestreo.addCell(etiquetaProfundidad)
@@ -768,7 +768,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 .setTextAlignment(TextAlignment.CENTER)
             tableNormaReferencia.addCell(etiquetaNormaReferencia)
 
-            var textoMuestreador = Cell(1, 2).add(Paragraph("Muestreador"))
+            var textoMuestreador = Cell(1, 2).add(Paragraph(reporte.personal))
                 .setTextAlignment(TextAlignment.CENTER)
                 .setBorderRight(Border.NO_BORDER)
                 .setBorderBottom(Border.NO_BORDER)
@@ -780,7 +780,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 .setBorder(Border.NO_BORDER)
             tableNormaReferencia.addCell(textoEspacioVacio)
 
-            var textoAutoriza = Cell(1, 2).add(Paragraph("Autoriza:"))
+            var textoAutoriza = Cell(1, 2).add(Paragraph("Carlos Ali Rodríguez Ortega"))
                 .setTextAlignment(TextAlignment.CENTER)
                 .setBorderLeft(Border.NO_BORDER)
             tableNormaReferencia.addCell(textoAutoriza)
@@ -1052,6 +1052,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                     val cliente = snapshot.child("cliente").getValue(String::class.java)
                     val localizacion = snapshot.child("localizacion").getValue(String::class.java)
                     val atencion = snapshot.child("atencion").getValue(String::class.java)
+//                    val personal = snapshot.child("personal").getValue(String::class.java)
                     val fecha = snapshot.child("fecha").getValue(String::class.java)
 //                    val estudioMuestreo =snapshot.child("estudioMuestreo").getValue(String::class.java)
 //                    val tipoMuestreo = snapshot.child("tipoMuestreo").getValue(String::class.java)
@@ -1156,7 +1157,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                                     latitud.toString(),
                                     longitud.toString(),
                                     listaEstratos,
-                                    listaImagenes
+                                    listaImagenes,
+                                    personal
                                 )
 
                                 listaObrasmutableListOf.add(obra)

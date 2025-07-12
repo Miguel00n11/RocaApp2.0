@@ -779,7 +779,6 @@ class RegistroMecanica : AppCompatActivity() {
                     cliente,
                     localizacion,
                     atencion,
-                    personal,
                     numeroReporte,
                     fecha,
                     sondeo_num,
@@ -792,7 +791,8 @@ class RegistroMecanica : AppCompatActivity() {
 //                    tipoMuestreo,
                     latitud,longitud,
                     listaEstratosmutableListOf,
-                    imageList
+                    imageList,
+                    personal
                 )
 
 
@@ -1095,7 +1095,6 @@ class RegistroMecanica : AppCompatActivity() {
         cliente: String,
         localizacion: String,
         atencion: String,
-        personal: String,
         numeroReporte: Int,
         fecha: String,
         sondeo_num: String,
@@ -1110,7 +1109,9 @@ class RegistroMecanica : AppCompatActivity() {
         latitud: String,
         longitud: String,
         listaEstratos: MutableList<ClaseEstratos>,
-        listaImagenes: MutableList<String>
+        listaImagenes: MutableList<String>,
+        personal: String
+
 
 
     ) {
@@ -1123,7 +1124,6 @@ class RegistroMecanica : AppCompatActivity() {
             cliente,
             localizacion,
             atencion,
-            personal,
             numeroReporte,
             fecha,
             sondeo_num,
@@ -1136,7 +1136,8 @@ class RegistroMecanica : AppCompatActivity() {
 //            tipo_muestreo,
             latitud,longitud,
             listaEstratos,
-            listaImagenes
+            listaImagenes,
+            personal
         )
         registrosLocales.add(nuevoRegistro)
 
@@ -1166,6 +1167,16 @@ class RegistroMecanica : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, itemMuestreo)
         spnTipoMuestreoMuestreoMecanica.setAdapter(adapter)
         spnTipoMuestreoMuestreoMecanica.setText("Alterado", false)
+
+        // Establecer profundidad de inicio automáticamente
+        if (listaEstratosmutableListOf.isEmpty()) {
+            // Primer estrato, inicia en 0
+            etProfundidadInicioMuestreoMecanica.setText("0.0")
+        } else {
+            // Obtener profundidad final del último estrato registrado
+            val ultimaProfundidadFinal = listaEstratosmutableListOf.last().profundidad_final
+            etProfundidadInicioMuestreoMecanica.setText(ultimaProfundidadFinal.toString())
+        }
 
 
 
@@ -1251,6 +1262,15 @@ class RegistroMecanica : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, itemMuestreo)
         spnTipoMuestreoMuestreoMecanica.setAdapter(adapter)
 
+// Establecer profundidad de inicio automáticamente
+        if (listaEstratosmutableListOf.isEmpty()) {
+            // Primer estrato, inicia en 0
+            etProfundidadInicioMuestreoMecanica.setText("0.0")
+        } else {
+            // Obtener profundidad final del último estrato registrado
+            val ultimaProfundidadFinal = listaEstratosmutableListOf.last().profundidad_final
+            etProfundidadInicioMuestreoMecanica.setText(ultimaProfundidadFinal.toString())
+        }
 
 
 
@@ -1407,7 +1427,6 @@ class RegistroMecanica : AppCompatActivity() {
         val cliente:String,
         val localizacion:String,
         val atencion:String,
-        val personal:String,
         val numeroReporte:Int,
         val fecha:String,
         val sondeo_num:String,
@@ -1421,6 +1440,9 @@ class RegistroMecanica : AppCompatActivity() {
         var latitud:String,
         var longitud:String,
         val listaEstratos:MutableList<ClaseEstratos>,
-        val listaImagenes:MutableList<String>
+        val listaImagenes:MutableList<String>,
+        val personal:String
+
+
     )
 }

@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 "adrian"->nombreUsuario="José Adrían Cortés Martínez"
                 "carlos"->nombreUsuario="Carlos Alfonso Torres Cervantes"
                 "calixto"->nombreUsuario="José Luis Calixto Ramírez"
-                "miguel"->nombreUsuario="Jesús Miguel Rodríguez Ortega"
+                "miguel00n11"->nombreUsuario="Jesús Miguel Rodríguez Ortega"
             }
 //            when (adrian||Adrian)
             NombreUsuarioCompanion =
