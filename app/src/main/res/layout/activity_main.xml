@@ -90,8 +90,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/grey"
+        android:textStyle="italic"
+        android:textSize="12dp"
         android:layout_gravity="right"
-        android:text="Versión 1.12"/>
+        android:text="Versión 1.13"/>
 
     </LinearLayout>
 </LinearLayout>
