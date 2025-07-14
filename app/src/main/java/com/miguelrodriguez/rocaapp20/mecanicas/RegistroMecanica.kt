@@ -13,6 +13,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -158,11 +161,12 @@ class RegistroMecanica : AppCompatActivity() {
         val btnGuardarUbicacion: Button = findViewById(R.id.btnGuardadUbicacion)
         btnGuardarUbicacion.setOnClickListener {
             if (checkLocationPermission()) {
-                obtenerUbicacionActual()
+                obtenerUbicacionPrecisa()
             } else {
                 solicitarPermisoUbicacion()
             }
         }
+
 
 
         InitComponent()
@@ -718,6 +722,35 @@ class RegistroMecanica : AppCompatActivity() {
 
     }
 
+    private fun obtenerUbicacionPrecisa() {
+        if (!checkLocationPermission()) {
+            solicitarPermisoUbicacion()
+            return
+        }
+
+        val locationRequest = com.google.android.gms.location.LocationRequest.create().apply {
+            priority = com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 1000 // 1 segundo
+            fastestInterval = 500
+            numUpdates = 1 // Solo una vez
+        }
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                val location: Location = locationResult.lastLocation!!
+                val latitud = location.latitude
+                val longitud = location.longitude
+
+                tvLatitud.text = latitud.toString()
+                tvLongitud.text = longitud.toString()
+
+                // También puedes guardar en Firebase si lo deseas aquí
+                // guardarUbicacionEnFirebase(latitud, longitud)
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, mainLooper)
+    }
     private fun restaurarDatosOriginales() {
         listaEstratosmutableListOf.clear()
         listaEstratosmutableListOf.addAll(listaEstratosOriginal)
