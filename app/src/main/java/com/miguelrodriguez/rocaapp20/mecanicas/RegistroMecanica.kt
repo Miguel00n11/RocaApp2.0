@@ -1210,7 +1210,7 @@ class RegistroMecanica : AppCompatActivity() {
             val ultimaProfundidadFinal = listaEstratosmutableListOf.last().profundidad_final
             etProfundidadInicioMuestreoMecanica.setText(ultimaProfundidadFinal.toString())
         }
-
+//        etProfundidadMuestreoMecanica.setText(listaEstratosmutableListOf.last().profundidad_final.toString())
 
 
         btnGuardarEstrato.setOnClickListener {
@@ -1397,6 +1397,7 @@ class RegistroMecanica : AppCompatActivity() {
                 elemento.idEstrato = nuevaNumeracion
             }
             EstratosAdapter.notifyDataSetChanged()
+            updateTask()
 
 
         }
@@ -1423,6 +1424,15 @@ class RegistroMecanica : AppCompatActivity() {
     private fun updateTask() {
         EstratosAdapter.notifyDataSetChanged()
         imageAdapter.notifyDataSetChanged()
+        // Establecer profundidad de inicio automáticamente
+
+        if (listaEstratosmutableListOf.isEmpty()) {
+            // Primer estrato, inicia en 0
+            etProfundidadMuestreoMecanica.setText("0.0")
+        } else {
+            // Obtener profundidad final del último estrato registrado
+            etProfundidadMuestreoMecanica.setText(listaEstratosmutableListOf.last().profundidad_final.toString())
+        }
 
 
     }

@@ -12,9 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.SearchView
 import android.widget.Spinner
+import android.widget.Switch
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -98,6 +101,11 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     private lateinit var etProfunNAFMuestreoMecanica: EditText
     private lateinit var etHoraMuestreoMecanica: EditText
 
+    private lateinit var swVerTodosReportesMecanica: Switch
+    private lateinit var listaFiltrada: MutableList<ClaseObra>
+    private lateinit var svBuscarReportesMecanica: SearchView
+
+
 
 
 
@@ -166,6 +174,9 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 //        listaEstratossmutableListOf = mutableListOf(ClaseEstratos(1, "h", 1.0))
         btnRegistroMuestreoMaterial = findViewById(R.id.btnRegistroMuestreoMaterial)
         rvObrasMecanicas = findViewById(R.id.rvObrasMecanicas)
+        swVerTodosReportesMecanica = findViewById(R.id.swVerTodosReportesMecanica)
+        svBuscarReportesMecanica=findViewById(R.id.svBuscarReportesMecanica)
+
     }
 
     private fun cargarObraSeleccionada(reporteSelecionado: ClaseObraMecanica) {
@@ -201,6 +212,9 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         rvEstratos.layoutManager = LinearLayoutManager(this)
         rvEstratos.adapter = estratosAdapter
 
+        svBuscarReportesMecanica = findViewById(R.id.svBuscarReportesMecanica)
+
+
     }
 
     private fun InitUI() {
@@ -211,6 +225,24 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         cargarDatosFirebase()
         cargarObras(dataReference)
 
+        swVerTodosReportesMecanica.setOnCheckedChangeListener { buttonView, isChecked ->
+            ObraAdapter.setMostrarBoton(swVerTodosReportesMecanica.isChecked)
+
+            if (isChecked) {
+                svBuscarReportesMecanica.visibility = View.VISIBLE// El switch está activado
+                dataReference = FirebaseDatabase.getInstance().reference.child("Mecanicas").child("RespaldoMecanicas").child(personal)
+                cargarObras(dataReference)
+
+            } else {
+                svBuscarReportesMecanica.setQuery("", false)
+                svBuscarReportesMecanica.visibility = View.GONE
+                dataReference = FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal)
+                cargarObras(dataReference)
+
+                // El switch está desactivado
+            }
+
+        }
     }
 
 
@@ -721,7 +753,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
 
 // Título para la sección de imágenes
             val etiquetaReporteImagenFalla = Cell(1, 3)
-                .add(Paragraph("Imágenes de la falla"))
+                .add(Paragraph("Imágenes del sondeo"))
                 .setTextAlignment(TextAlignment.CENTER)
                 .setBold()
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
@@ -1195,7 +1227,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             onItemDelete = { position -> onItemDelete(position) },
             onVerReporteFallaMantenimientoGA = { position ->
                 onVerReporteFallaMantenimientoGA(position, listaObrasmutableListOf)
-            }
+            }, mostrarBoton = swVerTodosReportesMecanica.isChecked
         )
 
         rvObrasMecanicas.layoutManager = LinearLayoutManager(this)

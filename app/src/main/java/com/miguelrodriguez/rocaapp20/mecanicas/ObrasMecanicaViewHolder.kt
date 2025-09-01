@@ -28,7 +28,8 @@ class ObrasMecanicaViewHolder(view:View):RecyclerView.ViewHolder(view) {
 
     }
     fun bind(obraMecanica: ClaseObraMecanica, onCalaSelected: (Int) -> Unit, onItemDelete: (Int) -> Unit,
-             onIntemVerReporteMecanica: (Int) -> Unit) {
+             onIntemVerReporteMecanica: (Int) -> Unit,
+             mostrarBotones: Boolean) {
         // Configura los elementos visuales con la información de la ClaseCala
         // ...
 
@@ -53,6 +54,18 @@ class ObrasMecanicaViewHolder(view:View):RecyclerView.ViewHolder(view) {
             onIntemVerReporteMecanica(adapterPosition)
 //            Toast.makeText(this.itemView.context, "Ver reporte", Toast.LENGTH_SHORT).show()
         }
+        if (!mostrarBotones) {
+            btnEliminar.visibility = View.VISIBLE
+//            btnVerReporteCompactacion.visibility = View.VISIBLE
+        } else {
+            btnEliminar.visibility = View.GONE
+//            btnVerReporteCompactacion.visibility = View.GONE
+
+
+        }
+        println(mostrarBotones.toString())
+//        btnEliminar.visibility = if (mostrarBotones) View.VISIBLE else View.GONE
+//        btnVerReporteCompactacion.visibility = if (mostrarBotones) View.VISIBLE else View.GONE
     }
     private fun showDeleteConfirmationDialog(context: Context, onConfirmation: (Boolean) -> Unit) {
         val builder = AlertDialog.Builder(context)
