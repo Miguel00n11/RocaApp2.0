@@ -76,7 +76,7 @@ class ObraAdapter(
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val filteredList = mutableListOf<ClaseObra>()
-                val filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim()
+                val filterPattern = constraint.toString().lowercase(Locale.getDefault()).trim()
 
                 if (filterPattern.isEmpty()) {
                     // Si el filtro está vacío, muestra la lista completa
@@ -84,7 +84,7 @@ class ObraAdapter(
                 } else {
                     // Filtra la lista de obras según el patrón de filtro
                     for (obra in listaObraCompleta) {
-                        if (obra.Obra.toLowerCase(Locale.getDefault()).contains(filterPattern)) {
+                        if (obra.Obra.lowercase(Locale.getDefault()).contains(filterPattern)) {
                             filteredList.add(obra)
                         }
                     }

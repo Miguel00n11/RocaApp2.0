@@ -73,6 +73,7 @@ class RegistroMecanica : AppCompatActivity() {
 
     private val CAMERA_PERMISSION_REQUEST_CODE = 1002
     private val REQUEST_IMAGE_CAPTURE = 2
+    private val MAP_PICKER_REQUEST = 1020
 
     private var debeMostrarDialogoEstratos = true
 
@@ -160,11 +161,13 @@ class RegistroMecanica : AppCompatActivity() {
 
         val btnGuardarUbicacion: Button = findViewById(R.id.btnGuardadUbicacion)
         btnGuardarUbicacion.setOnClickListener {
-            if (checkLocationPermission()) {
-                obtenerUbicacionPrecisa()
-            } else {
-                solicitarPermisoUbicacion()
-            }
+//            if (checkLocationPermission()) {
+//                obtenerUbicacionPrecisa()
+//            } else {
+//                solicitarPermisoUbicacion()
+//            }
+            val intent = Intent(this, MapPickerActivity::class.java)
+            startActivityForResult(intent, MAP_PICKER_REQUEST)
         }
 
 
@@ -423,7 +426,17 @@ class RegistroMecanica : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        if (requestCode == MAP_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK && data != null) {
+                val lat = data.getDoubleExtra("lat", 0.0)
+                val lng = data.getDoubleExtra("lng", 0.0)
+                val address = data.getStringExtra("address") ?: ""
+                tvLatitud.text = lat.toString()
+                tvLongitud.text = lng.toString()
+                etUbicacionMuestreoMecanica.setText(address)
+            }
+            return
+        }
         if (resultCode == RESULT_OK) {
             if (requestCode == PICK_IMAGES_REQUEST) {
                 val targetList = if (isMantenimientoImageSelection) imageList else imageList

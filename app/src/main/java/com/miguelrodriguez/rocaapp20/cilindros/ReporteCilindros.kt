@@ -198,7 +198,7 @@ class ReporteCilindros : AppCompatActivity() {
 
             override fun onQueryTextChange(fecha: String?): Boolean {
 
-                val searchText = fecha!!.toLowerCase(Locale.getDefault())
+                val searchText = fecha!!.lowercase(Locale.getDefault())
 
                 if (searchText.isNotEmpty()) {
 

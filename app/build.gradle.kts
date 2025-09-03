@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
-   }
+}
 
 android {
     namespace = "com.miguelrodriguez.rocaapp20"
@@ -14,7 +14,6 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -27,6 +26,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -34,12 +34,15 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
-        viewBinding
+    buildFeatures {
+        viewBinding = true   // ← en Kotlin DSL debe ir con = true
     }
 }
 
 dependencies {
+    // Alinea todas las libs de Kotlin a 2.1.0
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:2.1.0"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib") // sin versión; la aporta el BOM
 
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("com.github.bumptech.glide:glide:4.12.0")
@@ -47,11 +50,16 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
     implementation("com.google.firebase:firebase-database:20.3.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
+
     implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation ("com.itextpdf:itext7-core:8.0.2")
+    implementation("com.google.android.gms:play-services-maps:19.2.0")
+    implementation("com.google.android.libraries.places:places:4.4.1")
+
+    implementation("com.itextpdf:itext7-core:8.0.2")
     implementation("androidx.activity:activity:1.9.3")
 
     testImplementation("junit:junit:4.13.2")
