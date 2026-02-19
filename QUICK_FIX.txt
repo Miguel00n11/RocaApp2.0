@@ -1,0 +1,64 @@
+# 🎯 SOLUCIÓN RÁPIDA - 5 PASOS
+
+## PROBLEMA
+El mapa abre pero muestra: "El mapa no cargó correctamente..."
+
+## SOLUCIÓN
+Autorizar tu API key en Google Cloud
+
+---
+
+## 1️⃣ OBTÉN SHA-1
+```powershell
+keytool -list -v -keystore "$env:USERPROFILE\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android | Select-String "SHA1:"
+```
+Copia el SHA-1 (ejemplo: `AB:CD:EF:01:23:45...`)
+
+---
+
+## 2️⃣ ABRE GOOGLE CLOUD
+https://console.cloud.google.com/apis/credentials
+
+---
+
+## 3️⃣ EDITA API KEY
+- Busca: `AIzaSyCr68ksKvBZI1nu0g...`
+- Haz clic
+- **Application restrictions:** "Android apps" → Add → Package: `com.miguelrodriguez.rocaapp20` + SHA-1 de arriba
+- **API restrictions:** Check "Maps SDK for Android" + "Places API"
+- Save
+
+---
+
+## 4️⃣ ESPERA 2-5 MINUTOS
+
+---
+
+## 5️⃣ REINSTALA
+```powershell
+cd C:\Users\rooj_\AndroidStudioProjects\RocaApp2.0
+.\gradlew.bat clean installDebug
+```
+
+---
+
+## ✅ LISTO
+
+Abre el mapa. Debería funcionar.
+
+---
+
+## 🔴 SI NO FUNCIONA
+
+Verifica:
+- [ ] APIs habilitadas: https://console.cloud.google.com/apis/library (Maps SDK + Places)
+- [ ] Facturación activa: https://console.cloud.google.com/billing
+- [ ] SHA-1 exacto sin espacios
+
+---
+
+## ❓ PREGUNTAS?
+
+Abre: `PLAN_ACCION.md` (más detallado)
+
+O: `SOLUCION_MAPA_NO_CARGO.md` (opciones de emergencia)

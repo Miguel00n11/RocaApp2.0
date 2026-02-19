@@ -1237,6 +1237,15 @@ class RegistroMecanica : AppCompatActivity() {
                 val Clasificacion_visual = etClasificacionVisualMuestreoMecanica.text.toString()
                 val Observaciones = etObservacionesMuestreoMecanica.text.toString()
 
+                if (Profunidad_final<Profunidad_inicio){
+                    Toast.makeText(this, "La profundidad final debe ser mayor a la profundidad de inicio", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                if (Profundidad_muestreo<Profunidad_inicio||Profundidad_muestreo>Profunidad_final){
+                    Toast.makeText(this, "La profundidad de muestreo debe estar entre la profundidad de inicio y final.",Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+
+                }
 
                 estratoNuevo = ClaseEstratos(
                     listaEstratosmutableListOf.count(),
@@ -1361,6 +1370,15 @@ class RegistroMecanica : AppCompatActivity() {
 
 //                val espesor = etEspesorEstrato.text.toString().toDouble()
 
+                if (profundidad_final<profundidad_inicio){
+                    Toast.makeText(this, "La profundidad final debe ser mayor a la profundidad de inicio", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                if (profundidad_muestreo<profundidad_inicio||profundidad_muestreo>profundidad_final){
+                    Toast.makeText(this, "La profundidad de muestreo debe estar entre la profundidad de inicio y final.",Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+
+                }
                 estratoNuevo = ClaseEstratos(
                     indice,
                     tipo_muestreo,

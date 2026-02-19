@@ -2,4 +2,5 @@
     <string name="app_name">Roca App 2.0</string>
     <string name="NombreUsuario">Juan</string>
     <string name="google_maps_key">AIzaSyCr68ksKvBZI1nu0g9m8mwfUZYbLDYxIXU</string>
+    <string name="version_text">Versión 1.14</string>
 </resources>

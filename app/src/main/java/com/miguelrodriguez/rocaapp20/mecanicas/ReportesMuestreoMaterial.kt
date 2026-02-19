@@ -246,14 +246,24 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
     }
 
 
-    private fun onItemSelected(position: Int) {
+    private fun onItemSelected(position: Int, clon: Boolean = false, listaReportes: MutableList<ClaseObraMecanica> = listaObrasmutableListOf) {
 //        Toast.makeText(this, position.toString(), Toast.LENGTH_SHORT).show()
 
 //        listaCalasmutableListOf[position], position
 
 
         editarMuestreoMaterial = true
-        reporteSelecionadoMuestroMaterial = listaObrasmutableListOf[position]
+        reporteSelecionadoMuestroMaterial = listaReportes[position]
+
+        if (clon) {
+            val nuevaLlave = dataReference.push().key.toString()
+            val llaveAntigua = reporteSelecionadoMuestroMaterial.llave
+            reporteSelecionadoMuestroMaterial.llave = nuevaLlave
+
+            // Clonar las imágenes desde la llave antigua a la nueva
+            clonarImagenesFirebase(llaveAntigua, nuevaLlave)
+        }
+
         val intent = Intent(this, RegistroMecanica::class.java)
 //        intent.putExtra("ReporteSeleccionado",listaObrasmutableListOf[position])
         startActivity(intent)
@@ -678,9 +688,9 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             document.add(tableDatosSondeo)
 
 
-            val tableDatosEstratoMuestreo = Table(floatArrayOf(200f, 200f, 200f, 200f,200f, 200f,200f))
+            val tableDatosEstratoMuestreo = Table(floatArrayOf(200f, 200f, 200f, 200f,200f, 200f,200f,200f))
 
-            var etiquetaDatosEstratoMuestreo= Cell(1, 7).add(Paragraph("Datos del estrato muestreado"))
+            var etiquetaDatosEstratoMuestreo= Cell(1, 8).add(Paragraph("Datos del estrato muestreado"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
                 .setBold()
                 .setTextAlignment(TextAlignment.CENTER)
@@ -705,6 +715,10 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
                 .setTextAlignment(TextAlignment.CENTER)
             tableDatosEstratoMuestreo.addCell(etiquetaProfundidadMuestreo)
+            var etiquetaEspesorEstrato= Cell(2, 1).add(Paragraph("Espesor del estrato [cm]"))
+                .setBackgroundColor(DeviceRgb(192, 192, 192))
+                .setTextAlignment(TextAlignment.CENTER)
+            tableDatosEstratoMuestreo.addCell(etiquetaEspesorEstrato)
 
             var etiquetaClasificacionVisual= Cell(2, 1).add(Paragraph("Clasificación visual"))
                 .setBackgroundColor(DeviceRgb(192, 192, 192))
@@ -733,6 +747,7 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
                 tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.profundidad_inicio}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
                 tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.profundidad_final}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
                 tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.profundidad_muestreo}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
+                tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.profundidad_final-muestreo.profundidad_inicio}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
                 tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.clasificacion_visual}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
                 tableDatosEstratoMuestreo.addCell(Cell().add(Paragraph("${muestreo.observaciones}"))).setFontSize(alturaTexto).setHorizontalAlignment(HorizontalAlignment.CENTER)
 //                tableDatosEstratoMuestreo.addCell(Cell(1,2).add(Paragraph("${muestreo.Porcentaje}"))).setFontSize(alturaTexto)
@@ -1227,6 +1242,8 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
             onItemDelete = { position -> onItemDelete(position) },
             onVerReporteFallaMantenimientoGA = { position ->
                 onVerReporteFallaMantenimientoGA(position, listaObrasmutableListOf)
+            }, onSeleccionarNuevo = { position ->
+                onItemSelected(position, true)
             }, mostrarBoton = swVerTodosReportesMecanica.isChecked
         )
 
@@ -1236,5 +1253,44 @@ class ReportesMuestreoMaterial : AppCompatActivity() {
         storage= FirebaseStorage.getInstance()
         dataReference =
             FirebaseDatabase.getInstance().reference.child("Mecanicas").child("ReportesMecanicas").child(personal)
+    }
+
+    private fun clonarImagenesFirebase(llaveAntigua: String, nuevaLlave: String) {
+        val imageRef = dataReference.child("ImagenesMecanicas").child(personal).child(llaveAntigua)
+
+        imageRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val nuevasImagenes = mutableMapOf<String, Any>()
+
+                    for (snapshot in dataSnapshot.children) {
+                        val nombreArchivo = snapshot.key
+                        val imagenUrl = snapshot.getValue(String::class.java)
+
+                        if (nombreArchivo != null && imagenUrl != null) {
+                            nuevasImagenes[nombreArchivo] = imagenUrl
+                        }
+                    }
+
+                    // Guardar las imágenes clonadas con la nueva llave
+                    if (nuevasImagenes.isNotEmpty()) {
+                        val newImageRef = dataReference.child("ImagenesMecanicas").child(personal).child(nuevaLlave)
+                        newImageRef.setValue(nuevasImagenes)
+                            .addOnSuccessListener {
+                                Log.d("CloneImages", "Imágenes clonadas exitosamente a la llave: $nuevaLlave")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("CloneImages", "Error al clonar imágenes: ${e.message}")
+                            }
+                    }
+                } else {
+                    Log.d("CloneImages", "No hay imágenes para clonar de la llave: $llaveAntigua")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("CloneImages", "Error al obtener imágenes: ${databaseError.message}")
+            }
+        })
     }
 }

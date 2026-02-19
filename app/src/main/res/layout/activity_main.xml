@@ -21,7 +21,8 @@
     <ImageView
         android:layout_width="300dp"
         android:layout_height="100dp"
-        android:src="@drawable/logoroca" />
+        android:src="@drawable/logoroca"
+        android:contentDescription="" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -84,17 +85,17 @@
         android:layout_width="wrap_content"
         android:layout_weight="21"
 
-        android:gravity="right"
-        android:layout_gravity="right"
+        android:gravity="end"
+        android:layout_gravity="end"
         android:layout_height="match_parent">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/grey"
         android:textStyle="italic"
-        android:textSize="12dp"
-        android:layout_gravity="right"
-        android:text="Versión 1.13"/>
+        android:textSize="12sp"
+        android:layout_gravity="end"
+        android:text="@string/version_text"/>
 
     </LinearLayout>
 </LinearLayout>
