@@ -58,9 +58,17 @@ class Seleccionar_actividad : AppCompatActivity() {
     }
 
     private fun InitComponet() {
-        if (MainActivity.NombreUsuarioCompanion=="NombreUsuario"){
-            onBackPressed()
+        // Validar que el usuario esté correctamente autenticado
+        if (MainActivity.NombreUsuarioCompanion == "NombreUsuario") {
+            Toast.makeText(this, "Error: Usuario no autenticado. Por favor inicia sesión.", Toast.LENGTH_LONG).show()
+            // Redirigir a login
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+            return
         }
+
         btnIrReportesCompactacion=findViewById(R.id.btnIrReportesCompactacion)
         btnItReportesMorteros=findViewById(R.id.btnItReportesMorteros)
         btnIrReportesCilindros=findViewById(R.id.btnIrReportesCilindros)

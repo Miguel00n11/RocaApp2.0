@@ -22,10 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.miguelrodriguez.rocaapp20.R
 import java.util.Locale
 
@@ -59,52 +56,17 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             return
         }
-        Log.d("MapPickerActivity", "Google Play Services available")
-
-        // Inicializar Places API
-        val apiKey = getString(R.string.google_maps_key)
-        Log.d("MapPickerActivity", "Initializing Places API with key: ${apiKey.take(10)}...")
-
-        if (!Places.isInitialized()) {
-            try {
-                Places.initialize(applicationContext, apiKey)
-                Log.d("MapPickerActivity", "Places API initialized successfully")
-            } catch (e: Exception) {
-                Log.e("MapPickerActivity", "Failed to initialize Places API: ${e.message}")
-            }
-        }
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         if (mapFragment == null) {
             Log.e("MapPickerActivity", "Map fragment not found in layout")
         } else {
-            Log.d("MapPickerActivity", "Map fragment found, calling getMapAsync")
             mapFragment.getMapAsync(this)
-        }
-
-        val ac = supportFragmentManager
-            .findFragmentById(R.id.autocomplete_fragment) as? AutocompleteSupportFragment
-
-        if (ac != null) {
-            ac.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG))
-            ac.setCountries("MX") // opcional
-            ac.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-                override fun onPlaceSelected(place: Place) {
-                    Log.d("MapPickerActivity", "Place selected: ${place.name}")
-                    place.latLng?.let { moveCameraAndMark(it) }
-                }
-                override fun onError(status: com.google.android.gms.common.api.Status) {
-                    Log.e("MapPickerActivity", "Autocomplete error: ${status.statusMessage}")
-                    Toast.makeText(this@MapPickerActivity, "Error: ${status.statusMessage}", Toast.LENGTH_SHORT).show()
-                }
-            })
-        } else {
-            Log.w("MapPickerActivity", "Autocomplete fragment not found")
         }
 
         findViewById<Button>(R.id.btnConfirmarUbicacion).setOnClickListener {
             val p = selected ?: run {
-                Toast.makeText(this, "Toca el mapa o busca un lugar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Toca el mapa para seleccionar una ubicación", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val address = try {
@@ -122,28 +84,55 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
             })
             finish()
         }
+
+        // Configurar el botón para ir a la ubicación guardada
+        findViewById<FloatingActionButton>(R.id.fabGoToSaved).setOnClickListener {
+            val initialLat = intent.getDoubleExtra("initial_lat", Double.NaN)
+            val initialLng = intent.getDoubleExtra("initial_lng", Double.NaN)
+
+            if (!initialLat.isNaN() && !initialLng.isNaN()) {
+                val savedPos = LatLng(initialLat, initialLng)
+                moveCameraAndMark(savedPos)
+                Toast.makeText(this, "Moviendo a ubicación guardada", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "No hay una ubicación guardada para este reporte", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        Log.d("MapPickerActivity", "onMapReady called - Map object initialized")
+        Log.d("MapPickerActivity", "onMapReady called")
 
         map.uiSettings.isZoomControlsEnabled = true
         map.uiSettings.isMyLocationButtonEnabled = true
         map.mapType = GoogleMap.MAP_TYPE_NORMAL
 
-        // Mostrar marcador inicial fallback INMEDIATAMENTE para que el usuario vea que algo funciona
-        val mexico = LatLng(23.6345, -102.5528)
-        marker?.remove()
-        marker = map.addMarker(
-            MarkerOptions()
-                .position(mexico)
-                .title("Haz click para cambiar ubicación")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-        )
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(mexico, 5f))
-        selected = mexico  // Permitir seleccionar México por defecto
-        Toast.makeText(this, "Mapa listo. Haz click para cambiar ubicación o busca un lugar.", Toast.LENGTH_LONG).show()
+        // Recuperar coordenadas iniciales si existen para el inicio automático
+        val initialLat = intent.getDoubleExtra("initial_lat", Double.NaN)
+        val initialLng = intent.getDoubleExtra("initial_lng", Double.NaN)
+
+        if (!initialLat.isNaN() && !initialLng.isNaN()) {
+            // Escenario A: Usar coordenadas proporcionadas al abrir
+            val savedPos = LatLng(initialLat, initialLng)
+            moveCameraAndMark(savedPos)
+            if (hasLocationPermission()) {
+                enableMyLocation()
+            }
+        } else {
+            // Escenario B: Usar ubicación del usuario o fallback
+            if (hasLocationPermission()) {
+                enableMyLocation()
+                centerOnLastLocation()
+            } else {
+                moveToMexico()
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                    LOCATION_PERMISSION_CODE
+                )
+            }
+        }
 
         // Detectar cuando el mapa terminó de cargar tiles
         map.setOnMapLoadedCallback {
@@ -154,36 +143,10 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         // Lanzar un timeout que avise si los tiles no se cargan
         Handler(Looper.getMainLooper()).postDelayed({
             if (!mapLoaded) {
-                Log.w("MapPickerActivity", "Map tiles did not load within timeout. Check API key / Play Services / network.")
-
-                // Mostrar mensaje mejorado con sugerencias
-                val errorMsg = """
-                    El mapa no cargó los tiles. Posibles causas:
-                    1. API key con restricciones incorrectas
-                    2. Facturación no habilitada en Google Cloud
-                    3. Sin conexión a internet
-                    4. Google Play Services no actualizado
-                    
-                    Puedes seguir usando el mapa en modo fallback. 
-                    Haz click para seleccionar ubicación.
-                """.trimIndent()
-
-                Log.e("MapPickerActivity", errorMsg)
+                Log.w("MapPickerActivity", "Map tiles did not load within timeout.")
+                Toast.makeText(this, "El mapa está tardando en cargar los detalles. Verifica tu conexión.", Toast.LENGTH_SHORT).show()
             }
         }, MAP_LOAD_TIMEOUT_MS)
-
-        // Habilitar ubicación del usuario solo si tenemos permiso explícitamente
-        if (hasLocationPermission()) {
-            enableMyLocation()
-            centerOnLastLocation()
-        } else {
-            Log.d("MapPickerActivity", "Location permission not granted, requesting...")
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                LOCATION_PERMISSION_CODE
-            )
-        }
 
         map.setOnMapClickListener { moveCameraAndMark(it) }
         map.setOnMapLongClickListener { moveCameraAndMark(it) }
@@ -233,7 +196,8 @@ class MapPickerActivity : AppCompatActivity(), OnMapReadyCallback {
         fused.lastLocation.addOnSuccessListener { loc ->
             if (loc != null) {
                 Log.d("MapPickerActivity", "Got last location: ${loc.latitude}, ${loc.longitude}")
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(loc.latitude, loc.longitude), 16f))
+                val userLatLng = LatLng(loc.latitude, loc.longitude)
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 16f))
             } else {
                 Log.d("MapPickerActivity", "Last location is null, moving to Mexico fallback")
                 moveToMexico()

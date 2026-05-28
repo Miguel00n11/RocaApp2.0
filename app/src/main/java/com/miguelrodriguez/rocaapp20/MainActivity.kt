@@ -67,13 +67,16 @@ class MainActivity : AppCompatActivity() {
     private fun initUI() {
 
         btnAcceder.setOnClickListener {
-            obtenerNombreUsuarioDesdeCorreo(NombreUsuario.text.toString().lowercase())
+            val email = NombreUsuario.text.toString().lowercase()
+            val password = Password.text.toString()
 
+            // Validar que no estén vacíos
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Por favor ingresa email y contraseña", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            acceder(
-                NombreUsuario.text.toString().lowercase(),
-                Password.text.toString()
-            )
+            acceder(email, password)
         }
         btnAccederInvitado.setOnClickListener { Acceder() }
     }
@@ -83,13 +86,6 @@ class MainActivity : AppCompatActivity() {
 //        intent.putExtra(NombreUsuarioCompanion,NombreUsuario)
 //        startActivity(intent)
 //    }
-
-    private fun abrirCalculo_Compactacion() {
-        val intent = Intent(this, Seleccionar_actividad::class.java)
-        NombreUsuarioCompanion = NombreUsuario.text.toString()
-//        intent.putExtra(NombreUsuarioCompanion,NombreUsuario)
-        startActivity(intent)
-    }
 
     private fun initComponent() {
         btnAcceder = findViewById(R.id.btnAcceder)
@@ -105,26 +101,44 @@ class MainActivity : AppCompatActivity() {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign in success - SOLO AHORA asignamos el nombre de usuario
                             Log.d("TAG", "createUserWithEmail:success")
                             consultar_datos.usuarioApp = email
                             val user = auth.currentUser
-//                            NombreUsuarioCompanion = NombreUsuario.text.toString()
 
-                            Acceder()
-//                    updateUI(user)
+                            // Obtener y asignar el nombre de usuario DESPUÉS de autenticación exitosa
+                            obtenerNombreUsuarioDesdeCorreo(email)
+
+                            // Validar que se asignó correctamente
+                            if (NombreUsuarioCompanion != "NombreUsuario") {
+                                Acceder()
+                            } else {
+                                // Si falla la obtención del nombre, mostrar error
+                                Toast.makeText(
+                                    baseContext, "Error al obtener nombre de usuario.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                showAlert()
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "createUserWithEmail:failure", task.exception)
                             Toast.makeText(
-                                baseContext, "Authentication failed.",
+                                baseContext, "Autenticación fallida.",
                                 Toast.LENGTH_SHORT
                             ).show()
                             showAlert()
-//                    updateUI(null)
+                            // Asegurar que el nombre de usuario se resetee en caso de fallo
+                            NombreUsuarioCompanion = "NombreUsuario"
                         }
                     }
             } catch (e: Exception) {
+                Log.e("TAG", "Error en login: ${e.message}")
+                Toast.makeText(
+                    baseContext, "Error: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                NombreUsuarioCompanion = "NombreUsuario"
             }
         } else {
             // Muestra un mensaje indicando que no hay conexión a Internet

@@ -161,12 +161,19 @@ class RegistroMecanica : AppCompatActivity() {
 
         val btnGuardarUbicacion: Button = findViewById(R.id.btnGuardadUbicacion)
         btnGuardarUbicacion.setOnClickListener {
-//            if (checkLocationPermission()) {
-//                obtenerUbicacionPrecisa()
-//            } else {
-//                solicitarPermisoUbicacion()
-//            }
             val intent = Intent(this, MapPickerActivity::class.java)
+            
+            val latStr = tvLatitud.text.toString()
+            val lngStr = tvLongitud.text.toString()
+            
+            if (latStr.isNotEmpty() && lngStr.isNotEmpty()) {
+                try {
+                    intent.putExtra("initial_lat", latStr.toDouble())
+                    intent.putExtra("initial_lng", lngStr.toDouble())
+                } catch (e: Exception) {
+                    Log.e("RegistroMecanica", "Error al convertir coordenadas: ${e.message}")
+                }
+            }
             startActivityForResult(intent, MAP_PICKER_REQUEST)
         }
 
@@ -834,7 +841,7 @@ class RegistroMecanica : AppCompatActivity() {
                     profundidad_naf,
                     hora,
                     llave,
-//                    tipoMuestreo,
+//                    tipo_muestreo,
                     latitud,longitud,
                     listaEstratosmutableListOf,
                     imageList,
