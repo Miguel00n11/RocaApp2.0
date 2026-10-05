@@ -657,6 +657,7 @@
                             android:layout_marginHorizontal="12dp"
                             android:layout_weight="1"
                             android:hint="Temperatura"
+                            android:orientation="vertical"
                             android:textColorHint="@color/grey"
                             app:endIconMode="clear_text"
                             app:helperTextTextColor="#D81B60"

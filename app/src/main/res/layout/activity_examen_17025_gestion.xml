@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="EXAMEN 1 DE LA NORMA NMX-EC-17025-IMNC-2018 Y CRITERIOS DE APLICACIÓN DE LA NORMA"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#111111"
+            android:gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/txtNombreUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NOMBRE:"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/txtFechaActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FECHA:"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/txtCalificacionActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CALIFICACIÓN: --"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Instrucciones: selecciona subrayando o encerrando en un círculo, la respuesta correcta"
+            android:textSize="15sp"
+            android:textColor="#222222"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:id="@+id/containerPreguntas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <Button
+            android:id="@+id/btnEnviarExamen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enviar examen"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+</ScrollView>

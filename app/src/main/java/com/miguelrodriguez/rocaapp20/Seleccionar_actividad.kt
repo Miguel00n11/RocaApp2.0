@@ -3,9 +3,9 @@ package com.miguelrodriguez.rocaapp20
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import com.miguelrodriguez.rocaapp20.CapacitacionesActivity
 import com.miguelrodriguez.rocaapp20.cilindros.ReporteCilindros
 import com.miguelrodriguez.rocaapp20.mecanicas.ReportesMuestreoMaterial
 import com.miguelrodriguez.rocaapp20.morteros.ReportesMorteros
@@ -18,7 +18,7 @@ class Seleccionar_actividad : AppCompatActivity() {
     private lateinit var btnIrReportesCilindros: CardView
     private lateinit var btnIrReportesVigas: CardView
     private lateinit var btnIrReportesMecanicas: CardView
-    private lateinit var btnBorrar1: CardView
+    private lateinit var btnIrCapacitaciones: CardView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seleccionar_actividad)
@@ -35,8 +35,6 @@ class Seleccionar_actividad : AppCompatActivity() {
         btnItReportesMorteros.setOnClickListener {
             Toast.makeText(this, "Aún no disponible", Toast.LENGTH_SHORT).show()
             return@setOnClickListener
-            val intent=Intent(this,ReportesMorteros::class.java)
-            startActivity(intent)
         }
         btnIrReportesCilindros.setOnClickListener {
             val intent=Intent(this,ReporteCilindros::class.java)
@@ -52,9 +50,10 @@ class Seleccionar_actividad : AppCompatActivity() {
 
             startActivity(intent)
         }
-
-
-//        btnBorrar1.setOnClickListener { Toast.makeText(this, "hola mundo", Toast.LENGTH_SHORT).show() }
+        btnIrCapacitaciones.setOnClickListener {
+            val intent = Intent(this, CapacitacionesActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun InitComponet() {
@@ -74,7 +73,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         btnIrReportesCilindros=findViewById(R.id.btnIrReportesCilindros)
         btnIrReportesVigas=findViewById(R.id.btnIrReportesVigas)
         btnIrReportesMecanicas=findViewById(R.id.btnIrReportesMecanicas)
-//        btnBorrar1=findViewById(R.id.prueba1)
+        btnIrCapacitaciones = findViewById(R.id.btnIrCapacitaciones)
 
 
     }

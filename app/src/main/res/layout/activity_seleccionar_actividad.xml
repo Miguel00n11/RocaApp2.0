@@ -207,7 +207,7 @@
                     android:id="@+id/btnIrReportesMecanicas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
 
@@ -238,6 +238,40 @@
                             android:textColor="@color/white"
                             android:textSize="18sp" />
                         <!-- También puedes agregar otros elementos como texto o botones aquí -->
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnIrCapacitaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#232323"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:background="#232323"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/imagenmecanica" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Capacitaciones"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
