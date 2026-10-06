@@ -6,6 +6,17 @@
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/txtTituloExamen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EXAMEN DE LA NORMA NMX-C-156-ONNCCE-2010"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#111111"
+        android:gravity="center"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
         android:id="@+id/txtNombreUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

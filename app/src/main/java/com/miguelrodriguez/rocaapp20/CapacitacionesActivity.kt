@@ -19,7 +19,6 @@ class CapacitacionesActivity : AppCompatActivity() {
         "EXAMEN DE LA 109",
         "EXAMEN DE LA 159",
         "EXAMEN DE LA 161",
-        "EXAMEN DE LA 191",
         "EXAMEN LIC Y NOM-008-SE-2021"
     )
 
@@ -48,6 +47,18 @@ class CapacitacionesActivity : AppCompatActivity() {
                 startActivity(intent)
             } else if (examenSeleccionado == "EXAMEN 156") {
                 val intent = Intent(this, ExamenNorma156Activity::class.java)
+                startActivity(intent)
+            } else if (examenSeleccionado == "EXAMEN DE LA 083") {
+                val intent = Intent(this, ExamenNorma083Activity::class.java)
+                startActivity(intent)
+            } else if (examenSeleccionado == "EXAMEN DE LA 109") {
+                val intent = Intent(this, ExamenNorma109Activity::class.java)
+                startActivity(intent)
+            } else if (examenSeleccionado == "EXAMEN DE LA 159") {
+                val intent = Intent(this, ExamenNorma159Activity::class.java)
+                startActivity(intent)
+            } else if (examenSeleccionado == "EXAMEN DE LA 161") {
+                val intent = Intent(this, ExamenNorma161Activity::class.java)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Seleccionaste: $examenSeleccionado", Toast.LENGTH_SHORT).show()
