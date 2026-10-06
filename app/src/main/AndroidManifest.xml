@@ -108,6 +108,10 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.miguelrodriguez.rocaapp20.AdministrarPersonalActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name="com.miguelrodriguez.rocaapp20.ExamenNorma083Activity"
             android:exported="false"
             android:theme="@style/AppTheme" />

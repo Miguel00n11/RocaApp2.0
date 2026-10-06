@@ -9,6 +9,8 @@ class consultar_datos {
         var elemento:String?=null
         var usuarioApp:String?=null
         var modoInvitado:Boolean=false
+        var esAdministrador:Boolean=false
+        var puestoUsuario:String?=null
 
     }
 }

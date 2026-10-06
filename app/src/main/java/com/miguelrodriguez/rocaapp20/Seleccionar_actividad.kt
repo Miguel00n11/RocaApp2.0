@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.miguelrodriguez.rocaapp20.CapacitacionesActivity
+import com.miguelrodriguez.rocaapp20.acceso.consultar_datos
 import com.miguelrodriguez.rocaapp20.cilindros.ReporteCilindros
 import com.miguelrodriguez.rocaapp20.mecanicas.ReportesMuestreoMaterial
 import com.miguelrodriguez.rocaapp20.morteros.ReportesMorteros
@@ -19,6 +20,7 @@ class Seleccionar_actividad : AppCompatActivity() {
     private lateinit var btnIrReportesVigas: CardView
     private lateinit var btnIrReportesMecanicas: CardView
     private lateinit var btnIrCapacitaciones: CardView
+    private lateinit var btnIrAdministrarPersonal: CardView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seleccionar_actividad)
@@ -54,6 +56,11 @@ class Seleccionar_actividad : AppCompatActivity() {
             val intent = Intent(this, CapacitacionesActivity::class.java)
             startActivity(intent)
         }
+        btnIrAdministrarPersonal.visibility =
+            if (consultar_datos.esAdministrador) android.view.View.VISIBLE else android.view.View.GONE
+        btnIrAdministrarPersonal.setOnClickListener {
+            startActivity(Intent(this, AdministrarPersonalActivity::class.java))
+        }
     }
 
     private fun InitComponet() {
@@ -74,6 +81,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         btnIrReportesVigas=findViewById(R.id.btnIrReportesVigas)
         btnIrReportesMecanicas=findViewById(R.id.btnIrReportesMecanicas)
         btnIrCapacitaciones = findViewById(R.id.btnIrCapacitaciones)
+        btnIrAdministrarPersonal = findViewById(R.id.btnIrAdministrarPersonal)
 
 
     }

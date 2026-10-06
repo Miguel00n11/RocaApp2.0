@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
+import com.miguelrodriguez.rocaapp20.acceso.CatalogoPersonal
 import com.miguelrodriguez.rocaapp20.acceso.consultar_datos
 import java.lang.Exception
 
@@ -76,9 +78,16 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Limpiar los permisos de una sesión anterior antes de iniciar otra
+            consultar_datos.esAdministrador = false
+            consultar_datos.puestoUsuario = null
             acceder(email, password)
         }
-        btnAccederInvitado.setOnClickListener { Acceder() }
+        btnAccederInvitado.setOnClickListener {
+            consultar_datos.esAdministrador = false
+            consultar_datos.puestoUsuario = null
+            Acceder()
+        }
     }
 
 //    private fun abrirCalculo_Compactacion(NombreUsuario:String) {
@@ -106,20 +115,8 @@ class MainActivity : AppCompatActivity() {
                             consultar_datos.usuarioApp = email
                             val user = auth.currentUser
 
-                            // Obtener y asignar el nombre de usuario DESPUÉS de autenticación exitosa
-                            obtenerNombreUsuarioDesdeCorreo(email)
-
-                            // Validar que se asignó correctamente
-                            if (NombreUsuarioCompanion != "NombreUsuario") {
-                                Acceder()
-                            } else {
-                                // Si falla la obtención del nombre, mostrar error
-                                Toast.makeText(
-                                    baseContext, "Error al obtener nombre de usuario.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                showAlert()
-                            }
+                            // Obtener nombre, puesto y rol DESPUÉS de autenticación exitosa
+                            cargarPerfilUsuario(email)
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "createUserWithEmail:failure", task.exception)
@@ -146,6 +143,54 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    // Busca el perfil dado de alta por el administrador; si no existe, usa el nombre derivado del correo
+    private fun cargarPerfilUsuario(email: String) {
+        FirebaseDatabase.getInstance().reference
+            .child(CatalogoPersonal.NODO_PERSONAL)
+            .child(CatalogoPersonal.claveCorreo(email))
+            .get()
+            .addOnSuccessListener { perfil ->
+                if (perfil.exists() && perfil.child("activo").getValue(Boolean::class.java) == false) {
+                    auth.signOut()
+                    NombreUsuarioCompanion = "NombreUsuario"
+                    Toast.makeText(this, "Tu cuenta está desactivada. Contacta al administrador.", Toast.LENGTH_LONG).show()
+                    return@addOnSuccessListener
+                }
+
+                val nombrePerfil = perfil.child("nombre").getValue(String::class.java)
+                if (!nombrePerfil.isNullOrBlank()) {
+                    NombreUsuarioCompanion = nombrePerfil
+                    consultar_datos.puestoUsuario = perfil.child("puesto").getValue(String::class.java)
+                } else {
+                    obtenerNombreUsuarioDesdeCorreo(email)
+                }
+                consultar_datos.esAdministrador =
+                    perfil.child("rol").getValue(String::class.java) == CatalogoPersonal.ROL_ADMIN ||
+                        email in CatalogoPersonal.CORREOS_ADMIN_INICIAL
+                continuarAcceso()
+            }
+            .addOnFailureListener {
+                // Sin acceso al perfil se conserva el comportamiento anterior
+                obtenerNombreUsuarioDesdeCorreo(email)
+                consultar_datos.esAdministrador = email in CatalogoPersonal.CORREOS_ADMIN_INICIAL
+                continuarAcceso()
+            }
+    }
+
+    private fun continuarAcceso() {
+        // Validar que se asignó correctamente
+        if (NombreUsuarioCompanion != "NombreUsuario") {
+            Acceder()
+        } else {
+            // Si falla la obtención del nombre, mostrar error
+            Toast.makeText(
+                baseContext, "Error al obtener nombre de usuario.",
+                Toast.LENGTH_SHORT
+            ).show()
+            showAlert()
+        }
     }
 
     private fun isNetworkAvailable(): Boolean {
