@@ -99,6 +99,14 @@
             android:name="com.miguelrodriguez.rocaapp20.ResultadoExamenActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.ExamenLicNom008Activity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.ExamenNorma156Activity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class Examen17025GestionActivity : AppCompatActivity() {
+class ExamenNorma156Activity : AppCompatActivity() {
 
     private lateinit var containerPreguntas: LinearLayout
     private lateinit var btnEnviar: Button
@@ -28,27 +28,19 @@ class Examen17025GestionActivity : AppCompatActivity() {
     private var esRevisionExamen = false
 
     private val respuestasCorrectas = mapOf(
-        1 to "EMA",
-        2 to "Se aplica una no conformidad.",
-        3 to "Cada tres meses",
-        4 to "estar implementados",
-        5 to "En el manual de la calidad",
-        6 to "Para asegurar que los requisitos del cliente se encuentren definidos y documentados",
-        7 to "Inspeccionar el producto para verificar que cumpla con lo solicitado",
-        8 to "10 días hábiles",
-        9 to "En cualquier procedimiento del laboratorio",
-        10 to "Investigar para determinar la causa y evaluar el impacto",
-        11 to "Acciones preventivas",
-        12 to "Acciones correctivas",
-        13 to "4 años",
-        14 to "Cada 12 meses",
-        15 to "Cada año",
-        16 to "Identificar la causa raíz y aplicar acciones correctivas"
+        1 to "Determinar la consistencia de concreto hidráulico en estado fresco.",
+        2 to "Es la medida de consistencia del concreto fresco en términos de la disminución de altura",
+        3 to "La primera a 7cm, la segunda a 15cm y la tercera a 30cm",
+        4 to "25",
+        5 to "2",
+        6 to "Se desecha y se repite el procedimiento",
+        7 to "20",
+        8 to "35"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_examen_17025_gestion)
+        setContentView(R.layout.activity_examen_norma_156)
 
         database = FirebaseDatabase.getInstance().reference
         containerPreguntas = findViewById(R.id.containerPreguntas)
@@ -66,28 +58,23 @@ class Examen17025GestionActivity : AppCompatActivity() {
         txtNombreUsuario.text = "NOMBRE: $nombreUsuario"
         txtFechaActual.text = "FECHA: $fechaActual"
 
+        data class Pregunta(val texto: String, val opciones: List<String>, val tipo: String)
+
         val preguntas = listOf(
-            "1.- En México, ¿quién acredita a los laboratorios de ensayo o calibración?" to listOf("INACAL", "EMA", "ICA", "ONNCCE"),
-            "2.- Menciona que pasa si no se cumple un requisito de la norma" to listOf("Se aplica una no conformidad.", "Se notifica al cliente.", "Se capacita nuevamente al personal."),
-            "3.- ¿Cada cuánto tiempo se deben supervisar las actividades de ensayo en campo?" to listOf("Cada 15 días", "Cada mes", "Cada tercer día", "Cada tres meses"),
-            "4.- ¿Los procedimientos requeridos como tales en la norma deben estar documentados, ser entendidos, estar implementados, todas las anteriores?" to listOf("estar documentados", "ser entendidos", "estar implementados", "todas las anteriores"),
-            "5.- ¿Qué es la política de la calidad?" to listOf("Cuadros por todo el laboratorio", "En los procedimientos documentados", "En el manual de la calidad", "En ninguna de las anteriores"),
-            "6.- Para qué nos sirve el procedimiento de revisión de los pedidos, ofertas y contratos." to listOf("Para asegurar que el laboratorio ofrece el menor costo", "Para asegurar que los requisitos del cliente se encuentren definidos y documentados", "Para asegurar que no hay competencia", "Ninguna de las anteriores"),
-            "7.- Al adquirir un producto, que acciones debemos tomar:" to listOf("Inspeccionar el producto para verificar que cumpla con lo solicitado", "Verificar la garantía de calidad", "Revisar errores en la factura", "Verificar el precio"),
-            "8.- En cuanto tiempo debemos atender la queja de un cliente" to listOf("10 días naturales", "10 días hábiles", "10 semanas", "10 meses"),
-            "9.- En donde se puede presentar un servicio no conforme" to listOf("En cualquier procedimiento del laboratorio", "En las auditorías", "En el rendimiento y Ensaye de concreto"),
-            "10.- ¿Qué es lo primero que debemos hacer en una acción correctiva?" to listOf("Notificar al director", "Notificar al cliente", "Investigar para determinar la causa y evaluar el impacto"),
-            "11.- Si se detecta una posible no conformidad que aplica" to listOf("Acciones correctivas", "Acciones de mejora", "Acciones preventivas"),
-            "12.- Si se detecta una no conformidad que aplica" to listOf("Acciones correctivas", "Acciones de mejora", "Acciones preventivas"),
-            "13.- ¿Durante cuánto tiempo se deben resguardar los registros?" to listOf("5 meses", "4 años", "4 semestres", "5 años"),
-            "14.- ¿Cada cuánto tiempo se debe realizar una auditoría interna?" to listOf("Cada 12 meses", "Una vez al año", "Cada 6 meses"),
-            "15.- ¿Cada cuánto tiempo se debe realizar una revisión por la dirección?" to listOf("Cada 3 meses", "Cada año", "Cada 8 meses"),
-            "16.- ¿Qué debemos hacer si en una auditoría interna se detectan no conformidades?" to listOf("No pasa nada, se quedan las cosas igual", "Buscar un culpable y corregirlo", "Identificar la causa raíz y aplicar acciones correctivas", "Realizar otra auditoría interna")
+            Pregunta("1.- ¿cuál es el objetivo de la norma?", listOf("Determinar la resistencia a la compresión del concreto.", "Determinar la consistencia de concreto hidráulico en estado fresco.", "Obtener Muestra representativa del concreto fresco."), "radio"),
+            Pregunta("2.- ¿Qué se entiende por revenimiento?", listOf("Es la medida de consistencia del concreto fresco en términos de la disminución de altura", "Es una medida de lo que desciende el cono de concreto.", "Es una prueba para determinar si el altero al concreto previo al colado."), "radio"),
+            Pregunta("3.- ¿cuántas capas se llenan y a qué altura?", listOf("La primera a 6cm, la segunda a 12cm y la tercera a 28cm", "La primera a 7cm, la segunda a 15cm y la tercera a 30cm", "La primera a 8cm, la segunda a 15cm y la tercera a 30cm", "La primera a 10cm, la segunda a 15cm y la tercera a 30cm"), "radio"),
+            Pregunta("4.- ¿cuántas penetraciones por capa se deben dar?", listOf("23", "30", "25", "41"), "radio"),
+            Pregunta("5.- ¿cuánto debe penetrar la varilla en cada capa (cm)?", listOf("2", "4", "1"), "radio"),
+            Pregunta("6.- ¿qué pasa si una porción del concreto se desliza o cae hacía un lado?", listOf("Se rechaza el concreto.", "se omite y se continúa con el procedimiento.", "Se desecha y se repite el procedimiento"), "radio"),
+            Pregunta("7.- si en una obra, realizas dos revenimientos de la misma muestra de concreto, ¿cuál es la diferencia máxima en mm que puedes obtener entre la primera medida y la segunda?", listOf("20", "19", "35"), "radio"),
+            Pregunta("8.- si en una obra, tú y un compañero realizan una prueba de revenimiento de un concreto que provenga de la misma muestra, ¿cuál es la diferencia máxima que pueden tener entre tú y tu compañero?", listOf("20", "19", "35"), "radio")
         )
 
-        for ((pregunta, opciones) in preguntas) {
+        var preguntaIndex = 1
+        for (pregunta in preguntas) {
             val titulo = TextView(this).apply {
-                text = pregunta
+                text = pregunta.texto
                 textSize = 16f
                 setPadding(0, 20, 0, 8)
             }
@@ -97,7 +84,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
                 orientation = LinearLayout.VERTICAL
             }
 
-            for (opcion in opciones) {
+            for (opcion in pregunta.opciones) {
                 val radio = RadioButton(this).apply {
                     text = opcion
                     textSize = 15f
@@ -108,6 +95,8 @@ class Examen17025GestionActivity : AppCompatActivity() {
 
             containerPreguntas.addView(radioGroup)
             gruposPreguntas.add(radioGroup)
+
+            preguntaIndex++
         }
 
         btnEnviar.setOnClickListener {
@@ -120,21 +109,21 @@ class Examen17025GestionActivity : AppCompatActivity() {
     private fun guardarExamen() {
         val respuestasSeleccionadas = linkedMapOf<String, String>()
         val respuestasCorrectasMap = linkedMapOf<String, String>()
-        val preguntas = mutableListOf<Triple<Int, String, RadioGroup>>()
-
-        for (i in 0 until containerPreguntas.childCount) {
-            val child = containerPreguntas.getChildAt(i)
-            if (child is RadioGroup) {
-                val numeroPregunta = (i + 1) / 2
-                preguntas.add(Triple(numeroPregunta, numeroPregunta.toString(), child))
-            }
-        }
+        val totalPreguntas = 8
 
         var respuestasContestadas = 0
         var aciertos = 0
 
-        for ((numeroPregunta, clave, radioGroup) in preguntas) {
-            val seleccion = obtenerRespuestaSeleccionada(radioGroup)
+        for (numeroPregunta in 1..totalPreguntas) {
+            val clave = numeroPregunta.toString()
+            val indexRadio = numeroPregunta - 1
+
+            val seleccion: String? = if (indexRadio < gruposPreguntas.size) {
+                obtenerRespuestaSeleccionada(gruposPreguntas[indexRadio])
+            } else {
+                null
+            }
+
             if (seleccion != null) {
                 respuestasContestadas += 1
                 respuestasSeleccionadas[clave] = seleccion
@@ -145,7 +134,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
             }
         }
 
-        if (respuestasContestadas < preguntas.size) {
+        if (respuestasContestadas < totalPreguntas) {
             Toast.makeText(this, "Debes responder todas las preguntas antes de enviar.", Toast.LENGTH_SHORT).show()
             return
         }
@@ -153,7 +142,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
         val nombre = txtNombreUsuario.text.toString().removePrefix("NOMBRE: ").trim()
         val fecha = txtFechaActual.text.toString().removePrefix("FECHA: ").trim()
         val anioActual = SimpleDateFormat("yyyy", Locale.getDefault()).format(Date())
-        val calificacion = (aciertos.toDouble() / preguntas.size.toDouble() * 10.0)
+        val calificacion = (aciertos.toDouble() / totalPreguntas.toDouble() * 10.0)
         val calificacionFormateada = String.format(Locale.US, "%.2f", calificacion).toDouble()
 
         val examenId = System.currentTimeMillis().toString()
@@ -162,7 +151,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
             "nombre" to nombre,
             "fecha" to fecha,
             "usuario" to MainActivity.NombreUsuarioCompanion,
-            "examen" to "EXAMEN 17025 GESTIÓN",
+            "examen" to "EXAMEN NORMA 156",
             "calificacion" to calificacionFormateada,
             "respuestas" to respuestasSeleccionadas,
             "respuestasCorrectas" to respuestasCorrectasMap,
@@ -173,7 +162,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
             .child("Examenes")
             .child(anioActual)
             .child(nombre)
-            .child("EXAMEN 17025 GESTIÓN")
+            .child("EXAMEN NORMA 156")
             .child(examenId)
             .setValue(examenData)
             .addOnSuccessListener {
@@ -183,7 +172,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
                 intentResultado.putExtra("nombre", nombre)
                 intentResultado.putExtra("fecha", fecha)
                 intentResultado.putExtra("aciertos", aciertos)
-                intentResultado.putExtra("total", preguntas.size)
+                intentResultado.putExtra("total", totalPreguntas)
                 intentResultado.putExtra("calificacion", calificacionFormateada)
                 startActivity(intentResultado)
                 finish()
@@ -208,7 +197,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
             .child("Examenes")
             .child(anioActual)
             .child(nombre)
-            .child("EXAMEN 17025 GESTIÓN")
+            .child("EXAMEN NORMA 156")
             .get()
             .addOnSuccessListener { snapshot ->
                 if (!snapshot.exists()) return@addOnSuccessListener
@@ -220,55 +209,58 @@ class Examen17025GestionActivity : AppCompatActivity() {
                 val respuestasCorrectasDB = ultimoExamen.child("respuestasCorrectas")
 
                 if (!respuestas.exists()) return@addOnSuccessListener
-                
+
                 esRevisionExamen = true
 
-                for ((indice, radioGroup) in gruposPreguntas.withIndex()) {
-                    val numeroPregunta = indice + 1
+                val totalPreguntas = 8
+                for (numeroPregunta in 1..totalPreguntas) {
                     val respuestaGuardada = respuestas.child(numeroPregunta.toString()).getValue(String::class.java)
                     val respuestaCorrecta = if (respuestasCorrectasDB.exists()) {
                         respuestasCorrectasDB.child(numeroPregunta.toString()).getValue(String::class.java)
                     } else {
-                        respuestasCorrectas[numeroPregunta]?.toString()
+                        respuestasCorrectas[numeroPregunta]
                     }
-                    
+
                     if (respuestaGuardada == null) continue
 
-                    for (i in 0 until radioGroup.childCount) {
-                        val radioButton = radioGroup.getChildAt(i) as? RadioButton ?: continue
-                        val esRespuestaSeleccionada = radioButton.text.toString() == respuestaGuardada
-                        val esRespuestaCorrecta = radioButton.text.toString() == respuestaCorrecta
-                        
-                        if (esRespuestaSeleccionada) {
-                            radioGroup.check(radioButton.id)
+                    val indexRadio = numeroPregunta - 1
+                    if (indexRadio < gruposPreguntas.size) {
+                        val radioGroup = gruposPreguntas[indexRadio]
+                        for (i in 0 until radioGroup.childCount) {
+                            val radioButton = radioGroup.getChildAt(i) as? RadioButton ?: continue
+                            val esRespuestaSeleccionada = radioButton.text.toString() == respuestaGuardada
+                            val esRespuestaCorrecta = radioButton.text.toString() == respuestaCorrecta
+
+                            if (esRespuestaSeleccionada) {
+                                radioGroup.check(radioButton.id)
+                            }
+
+                            // Mostrar indicadores visuales
+                            if (esRespuestaCorrecta) {
+                                // Respuesta correcta: mostrar ✓
+                                radioButton.text = "${radioButton.text} ✓"
+                                radioButton.setTextColor(android.graphics.Color.GREEN)
+                            } else if (esRespuestaSeleccionada && respuestaGuardada != respuestaCorrecta) {
+                                // Respuesta seleccionada pero incorrecta: mostrar ✗
+                                radioButton.text = "${radioButton.text} ✗"
+                                radioButton.setTextColor(android.graphics.Color.RED)
+                            }
+
+                            // Deshabilitar todos los RadioButtons en modo revisión
+                            radioButton.isEnabled = false
                         }
-                        
-                        // Mostrar indicadores visuales
-                        if (esRespuestaCorrecta) {
-                            // Respuesta correcta: mostrar ✓
-                            radioButton.text = "${radioButton.text} ✓"
-                            radioButton.setTextColor(android.graphics.Color.GREEN)
-                        } else if (esRespuestaSeleccionada && respuestaGuardada != respuestaCorrecta) {
-                            // Respuesta seleccionada pero incorrecta: mostrar ✗
-                            radioButton.text = "${radioButton.text} ✗"
-                            radioButton.setTextColor(android.graphics.Color.RED)
-                        }
-                        
-                        // Deshabilitar todos los RadioButtons en modo revisión
-                        radioButton.isEnabled = false
                     }
                 }
 
                 // Recalcular la calificación con las respuestas correctas actualizadas
                 var aciertos = 0
-                var totalPreguntas = 0
+                var totalRespuestas = 0
 
-                for ((indice, radioGroup) in gruposPreguntas.withIndex()) {
-                    val numeroPregunta = indice + 1
+                for (numeroPregunta in 1..totalPreguntas) {
                     val respuestaGuardada = respuestas.child(numeroPregunta.toString()).getValue(String::class.java)
 
                     if (respuestaGuardada != null) {
-                        totalPreguntas += 1
+                        totalRespuestas += 1
                         val respuestaCorrecta = respuestasCorrectas[numeroPregunta]
 
                         if (respuestaGuardada == respuestaCorrecta) {
@@ -277,8 +269,8 @@ class Examen17025GestionActivity : AppCompatActivity() {
                     }
                 }
 
-                val calificacionRecalculada = if (totalPreguntas > 0) {
-                    (aciertos.toDouble() / totalPreguntas.toDouble() * 10.0)
+                val calificacionRecalculada = if (totalRespuestas > 0) {
+                    (aciertos.toDouble() / totalRespuestas.toDouble() * 10.0)
                 } else {
                     0.0
                 }
@@ -300,3 +292,4 @@ class Examen17025GestionActivity : AppCompatActivity() {
             }
     }
 }
+

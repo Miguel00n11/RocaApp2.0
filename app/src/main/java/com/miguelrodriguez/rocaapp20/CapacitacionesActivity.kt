@@ -13,16 +13,14 @@ class CapacitacionesActivity : AppCompatActivity() {
     private lateinit var listaExamenes: ListView
 
     private val examenes = arrayListOf(
-        "EXAMEN 156 hugo",
         "EXAMEN 156",
-        "EXAMEN 159 hugo",
         "EXAMEN 17025 GESTIÓN",
         "EXAMEN DE LA 083",
         "EXAMEN DE LA 109",
         "EXAMEN DE LA 159",
         "EXAMEN DE LA 161",
         "EXAMEN DE LA 191",
-        "EXAMEN NOM 008 SE"
+        "EXAMEN LIC Y NOM-008-SE-2021"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +42,12 @@ class CapacitacionesActivity : AppCompatActivity() {
 
             if (examenSeleccionado == "EXAMEN 17025 GESTIÓN") {
                 val intent = Intent(this, Examen17025GestionActivity::class.java)
+                startActivity(intent)
+            } else if (examenSeleccionado == "EXAMEN LIC Y NOM-008-SE-2021") {
+                val intent = Intent(this, ExamenLicNom008Activity::class.java)
+                startActivity(intent)
+            } else if (examenSeleccionado == "EXAMEN 156") {
+                val intent = Intent(this, ExamenNorma156Activity::class.java)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Seleccionaste: $examenSeleccionado", Toast.LENGTH_SHORT).show()
