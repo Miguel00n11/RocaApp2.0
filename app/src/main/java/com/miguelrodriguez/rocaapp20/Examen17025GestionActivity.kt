@@ -152,7 +152,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
 
         val nombre = txtNombreUsuario.text.toString().removePrefix("NOMBRE: ").trim()
         val fecha = txtFechaActual.text.toString().removePrefix("FECHA: ").trim()
-        val anioActual = SimpleDateFormat("yyyy", Locale.getDefault()).format(Date())
+        val anioActual = CapacitacionesActivity.anioDelExamen(intent)
         val calificacion = (aciertos.toDouble() / preguntas.size.toDouble() * 10.0)
         val calificacionFormateada = String.format(Locale.US, "%.2f", calificacion).toDouble()
 
@@ -202,7 +202,7 @@ class Examen17025GestionActivity : AppCompatActivity() {
 
     private fun cargarRespuestasGuardadas() {
         val nombre = txtNombreUsuario.text.toString().removePrefix("NOMBRE: ").trim()
-        val anioActual = SimpleDateFormat("yyyy", Locale.getDefault()).format(Date())
+        val anioActual = CapacitacionesActivity.anioDelExamen(intent)
 
         database.child("Capacitaciones")
             .child("Examenes")

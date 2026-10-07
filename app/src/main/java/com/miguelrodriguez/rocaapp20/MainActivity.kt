@@ -15,6 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.miguelrodriguez.rocaapp20.acceso.CatalogoPersonal
+import com.miguelrodriguez.rocaapp20.acceso.Sesion
 import com.miguelrodriguez.rocaapp20.acceso.consultar_datos
 import java.lang.Exception
 
@@ -28,13 +29,22 @@ class MainActivity : AppCompatActivity() {
 
 
     companion object {
-        var NombreUsuarioCompanion = "NombreUsuario"
+        // Se guarda en el teléfono (Sesion) para no perderse si Android cierra el proceso en segundo plano
+        var NombreUsuarioCompanion: String
+            get() = Sesion.nombre
+            set(valor) { Sesion.nombre = valor }
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Abrir el login desde cero inicia una sesión nueva; si Android solo está restaurando
+        // esta pantalla (savedInstanceState != null) se conserva la sesión en curso
+        if (savedInstanceState == null) {
+            Sesion.cerrar()
+        }
 
 
         auth = Firebase.auth

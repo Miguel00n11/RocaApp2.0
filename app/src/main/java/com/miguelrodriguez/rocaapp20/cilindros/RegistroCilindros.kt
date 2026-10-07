@@ -488,47 +488,23 @@ class RegistroCilindros : AppCompatActivity() {
 
 
     private fun consultarValores() {
-        val inventarioRef: DatabaseReference =
-            databaseInventario.getReference("personal").child("inventario").child(personal)
-        // Agrega un listener para manejar el resultado de la consulta en el nodo "personal"
-        inventarioRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                etCarretillaCilindros.setText(
-                    dataSnapshot.child("carretilla").getValue(Int::class.java).toString()
-                )
-                etConoCilindros.setText(
-                    dataSnapshot.child("cono").getValue(Int::class.java).toString()
-                )
-                etVarillaCilindros.setText(
-                    dataSnapshot.child("varilla").getValue(Int::class.java).toString()
-                )
-                etMazoCilindros.setText(
-                    dataSnapshot.child("mazo").getValue(Int::class.java).toString()
-                )
-                etTermometroCilindros.setText(
-                    dataSnapshot.child("termometro").getValue(Int::class.java).toString()
-                )
-                etCucharonCilindros.setText(
-                    dataSnapshot.child("cucharon").getValue(Int::class.java).toString()
-                )
-                etPlacaCilindros.setText(
-                    dataSnapshot.child("placa").getValue(Int::class.java).toString()
-                )
-                etFlexometroCilindros.setText(
-                    dataSnapshot.child("flexometro").getValue(Int::class.java).toString()
-                )
-                etEnrasadorCilindros.setText(
-                    dataSnapshot.child("enrasador").getValue(Int::class.java).toString()
-                )
-
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Maneja errores
-                Log.w("TAG", "Error al leer datos en el nodo 'personal'.", error.toException())
-            }
-        })
+        dataReference.child("personal").child("inventario").child(personal)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    etCarretillaCilindros.setText(snapshot.child("carretilla").getValue(Any::class.java)?.toString() ?: "")
+                    etConoCilindros.setText(snapshot.child("cono").getValue(Any::class.java)?.toString() ?: "")
+                    etVarillaCilindros.setText(snapshot.child("varilla").getValue(Any::class.java)?.toString() ?: "")
+                    etMazoCilindros.setText(snapshot.child("mazo").getValue(Any::class.java)?.toString() ?: "")
+                    etTermometroCilindros.setText(snapshot.child("termometro").getValue(Any::class.java)?.toString() ?: "")
+                    etCucharonCilindros.setText(snapshot.child("cucharon").getValue(Any::class.java)?.toString() ?: "")
+                    etPlacaCilindros.setText(snapshot.child("placa").getValue(Any::class.java)?.toString() ?: "")
+                    etFlexometroCilindros.setText(snapshot.child("flexometro").getValue(Any::class.java)?.toString() ?: "")
+                    etEnrasadorCilindros.setText(snapshot.child("enrasador").getValue(Any::class.java)?.toString() ?: "")
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w("TAG", "Error al leer equipos", error.toException())
+                }
+            })
     }
 
     private fun mostrarDialogo() {

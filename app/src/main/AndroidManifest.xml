@@ -19,6 +19,7 @@
         tools:ignore="ScopedStorage" />
 
     <application
+        android:name=".RocaApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -108,7 +109,31 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.miguelrodriguez.rocaapp20.EquiposPredeterminadosActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.AprendizajeActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.ExamenesCapacitacionActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.ExamenNormaDetalleActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.DetalleAprendizajeActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name="com.miguelrodriguez.rocaapp20.AdministrarPersonalActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.ExamenesPersonalActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
@@ -125,6 +150,14 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.miguelrodriguez.rocaapp20.ExamenNorma161Activity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.JuegoNormaActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.SelectorAprendizajeActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
         <meta-data

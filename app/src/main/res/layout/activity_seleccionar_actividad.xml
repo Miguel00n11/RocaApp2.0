@@ -1,16 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerSeleccionar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<!-- Contenido principal -->
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- Barra superior: al tocarla se abre el panel lateral con la sesión -->
+    <LinearLayout
+        android:id="@+id/barraSesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1f2a36"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Abrir menú"
+            android:src="@drawable/ic_menu_24" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:text="Laboratorio Roca"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtInicialesBarra"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_badge_examen"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/btn_Background_Cancelar"
         android:orientation="horizontal"
@@ -200,14 +249,12 @@
                 android:gravity="center"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="6dp"
-
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btnIrReportesMecanicas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="6dp"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
 
@@ -218,10 +265,6 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="10dp">
-
-                        <!-- Aquí puedes agregar cualquier otro contenido que desees dentro del CardView -->
-
-                        <!-- Establecer la imagen deseada aquí -->
 
                         <ImageView
                             android:id="@+id/imageView4"
@@ -237,109 +280,8 @@
                             android:text="Mecánicas"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
-                        <!-- También puedes agregar otros elementos como texto o botones aquí -->
 
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/btnIrCapacitaciones"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#232323"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:id="@+id/imageView5"
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:background="#232323"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/imagenmecanica" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Capacitaciones"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!-- Solo visible para administradores -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="6dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/btnIrAdministrarPersonal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#232323"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:background="#232323"
-                            android:contentDescription="Administrar personal"
-                            android:padding="24dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/baseline_person_24"
-                            app:tint="@color/btn_Background_Acceder" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Administrar personal"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="6dp"
-
-                android:orientation="horizontal">
-
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/btnIrReportesMorteros"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
@@ -347,5 +289,220 @@
 
     </ScrollView>
 
-
 </LinearLayout>
+
+<!-- Panel lateral con la sesión -->
+<LinearLayout
+    android:id="@+id/panelSesion"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="#1f2a36"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <!-- Encabezado con los datos del usuario -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/btn_Background_Seleccionar_Actividad"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/txtInicialesSesion"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_badge_examen"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="Sesión iniciada como"
+            android:textColor="#8FA3B5"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtNombreSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtPuestoSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="#B8C6D3"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtCorreoSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#8FA3B5"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/txtAdminSesion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_estado_examen"
+            android:backgroundTint="@color/btn_Background_Acceder"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp"
+            android:text="Administrador"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#4B5E6C"
+        android:layout_marginTop="8dp" />
+
+    <!-- Navegación: Capacitaciones -->
+    <LinearLayout
+        android:id="@+id/navCapacitaciones"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            android:src="@drawable/imagen_capacitaciones" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Capacitaciones"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Navegación: Mis equipos -->
+    <LinearLayout
+        android:id="@+id/navEquiposPredeterminados"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_edit_24"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Mis equipos"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Navegación: Administrar personal (solo admins) -->
+    <LinearLayout
+        android:id="@+id/navAdministrarPersonal"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            android:src="@drawable/baseline_person_24"
+            app:tint="@color/btn_Background_Acceder" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Administrar personal"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#4B5E6C" />
+
+    <!-- Cerrar sesión -->
+    <LinearLayout
+        android:id="@+id/btnCerrarSesion"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_logout_24"
+            app:tint="#EF5350" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Cerrar sesión"
+            android:textColor="#EF5350"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
