@@ -2,6 +2,7 @@ package com.miguelrodriguez.rocaapp20
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import java.text.SimpleDateFormat
@@ -21,6 +22,8 @@ class CapacitacionesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_capacitaciones)
+
+        findViewById<ImageButton>(R.id.btnAtrasCapacitaciones).setOnClickListener { finish() }
 
         findViewById<CardView>(R.id.cardAprendizaje).setOnClickListener {
             startActivity(Intent(this, AprendizajeActivity::class.java))

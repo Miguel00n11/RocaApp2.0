@@ -13,6 +13,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- Banner de impersonación: visible solo cuando el admin está viendo como otro usuario -->
+    <LinearLayout
+        android:id="@+id/bannerImpersonacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1565C0"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/txtBannerImpersonacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/btnSalirImpersonacion"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:minHeight="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Volver a mi cuenta"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:strokeColor="@color/white" />
+    </LinearLayout>
+
     <!-- Barra superior: al tocarla se abre el panel lateral con la sesión -->
     <LinearLayout
         android:id="@+id/barraSesion"
@@ -498,6 +534,37 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <!-- Cambiar de usuario (solo admins / modo impersonación) -->
+    <LinearLayout
+        android:id="@+id/navCambiarUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iconCambiarUsuario"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_chevron_right_24"
+            app:tint="#64B5F6" />
+
+        <TextView
+            android:id="@+id/txtCambiarUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Cambiar de usuario"
+            android:textColor="#64B5F6"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

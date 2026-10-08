@@ -31,6 +31,7 @@ class Seleccionar_actividad : AppCompatActivity() {
     private lateinit var navEquiposPredeterminados: View
     private lateinit var navAdministrarPersonal: View
     private lateinit var navInstructivos: View
+    private lateinit var navCambiarUsuario: View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seleccionar_actividad)
@@ -38,6 +39,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         if (!InitComponet()) return
         InitUI()
         mostrarPanelSesion()
+        mostrarBannerImpersonacion()
     }
 
     // Panel lateral con los datos de la sesión; se abre al tocar la barra superior o deslizando desde la izquierda
@@ -69,6 +71,108 @@ class Seleccionar_actividad : AppCompatActivity() {
             override fun onDrawerOpened(drawerView: View) { cerrarPanel.isEnabled = true }
             override fun onDrawerClosed(drawerView: View) { cerrarPanel.isEnabled = false }
         })
+    }
+
+    private fun mostrarBannerImpersonacion() {
+        val banner = findViewById<View>(R.id.bannerImpersonacion)
+        if (!Sesion.modoImpersonacion) {
+            banner.visibility = View.GONE
+            return
+        }
+        banner.visibility = View.VISIBLE
+        val nombre = MainActivity.NombreUsuarioCompanion
+        banner.findViewById<TextView>(R.id.txtBannerImpersonacion).text =
+            "Viendo como: $nombre"
+        banner.findViewById<View>(R.id.btnSalirImpersonacion).setOnClickListener {
+            restaurarSesionAdmin()
+        }
+    }
+
+    private fun mostrarSelectorDeUsuario() {
+        val ref = com.google.firebase.database.FirebaseDatabase.getInstance()
+            .reference.child(com.miguelrodriguez.rocaapp20.acceso.CatalogoPersonal.NODO_PERSONAL)
+        ref.get().addOnSuccessListener { snapshot ->
+            data class UsuarioItem(val nombre: String, val correo: String, val puesto: String, val esAdmin: Boolean)
+            val usuarios = snapshot.children.mapNotNull { child ->
+                val correo = child.child("correo").getValue(String::class.java) ?: return@mapNotNull null
+                val nombre = child.child("nombre").getValue(String::class.java) ?: return@mapNotNull null
+                val puesto = child.child("puesto").getValue(String::class.java) ?: ""
+                val activo = child.child("activo").getValue(Boolean::class.java) != false
+                val esAdmin = child.child("rol").getValue(String::class.java) == com.miguelrodriguez.rocaapp20.acceso.CatalogoPersonal.ROL_ADMIN
+                if (!activo) return@mapNotNull null
+                if (correo.trim().lowercase() == consultar_datos.usuarioApp?.trim()?.lowercase()) return@mapNotNull null
+                UsuarioItem(nombre, correo, puesto, esAdmin)
+            }.sortedBy { it.nombre }
+
+            if (usuarios.isEmpty()) {
+                Toast.makeText(this, "No hay otros usuarios activos registrados", Toast.LENGTH_SHORT).show()
+                return@addOnSuccessListener
+            }
+
+            val vistaDialog = layoutInflater.inflate(R.layout.dialog_seleccionar_usuario, null)
+            val lista = vistaDialog.findViewById<android.widget.LinearLayout>(R.id.listaUsuariosDialog)
+            val inflater = layoutInflater
+
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+                .setView(vistaDialog)
+                .setNegativeButton("Cancelar", null)
+                .create()
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+            for (usuario in usuarios) {
+                val tarjeta = inflater.inflate(R.layout.item_personal, lista, false)
+                val iniciales = usuario.nombre.split(" ").filter { it.isNotBlank() }
+                    .take(2).joinToString("") { it.first().uppercase() }
+                tarjeta.findViewById<TextView>(R.id.txtInicialesPersonal).text = iniciales
+                tarjeta.findViewById<TextView>(R.id.txtNombreItemPersonal).text = usuario.nombre
+                tarjeta.findViewById<TextView>(R.id.txtPuestoItemPersonal).text = usuario.puesto
+                tarjeta.findViewById<TextView>(R.id.txtCorreoItemPersonal).text = usuario.correo
+                tarjeta.findViewById<View>(R.id.txtRolItemPersonal).visibility =
+                    if (usuario.esAdmin) View.VISIBLE else View.GONE
+                tarjeta.setOnClickListener {
+                    dialog.dismiss()
+                    entrarComoUsuario(usuario.nombre, usuario.correo, usuario.puesto)
+                }
+                lista.addView(tarjeta)
+            }
+
+            dialog.show()
+        }.addOnFailureListener {
+            Toast.makeText(this, "No se pudo cargar la lista de usuarios", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun entrarComoUsuario(nombre: String, correo: String, puesto: String) {
+        Sesion.correoAdminOriginal = consultar_datos.usuarioApp
+        Sesion.nombreAdminOriginal = MainActivity.NombreUsuarioCompanion
+        Sesion.puestoAdminOriginal = consultar_datos.puestoUsuario
+
+        Sesion.correo = correo
+        Sesion.nombre = nombre
+        Sesion.puesto = puesto
+        Sesion.esAdministrador = false
+        consultar_datos.esAdministrador = false
+        MainActivity.NombreUsuarioCompanion = nombre
+
+        recreate()
+    }
+
+    private fun restaurarSesionAdmin() {
+        val correoAdmin = Sesion.correoAdminOriginal ?: return
+        val nombreAdmin = Sesion.nombreAdminOriginal ?: return
+
+        Sesion.correo = correoAdmin
+        Sesion.nombre = nombreAdmin
+        Sesion.puesto = Sesion.puestoAdminOriginal
+        Sesion.esAdministrador = true
+        consultar_datos.esAdministrador = true
+        MainActivity.NombreUsuarioCompanion = nombreAdmin
+
+        Sesion.correoAdminOriginal = null
+        Sesion.nombreAdminOriginal = null
+        Sesion.puestoAdminOriginal = null
+
+        recreate()
     }
 
     private fun mostrarSiHayTexto(vista: TextView, texto: String?) {
@@ -140,6 +244,25 @@ class Seleccionar_actividad : AppCompatActivity() {
             drawer.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, InstructivosActivity::class.java))
         }
+
+        if (Sesion.modoImpersonacion) {
+            navCambiarUsuario.visibility = View.VISIBLE
+            navCambiarUsuario.findViewById<android.widget.TextView>(R.id.txtCambiarUsuario).text = "Volver a mi cuenta"
+            navCambiarUsuario.setOnClickListener {
+                val drawer = findViewById<DrawerLayout>(R.id.drawerSeleccionar)
+                drawer.closeDrawer(GravityCompat.START)
+                restaurarSesionAdmin()
+            }
+        } else if (consultar_datos.esAdministrador) {
+            navCambiarUsuario.visibility = View.VISIBLE
+            navCambiarUsuario.setOnClickListener {
+                val drawer = findViewById<DrawerLayout>(R.id.drawerSeleccionar)
+                drawer.closeDrawer(GravityCompat.START)
+                mostrarSelectorDeUsuario()
+            }
+        } else {
+            navCambiarUsuario.visibility = View.GONE
+        }
     }
 
     // Devuelve false si no hay sesión (en ese caso ya se redirigió al login)
@@ -166,6 +289,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         navEquiposPredeterminados = findViewById(R.id.navEquiposPredeterminados)
         navAdministrarPersonal = findViewById(R.id.navAdministrarPersonal)
         navInstructivos = findViewById(R.id.navInstructivos)
+        navCambiarUsuario = findViewById(R.id.navCambiarUsuario)
         return true
     }
 }
