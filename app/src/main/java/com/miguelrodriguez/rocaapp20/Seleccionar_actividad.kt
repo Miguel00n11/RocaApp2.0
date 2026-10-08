@@ -30,6 +30,7 @@ class Seleccionar_actividad : AppCompatActivity() {
     private lateinit var navCapacitaciones: View
     private lateinit var navEquiposPredeterminados: View
     private lateinit var navAdministrarPersonal: View
+    private lateinit var navInstructivos: View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seleccionar_actividad)
@@ -134,6 +135,11 @@ class Seleccionar_actividad : AppCompatActivity() {
             drawer.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, AdministrarPersonalActivity::class.java))
         }
+        navInstructivos.setOnClickListener {
+            val drawer = findViewById<DrawerLayout>(R.id.drawerSeleccionar)
+            drawer.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, InstructivosActivity::class.java))
+        }
     }
 
     // Devuelve false si no hay sesión (en ese caso ya se redirigió al login)
@@ -159,6 +165,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         navCapacitaciones = findViewById(R.id.navCapacitaciones)
         navEquiposPredeterminados = findViewById(R.id.navEquiposPredeterminados)
         navAdministrarPersonal = findViewById(R.id.navAdministrarPersonal)
+        navInstructivos = findViewById(R.id.navInstructivos)
         return true
     }
 }

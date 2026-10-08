@@ -423,7 +423,7 @@
             android:layout_height="24dp"
             android:scaleType="fitCenter"
             android:contentDescription="@null"
-            android:src="@drawable/ic_edit_24"
+            android:src="@drawable/ic_build_24"
             app:tint="@color/white" />
 
         <TextView
@@ -461,6 +461,35 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="Administrar personal"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Navegación: Instructivos -->
+    <LinearLayout
+        android:id="@+id/navInstructivos"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_edit_24"
+            app:tint="#4CAF50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Instructivos"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>

@@ -26,6 +26,10 @@ class CapacitacionesActivity : AppCompatActivity() {
             startActivity(Intent(this, AprendizajeActivity::class.java))
         }
 
+        findViewById<CardView>(R.id.cardInstructivos).setOnClickListener {
+            startActivity(Intent(this, InstructivosActivity::class.java))
+        }
+
         findViewById<CardView>(R.id.cardExamenes).setOnClickListener {
             startActivity(Intent(this, ExamenesCapacitacionActivity::class.java))
         }
