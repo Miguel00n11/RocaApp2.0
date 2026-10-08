@@ -121,6 +121,18 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.miguelrodriguez.rocaapp20.SupervisionesActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.NuevaSupervisionActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.FormularioSupervisionActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name="com.miguelrodriguez.rocaapp20.ExamenesCapacitacionActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />

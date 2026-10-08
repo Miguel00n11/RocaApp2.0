@@ -31,6 +31,7 @@ class Seleccionar_actividad : AppCompatActivity() {
     private lateinit var navEquiposPredeterminados: View
     private lateinit var navAdministrarPersonal: View
     private lateinit var navInstructivos: View
+    private lateinit var navSupervisiones: View
     private lateinit var navCambiarUsuario: View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -239,6 +240,20 @@ class Seleccionar_actividad : AppCompatActivity() {
             drawer.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, AdministrarPersonalActivity::class.java))
         }
+        val puestosSupervisores = setOf(
+            "Responsable técnico",
+            "Responsable de laboratorio central",
+            "Responsable de calidad"
+        )
+        val puestoActual = consultar_datos.puestoUsuario?.trim() ?: ""
+        navSupervisiones.visibility =
+            if (puestosSupervisores.any { it.equals(puestoActual, ignoreCase = true) })
+                View.VISIBLE else View.GONE
+        navSupervisiones.setOnClickListener {
+            val drawer = findViewById<DrawerLayout>(R.id.drawerSeleccionar)
+            drawer.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, SupervisionesActivity::class.java))
+        }
         navInstructivos.setOnClickListener {
             val drawer = findViewById<DrawerLayout>(R.id.drawerSeleccionar)
             drawer.closeDrawer(GravityCompat.START)
@@ -288,6 +303,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         navCapacitaciones = findViewById(R.id.navCapacitaciones)
         navEquiposPredeterminados = findViewById(R.id.navEquiposPredeterminados)
         navAdministrarPersonal = findViewById(R.id.navAdministrarPersonal)
+        navSupervisiones = findViewById(R.id.navSupervisiones)
         navInstructivos = findViewById(R.id.navInstructivos)
         navCambiarUsuario = findViewById(R.id.navCambiarUsuario)
         return true
