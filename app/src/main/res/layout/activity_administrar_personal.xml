@@ -279,6 +279,72 @@
                         android:textColor="#444444"
                         android:textSize="13sp" />
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="Exámenes autorizados"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/chkExamen083"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-083 — Resistencia a la compresión"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkExamen109"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-109 — Cabeceo de especímenes"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkExamen156"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-156 — Revenimiento del concreto"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkExamen159"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-159 — Elaboración y curado de especímenes"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkExamen161"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-161 — Muestreo del concreto fresco"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkExamen17025"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-EC-17025 — Requisitos de laboratorio"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkExamen008"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NOM-008 — Unidades de medida"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
                 </LinearLayout>
 
                 <Button

@@ -35,17 +35,17 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtCodigoSelector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Material de aprendizaje"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Material de aprendizaje"
+                android:text="Selecciona una actividad"
                 android:textColor="#B8C6D3"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -121,6 +121,65 @@
                     android:layout_height="wrap_content"
                     android:text="›"
                     android:textColor="#90BBE0"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Card: Juego de memoria -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardMemoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="#2A1A4A"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:gravity="center"
+                    android:text="🧩"
+                    android:textSize="28sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Juego de memoria"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Empareja normas con su contenido"
+                        android:textColor="#C4A8E0"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="#C4A8E0"
                     android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>

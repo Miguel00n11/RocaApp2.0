@@ -16,6 +16,14 @@ import com.miguelrodriguez.rocaapp20.acceso.consultar_datos
 
 class AprendizajeActivity : AppCompatActivity() {
 
+    companion object {
+        const val EXTRA_MODO = "modo_aprendizaje"
+        const val MODO_DOC    = "doc"
+        const val MODO_TRIVIA = "trivia"
+    }
+
+    private lateinit var modo: String
+
     private data class Tema(
         val numero: String,
         val codigo: String,
@@ -35,6 +43,15 @@ class AprendizajeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_aprendizaje)
+
+        modo = intent.getStringExtra(EXTRA_MODO) ?: MODO_DOC
+
+        val (titulo, subtitulo) = when (modo) {
+            MODO_TRIVIA -> "Juego trivia" to "Elige la norma que quieres practicar"
+            else        -> "Leer documentación" to "Elige la norma que quieres consultar"
+        }
+        findViewById<TextView>(R.id.txtTituloAprendizaje).text = titulo
+        findViewById<TextView>(R.id.txtSubtituloAprendizaje).text = subtitulo
 
         findViewById<ImageButton>(R.id.btnAtrasAprendizaje).setOnClickListener { finish() }
 
@@ -100,10 +117,16 @@ class AprendizajeActivity : AppCompatActivity() {
     }
 
     private fun abrirDetalle(tema: Tema) {
-        val intent = Intent(this, SelectorAprendizajeActivity::class.java).apply {
-            putExtra(SelectorAprendizajeActivity.EXTRA_NUMERO, tema.numero)
-            putExtra(SelectorAprendizajeActivity.EXTRA_CODIGO, tema.codigo)
+        if (modo == MODO_TRIVIA) {
+            startActivity(Intent(this, JuegoNormaActivity::class.java).apply {
+                putExtra(JuegoNormaActivity.EXTRA_NUMERO, tema.numero)
+                putExtra(JuegoNormaActivity.EXTRA_CODIGO, tema.codigo)
+            })
+        } else {
+            startActivity(Intent(this, DetalleAprendizajeActivity::class.java).apply {
+                putExtra(DetalleAprendizajeActivity.EXTRA_NUMERO, tema.numero)
+                putExtra(DetalleAprendizajeActivity.EXTRA_CODIGO, tema.codigo)
+            })
         }
-        startActivity(intent)
     }
 }

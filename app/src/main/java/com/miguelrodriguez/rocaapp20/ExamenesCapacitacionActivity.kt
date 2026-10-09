@@ -66,7 +66,7 @@ class ExamenesCapacitacionActivity : AppCompatActivity() {
         val clave = CatalogoPersonal.claveCorreo(correo)
         FirebaseDatabase.getInstance().reference
             .child(CatalogoPersonal.NODO_PERSONAL).child(clave)
-            .child("acceso").child("capacitaciones")
+            .child("acceso").child("examenes")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val permitidas = snapshot.children

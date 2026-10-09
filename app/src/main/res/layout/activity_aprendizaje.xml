@@ -36,17 +36,19 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/txtTituloAprendizaje"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Material de aprendizaje"
+                android:text="Selecciona la norma"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtSubtituloAprendizaje"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Normas e instructivos de pruebas"
+                android:text="Elige una norma para continuar"
                 android:textColor="#B8C6D3"
                 android:textSize="13sp" />
         </LinearLayout>

@@ -77,6 +77,18 @@ class AdministrarPersonalActivity : AppCompatActivity() {
         )
     }
 
+    private val checkboxExamenes: Map<String, CheckBox> by lazy {
+        mapOf(
+            "083"   to findViewById(R.id.chkExamen083),
+            "109"   to findViewById(R.id.chkExamen109),
+            "156"   to findViewById(R.id.chkExamen156),
+            "159"   to findViewById(R.id.chkExamen159),
+            "161"   to findViewById(R.id.chkExamen161),
+            "17025" to findViewById(R.id.chkExamen17025),
+            "008"   to findViewById(R.id.chkExamen008)
+        )
+    }
+
     private data class Perfil(
         val clave: String,
         val nombre: String,
@@ -370,7 +382,8 @@ class AdministrarPersonalActivity : AppCompatActivity() {
             "fechaModificacion" to ahora(),
             "acceso" to mapOf(
                 "capacitaciones" to checkboxCapacitaciones.mapValues { (_, chk) -> chk.isChecked },
-                "instructivos" to checkboxInstructivos.mapValues { (_, chk) -> chk.isChecked }
+                "instructivos" to checkboxInstructivos.mapValues { (_, chk) -> chk.isChecked },
+                "examenes" to checkboxExamenes.mapValues { (_, chk) -> chk.isChecked }
             )
         )
 
@@ -439,8 +452,12 @@ class AdministrarPersonalActivity : AppCompatActivity() {
                 val instr = snapshot.child("instructivos").children
                     .filter { it.getValue(Boolean::class.java) == true }
                     .mapNotNull { it.key }.toSet()
+                val exams = snapshot.child("examenes").children
+                    .filter { it.getValue(Boolean::class.java) == true }
+                    .mapNotNull { it.key }.toSet()
                 checkboxCapacitaciones.forEach { (id, chk) -> chk.isChecked = id in caps }
                 checkboxInstructivos.forEach { (id, chk) -> chk.isChecked = id in instr }
+                checkboxExamenes.forEach { (id, chk) -> chk.isChecked = id in exams }
             }
     }
 

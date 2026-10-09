@@ -26,7 +26,7 @@ class CapacitacionesActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.btnAtrasCapacitaciones).setOnClickListener { finish() }
 
         findViewById<CardView>(R.id.cardAprendizaje).setOnClickListener {
-            startActivity(Intent(this, AprendizajeActivity::class.java))
+            startActivity(Intent(this, SelectorAprendizajeActivity::class.java))
         }
 
         findViewById<CardView>(R.id.cardInstructivos).setOnClickListener {

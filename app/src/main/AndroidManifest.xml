@@ -170,6 +170,13 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.miguelrodriguez.rocaapp20.JuegoNormaActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.JuegoMemoriaActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.RankingMemoriaActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
