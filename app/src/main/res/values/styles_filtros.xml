@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Campo de filtro oscuro, acorde al fondo de las pantallas de administración -->
+    <style name="FiltroOscuro" parent="Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="boxBackgroundColor">@color/btn_Background_Seleccionar_Actividad</item>
+        <item name="boxStrokeColor">@color/btn_Background_Acceder</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="hintTextColor">@color/btn_Background_Acceder</item>
+        <item name="android:textColorHint">#B8C6D3</item>
+        <item name="endIconTint">@color/white</item>
+    </style>
+
+    <style name="FiltroOscuro.Texto" parent="">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:inputType">none</item>
+        <item name="android:dropDownVerticalOffset">4dp</item>
+        <item name="android:popupBackground">@drawable/bg_dropdown_filtro</item>
+    </style>
+</resources>

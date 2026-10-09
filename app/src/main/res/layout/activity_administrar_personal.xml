@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollAdministrarPersonal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1f2a36"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Administrar personal"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Da de alta las cuentas con las que el personal entra a la aplicación"
+            android:textColor="#B8C6D3"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="48dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/btn_Background_Acceder" />
+
+        <Button
+            android:id="@+id/btnVerExamenesPersonal"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Exámenes del personal"
+            android:textColor="@color/white"
+            app:strokeColor="@color/btn_Background_Acceder" />
+
+        <!-- Formulario de alta -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/txtTituloFormulario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="Nuevo integrante"
+                    android:textColor="#111111"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre completo">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/etNombrePersonal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:inputType="textPersonName|textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Correo electrónico">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCorreoPersonal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPasswordPersonal"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Contraseña (mínimo 6 caracteres)"
+                    app:endIconMode="password_toggle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPasswordPersonal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPuestoPersonal"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="Puesto">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/etPuestoPersonal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <CheckBox
+                    android:id="@+id/chkAdministrador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Es administrador (puede dar de alta personal)"
+                    android:textColor="#333333" />
+
+                <!-- Solo en modo edición -->
+                <CheckBox
+                    android:id="@+id/chkActivo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cuenta activa (puede entrar a la aplicación)"
+                    android:textColor="#333333"
+                    android:visibility="gone" />
+
+                <!-- Solo en modo edición: permisos de capacitaciones e instructivos -->
+                <View
+                    android:id="@+id/separadorPermisos"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#DDDDDD"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/sectionPermisos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Capacitaciones autorizadas"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/chkAcceso083"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-083 — Resistencia a la compresión"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAcceso109"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-109 — Cabeceo de especímenes"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAcceso156"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-156 — Revenimiento del concreto"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAcceso159"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-159 — Elaboración y curado de especímenes"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAcceso161"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-C-161 — Muestreo del concreto fresco"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAcceso17025"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NMX-EC-17025 — Requisitos de laboratorio"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAcceso008"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NOM-008 — Unidades de medida"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="Instructivos autorizados"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <CheckBox
+                        android:id="@+id/chkAccesoIT01"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="IT01 — Revenimiento del concreto fresco"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAccesoIT02"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="IT02 — Elaboración de especímenes"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAccesoIT03"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="IT03 — Cabeceo de cilindros"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAccesoIT04"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="IT04 — Resistencia a compresión"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/chkAccesoIT05"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="IT05 — Operación de máquina de ensayo"
+                        android:textColor="#444444"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnDarDeAlta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/btn_Background_Acceder"
+                    android:text="Dar de alta"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btnRestablecerPassword"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enviar correo para restablecer contraseña"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnVerExamenesPersona"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ver exámenes de esta persona"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnEntrarComoUsuario"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Entrar como este usuario"
+                    android:textColor="#1565C0"
+                    app:strokeColor="#1565C0"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnCancelarEdicion"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cancelar edición"
+                    android:visibility="gone" />
+
+                <ProgressBar
+                    android:id="@+id/progresoAlta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Personal registrado"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Toca a una persona para editar sus datos"
+            android:textColor="#8FA3B5"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:id="@+id/listaPersonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/txtSinPersonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aún no hay personal dado de alta."
+            android:textColor="#B8C6D3"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

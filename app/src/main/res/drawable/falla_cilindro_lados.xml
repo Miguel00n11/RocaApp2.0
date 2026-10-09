@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Falla en los lados de la parte superior o inferior (tapas no adheridas) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <path
+        android:pathData="M15,10 L85,10 L85,190 L15,190 Z M115,10 L185,10 L185,190 L115,190 Z"
+        android:strokeColor="#000000"
+        android:strokeWidth="5" />
+    <!-- Fractura en la esquina superior del cilindro izquierdo -->
+    <path
+        android:pathData="M42,10 L36,22 L28,28 L22,40 L15,46"
+        android:strokeColor="#000000"
+        android:strokeWidth="3"
+        android:strokeLineJoin="round" />
+    <!-- Fractura en la esquina inferior del cilindro derecho -->
+    <path
+        android:pathData="M185,155 L176,162 L172,174 L166,182 L162,190"
+        android:strokeColor="#000000"
+        android:strokeWidth="3"
+        android:strokeLineJoin="round" />
+</vector>

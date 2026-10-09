@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Falla tipo 1: conos formados en ambos extremos (dos variantes) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    <!-- Contornos de los cilindros -->
+    <path
+        android:pathData="M15,10 L85,10 L85,190 L15,190 Z M115,10 L185,10 L185,190 L115,190 Z"
+        android:strokeColor="#000000"
+        android:strokeWidth="5"
+        android:strokeLineJoin="miter" />
+    <!-- Cilindro izquierdo: grietas en X -->
+    <path
+        android:pathData="M15,75 L85,135 M85,75 L15,135"
+        android:strokeColor="#000000"
+        android:strokeWidth="4" />
+    <!-- Cilindro derecho: cono superior que llega a 25 mm de la tapa -->
+    <path
+        android:pathData="M130,10 L185,110 M170,10 L115,125"
+        android:strokeColor="#000000"
+        android:strokeWidth="4" />
+</vector>

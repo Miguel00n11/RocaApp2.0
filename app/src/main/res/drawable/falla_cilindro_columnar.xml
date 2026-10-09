@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Falla columnar: fracturas verticales de extremo a extremo -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="200">
+    <path
+        android:pathData="M15,10 L85,10 L85,190 L15,190 Z"
+        android:strokeColor="#000000"
+        android:strokeWidth="5" />
+    <!-- Grietas verticales irregulares -->
+    <path
+        android:pathData="M32,10 L36,40 L30,70 L35,100 L28,130 L24,155 L15,170
+            M50,10 L46,35 L52,60 L48,90 L54,115 L44,140 L36,165 L30,190
+            M68,10 L72,40 L66,70 L71,100 L64,125 L58,150 L62,190
+            M50,125 L60,140 L70,160 L74,190
+            M15,130 L22,150"
+        android:strokeColor="#000000"
+        android:strokeWidth="3"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round" />
+</vector>

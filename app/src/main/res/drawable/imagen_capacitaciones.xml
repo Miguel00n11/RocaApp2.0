@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ilustración de la tarjeta Capacitaciones: examen con respuestas palomeadas y birrete -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="150dp"
+    android:height="150dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Hoja del examen -->
+    <path
+        android:fillColor="#ECEFF1"
+        android:pathData="M30,22h60a6,6 0,0 1,6 6v76a6,6 0,0 1,-6 6h-60a6,6 0,0 1,-6 -6v-76a6,6 0,0 1,6 -6z" />
+
+    <!-- Clip del portapapeles -->
+    <path
+        android:fillColor="#90A4AE"
+        android:pathData="M46,14h28a4,4 0,0 1,4 4v10h-36v-10a4,4 0,0 1,4 -4z" />
+
+    <!-- Renglones de preguntas -->
+    <path
+        android:pathData="M52,44H84M52,60H84M52,76H64M52,92H62"
+        android:strokeColor="#90A4AE"
+        android:strokeLineCap="round"
+        android:strokeWidth="4" />
+
+    <!-- Respuestas palomeadas -->
+    <path
+        android:pathData="M33,44l4,4l8,-9M33,60l4,4l8,-9M33,76l4,4l8,-9"
+        android:strokeColor="#039AE4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3.5" />
+
+    <!-- Casilla pendiente -->
+    <path
+        android:pathData="M34,87h9v9h-9z"
+        android:strokeColor="#90A4AE"
+        android:strokeLineJoin="round"
+        android:strokeWidth="2.5" />
+
+    <!-- Birrete: base -->
+    <path
+        android:fillColor="#0277BD"
+        android:pathData="M80,86v10c0,4 6.5,7 14,7s14,-3 14,-7v-10l-14,6z" />
+
+    <!-- Birrete: tablero -->
+    <path
+        android:fillColor="#039AE4"
+        android:pathData="M68,80L94,69L120,80L94,91z" />
+
+    <!-- Borla -->
+    <path
+        android:pathData="M94,80L113,84L113,97"
+        android:strokeColor="#FFC107"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="2" />
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M110.5,96h5v6h-5z" />
+</vector>
