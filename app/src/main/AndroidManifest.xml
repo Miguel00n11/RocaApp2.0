@@ -183,6 +183,22 @@
             android:name="com.miguelrodriguez.rocaapp20.SelectorAprendizajeActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.controlequipos.ControlEquiposActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.controlequipos.ListaEquiposActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.controlequipos.FormularioEquipoActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.controlequipos.HistorialEquipoActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

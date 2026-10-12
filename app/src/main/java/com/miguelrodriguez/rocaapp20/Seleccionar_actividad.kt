@@ -29,6 +29,7 @@ class Seleccionar_actividad : AppCompatActivity() {
     private lateinit var btnIrReportesMecanicas: CardView
     private lateinit var navCapacitaciones: View
     private lateinit var navEquiposPredeterminados: View
+    private lateinit var navControlEquipos: View
     private lateinit var navAdministrarPersonal: View
     private lateinit var navInstructivos: View
     private lateinit var navSupervisiones: View
@@ -233,6 +234,11 @@ class Seleccionar_actividad : AppCompatActivity() {
             drawer.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, EquiposPredeterminadosActivity::class.java))
         }
+        navControlEquipos.setOnClickListener {
+            val drawer = findViewById<DrawerLayout>(R.id.drawerSeleccionar)
+            drawer.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, com.miguelrodriguez.rocaapp20.controlequipos.ControlEquiposActivity::class.java))
+        }
         navAdministrarPersonal.visibility =
             if (consultar_datos.esAdministrador) View.VISIBLE else View.GONE
         navAdministrarPersonal.setOnClickListener {
@@ -302,6 +308,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         btnIrReportesMecanicas=findViewById(R.id.btnIrReportesMecanicas)
         navCapacitaciones = findViewById(R.id.navCapacitaciones)
         navEquiposPredeterminados = findViewById(R.id.navEquiposPredeterminados)
+        navControlEquipos = findViewById(R.id.navControlEquipos)
         navAdministrarPersonal = findViewById(R.id.navAdministrarPersonal)
         navSupervisiones = findViewById(R.id.navSupervisiones)
         navInstructivos = findViewById(R.id.navInstructivos)
