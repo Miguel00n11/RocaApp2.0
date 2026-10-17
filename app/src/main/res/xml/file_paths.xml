@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Archivos guardados en getExternalFilesDir() -->
-    <external-files-path
-        name="external_files"
-        path="." />
-
-    <!-- Imágenes en Pictures/ dentro del espacio privado de la app -->
-    <external-files-path
-        name="images"
-        path="Pictures" />
+<paths>
+    <cache-path name="pdf_cache" path="." />
 </paths>

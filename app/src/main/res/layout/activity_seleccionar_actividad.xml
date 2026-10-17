@@ -588,6 +588,35 @@
             android:textSize="16sp" />
     </LinearLayout>
 
+    <!-- Navegación: Ofertas y contratos -->
+    <LinearLayout
+        android:id="@+id/navOfertasContratos"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_edit_24"
+            app:tint="#FFB300" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Ofertas y contratos"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"

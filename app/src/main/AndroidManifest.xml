@@ -121,6 +121,18 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="com.miguelrodriguez.rocaapp20.OfertasContratosActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.RevisionRecursosActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.FormularioRevisionRecursosActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name="com.miguelrodriguez.rocaapp20.SupervisionesActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
@@ -205,6 +217,14 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.miguelrodriguez.rocaapp20.controlequipos.FormularioCuartoCuradoActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.controlequipos.AsignacionEquipoActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.miguelrodriguez.rocaapp20.controlequipos.VisorAsignacionActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
         <meta-data

@@ -32,6 +32,7 @@ class Seleccionar_actividad : AppCompatActivity() {
     private lateinit var navControlEquipos: View
     private lateinit var navAdministrarPersonal: View
     private lateinit var navInstructivos: View
+    private lateinit var navOfertasContratos: View
     private lateinit var navSupervisiones: View
     private lateinit var navCambiarUsuario: View
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -265,6 +266,11 @@ class Seleccionar_actividad : AppCompatActivity() {
             drawer.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, InstructivosActivity::class.java))
         }
+        navOfertasContratos.setOnClickListener {
+            val drawer = findViewById<DrawerLayout>(R.id.drawerSeleccionar)
+            drawer.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, OfertasContratosActivity::class.java))
+        }
 
         if (Sesion.modoImpersonacion) {
             navCambiarUsuario.visibility = View.VISIBLE
@@ -312,6 +318,7 @@ class Seleccionar_actividad : AppCompatActivity() {
         navAdministrarPersonal = findViewById(R.id.navAdministrarPersonal)
         navSupervisiones = findViewById(R.id.navSupervisiones)
         navInstructivos = findViewById(R.id.navInstructivos)
+        navOfertasContratos = findViewById(R.id.navOfertasContratos)
         navCambiarUsuario = findViewById(R.id.navCambiarUsuario)
         return true
     }
