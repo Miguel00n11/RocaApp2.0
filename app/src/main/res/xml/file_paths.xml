@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths>
-    <cache-path name="pdf_cache" path="." />
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- PDF de Revisión de recursos (cacheDir) -->
+    <cache-path
+        name="pdf_cache"
+        path="." />
+
+    <!-- PDF de reportes guardados en getExternalFilesDir(Documents) -->
+    <external-files-path
+        name="external_files"
+        path="." />
+
+    <!-- Fotos de Mecánicas en getExternalFilesDir(Pictures) -->
+    <external-files-path
+        name="images"
+        path="Pictures" />
 </paths>
